@@ -12,7 +12,7 @@ public static class InputExtensions
 	private static Vector3 previousViewportPos;
 	
 	/// <summary>
-	/// Returns Screen position co-ordinates. Ignorant to where the input is coming from.  
+	/// Returns Screen position pixel co-ordinates. Ignorant to where the input is coming from.  
 	/// </summary>
 	/// <returns></returns>
 	public static Vector2 GetInputPosition ()
@@ -23,6 +23,19 @@ public static class InputExtensions
 			return Input.GetTouch(0).position;
 		
 		return Input.mousePosition;
+	}
+	
+	/// <summary>
+	/// Returns position in viewport co-ordinates. Ignorant to where the input is coming from.
+	/// </summary>
+	/// <returns></returns>
+	public static Vector2 GetInputViewportPosition()
+	{
+		if (!GetFingerHeld() && !GetFingerDown()) return Vector2.zero;
+
+		var touchPos = IsUsingTouch ? Input.GetTouch(0).position : new Vector2( Input.mousePosition.x, Input.mousePosition.y);
+		
+		return new Vector2(touchPos.x / Screen.width, touchPos.y / Screen.height);
 	}
 	
 	/// <summary>
