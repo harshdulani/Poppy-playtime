@@ -19,13 +19,18 @@ public class HandController : MonoBehaviour
 
 	public void MoveRopeEndTowards(Vector3 hitPoint, Vector3 normal, bool goHome = false)
 	{
-		_lastHitPoint = hitPoint;
-		_lastNormal = Quaternion.LookRotation(-normal);
-
-		palm.position = Vector3.MoveTowards(palm.position, goHome ? _ropeEndInitPos : _lastHitPoint, (goHome ? returnSpeed : moveSpeed) * Time.deltaTime);
+		if(!goHome)
+		{
+			_lastHitPoint = hitPoint;
+			_lastNormal = Quaternion.LookRotation(-normal);
+		}
+		
+		palm.position = Vector3.MoveTowards(palm.position,
+			goHome ? _ropeEndInitPos : _lastHitPoint,
+			(goHome ? returnSpeed : moveSpeed) * Time.deltaTime);
 
 		palm.rotation = goHome ? 
-			Quaternion.Lerp(palm.rotation, _ropeEndInitRot, returnSpeed * Time.deltaTime) : 
+			Quaternion.Lerp(palm.rotation, _ropeEndInitRot, returnSpeed * Time.deltaTime) :
 			Quaternion.Lerp(palm.rotation, _lastNormal, moveSpeed * 1.5f * Time.deltaTime);
 	}
 

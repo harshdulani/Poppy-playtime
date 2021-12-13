@@ -20,18 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Coke Red.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Coke Red.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Pepsi Blue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Pepsi Blue.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Platform.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Platform.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Rope Black.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Rope Black.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Test Dummy Yellow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Test Dummy Yellow.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" afterDir="false" />
     </list>
@@ -66,16 +57,16 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HandController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/WristController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StickmanController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StickmanLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
       </list>
     </option>
   </component>
@@ -121,20 +112,21 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Added environment, and hand movement, state machine, very barebones, need to iterate a lot" />
     <MESSAGE value="Added proper collision detection and better working to and fro the target" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added proper collision detection and better working to and fro the target" />
+    <MESSAGE value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639380499059">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639399164765">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639380499059" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639399164765" />
     <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1639398752296">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1639398752296" />
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1639398697591">
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1639401545170">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1639398697591" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1639401545170" />
   </component>
 </project>

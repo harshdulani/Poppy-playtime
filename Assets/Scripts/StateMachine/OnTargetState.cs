@@ -39,12 +39,6 @@ public class OnTargetState : InputStateBase
 		_rb.isKinematic = false;
 	}
 
-	public override void Execute()
-	{
-		base.Execute();
-		//let player shake the enemy ragdoll around and if hit w enough force, surrounding ragdolls fall
-	}
-
 	public override void FixedExecute()
 	{
 		base.FixedExecute();

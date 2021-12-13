@@ -521,9 +521,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.20041893
-  m_Height: 0.80167574
+  m_Height: 0.8558211
   m_Direction: 1
-  m_Center: {x: 0, y: 0.40083787, z: 0}
+  m_Center: {x: 8.707794e-15, y: 0.42791054, z: -1.8376301e-15}
 --- !u!144 &553317483
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -581,9 +581,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.20041893
-  m_Height: 0.80167574
+  m_Height: 0.85998607
   m_Direction: 1
-  m_Center: {x: 0, y: 0.40083787, z: 0}
+  m_Center: {x: -2.0042403e-15, y: 0.42999303, z: 1.0374555e-14}
 --- !u!144 &553317485
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1902,12 +1902,16 @@ PrefabInstance:
       objectReference: {fileID: 1471947328}
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: moveSpeed
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: ropeBegin
       value: 
       objectReference: {fileID: 1067047917}
+    - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
+      propertyPath: returnSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: curve.m_Curve.Array.size
       value: 3

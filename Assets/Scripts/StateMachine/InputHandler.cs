@@ -64,11 +64,12 @@ public class InputHandler : MonoBehaviour
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
-			if(_currentInputState is InTransitState || _currentInputState is OnTargetState) //on finger up in transit could only be called if you were going there
+			if(_currentInputState is InTransitState || _currentInputState is OnTargetState) 
 				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
+			//on finger up in transit could only be called if you were going there
 		}
 
-		//print($"current input state {_currentInputState}");
+		print($"current input state {_currentInputState}");
 		_currentInputState?.Execute();
 	}
 
@@ -93,11 +94,8 @@ public class InputHandler : MonoBehaviour
 			hand = _rightHand;
 			StartCoroutine(BlockInputTemporarily());
 			return IdleState;
-		}
+		}*/
 
-		if (InputExtensions.GetInputViewportPosition().x > 0.5f) hand = _rightHand;
-		*/
-		
 		return new InTransitState(false, hit);
 	}
 
