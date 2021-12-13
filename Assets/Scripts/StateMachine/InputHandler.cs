@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
 	public static InputHandler Only;
 
 	public bool testingUsingTouch;
-	[SerializeField] private float inputBlockDuration;
+	[SerializeField] private float targetDragForce;
 
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
@@ -47,6 +47,7 @@ public class InputHandler : MonoBehaviour
 		_cam = Camera.main;
 
 		_ = new InputStateBase(_leftHand);
+		_ = new OnTargetState(targetDragForce, _cam);
 		_currentInputState = IdleState;
 	}
 
@@ -67,7 +68,7 @@ public class InputHandler : MonoBehaviour
 				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 		}
 
-		print($"current input state {_currentInputState}");
+		//print($"current input state {_currentInputState}");
 		_currentInputState?.Execute();
 	}
 
