@@ -8,11 +8,10 @@ public class OnTargetState : InputStateBase
 	{
 		_target = target;
 	}
-	
-	
+
 	public override void OnEnter()
 	{
-		IsPersistent = true;
+		IsPersistent = false;
 	}
 
 	public override void Execute()

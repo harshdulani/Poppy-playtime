@@ -3,11 +3,11 @@
 public class InTransitState : InputStateBase
 {
 	private RaycastHit _hit;
-	private bool _isCatching;
+	public readonly bool GoHome;
 
-	public InTransitState(bool isCatching, RaycastHit hit = default)
+	public InTransitState(bool goHome, RaycastHit hit)
 	{
-		_isCatching = isCatching;
+		GoHome = goHome;
 		_hit = hit;
 	}
 	
@@ -28,6 +28,9 @@ public class InTransitState : InputStateBase
 		//if collider says reached,
 		//changestate to ontarget if isCatching, else idle
 		
-		LeftHand.MoveRopeEndTowards(_hit, !_isCatching);
+		if(GoHome)
+			LeftHand.MoveRopeEndTowards(Vector3.zero, Vector3.zero, true);
+		else
+			LeftHand.MoveRopeEndTowards(_hit.point, _hit.normal);
 	}
 }

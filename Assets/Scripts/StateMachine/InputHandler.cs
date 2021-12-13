@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputHandler : MonoBehaviour
 {
@@ -52,19 +52,19 @@ public class InputHandler : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		
 		if(!_inDisabledState) return;
 		
-		if(_currentInputState == IdleState || _currentInputState is OnTargetState)
+		if(_currentInputState == IdleState || (_currentInputState is InTransitState state && state.GoHome))
 		{
 			_currentInputState = HandleInput();
 			_currentInputState?.OnEnter();
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
-			if(_currentInputState is InTransitState) //on finger up in transit could only be called if you were going there
-				AssignNewState(new InTransitState(false));
-			else
-				AssignNewState(IdleState);
+			if(_currentInputState is InTransitState || _currentInputState is OnTargetState) //on finger up in transit could only be called if you were going there
+				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 		}
 
 		print($"current input state {_currentInputState}");
@@ -84,7 +84,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (!Physics.Raycast(ray, out var hit)) return _currentInputState; //if raycast didn't hit anything
 
-		if (!hit.collider.CompareTag("Hittable")) return _currentInputState; //return fake dest state
+		if (!hit.collider.CompareTag("Target")) return _currentInputState; //return fake dest state
 
 		/*
 		if (_currentInputState is OnTargetState)
@@ -97,7 +97,7 @@ public class InputHandler : MonoBehaviour
 		if (InputExtensions.GetInputViewportPosition().x > 0.5f) hand = _rightHand;
 		*/
 		
-		return new InTransitState(true, hit);
+		return new InTransitState(false, hit);
 	}
 
 	public static void AssignNewState(InputStateBase newState)

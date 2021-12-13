@@ -4,7 +4,8 @@ public class InputStateBase
 {
 	public static bool IsPersistent;
 	protected static HandController LeftHand;
-	
+
+	public static RaycastHit EmptyHit = new RaycastHit();
 	private static float _decreaseMultiplier;
 
 	protected InputStateBase() { }
@@ -12,6 +13,8 @@ public class InputStateBase
 	public InputStateBase(HandController leftHand)
 	{
 		LeftHand = leftHand;
+		
+		EmptyHit.point = Vector3.negativeInfinity;
 	}
 
 	public virtual void OnEnter() { }
