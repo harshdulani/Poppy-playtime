@@ -20,4 +20,10 @@ public class RagdollController : MonoBehaviour
 			//rb.useGravity = false;
 		}
 	}
+
+	public void StartGettingCarried()
+	{
+		foreach (var rb in rigidbodies)
+			rb.useGravity = false;
+	}
 }

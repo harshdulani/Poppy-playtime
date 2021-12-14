@@ -28,7 +28,9 @@ public class OnTargetState : InputStateBase
 		IsPersistent = false;
 
 		_originalRbPos = _target.position;
-		LeftHand.palm.parent = _target;
+		
+		LeftHand.StartCarryingBody(_target);
+		
 		_dist = Vector3.Distance(_hitPoint, _camera.transform.position);
 		
 		_target.GetComponent<RagdollLimbController>().TellParent();
@@ -45,7 +47,7 @@ public class OnTargetState : InputStateBase
 		if (!_rb) return;
 		
 		Vector3 mousePositionOffset = _camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _dist)) - _hitPoint;
-		_rb.velocity = (_originalRbPos + mousePositionOffset - _rb.transform.position) * (_dragForce * Time.deltaTime);
+		_rb.velocity = (_originalRbPos + mousePositionOffset - _rb.position) * (_dragForce * Time.deltaTime);
 		
 		//_rb.velocity = InputExtensions.GetInputDelta() * (_dragForce * Time.deltaTime) + Vector2.up * Mathf.Lerp(1f,4f, InputExtensions.GetInputViewportPosition().y);
 	}
@@ -54,11 +56,11 @@ public class OnTargetState : InputStateBase
 	{
 		base.OnExit();
 		
-		LeftHand.palm.parent = null;
+		//LeftHand.palm.parent = null;
 		//_target.parent = null;
 		_target = null;
 
-		_rb.useGravity = true;
+		//_rb.useGravity = true;
 		_rb = null;
 	}
 }

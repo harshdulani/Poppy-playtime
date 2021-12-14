@@ -21,9 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,11 +61,11 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StickmanController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StickmanLimbController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
       </list>
     </option>
@@ -113,20 +113,25 @@
     <MESSAGE value="Added environment, and hand movement, state machine, very barebones, need to iterate a lot" />
     <MESSAGE value="Added proper collision detection and better working to and fro the target" />
     <MESSAGE value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
+    <MESSAGE value="lmao false bug, actually just needed to set a float, state machine works perfectly now. need to add a feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="lmao false bug, actually just needed to set a float, state machine works perfectly now. need to add a feature" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639399164765">
+    <state x="1114" y="410" key="RollbackChangesDialog" timestamp="1639457177650">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639399164765" />
-    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1639398752296">
+    <state x="1114" y="410" key="RollbackChangesDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1639457177650" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639402580194">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1639398752296" />
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1639401545170">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639402580194" />
+    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1639459700853">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1639401545170" />
+    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1639459700853" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1639460325973">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1639460325973" />
   </component>
 </project>

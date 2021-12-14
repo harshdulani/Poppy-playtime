@@ -1492,8 +1492,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171449900}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 34.2497}
-  m_LocalScale: {x: 1.9957, y: 0.15885, z: 76.45768}
+  m_LocalPosition: {x: 0, y: -0, z: 42.7}
+  m_LocalScale: {x: 9, y: 0.15, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -1575,14 +1575,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314268777}
-  m_LocalRotation: {x: 0.06914909, y: -0, z: -0, w: 0.99760634}
-  m_LocalPosition: {x: 0, y: 1.69, z: -4.82}
+  m_LocalRotation: {x: 0.09908426, y: -0, z: -0, w: 0.9950791}
+  m_LocalPosition: {x: 0, y: 3.34, z: -4.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4382468179651468399}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 7.93, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.373, y: 0, z: 0}
 --- !u!114 &1314268781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,6 +1897,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1471947328}
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
+      propertyPath: wrist
+      value: 
+      objectReference: {fileID: 1067047917}
+    - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: ropeEnd
       value: 
       objectReference: {fileID: 1471947328}
@@ -1911,6 +1915,10 @@ PrefabInstance:
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: returnSpeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
+      propertyPath: returnBodyDragForce
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2085500857745018405, guid: 30cc58cfbc6ca254b89f5dbda70922b0, type: 3}
       propertyPath: curve.m_Curve.Array.size
