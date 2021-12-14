@@ -1,12 +1,10 @@
-using Dreamteck.Splines;
 using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
 	[SerializeField] private bool isLeftHand;
-	
-	public Transform palm, wrist, ropeEnd;
-	[SerializeField] private SplineComputer rope;
+
+	public Transform palm, wrist;
 	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce;
 
 	private Rigidbody _rb;
