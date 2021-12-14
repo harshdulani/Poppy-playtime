@@ -20,11 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Poppy.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Poppy.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Rope Black.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Rope Black.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,8 +59,6 @@
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/InputExtensions.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LeftHandController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/WristController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
@@ -63,10 +66,12 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/StickmanLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" />
       </list>
     </option>
   </component>
@@ -114,17 +119,18 @@
     <MESSAGE value="Added proper collision detection and better working to and fro the target" />
     <MESSAGE value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
     <MESSAGE value="lmao false bug, actually just needed to set a float, state machine works perfectly now. need to add a feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="lmao false bug, actually just needed to set a float, state machine works perfectly now. need to add a feature" />
+    <MESSAGE value="Player now pulls ragdoll towards himself" />
+    <option name="LAST_COMMIT_MESSAGE" value="Player now pulls ragdoll towards himself" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1114" y="410" key="RollbackChangesDialog" timestamp="1639457177650">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1114" y="410" key="RollbackChangesDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1639457177650" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639402580194">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1639460426892">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639402580194" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1639460426892" />
     <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1639459700853">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

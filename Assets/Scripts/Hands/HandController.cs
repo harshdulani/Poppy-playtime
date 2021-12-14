@@ -1,10 +1,12 @@
+using Dreamteck.Splines;
 using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
 	[SerializeField] private bool isLeftHand;
 	
-	public Transform palm, wrist;
+	public Transform palm, wrist, ropeEnd;
+	[SerializeField] private SplineComputer rope;
 	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce;
 
 	private Rigidbody _rb;
@@ -14,7 +16,6 @@ public class HandController : MonoBehaviour
 	
 	private void Start()
 	{
-		
 		_ropeEndInitPos = palm.position;
 		_ropeEndInitRot = palm.rotation;
 	}
@@ -25,8 +26,7 @@ public class HandController : MonoBehaviour
 		{
 			if (_isCarryingBody)
 			{
-				_rb.velocity = (wrist.position - _rb.position + Vector3.up * 3f).normalized * (returnBodyDragForce * Time.deltaTime);
-				print(_rb.velocity);
+				_rb.velocity = _bodyDragDirection * (returnBodyDragForce * Time.deltaTime);
 				return;
 			}
 
@@ -71,6 +71,6 @@ public class HandController : MonoBehaviour
 		palm.parent = target;
 		_rb = target.GetComponent<Rigidbody>();
 		
-		_bodyDragDirection = (wrist.position - _rb.position).normalized;
+		_bodyDragDirection = (wrist.position - _rb.position + Vector3.up).normalized;
 	}
 }

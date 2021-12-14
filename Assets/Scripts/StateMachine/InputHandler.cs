@@ -59,8 +59,14 @@ public class InputHandler : MonoBehaviour
 		
 		if(_currentInputState == IdleState || (_currentInputState is InTransitState state && state.GoHome))
 		{
+			var oldState = _currentInputState;
 			_currentInputState = HandleInput();
-			_currentInputState?.OnEnter();
+			
+			if(oldState != _currentInputState)
+			{
+				oldState?.OnExit();
+				_currentInputState?.OnEnter();
+			}
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{

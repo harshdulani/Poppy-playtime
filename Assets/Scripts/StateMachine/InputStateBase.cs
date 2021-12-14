@@ -21,6 +21,7 @@ public class InputStateBase
 
 	public virtual void Execute()
 	{
+		
 	}
 
 	public virtual void FixedExecute() {}
