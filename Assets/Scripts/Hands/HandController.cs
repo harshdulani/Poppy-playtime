@@ -1,19 +1,31 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
 	[SerializeField] private bool isLeftHand;
-
 	public Transform palm, wrist;
-	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce;
+	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce, punchForce;
 
+	private Transform _palmParentInit;
 	private Rigidbody _rb;
 	private Quaternion _ropeEndInitRot, _lastNormal;
 	private Vector3 _ropeEndInitPos, _lastHitPoint, _bodyDragDirection;
 	private bool _isHandMoving, _isCarryingBody;
+
+	private void OnEnable()
+	{
+		GameEvents.only.punch += OnPunch;
+	}
 	
+	private void OnDisable()
+	{
+		GameEvents.only.punch -= OnPunch;
+	}
+
 	private void Start()
 	{
+		_palmParentInit = palm.parent;
 		_ropeEndInitPos = palm.position;
 		_ropeEndInitRot = palm.rotation;
 	}
@@ -54,7 +66,13 @@ public class HandController : MonoBehaviour
 	public void HandReachTarget(Transform other)
 	{
 		if (_isCarryingBody) return;
-		InputHandler.AssignNewState(new OnTargetState(other.transform, _lastHitPoint));
+		if(isLeftHand)
+			InputHandler.AssignNewState(new OnTargetState(other.transform, _lastHitPoint));
+		else
+		{
+			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+			other.GetComponent<RagdollLimbController>().GetPunched((other.position - transform.position).normalized, punchForce);
+		}
 	}
 
 	public void HandReachHome()
@@ -70,5 +88,26 @@ public class HandController : MonoBehaviour
 		_rb = target.GetComponent<Rigidbody>();
 		
 		_bodyDragDirection = (wrist.position - _rb.position + Vector3.up).normalized;
+	}
+
+	public void DeliverPunch(Transform other)
+	{
+		palm.DOMove(other.position - Vector3.back, 1f);
+	}
+
+	private void ResetPalmParent()
+	{
+		if(!isLeftHand) return;
+		
+		palm.parent = _palmParentInit;
+		_rb = null;
+		_isCarryingBody = false;
+	}
+
+	private void OnPunch()
+	{
+		if(!isLeftHand) return;
+
+		ResetPalmParent();
 	}
 }

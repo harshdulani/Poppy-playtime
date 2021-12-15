@@ -13,7 +13,7 @@ public class InputHandler : MonoBehaviour
 	private static readonly DisabledState DisabledState = new DisabledState();
 	
 	//current state holder	
-	private static InputStateBase _currentInputState;
+	private static InputStateBase _leftHandState, _rightHandState;
 	
 	public HandController _leftHand, _rightHand;
 	
@@ -46,9 +46,10 @@ public class InputHandler : MonoBehaviour
 		
 		_cam = Camera.main;
 
-		_ = new InputStateBase(_leftHand);
+		_ = new InputStateBase(_leftHand, _rightHand);
 		_ = new OnTargetState(targetDragForce, _cam);
-		_currentInputState = IdleState;
+		_leftHandState = IdleState;
+		_rightHandState = IdleState;
 	}
 
 	private void Update()
@@ -57,61 +58,128 @@ public class InputHandler : MonoBehaviour
 		
 		if(!_inDisabledState) return;
 		
-		if(_currentInputState == IdleState || (_currentInputState is InTransitState state && state.GoHome))
+		if(_leftHandState is IdleState)
 		{
-			var oldState = _currentInputState;
-			_currentInputState = HandleInput();
+			var oldState = _leftHandState;
+			_leftHandState = HandleInput();
 			
-			if(oldState != _currentInputState)
+			if(oldState != _leftHandState)
 			{
 				oldState?.OnExit();
-				_currentInputState?.OnEnter();
+				_leftHandState?.OnEnter();
 			}
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
-			if(_currentInputState is InTransitState || _currentInputState is OnTargetState) 
-				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
+			if(_leftHandState is InTransitState || _leftHandState is OnTargetState)
+				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, true, _leftHandState is OnTargetState));
 			//on finger up in transit could only be called if you were going there
 		}
+		_leftHandState?.Execute();
 
-		print($"current input state {_currentInputState}");
-		_currentInputState?.Execute();
+		//HandleRhs();
+		HandleRightHand();
 	}
 
 	private void FixedUpdate()
 	{
-		_currentInputState?.FixedExecute();
+		_leftHandState?.FixedExecute();
 	}
 
 	private InputStateBase HandleInput()
 	{
-		if (!InputExtensions.GetFingerHeld()) return _currentInputState;
+		if (!InputExtensions.GetFingerHeld()) return _leftHandState;
 
 		var ray = _cam.ScreenPointToRay(InputExtensions.GetInputPosition());
 		
-		if (!Physics.Raycast(ray, out var hit)) return _currentInputState; //if raycast didn't hit anything
+		if (!Physics.Raycast(ray, out var hit)) return _leftHandState; //if raycast didn't hit anything
 
-		if (!hit.collider.CompareTag("Target")) return _currentInputState; //return fake dest state
-
-		/*
-		if (_currentInputState is OnTargetState)
-		{
-			hand = _rightHand;
-			StartCoroutine(BlockInputTemporarily());
-			return IdleState;
-		}*/
+		if (!hit.collider.CompareTag("Target")) return _leftHandState; //return fake dest state
 
 		return new InTransitState(false, hit);
 	}
 
-	public static void AssignNewState(InputStateBase newState)
+#region OLD RHS
+	private void HandleRhs()
 	{
-		_currentInputState?.OnExit();
-		_currentInputState = newState;
-		_currentInputState?.OnEnter();
+		//go inside only if in transit and going back home
+		
+		if(_rightHandState is IdleState)
+		{
+			if (_leftHandState is IdleState ||
+				_leftHandState is InTransitState stateL && stateL.GoHome && stateL.IsCarryingBody)
+			{
+				if (_rightHandState is IdleState)
+				{
+					var oldState = _rightHandState;
+					_rightHandState = HandleRhsInput();
+					if (oldState != _rightHandState)
+					{
+						oldState.OnExit();
+						_rightHandState?.OnEnter();
+					}
+				}
+			}
+		}
+		
+		_rightHandState?.Execute();
 	}
 
+	private InputStateBase HandleRhsInput()
+	{
+		if (!InputExtensions.GetFingerDown()) return _rightHandState;
+		
+		if (!(_leftHandState is InTransitState state)) return _rightHandState;
+		
+		print(state.Hit.point);
+		Debug.Break();
+		
+		return new InTransitState(false, state.Hit, false);
+	}
+	
+#endregion
+
+	private void HandleRightHand()
+	{
+		if(_rightHandState is WaitingToPunchState)
+		{
+			var oldState = _rightHandState;
+			_rightHandState = HandleRightHandInput();
+			
+			if(oldState != _rightHandState)
+			{
+				oldState?.OnExit();
+				_rightHandState?.OnEnter();
+			}
+		}
+		
+		_rightHandState?.Execute();
+	}
+
+	private InputStateBase HandleRightHandInput()
+	{
+		if (!InputExtensions.GetFingerDown()) return _rightHandState;
+		
+		if (!(_leftHandState is InTransitState state)) return _rightHandState;
+		
+		_rightHand.DeliverPunch(state.Hit.collider.transform);
+		return IdleState;
+	}
+	
+	public static void AssignNewState(InputStateBase newState, bool shouldChangeRhs = false)
+	{
+		if(shouldChangeRhs)
+		{
+			_rightHandState?.OnExit();
+			_rightHandState = newState;
+			_rightHandState?.OnEnter();
+			return;
+		}
+		
+		_leftHandState?.OnExit();
+		_leftHandState = newState;
+		_leftHandState?.OnEnter();
+	}
 	private static void ChangeStateToDisabled()
 	{
 		AssignNewState(DisabledState);

@@ -2,18 +2,25 @@
 
 public class InTransitState : InputStateBase
 {
-	private RaycastHit _hit;
-	public readonly bool GoHome;
+	public RaycastHit Hit;
+	public readonly bool GoHome, IsCarryingBody;
+	private readonly bool _isLeftHand;
 
-	public InTransitState(bool goHome, RaycastHit hit)
+	public InTransitState(bool goHome, RaycastHit hitInfo, bool isLeftHand = true, bool isCarryingBody = false)
 	{
 		GoHome = goHome;
-		_hit = hit;
+		IsCarryingBody = isCarryingBody;
+		_isLeftHand = isLeftHand;
+		
+		Hit = hitInfo;
 	}
 	
 	public override void OnEnter()
 	{
 		IsPersistent = false;
+		
+		if(GoHome)
+			LevelFlowController.only.SlowDownTime();
 	}
 
 	public override void Execute()
@@ -21,8 +28,22 @@ public class InTransitState : InputStateBase
 		base.Execute();
 		
 		if(GoHome)
-			LeftHand.MoveRopeEndTowards(Vector3.zero, Vector3.zero, true);
+			(_isLeftHand ? LeftHand : RightHand).MoveRopeEndTowards(Vector3.zero, Vector3.zero, true);
 		else
-			LeftHand.MoveRopeEndTowards(_hit.point, _hit.normal);
+			(_isLeftHand ? LeftHand : RightHand).MoveRopeEndTowards(Hit.point, Hit.normal);
 	}
+
+	public override void OnExit()
+	{
+		base.OnExit();
+		
+		if(GoHome)
+			LevelFlowController.only.RevertTime();
+	}
+}
+
+public class WaitingToPunchState : InputStateBase
+{
+	private readonly Transform _target;
+	
 }

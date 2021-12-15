@@ -48,8 +48,6 @@ public class OnTargetState : InputStateBase
 		
 		Vector3 mousePositionOffset = _camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _dist)) - _hitPoint;
 		_rb.velocity = (_originalRbPos + mousePositionOffset - _rb.position) * (_dragForce * Time.deltaTime);
-		
-		//_rb.velocity = InputExtensions.GetInputDelta() * (_dragForce * Time.deltaTime) + Vector2.up * Mathf.Lerp(1f,4f, InputExtensions.GetInputViewportPosition().y);
 	}
 
 	public override void OnExit()
@@ -60,7 +58,6 @@ public class OnTargetState : InputStateBase
 		//_target.parent = null;
 		_target = null;
 
-		//_rb.useGravity = true;
 		_rb = null;
 	}
 }
