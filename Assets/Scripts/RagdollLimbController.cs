@@ -14,14 +14,17 @@ public class RagdollLimbController : MonoBehaviour
 
 	public void TellParent()
 	{
-		_parent.GoRagdoll();
+		_parent.HoldInAir();
+		//_parent.GoRagdoll();
 	}
 	
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
-		_rb.AddForce(direction * punchForce, ForceMode.Impulse);
-		
-		//detach left hand from body
-		//assign left hand state to no body go home
+		print("ouch");
+		_parent.GoRagdoll();
+		_rb.AddForce(Vector3.forward * punchForce, ForceMode.Impulse);
 	}
+
+	public Rigidbody AskParentForHook() => _parent.chest;
+	
 }

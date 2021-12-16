@@ -8,6 +8,8 @@ public class HandController : MonoBehaviour
 	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce, punchForce;
 
 	private Animator _anim;
+	private static Animation _parentAnimation;
+	
 	private Transform _palmParentInit;
 	private Rigidbody _rb;
 	private Quaternion _ropeEndInitRot, _lastNormal;
@@ -28,6 +30,7 @@ public class HandController : MonoBehaviour
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
+		_parentAnimation = transform.parent.GetComponent<Animation>();
 		
 		_palmParentInit = palm.parent;
 		_ropeEndInitPos = palm.position;
@@ -40,10 +43,14 @@ public class HandController : MonoBehaviour
 		{
 			if (_isCarryingBody)
 			{
-				_rb.velocity = _bodyDragDirection * (returnBodyDragForce * Time.deltaTime);
+				palm.root.position = 
+					Vector3.MoveTowards(palm.root.position,
+						transform.position + Vector3.down * 1.5f,
+						returnSpeed * Time.deltaTime);
+
 				return;
 			}
-
+			
 			palm.position = 
 				Vector3.MoveTowards(palm.position,
 				_ropeEndInitPos,
@@ -70,8 +77,15 @@ public class HandController : MonoBehaviour
 	public void HandReachTarget(Transform other)
 	{
 		if (_isCarryingBody) return;
+		
 		if(isLeftHand)
+		{
+			if(!InputHandler.Only.CanSwitchToTargetState()) return;
+			
 			InputHandler.AssignNewState(new OnTargetState(other.transform, _lastHitPoint));
+			//palm.DOMove(other.GetComponent<RagdollLimbController>().AskParentForHook().position, 0.5f);
+			palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
+		}
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
@@ -88,7 +102,7 @@ public class HandController : MonoBehaviour
 	{
 		_isCarryingBody = true;
 		
-		palm.parent = target;
+		palm.parent = target.GetComponent<RagdollLimbController>().AskParentForHook().transform;
 		_rb = target.GetComponent<Rigidbody>();
 		
 		_bodyDragDirection = (wrist.position - _rb.position + Vector3.up).normalized;
@@ -96,26 +110,26 @@ public class HandController : MonoBehaviour
 
 	private void StopCarryingBody()
 	{
-		_isCarryingBody = false;
-
-		palm.parent = _palmParentInit;
+		if (!_rb) return;
 		
 		_rb.velocity *= -4f;
 		_rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
-		_rb = null;
+
+		ResetPalmParent();
 	}
 
 	public void DeliverPunch(Transform other)
 	{
 		if (!other) return;
-		
+
+		_parentAnimation.Play();
 		_anim.SetBool(IsPunching, true);
-		Debug.Break();
+		//Debug.Break();
 		//tell left hand to stop pulling
 		
 		InputHandler.Only._leftHand.StopCarryingBody();
 		
-		transform.DOMove(other.position - Vector3.back, 1f);
+		//transform.DOMove(other.position - Vector3.back, 1f);
 	}
 
 	public void StopPunching()

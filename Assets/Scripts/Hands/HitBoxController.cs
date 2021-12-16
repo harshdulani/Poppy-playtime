@@ -8,13 +8,11 @@ public class HitBoxController : MonoBehaviour
 	{
 		if(!other.CompareTag("Target")) return;
 		
-		InputHandler.AssignNewState(InputHandler.Only.ReturnWaitingToPunch(), true);
-		LevelFlowController.only.SlowDownTime();
+		InputHandler.Only._rightHand.DeliverPunch(other.transform);
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		if(!other.CompareTag("Target")) return;
-		LevelFlowController.only.RevertTime();
 	}
 }

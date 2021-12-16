@@ -58,6 +58,7 @@ public class InputHandler : MonoBehaviour
 		
 		if(!_inDisabledState) return;
 		
+		print(_leftHandState);
 		if(_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -78,7 +79,7 @@ public class InputHandler : MonoBehaviour
 		_leftHandState?.Execute();
 
 		//HandleRhs();
-		HandleRightHand();
+		//HandleRightHand();
 	}
 
 	private void FixedUpdate()
@@ -99,9 +100,9 @@ public class InputHandler : MonoBehaviour
 		return new InTransitState(false, hit);
 	}
 
+	/*
 	private void HandleRightHand()
 	{
-		print(_rightHandState);
 		if(_rightHandState is WaitingToPunchState)
 		{
 			var oldState = _rightHandState;
@@ -126,6 +127,7 @@ public class InputHandler : MonoBehaviour
 		_rightHand.DeliverPunch(WaitingToPunchState.Target);
 		return IdleState;
 	}
+	*/
 	
 	public static void AssignNewState(InputStateBase newState, bool shouldChangeRhs = false)
 	{
@@ -146,6 +148,12 @@ public class InputHandler : MonoBehaviour
 		AssignNewState(DisabledState);
 	}
 
+	public bool CanSwitchToTargetState()
+	{
+		if (_leftHandState is InTransitState state && !state.GoHome && !state.IsCarryingBody) return true;
+		return false;
+	}
+	
 	private void OnGameStart() => _tappedToPlay = true;
 
 	private void OnGameOver()
