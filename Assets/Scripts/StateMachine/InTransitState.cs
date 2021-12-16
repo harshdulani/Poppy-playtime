@@ -18,9 +18,6 @@ public class InTransitState : InputStateBase
 	public override void OnEnter()
 	{
 		IsPersistent = false;
-		
-		if(GoHome)
-			LevelFlowController.only.SlowDownTime();
 	}
 
 	public override void Execute()
@@ -36,14 +33,21 @@ public class InTransitState : InputStateBase
 	public override void OnExit()
 	{
 		base.OnExit();
-		
-		if(GoHome)
-			LevelFlowController.only.RevertTime();
 	}
 }
 
 public class WaitingToPunchState : InputStateBase
 {
-	private readonly Transform _target;
-	
+	public static Transform Target;
+
+	public WaitingToPunchState(Transform target)
+	{
+		Target = target;
+	}
+
+	public override void OnEnter()
+	{
+		base.OnEnter();
+		IsPersistent = true;
+	}
 }

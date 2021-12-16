@@ -99,48 +99,9 @@ public class InputHandler : MonoBehaviour
 		return new InTransitState(false, hit);
 	}
 
-#region OLD RHS
-	private void HandleRhs()
-	{
-		//go inside only if in transit and going back home
-		
-		if(_rightHandState is IdleState)
-		{
-			if (_leftHandState is IdleState ||
-				_leftHandState is InTransitState stateL && stateL.GoHome && stateL.IsCarryingBody)
-			{
-				if (_rightHandState is IdleState)
-				{
-					var oldState = _rightHandState;
-					_rightHandState = HandleRhsInput();
-					if (oldState != _rightHandState)
-					{
-						oldState.OnExit();
-						_rightHandState?.OnEnter();
-					}
-				}
-			}
-		}
-		
-		_rightHandState?.Execute();
-	}
-
-	private InputStateBase HandleRhsInput()
-	{
-		if (!InputExtensions.GetFingerDown()) return _rightHandState;
-		
-		if (!(_leftHandState is InTransitState state)) return _rightHandState;
-		
-		print(state.Hit.point);
-		Debug.Break();
-		
-		return new InTransitState(false, state.Hit, false);
-	}
-	
-#endregion
-
 	private void HandleRightHand()
 	{
+		print(_rightHandState);
 		if(_rightHandState is WaitingToPunchState)
 		{
 			var oldState = _rightHandState;
@@ -160,9 +121,9 @@ public class InputHandler : MonoBehaviour
 	{
 		if (!InputExtensions.GetFingerDown()) return _rightHandState;
 		
-		if (!(_leftHandState is InTransitState state)) return _rightHandState;
+		if (!(_leftHandState is InTransitState)) return _rightHandState;
 		
-		_rightHand.DeliverPunch(state.Hit.collider.transform);
+		_rightHand.DeliverPunch(WaitingToPunchState.Target);
 		return IdleState;
 	}
 	
@@ -191,5 +152,10 @@ public class InputHandler : MonoBehaviour
 	{
 		_inDisabledState = false;
 		ChangeStateToDisabled();
+	}
+
+	public InputStateBase ReturnWaitingToPunch()
+	{
+		return new WaitingToPunchState(_leftHand.palm.parent);
 	}
 }

@@ -7,11 +7,13 @@ public class HandController : MonoBehaviour
 	public Transform palm, wrist;
 	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce, punchForce;
 
+	private Animator _anim;
 	private Transform _palmParentInit;
 	private Rigidbody _rb;
 	private Quaternion _ropeEndInitRot, _lastNormal;
 	private Vector3 _ropeEndInitPos, _lastHitPoint, _bodyDragDirection;
 	private bool _isHandMoving, _isCarryingBody;
+	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 
 	private void OnEnable()
 	{
@@ -25,6 +27,8 @@ public class HandController : MonoBehaviour
 
 	private void Start()
 	{
+		_anim = GetComponent<Animator>();
+		
 		_palmParentInit = palm.parent;
 		_ropeEndInitPos = palm.position;
 		_ropeEndInitRot = palm.rotation;
@@ -90,9 +94,33 @@ public class HandController : MonoBehaviour
 		_bodyDragDirection = (wrist.position - _rb.position + Vector3.up).normalized;
 	}
 
+	private void StopCarryingBody()
+	{
+		_isCarryingBody = false;
+
+		palm.parent = _palmParentInit;
+		
+		_rb.velocity *= -4f;
+		_rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+		_rb = null;
+	}
+
 	public void DeliverPunch(Transform other)
 	{
-		palm.DOMove(other.position - Vector3.back, 1f);
+		if (!other) return;
+		
+		_anim.SetBool(IsPunching, true);
+		Debug.Break();
+		//tell left hand to stop pulling
+		
+		InputHandler.Only._leftHand.StopCarryingBody();
+		
+		transform.DOMove(other.position - Vector3.back, 1f);
+	}
+
+	public void StopPunching()
+	{
+		_anim.SetBool(IsPunching, false);
 	}
 
 	private void ResetPalmParent()
