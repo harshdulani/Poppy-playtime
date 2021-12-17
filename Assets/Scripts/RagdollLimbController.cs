@@ -15,7 +15,6 @@ public class RagdollLimbController : MonoBehaviour
 	public void TellParent()
 	{
 		_parent.HoldInAir();
-		//_parent.GoRagdoll();
 	}
 	
 	public void GetPunched(Vector3 direction, float punchForce)

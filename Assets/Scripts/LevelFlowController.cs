@@ -5,7 +5,8 @@ public class LevelFlowController : MonoBehaviour
 {
 	public static LevelFlowController only;
 
-	[SerializeField] private float defaultTimeScale = 1, slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
+	[SerializeField] private float slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
+	private float _defaultTimeScale = 1;
 
 	private void OnEnable()
 	{
@@ -27,10 +28,15 @@ public class LevelFlowController : MonoBehaviour
 
 	private void Start()
 	{
-		defaultTimeScale = Time.timeScale;
-		slowedTimeScale *= defaultTimeScale;
+		_defaultTimeScale = Time.timeScale;
+		slowedTimeScale *= _defaultTimeScale;
 	}
-	
+
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.T)) print(Time.timeScale);
+	}
+
 	private void SlowDownTime()
 	{
 		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale, timeRampDownDuration);
@@ -38,7 +44,7 @@ public class LevelFlowController : MonoBehaviour
 
 	private void RevertTime()
 	{
-		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, defaultTimeScale, timeRampUpDuration);
+		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
 	}
 
 	private void OnEnterHitBox()

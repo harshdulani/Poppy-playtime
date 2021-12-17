@@ -17,6 +17,7 @@ public class InputHandler : MonoBehaviour
 
 	public HandController _leftHand, _rightHand;
 
+	private Transform _lastPickedTarget;
 	private Camera _cam;
 
 	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled;
@@ -106,6 +107,7 @@ public class InputHandler : MonoBehaviour
 
 		if (!hit.collider.CompareTag("Target")) return _leftHandState; //return fake dest state
 
+		_lastPickedTarget = hit.transform;
 		return new InTransitState(false, hit);
 	}
 
@@ -126,6 +128,8 @@ public class InputHandler : MonoBehaviour
 		if (_leftHandState is InTransitState state && !state.GoHome && !state.IsCarryingBody) return true;
 		return false;
 	}
+
+	public Transform GetCurrentTransform() => _lastPickedTarget;
 
 	private void OnGameStart() => _tappedToPlay = true;
 

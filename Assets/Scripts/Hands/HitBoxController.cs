@@ -20,6 +20,7 @@ public class HitBoxController : MonoBehaviour
 		if (_inHitBox) return;
 		
 		GameEvents.only.InvokeEnterHitBox();
+		print("Replace with private vars and Action");
 		InputHandler.Only._rightHand.WaitForPunch(other.transform, transform.position.z);
 		_inHitBox = true;
 	}
@@ -31,9 +32,6 @@ public class HitBoxController : MonoBehaviour
 		_targets.Remove(other);
 		
 		if (_targets.Count == 0)
-			//Invoke(nameof(AllowEnteringHitBox), 1.5f);
 			_inHitBox = false;
 	}
-
-	private void AllowEnteringHitBox() => _inHitBox = false;
 }

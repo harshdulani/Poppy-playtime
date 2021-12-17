@@ -25,9 +25,9 @@ public class InTransitState : InputStateBase
 		base.Execute();
 		
 		if(GoHome)
-			(_isLeftHand ? LeftHand : RightHand).MoveRopeEndTowards(Vector3.zero, Vector3.zero, true);
+			LeftHand.MoveRopeEndTowards(EmptyHit, true);
 		else
-			(_isLeftHand ? LeftHand : RightHand).MoveRopeEndTowards(Hit.point, Hit.normal);
+			LeftHand.MoveRopeEndTowards(Hit);
 	}
 
 	public override void OnExit()
