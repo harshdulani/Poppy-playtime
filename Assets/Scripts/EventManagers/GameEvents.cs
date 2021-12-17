@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameEvents : MonoBehaviour
 {
-#region Singleton
+	#region Singleton
 	
 	public static GameEvents only;
 
@@ -14,11 +14,10 @@ public class GameEvents : MonoBehaviour
 	}
 
 #endregion
-	
-	public Action punch;
 
-	public void InvokePunch()
-	{
-		punch?.Invoke();
-	}
+	public Action enterHitBox, punchHit;
+
+	public void InvokeEnterHitBox() => enterHitBox?.Invoke();
+
+	public void InvokePunchHit() => punchHit?.Invoke();
 }

@@ -8,6 +8,7 @@ public class PalmController : MonoBehaviour
 	{
 		if(!other.CompareTag("Target")) return;
 		
+		//play sound
 		myHand.HandReachTarget(other.transform);
 	}
 }

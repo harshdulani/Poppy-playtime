@@ -17,7 +17,7 @@ public class RagdollController : MonoBehaviour
 	{
 		_anim.SetBool(IsFlying, true);
 		foreach (var rb in rigidbodies)
-			rb.isKinematic = false;
+			rb.isKinematic = true;
 	}
 
 	public void GoRagdoll()

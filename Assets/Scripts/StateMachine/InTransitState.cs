@@ -35,19 +35,3 @@ public class InTransitState : InputStateBase
 		base.OnExit();
 	}
 }
-
-public class WaitingToPunchState : InputStateBase
-{
-	public static Transform Target;
-
-	public WaitingToPunchState(Transform target)
-	{
-		Target = target;
-	}
-
-	public override void OnEnter()
-	{
-		base.OnEnter();
-		IsPersistent = true;
-	}
-}

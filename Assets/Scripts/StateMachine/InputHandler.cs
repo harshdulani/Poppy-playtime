@@ -11,22 +11,26 @@ public class InputHandler : MonoBehaviour
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
 	private static readonly DisabledState DisabledState = new DisabledState();
-	
+
 	//current state holder	
-	private static InputStateBase _leftHandState, _rightHandState;
-	
+	private static InputStateBase _leftHandState;
+
 	public HandController _leftHand, _rightHand;
-	
+
 	private Camera _cam;
 
-	private bool _tappedToPlay, _inDisabledState = true;
+	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled;
 
 	private void OnEnable()
 	{
+		GameEvents.only.enterHitBox += OnEnterHitBox;
+		GameEvents.only.punchHit += OnPunchHit;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.enterHitBox -= OnEnterHitBox;
+		GameEvents.only.punchHit -= OnPunchHit;
 	}
 
 	private void Awake()
@@ -37,34 +41,40 @@ public class InputHandler : MonoBehaviour
 
 	private void Start()
 	{
-		if (testingUsingTouch) InputExtensions.IsUsingTouch = true; 
-		else InputExtensions.IsUsingTouch = Application.platform != RuntimePlatform.WindowsEditor &&
-											(Application.platform == RuntimePlatform.Android || 
-											 Application.platform == RuntimePlatform.IPhonePlayer);
-		
+		if (testingUsingTouch) InputExtensions.IsUsingTouch = true;
+		else
+			InputExtensions.IsUsingTouch = Application.platform != RuntimePlatform.WindowsEditor &&
+										   (Application.platform == RuntimePlatform.Android ||
+											Application.platform == RuntimePlatform.IPhonePlayer);
+
 		InputExtensions.TouchInputDivisor = GameExtensions.RemapClamped(1920, 2400, 30, 20, Screen.height);
-		
+
 		_cam = Camera.main;
 
 		_ = new InputStateBase(_leftHand, _rightHand);
 		_ = new OnTargetState(targetDragForce, _cam);
 		_leftHandState = IdleState;
-		_rightHandState = IdleState;
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		
-		if(!_inDisabledState) return;
-		
-		print(_leftHandState);
-		if(_leftHandState is IdleState)
+
+		if (_inDisabledState)
+		{
+			if(!_isTemporarilyDisabled) return;
+			if(!InputExtensions.GetFingerDown()) return;
+			
+			_rightHand.GivePunch();
+			return;
+		}
+
+		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
 			_leftHandState = HandleInput();
-			
-			if(oldState != _leftHandState)
+
+			if (oldState != _leftHandState)
 			{
 				oldState?.OnExit();
 				_leftHandState?.OnEnter();
@@ -72,14 +82,13 @@ public class InputHandler : MonoBehaviour
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
-			if(_leftHandState is InTransitState || _leftHandState is OnTargetState)
-				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, true, _leftHandState is OnTargetState));
+			if (_leftHandState is InTransitState || _leftHandState is OnTargetState)
+				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, true,
+					_leftHandState is OnTargetState));
 			//on finger up in transit could only be called if you were going there
 		}
-		_leftHandState?.Execute();
 
-		//HandleRhs();
-		//HandleRightHand();
+		_leftHandState?.Execute();
 	}
 
 	private void FixedUpdate()
@@ -92,7 +101,7 @@ public class InputHandler : MonoBehaviour
 		if (!InputExtensions.GetFingerHeld()) return _leftHandState;
 
 		var ray = _cam.ScreenPointToRay(InputExtensions.GetInputPosition());
-		
+
 		if (!Physics.Raycast(ray, out var hit)) return _leftHandState; //if raycast didn't hit anything
 
 		if (!hit.collider.CompareTag("Target")) return _leftHandState; //return fake dest state
@@ -100,49 +109,13 @@ public class InputHandler : MonoBehaviour
 		return new InTransitState(false, hit);
 	}
 
-	/*
-	private void HandleRightHand()
+	public static void AssignNewState(InputStateBase newState)
 	{
-		if(_rightHandState is WaitingToPunchState)
-		{
-			var oldState = _rightHandState;
-			_rightHandState = HandleRightHandInput();
-			
-			if(oldState != _rightHandState)
-			{
-				oldState?.OnExit();
-				_rightHandState?.OnEnter();
-			}
-		}
-		
-		_rightHandState?.Execute();
-	}
-
-	private InputStateBase HandleRightHandInput()
-	{
-		if (!InputExtensions.GetFingerDown()) return _rightHandState;
-		
-		if (!(_leftHandState is InTransitState)) return _rightHandState;
-		
-		_rightHand.DeliverPunch(WaitingToPunchState.Target);
-		return IdleState;
-	}
-	*/
-	
-	public static void AssignNewState(InputStateBase newState, bool shouldChangeRhs = false)
-	{
-		if(shouldChangeRhs)
-		{
-			_rightHandState?.OnExit();
-			_rightHandState = newState;
-			_rightHandState?.OnEnter();
-			return;
-		}
-		
 		_leftHandState?.OnExit();
 		_leftHandState = newState;
 		_leftHandState?.OnEnter();
 	}
+
 	private static void ChangeStateToDisabled()
 	{
 		AssignNewState(DisabledState);
@@ -153,7 +126,7 @@ public class InputHandler : MonoBehaviour
 		if (_leftHandState is InTransitState state && !state.GoHome && !state.IsCarryingBody) return true;
 		return false;
 	}
-	
+
 	private void OnGameStart() => _tappedToPlay = true;
 
 	private void OnGameOver()
@@ -162,8 +135,20 @@ public class InputHandler : MonoBehaviour
 		ChangeStateToDisabled();
 	}
 
-	public InputStateBase ReturnWaitingToPunch()
+	private void OnEnterHitBox()
 	{
-		return new WaitingToPunchState(_leftHand.palm.parent);
+		//also level flow controller knows to slow down and fasten time up using this event
+		AssignNewState(DisabledState);
+		_isTemporarilyDisabled = true;
+		_inDisabledState = true;
+	}
+
+	private void OnPunchHit()
+	{
+		AssignNewState(IdleState);
+		
+		_isTemporarilyDisabled = false;
+		_inDisabledState = false;
+		
 	}
 }

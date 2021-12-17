@@ -5,32 +5,37 @@ public class HandController : MonoBehaviour
 {
 	[SerializeField] private bool isLeftHand;
 	public Transform palm, wrist;
-	[SerializeField] private float moveSpeed, returnSpeed, returnBodyDragForce, punchForce;
+	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
 
 	private Animator _anim;
-	private static Animation _parentAnimation;
+	private static Animation _armAnimation;
 	
 	private Transform _palmParentInit;
-	private Rigidbody _rb;
 	private Quaternion _ropeEndInitRot, _lastNormal;
-	private Vector3 _ropeEndInitPos, _lastHitPoint, _bodyDragDirection;
+	private Vector3 _ropeEndInitPos, _lastHitPoint;
 	private bool _isHandMoving, _isCarryingBody;
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 
 	private void OnEnable()
 	{
-		GameEvents.only.punch += OnPunch;
+		if(!isLeftHand)
+		{
+			GameEvents.only.enterHitBox += OnEnterHitBox;
+		}
 	}
 	
 	private void OnDisable()
 	{
-		GameEvents.only.punch -= OnPunch;
+		if (!isLeftHand)
+		{
+			GameEvents.only.enterHitBox -= OnEnterHitBox;
+		}
 	}
 
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
-		_parentAnimation = transform.parent.GetComponent<Animation>();
+		_armAnimation = transform.parent.GetComponent<Animation>();
 		
 		_palmParentInit = palm.parent;
 		_ropeEndInitPos = palm.position;
@@ -83,7 +88,6 @@ public class HandController : MonoBehaviour
 			if(!InputHandler.Only.CanSwitchToTargetState()) return;
 			
 			InputHandler.AssignNewState(new OnTargetState(other.transform, _lastHitPoint));
-			//palm.DOMove(other.GetComponent<RagdollLimbController>().AskParentForHook().position, 0.5f);
 			palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
 		}
 		else
@@ -103,35 +107,29 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = true;
 		
 		palm.parent = target.GetComponent<RagdollLimbController>().AskParentForHook().transform;
-		_rb = target.GetComponent<Rigidbody>();
-		
-		_bodyDragDirection = (wrist.position - _rb.position + Vector3.up).normalized;
 	}
 
 	private void StopCarryingBody()
 	{
-		if (!_rb) return;
-		
-		_rb.velocity *= -4f;
-		_rb.AddForce(Vector3.up * 10f, ForceMode.Impulse);
-
 		ResetPalmParent();
 	}
 
-	public void DeliverPunch(Transform other)
+	public void WaitForPunch(Transform other, float zPos)
 	{
 		if (!other) return;
-
-		_parentAnimation.Play();
+		
+		var root = other.root;
+		root.DOMove(new Vector3(0f, 1f, zPos), .2f);
 		_anim.SetBool(IsPunching, true);
-		//Debug.Break();
-		//tell left hand to stop pulling
 		
 		InputHandler.Only._leftHand.StopCarryingBody();
-		
-		//transform.DOMove(other.position - Vector3.back, 1f);
 	}
 
+	public void GivePunch()
+	{
+		_armAnimation.Play();
+	}
+	
 	public void StopPunching()
 	{
 		_anim.SetBool(IsPunching, false);
@@ -142,11 +140,12 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) return;
 		
 		palm.parent = _palmParentInit;
-		_rb = null;
+		palm.DOMove(_ropeEndInitPos, 0.2f);
+		palm.DORotateQuaternion(_ropeEndInitRot, 0.2f);
 		_isCarryingBody = false;
 	}
 
-	private void OnPunch()
+	private void OnEnterHitBox()
 	{
 		if(!isLeftHand) return;
 
