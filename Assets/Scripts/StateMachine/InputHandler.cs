@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
 	private static readonly DisabledState DisabledState = new DisabledState();
+	private static AimingState _aimingState;
 
 	//current state holder	
 	private static InputStateBase _leftHandState;
@@ -18,7 +19,6 @@ public class InputHandler : MonoBehaviour
 	private HandController _leftHand, _rightHand;
 
 	private Transform _lastPickedTarget;
-	private Camera _cam;
 
 	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled;
 
@@ -50,17 +50,17 @@ public class InputHandler : MonoBehaviour
 
 		InputExtensions.TouchInputDivisor = GameExtensions.RemapClamped(1920, 2400, 30, 20, Screen.height);
 
-		_cam = Camera.main;
-
 		foreach (var hand in GameObject.FindGameObjectsWithTag("Hand"))
 		{
 			var ctrl = hand.GetComponent<HandController>();
 			if (ctrl.isLeftHand) _leftHand = ctrl;
 			else _rightHand = ctrl;
 		}
-		
-		_ = new InputStateBase(_leftHand);
-		_ = new OnTargetState(targetDragForce, _cam);
+
+		var cam = Camera.main;
+		_ = new InputStateBase(_leftHand, cam);
+		_ = new OnTargetState(targetDragForce);
+		_aimingState = new AimingState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
 	}
 
@@ -90,10 +90,11 @@ public class InputHandler : MonoBehaviour
 		}
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
-			if (_leftHandState is InTransitState || _leftHandState is OnTargetState)
+			if (_leftHandState is AimingState)
+				_leftHandState.OnExit();
+			else if (_leftHandState is InTransitState || _leftHandState is OnTargetState)
 				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 					_leftHandState is OnTargetState));
-			//on finger up in transit could only be called if you were going there
 		}
 
 		_leftHandState?.Execute();
@@ -108,17 +109,7 @@ public class InputHandler : MonoBehaviour
 	{
 		if (!InputExtensions.GetFingerHeld()) return _leftHandState;
 
-		var ray = _cam.ScreenPointToRay(InputExtensions.GetInputPosition());
-
-		if (!Physics.Raycast(ray, out var hit)) return _leftHandState; //if raycast didn't hit anything
-
-		if (!hit.collider.CompareTag("Target")) return _leftHandState; //return fake dest state
-
-		if (hit.collider.transform.root.TryGetComponent(out RagdollController rag))
-			if (rag.isRagdoll) return _leftHandState;
-		
-		_lastPickedTarget = hit.transform;
-		return new InTransitState(false, hit);
+		return _aimingState;
 	}
 
 	public static void AssignNewState(InputStateBase newState)
@@ -145,6 +136,7 @@ public class InputHandler : MonoBehaviour
 	}
 	
 	public Transform GetCurrentTransform() => _lastPickedTarget;
+	public void SetCurrentTransform(Transform newT) => _lastPickedTarget = newT;
 
 	private void OnGameStart() => _tappedToPlay = true;
 

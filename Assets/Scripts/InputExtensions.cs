@@ -77,7 +77,6 @@ public static class InputExtensions
 		if (Input.touchCount == 0) return false;
 			
 		return Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(0).phase == TouchPhase.Canceled;
-
 	}
 	
 	/// <summary>
@@ -91,5 +90,10 @@ public static class InputExtensions
 		if (Input.touchCount == 0) return false;
 		
 		return Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary;
+	}
+
+	public static Vector3 GetCenterOfScreen()
+	{
+		return new Vector3(Screen.width / 2f, Screen.height / 2f);
 	}
 }

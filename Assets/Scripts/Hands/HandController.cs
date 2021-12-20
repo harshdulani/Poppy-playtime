@@ -195,4 +195,9 @@ public class HandController : MonoBehaviour
 
 		ResetPalmParent();
 	}
+
+	public AimController GetAimController()
+	{
+		return transform.root.GetComponent<AimController>();
+	}
 }
