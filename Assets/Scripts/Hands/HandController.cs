@@ -1,26 +1,27 @@
 using DG.Tweening;
 using UnityEngine;
+
 public class HandController : MonoBehaviour
 {
-	private static HandController _left, _right;
-	
 	public bool isLeftHand;
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
 
 	private Animator _anim;
+	private static RopeController _rope;
 	private static Animation _armAnimation;
 
-	[HideInInspector] public bool isCarryingRagdoll;
+	private static bool _isCarryingRagdoll;
+	private static bool _isCarryingBody;
 	
 	private Transform _palmParentInit;
 	private Quaternion _ropeEndInitRot, _lastNormal;
 	private Vector3 _ropeEndInitPos, _lastHitPoint;
-	private bool _isHandMoving, _isCarryingBody;
+	private bool _isHandMoving;
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	
 	private static Vector3 _targetInitPos;
-	private static bool _initPosSet = false;
+	private static bool _initPosSet;
 
 	private void OnEnable()
 	{
@@ -37,26 +38,14 @@ public class HandController : MonoBehaviour
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		}
 	}
-
-	private void Awake()
-	{
-		if ((_left && isLeftHand) || (_right && !isLeftHand))
-		{
-			Destroy(gameObject);
-		}
-		
-		if(!_left)
-			if (isLeftHand)
-				_left = this;
-		
-		if(!_right)
-			if (!isLeftHand)
-				_right = this;
-	}
-
+	
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
+		if(!_rope)
+			if(TryGetComponent(out RopeController rope))
+				_rope = rope;
+		
 		_armAnimation = transform.parent.GetComponent<Animation>();
 		
 		_palmParentInit = palm.parent;
@@ -72,7 +61,7 @@ public class HandController : MonoBehaviour
 			{
 				palm.root.position = 
 					Vector3.MoveTowards(palm.root.position,
-						transform.position + (_left.isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
+						transform.position + (_isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
 						returnSpeed * Time.deltaTime);
 
 				return;
@@ -106,6 +95,8 @@ public class HandController : MonoBehaviour
 				Quaternion.Lerp(palm.rotation, _lastNormal, moveSpeed * 1.5f * Time.deltaTime);
 		}
 	}
+	
+	public void UpdateRope() => _rope.UpdateRope();
 
 	public void HandReachTarget(Transform other)
 	{
@@ -120,7 +111,7 @@ public class HandController : MonoBehaviour
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-			if(_left.isCarryingRagdoll)
+			if(_isCarryingRagdoll)
 				other.GetComponent<RagdollLimbController>().GetPunched((other.position - transform.position).normalized, punchForce);
 			else
 			{
@@ -143,12 +134,12 @@ public class HandController : MonoBehaviour
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			palm.parent = raghu.AskParentForHook().transform;
-			_left.isCarryingRagdoll = true;
+			_isCarryingRagdoll = true;
 		}
 		else
 		{
 			palm.parent = target.transform;
-			_left.isCarryingRagdoll = false;
+			_isCarryingRagdoll = false;
 		}
 	}
 
@@ -162,8 +153,12 @@ public class HandController : MonoBehaviour
 		if (!other) return;
 		
 		var root = other.root;
-		root.DOMove(new Vector3(0f,  _left.isCarryingRagdoll ? 1f : 3f, zPos + 0.5f * (_left.isCarryingRagdoll ? 1f : -1f)), .2f);
+		root.DOMove(new Vector3(
+			0f,
+			_isCarryingRagdoll ? 1f : 3f,
+			zPos + 0.5f * (_isCarryingRagdoll ? 1f : -1f)), .2f);
 		_anim.SetBool(IsPunching, true);
+		_rope.ReturnHome();
 		
 		InputHandler.Only.StopCarryingBody();
 	}
