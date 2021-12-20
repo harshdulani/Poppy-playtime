@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,16 @@ public class HitBoxController : MonoBehaviour
 	private bool _inHitBox;
 	
 	private bool _canRegisterEntry = true;
+
+	private void OnEnable()
+	{
+		GameEvents.only.punchHit += OnPunchHit;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.punchHit -= OnPunchHit;
+	}
 
 	private void Start()
 	{
@@ -27,7 +38,6 @@ public class HitBoxController : MonoBehaviour
 		InputHandler.Only.WaitForPunch(other.transform, transform.position.z);
 		_inHitBox = true;
 		_canRegisterEntry = false;
-		Invoke(nameof(ResetRegisterable), 1f);
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -43,5 +53,10 @@ public class HitBoxController : MonoBehaviour
 	private void ResetRegisterable()
 	{
 		_canRegisterEntry = true;
+	}
+	
+	private void OnPunchHit()
+	{
+		Invoke(nameof(ResetRegisterable), 1f);
 	}
 }

@@ -5,7 +5,7 @@ public class RagdollController : MonoBehaviour
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	private Animator _anim;
-	private bool _isRagdoll;
+	public bool isRagdoll;
 	
 	private static readonly int IsFlying = Animator.StringToHash("isFlying");
 
@@ -21,14 +21,17 @@ public class RagdollController : MonoBehaviour
 			rb.isKinematic = true;
 	}
 
-	public void GoRagdoll()
+	public void GoRagdoll(Vector3 direction)
 	{
-		if(_isRagdoll) return;
+		if(isRagdoll) return;
 		
 		_anim.enabled = false;
-		_isRagdoll = true;
+		isRagdoll = true;
 
 		foreach (var rb in rigidbodies)
+		{
 			rb.isKinematic = false;
+			rb.AddForce(direction * 10f, ForceMode.Impulse);
+		}
 	}
 }

@@ -19,11 +19,9 @@ public class RagdollLimbController : MonoBehaviour
 	
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
-		print("ouch, not using incoming direction");
-		_parent.GoRagdoll();
+		_parent.GoRagdoll(direction);
 		_rb.AddForce(Vector3.forward * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
-	
 }

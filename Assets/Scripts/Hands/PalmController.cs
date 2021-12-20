@@ -33,7 +33,6 @@ public class PalmController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		print(InputHandler.Only.GetCurrentTransform());
 		myHand.HandReachTarget(InputHandler.Only.GetCurrentTransform());
 		
 		Invoke(nameof(EnablePunching), punchWaitTime);

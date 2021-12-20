@@ -13,7 +13,7 @@ public class BarrelController : MonoBehaviour
 	private Rigidbody _rb;
 	private Collider _collider;
 	private Vector3 _previousPerlin, _previousPerlinRot;
-	private bool _inHitBox;
+	private bool _inHitBox, _hasBeenPickedUp;
 
 	private void OnEnable()
 	{
@@ -59,7 +59,7 @@ public class BarrelController : MonoBehaviour
 		
 		if(!other.transform.root.CompareTag("Target")) return;
 		
-		other.transform.root.GetComponent<RagdollController>().GoRagdoll();
+		other.transform.root.GetComponent<RagdollController>().GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}
 
 	private void Explode()

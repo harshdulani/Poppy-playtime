@@ -2,8 +2,10 @@ using DG.Tweening;
 using UnityEngine;
 public class HandController : MonoBehaviour
 {
+	private static HandController _left, _right;
+	
 	public bool isLeftHand;
-	public Transform palm, wrist;
+	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
 
 	private Animator _anim;
@@ -36,6 +38,22 @@ public class HandController : MonoBehaviour
 		}
 	}
 
+	private void Awake()
+	{
+		if ((_left && isLeftHand) || (_right && !isLeftHand))
+		{
+			Destroy(gameObject);
+		}
+		
+		if(!_left)
+			if (isLeftHand)
+				_left = this;
+		
+		if(!_right)
+			if (!isLeftHand)
+				_right = this;
+	}
+
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
@@ -54,7 +72,7 @@ public class HandController : MonoBehaviour
 			{
 				palm.root.position = 
 					Vector3.MoveTowards(palm.root.position,
-						transform.position + (isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
+						transform.position + (_left.isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
 						returnSpeed * Time.deltaTime);
 
 				return;
@@ -102,7 +120,7 @@ public class HandController : MonoBehaviour
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-			if(isCarryingRagdoll)
+			if(_left.isCarryingRagdoll)
 				other.GetComponent<RagdollLimbController>().GetPunched((other.position - transform.position).normalized, punchForce);
 			else
 			{
@@ -125,13 +143,12 @@ public class HandController : MonoBehaviour
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			palm.parent = raghu.AskParentForHook().transform;
-			isCarryingRagdoll = true;
+			_left.isCarryingRagdoll = true;
 		}
 		else
 		{
-			print(target + " doesnt have ragdoll limb");		
 			palm.parent = target.transform;
-			isCarryingRagdoll = false;
+			_left.isCarryingRagdoll = false;
 		}
 	}
 
@@ -145,8 +162,7 @@ public class HandController : MonoBehaviour
 		if (!other) return;
 		
 		var root = other.root;
-		print(isCarryingRagdoll);
-		root.DOMove(new Vector3(0f,  isCarryingRagdoll ? 1f : 3f, zPos + 0.5f), .2f);
+		root.DOMove(new Vector3(0f,  _left.isCarryingRagdoll ? 1f : 3f, zPos + 0.5f), .2f);
 		_anim.SetBool(IsPunching, true);
 		
 		InputHandler.Only.StopCarryingBody();

@@ -114,6 +114,11 @@ public class InputHandler : MonoBehaviour
 
 		if (!hit.collider.CompareTag("Target")) return _leftHandState; //return fake dest state
 
+		if (hit.collider.transform.root.TryGetComponent(out RagdollController rag))
+		{
+			if (rag.isRagdoll) return _leftHandState;
+		}
+		
 		_lastPickedTarget = hit.transform;
 		return new InTransitState(false, hit);
 	}
