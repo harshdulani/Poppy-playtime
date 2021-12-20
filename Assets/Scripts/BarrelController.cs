@@ -55,7 +55,7 @@ public class BarrelController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		Explode();
+		Invoke(nameof(Explode), .2f);
 		
 		if(!other.transform.root.CompareTag("Target")) return;
 		

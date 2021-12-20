@@ -162,7 +162,7 @@ public class HandController : MonoBehaviour
 		if (!other) return;
 		
 		var root = other.root;
-		root.DOMove(new Vector3(0f,  _left.isCarryingRagdoll ? 1f : 3f, zPos + 0.5f), .2f);
+		root.DOMove(new Vector3(0f,  _left.isCarryingRagdoll ? 1f : 3f, zPos + 0.5f * (_left.isCarryingRagdoll ? 1f : -1f)), .2f);
 		_anim.SetBool(IsPunching, true);
 		
 		InputHandler.Only.StopCarryingBody();

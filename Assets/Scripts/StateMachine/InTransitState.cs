@@ -21,7 +21,7 @@ public class InTransitState : InputStateBase
 	public override void Execute()
 	{
 		base.Execute();
-
+		
 		if(GoHome)
 			LeftHand.MoveRopeEndTowards(EmptyHit, true);
 		else
