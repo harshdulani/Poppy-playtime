@@ -5,6 +5,8 @@ public class HitBoxController : MonoBehaviour
 {
 	private List<Collider> _targets;
 	private bool _inHitBox;
+	
+	private bool _canRegisterEntry = true;
 
 	private void Start()
 	{
@@ -13,16 +15,19 @@ public class HitBoxController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if(!_canRegisterEntry) return;
+		
 		if(!other.CompareTag("Target")) return;
 		
 		_targets.Add(other);
-
+		
 		if (_inHitBox) return;
 		
-		GameEvents.only.InvokeEnterHitBox();
-		print("Replace with private vars and Action");
-		InputHandler.Only._rightHand.WaitForPunch(other.transform, transform.position.z);
+		GameEvents.only.InvokeEnterHitBox(other.transform);
+		InputHandler.Only.WaitForPunch(other.transform, transform.position.z);
 		_inHitBox = true;
+		_canRegisterEntry = false;
+		Invoke(nameof(ResetRegisterable), 1f);
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -33,5 +38,10 @@ public class HitBoxController : MonoBehaviour
 		
 		if (_targets.Count == 0)
 			_inHitBox = false;
+	}
+
+	private void ResetRegisterable()
+	{
+		_canRegisterEntry = true;
 	}
 }

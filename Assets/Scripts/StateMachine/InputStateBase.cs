@@ -3,17 +3,16 @@ using UnityEngine;
 public class InputStateBase
 {
 	public static bool IsPersistent;
-	protected static HandController LeftHand, RightHand;
+	protected static HandController LeftHand;
 
 	public static RaycastHit EmptyHit = new RaycastHit();
 	private static float _decreaseMultiplier;
 
 	protected InputStateBase() { }
 
-	public InputStateBase(HandController leftHand, HandController rightHand)
+	public InputStateBase(HandController leftHand)
 	{
 		LeftHand = leftHand;
-		RightHand = rightHand;
 		
 		EmptyHit.point = Vector3.negativeInfinity;
 	}

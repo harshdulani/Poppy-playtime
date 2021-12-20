@@ -51,7 +51,6 @@ public class OnTargetState : InputStateBase
 		base.OnExit();
 		
 		_target = null;
-
 		_rb = null;
 	}
 }

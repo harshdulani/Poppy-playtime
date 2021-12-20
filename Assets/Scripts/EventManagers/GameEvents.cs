@@ -13,11 +13,12 @@ public class GameEvents : MonoBehaviour
 		else only = this;
 	}
 
-#endregion
+	#endregion
 
-	public Action enterHitBox, punchHit;
+	public Action<Transform> enterHitBox;
+	public Action punchHit;
 
-	public void InvokeEnterHitBox() => enterHitBox?.Invoke();
+	public void InvokeEnterHitBox(Transform target) => enterHitBox?.Invoke(target);
 
 	public void InvokePunchHit() => punchHit?.Invoke();
 }

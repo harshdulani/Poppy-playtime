@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
 		_normalFov = _me.fieldOfView;
 	}
 
-	private void OnEnterHitBox()
+	private void OnEnterHitBox(Transform target)
 	{
 		DOTween.To(() => _me.fieldOfView, value => _me.fieldOfView = value, actionFov, zoomDuration);
 	}

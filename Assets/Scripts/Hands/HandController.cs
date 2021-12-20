@@ -129,12 +129,13 @@ public class HandController : MonoBehaviour
 		}
 		else
 		{
+			print(target + " doesnt have ragdoll limb");		
 			palm.parent = target.transform;
 			isCarryingRagdoll = false;
 		}
 	}
 
-	private void StopCarryingBody()
+	public void StopCarryingBody()
 	{
 		ResetPalmParent();
 	}
@@ -144,11 +145,11 @@ public class HandController : MonoBehaviour
 		if (!other) return;
 		
 		var root = other.root;
-		
+		print(isCarryingRagdoll);
 		root.DOMove(new Vector3(0f,  isCarryingRagdoll ? 1f : 3f, zPos + 0.5f), .2f);
 		_anim.SetBool(IsPunching, true);
 		
-		InputHandler.Only._leftHand.StopCarryingBody();
+		InputHandler.Only.StopCarryingBody();
 	}
 
 	public void GivePunch()
@@ -177,7 +178,7 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = false;
 	}
 
-	private void OnEnterHitBox()
+	private void OnEnterHitBox(Transform target)
 	{
 		if(!isLeftHand) return;
 

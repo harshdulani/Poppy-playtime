@@ -3,13 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BarrelController : MonoBehaviour
-{
+{	
+	[SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;
-	[SerializeField] private float explosionForce;
-	
+	[SerializeField] private float magnitude;
+	[SerializeField] private float rotationMagnitude;
+
 	private Rigidbody _rb;
 	private Collider _collider;
+	private Vector3 _previousPerlin, _previousPerlinRot;
+	private bool _inHitBox;
+
+	private void OnEnable()
+	{
+		GameEvents.only.enterHitBox += OnEnterHitBox;
+		GameEvents.only.punchHit += OnPunchHit;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.enterHitBox -= OnEnterHitBox;
+		GameEvents.only.punchHit -= OnPunchHit;
+	}
 	
 	private void Start()
 	{
@@ -17,11 +33,33 @@ public class BarrelController : MonoBehaviour
 		_collider = GetComponent<Collider>();
 	}
 
+	private void Update()
+	{
+		if(_inHitBox)
+			PerlinNoise();
+	}
+	
+	private void PerlinNoise()
+	{
+		var perlinY = Mathf.PerlinNoise(0f, Time.time);
+		
+		var perlin = Vector3.up * perlinY;
+		var perlinRot = Vector3.up * perlinY;
+		
+		transform.position += (perlin - _previousPerlin) * magnitude;
+		transform.rotation *= Quaternion.Euler((perlinRot - _previousPerlinRot) * rotationMagnitude);
+		
+		_previousPerlin = perlin;
+		_previousPerlinRot = perlinRot;
+	}
+
 	private void OnCollisionEnter(Collision other)
 	{
 		Explode();
 		
-		if(!other.collider.CompareTag("Target")) return;
+		if(!other.transform.root.CompareTag("Target")) return;
+		
+		other.transform.root.GetComponent<RagdollController>().GoRagdoll();
 	}
 
 	private void Explode()
@@ -48,5 +86,19 @@ public class BarrelController : MonoBehaviour
 		yield return GameExtensions.GetWaiter(time);
 		
 		piece.SetActive(false);
+	}
+
+	private void OnEnterHitBox(Transform target)
+	{
+		if(target != transform) return;
+
+		_inHitBox = true;
+	}
+
+	private void OnPunchHit()
+	{
+		if(!_inHitBox) return;
+
+		_inHitBox = true;
 	}
 }

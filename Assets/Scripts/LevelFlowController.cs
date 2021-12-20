@@ -34,7 +34,7 @@ public class LevelFlowController : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.T)) print(Time.timeScale);
+		if(Input.GetKeyDown(KeyCode.T)) print("timeScale = " + Time.timeScale);
 	}
 
 	private void SlowDownTime()
@@ -47,7 +47,7 @@ public class LevelFlowController : MonoBehaviour
 		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
 	}
 
-	private void OnEnterHitBox()
+	private void OnEnterHitBox(Transform target)
 	{
 		SlowDownTime();
 	}
@@ -56,4 +56,5 @@ public class LevelFlowController : MonoBehaviour
 	{
 		RevertTime();
 	}
+
 }

@@ -2,17 +2,15 @@
 
 public class InTransitState : InputStateBase
 {
-	public RaycastHit Hit;
+	private readonly RaycastHit _hit;
 	public readonly bool GoHome, IsCarryingBody;
-	private readonly bool _isLeftHand;
 
-	public InTransitState(bool goHome, RaycastHit hitInfo, bool isLeftHand = true, bool isCarryingBody = false)
+	public InTransitState(bool goHome, RaycastHit hitInfo, bool isCarryingBody = false)
 	{
 		GoHome = goHome;
 		IsCarryingBody = isCarryingBody;
-		_isLeftHand = isLeftHand;
 		
-		Hit = hitInfo;
+		_hit = hitInfo;
 	}
 	
 	public override void OnEnter()
@@ -23,11 +21,11 @@ public class InTransitState : InputStateBase
 	public override void Execute()
 	{
 		base.Execute();
-		
+
 		if(GoHome)
 			LeftHand.MoveRopeEndTowards(EmptyHit, true);
 		else
-			LeftHand.MoveRopeEndTowards(Hit);
+			LeftHand.MoveRopeEndTowards(_hit);
 	}
 
 	public override void OnExit()

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PalmController : MonoBehaviour
@@ -8,8 +5,6 @@ public class PalmController : MonoBehaviour
 	[SerializeField] private HandController myHand;
 
 	[SerializeField] private float punchWaitTime = 1f;
-
-	private bool _canPunch = true;
 
 	private void OnEnable()
 	{
@@ -33,15 +28,14 @@ public class PalmController : MonoBehaviour
 
 	private void EnablePunching()
 	{
-		_canPunch = true;
 		myHand.StopPunching();
 	}
 
 	private void OnPunchHit()
 	{
+		print(InputHandler.Only.GetCurrentTransform());
 		myHand.HandReachTarget(InputHandler.Only.GetCurrentTransform());
 		
-		_canPunch = false;
 		Invoke(nameof(EnablePunching), punchWaitTime);
 	}
 }

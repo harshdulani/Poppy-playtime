@@ -15,7 +15,7 @@ public class InputHandler : MonoBehaviour
 	//current state holder	
 	private static InputStateBase _leftHandState;
 
-	public HandController _leftHand, _rightHand;
+	private HandController _leftHand, _rightHand;
 
 	private Transform _lastPickedTarget;
 	private Camera _cam;
@@ -52,7 +52,14 @@ public class InputHandler : MonoBehaviour
 
 		_cam = Camera.main;
 
-		_ = new InputStateBase(_leftHand, _rightHand);
+		foreach (var hand in GameObject.FindGameObjectsWithTag("Hand"))
+		{
+			var ctrl = hand.GetComponent<HandController>();
+			if (ctrl.isLeftHand) _leftHand = ctrl;
+			else _rightHand = ctrl;
+		}
+		
+		_ = new InputStateBase(_leftHand);
 		_ = new OnTargetState(targetDragForce, _cam);
 		_leftHandState = IdleState;
 	}
@@ -84,7 +91,7 @@ public class InputHandler : MonoBehaviour
 		else if (InputExtensions.GetFingerUp() && !InputStateBase.IsPersistent)
 		{
 			if (_leftHandState is InTransitState || _leftHandState is OnTargetState)
-				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, true,
+				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 					_leftHandState is OnTargetState));
 			//on finger up in transit could only be called if you were going there
 		}
@@ -129,6 +136,11 @@ public class InputHandler : MonoBehaviour
 		return false;
 	}
 
+	public void WaitForPunch(Transform other, float zPos)
+	{
+		_rightHand.WaitForPunch(other.transform, zPos);
+	}
+	
 	public Transform GetCurrentTransform() => _lastPickedTarget;
 
 	private void OnGameStart() => _tappedToPlay = true;
@@ -139,7 +151,7 @@ public class InputHandler : MonoBehaviour
 		ChangeStateToDisabled();
 	}
 
-	private void OnEnterHitBox()
+	private void OnEnterHitBox(Transform target)
 	{
 		//also level flow controller knows to slow down and fasten time up using this event
 		AssignNewState(DisabledState);
@@ -154,5 +166,10 @@ public class InputHandler : MonoBehaviour
 		_isTemporarilyDisabled = false;
 		_inDisabledState = false;
 		
+	}
+
+	public void StopCarryingBody()
+	{
+		_leftHand.StopCarryingBody();
 	}
 }
