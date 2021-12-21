@@ -14,11 +14,22 @@ public class GameEvents : MonoBehaviour
 	}
 
 	#endregion
-
+	
 	public Action<Transform> enterHitBox;
 	public Action punchHit;
 
+	public Action enemyKilled;
+
+	public Action moveToNextArea;
+	public Action gameEnd;
+	
 	public void InvokeEnterHitBox(Transform target) => enterHitBox?.Invoke(target);
 
 	public void InvokePunchHit() => punchHit?.Invoke();
+
+	public void InvokeEnemyKill() => enemyKilled?.Invoke();
+
+	public void InvokeGameEnd() => gameEnd?.Invoke();
+
+	public void InvokeNextArea() => moveToNextArea?.Invoke();
 }

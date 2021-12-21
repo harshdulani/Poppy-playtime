@@ -1,60 +1,46 @@
-using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelFlowController : MonoBehaviour
 {
-	public static LevelFlowController only;
+	[SerializeField] private List<int> enemiesInArea;
 
-	[SerializeField] private float slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
-	private float _defaultTimeScale = 1;
+	public int enemiesInCurrentArea, enemiesKilledInCurrentArea;
+	public int currentArea;
 
 	private void OnEnable()
 	{
-		GameEvents.only.enterHitBox += OnEnterHitBox;
-		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.only.enemyKilled += OnEnemyKilled;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enterHitBox -= OnEnterHitBox;
-		GameEvents.only.punchHit -= OnPunchHit;
-	}
-
-	private void Awake()
-	{
-		if (only) Destroy(gameObject);
-		else only = this;
+		GameEvents.only.enemyKilled -= OnEnemyKilled;
 	}
 
 	private void Start()
 	{
-		_defaultTimeScale = Time.timeScale;
-		slowedTimeScale *= _defaultTimeScale;
+		enemiesInCurrentArea = enemiesInArea[currentArea];
+		enemiesKilledInCurrentArea = 0;
 	}
 
-	private void Update()
+	private void OnEnemyKilled()
 	{
-		if(Input.GetKeyDown(KeyCode.T)) print("timeScale = " + Time.timeScale);
+		enemiesKilledInCurrentArea++;
+		if(enemiesKilledInCurrentArea >= enemiesInCurrentArea)
+			MoveToNextArea();
 	}
 
-	private void SlowDownTime()
+	private void MoveToNextArea()
 	{
-		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale, timeRampDownDuration);
+		if (currentArea == enemiesInArea.Count - 1)
+			GameEvents.only.InvokeGameEnd();
+		else
+		{
+			enemiesInCurrentArea = enemiesInArea[++currentArea];
+			enemiesKilledInCurrentArea = 0;
+			GameEvents.only.InvokeNextArea();
+			//assign disabled state, remove it at trigger
+		}
 	}
-
-	private void RevertTime()
-	{
-		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
-	}
-
-	private void OnEnterHitBox(Transform target)
-	{
-		SlowDownTime();
-	}
-
-	private void OnPunchHit()
-	{
-		RevertTime();
-	}
-
 }

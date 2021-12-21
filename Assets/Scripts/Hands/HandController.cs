@@ -15,8 +15,8 @@ public class HandController : MonoBehaviour
 	private static bool _isCarryingBody;
 	
 	private Transform _palmParentInit;
-	private Quaternion _ropeEndInitRot, _lastNormal;
-	private Vector3 _ropeEndInitPos, _lastHitPoint;
+	private Quaternion _palmInitRot, _lastNormal;
+	private Vector3 _palmInitPos, _lastHitPoint;
 	private bool _isHandMoving;
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	
@@ -46,11 +46,11 @@ public class HandController : MonoBehaviour
 			if(TryGetComponent(out RopeController rope))
 				_rope = rope;
 		
-		_armAnimation = transform.parent.GetComponent<Animation>();
+		_armAnimation = transform.root.GetComponent<Animation>();
 		
 		_palmParentInit = palm.parent;
-		_ropeEndInitPos = palm.position;
-		_ropeEndInitRot = palm.rotation;
+		_palmInitPos = palm.position;
+		_palmInitRot = palm.rotation;
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -69,11 +69,11 @@ public class HandController : MonoBehaviour
 			
 			palm.position = 
 				Vector3.MoveTowards(palm.position,
-				_ropeEndInitPos,
+				_palmInitPos,
 				returnSpeed * Time.deltaTime);
 
 			palm.rotation =
-				Quaternion.Lerp(palm.rotation, _ropeEndInitRot, returnSpeed * Time.deltaTime);
+				Quaternion.Lerp(palm.rotation, _palmInitRot, returnSpeed * Time.deltaTime);
 		}
 		else
 		{
@@ -105,8 +105,14 @@ public class HandController : MonoBehaviour
 		if(isLeftHand)
 		{
 			if (!InputHandler.Only.CanSwitchToTargetState()) return;
-			InputHandler.AssignNewState(new OnTargetState(other.transform, _lastHitPoint));
+			
+			StartCarryingBody(other.transform);
+			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
+				raghu.TellParent();
+			
 			palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
+			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
+				true));
 		}
 		else
 		{
@@ -124,6 +130,8 @@ public class HandController : MonoBehaviour
 
 	public void HandReachHome()
 	{
+		palm.DOMove(_palmInitPos, 0.1f);
+		palm.DORotateQuaternion(_palmInitRot, 0.1f);
 		InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
@@ -184,8 +192,8 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) return;
 		
 		palm.parent = _palmParentInit;
-		palm.DOMove(_ropeEndInitPos, 0.2f);
-		palm.DORotateQuaternion(_ropeEndInitRot, 0.2f);
+		palm.DOMove(_palmInitPos, 0.2f);
+		palm.DORotateQuaternion(_palmInitRot, 0.2f);
 		_isCarryingBody = false;
 	}
 

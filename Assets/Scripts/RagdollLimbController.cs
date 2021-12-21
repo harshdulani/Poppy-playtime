@@ -24,4 +24,21 @@ public class RagdollLimbController : MonoBehaviour
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
+
+	private void OnCollisionEnter(Collision other)
+	{
+		if(!_parent.isRagdoll) return;
+		
+		if(other.transform.root == transform.root) return;
+		if(!other.collider.CompareTag("Target")) return;
+
+		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
+		{
+			raghu.GetPunched(other.transform.position - transform.position, 0f);
+		}
+		else
+		{
+			other.gameObject.GetComponent<BarrelController>().Explode();
+		}
+	}
 }

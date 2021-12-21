@@ -6,7 +6,10 @@ public class AimingState : InputStateBase
 	private RaycastHit _hit;
 	private static bool _hasTarget;
 
-	public AimingState(AimController aimer) => _aimer = aimer;
+	public AimingState(AimController aimer)
+	{
+		_aimer = aimer;
+	}
 
 	//on tap/hold, you enter aiming state
 	
@@ -25,10 +28,9 @@ public class AimingState : InputStateBase
 	public override void Execute()
 	{
 		base.Execute();
-
+		
 		_aimer.Aim(InputExtensions.GetInputDelta());
 
-		Print(Cam);
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen());
 		
 		if (!Physics.Raycast(ray, out _hit)) 
@@ -36,7 +38,6 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;
 		}
-		
 		if (!_hit.collider.CompareTag("Target"))
 		{
 			_aimer.LoseTarget();
@@ -54,22 +55,22 @@ public class AimingState : InputStateBase
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen());
 		if (!Physics.Raycast(ray, out var hit))
 		{
-			InputHandler.AssignNewState(InputHandler.IdleState);
+			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
 		if (!hit.collider.CompareTag("Target"))
 		{
-			InputHandler.AssignNewState(InputHandler.IdleState);
+			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
 		if (hit.collider.transform.root.TryGetComponent(out RagdollController rag))
 			if (rag.isRagdoll)
 			{
-				InputHandler.AssignNewState(InputHandler.IdleState);
+				InputHandler.AssignNewState(InputHandler.IdleState, false);
 				return;
 			}
 		
 		InputHandler.Only.SetCurrentTransform(hit.transform);
-		InputHandler.AssignNewState(new InTransitState(false, hit));
+		InputHandler.AssignNewState(new InTransitState(false, hit), false);
 	}
 }

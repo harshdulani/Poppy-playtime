@@ -33,5 +33,10 @@ public class RagdollController : MonoBehaviour
 			rb.isKinematic = false;
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 		}
+
+		GameEvents.only.InvokeEnemyKill();
+
+		foreach (var rb in rigidbodies)
+			rb.tag = "Untagged";
 	}
 }

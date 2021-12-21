@@ -59,7 +59,6 @@ public class InputHandler : MonoBehaviour
 
 		var cam = Camera.main;
 		_ = new InputStateBase(_leftHand, cam);
-		_ = new OnTargetState(targetDragForce);
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
 	}
@@ -92,9 +91,8 @@ public class InputHandler : MonoBehaviour
 		{
 			if (_leftHandState is AimingState)
 				_leftHandState.OnExit();
-			else if (_leftHandState is InTransitState || _leftHandState is OnTargetState)
-				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
-					_leftHandState is OnTargetState));
+			else if (_leftHandState is InTransitState)
+				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 		}
 
 		_leftHandState?.Execute();
@@ -112,9 +110,10 @@ public class InputHandler : MonoBehaviour
 		return _aimingState;
 	}
 
-	public static void AssignNewState(InputStateBase newState)
+	public static void AssignNewState(InputStateBase newState, bool callOnExit = true)
 	{
-		_leftHandState?.OnExit();
+		if(callOnExit)
+			_leftHandState?.OnExit();
 		_leftHandState = newState;
 		_leftHandState?.OnEnter();
 	}

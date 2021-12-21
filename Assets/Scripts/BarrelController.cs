@@ -62,7 +62,7 @@ public class BarrelController : MonoBehaviour
 		other.transform.root.GetComponent<RagdollController>().GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}
 
-	private void Explode()
+	public void Explode()
 	{
 		_collider.enabled = false;
 		for(int i = 0; i < rigidbodies.Count; i++)
