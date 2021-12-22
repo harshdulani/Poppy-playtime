@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3199263289748388086, guid: ec8ff9bdd395a354784a05ac64d1a316, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3199263289748388086, guid: ec8ff9bdd395a354784a05ac64d1a316, type: 3}
       propertyPath: m_LocalScale.x
@@ -176,26 +176,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec8ff9bdd395a354784a05ac64d1a316, type: 3}
---- !u!1 &134893278 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9072408286042569332, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
-  m_PrefabInstance: {fileID: 9072408285809961008}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &134893282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134893278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375fc63216899f7449d6485da7330271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowedTimeScale: 0.7
-  timeRampDownDuration: 0.5
-  timeRampUpDuration: 0.5
 --- !u!1 &139810754
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +316,8 @@ MonoBehaviour:
   moveSpeed: 20
   returnSpeed: 30
   punchForce: 2000
+  ragdollWfpDistance: 0
+  propWfpDistance: 0
 --- !u!95 &208956720
 Animator:
   serializedVersion: 4
@@ -626,19 +608,19 @@ MonoBehaviour:
     - name: Trigger 1
       type: 0
       workOnce: 0
-      position: 1
+      position: 0.9900000095367432
       enabled: 1
       color: {r: 0.12152922, g: 1, b: 0, a: 1}
       onCross:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 0}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: 
+          - m_Target: {fileID: 880676170}
+            m_TargetAssemblyTypeName: SplineTriggerController, Assembly-CSharp
+            m_MethodName: StopFollowing
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: 
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
               m_StringArgument: 
@@ -916,7 +898,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &975809127
 GameObject:
@@ -947,7 +929,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1101373579
 GameObject:
@@ -1554,7 +1536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3199263289748388086, guid: ec8ff9bdd395a354784a05ac64d1a316, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3199263289748388086, guid: ec8ff9bdd395a354784a05ac64d1a316, type: 3}
       propertyPath: m_LocalScale.x
@@ -1721,7 +1703,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1800852408
 GameObject:
@@ -2197,7 +2179,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1532162596466803304, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1532162596466803304, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2226,6 +2208,14 @@ PrefabInstance:
     - target: {fileID: 1668030867423338667, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
       propertyPath: m_Name
       value: Hands
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864366402366365717, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
+      propertyPath: moveSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864366402366365717, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
+      propertyPath: returnSpeed
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8712514534833502981, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

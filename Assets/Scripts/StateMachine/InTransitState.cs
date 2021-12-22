@@ -27,7 +27,7 @@ public class InTransitState : InputStateBase
 		else
 			LeftHand.MoveRopeEndTowards(_hit);
 
-		LeftHand.UpdateRope();
+		HandController.UpdateRope();
 	}
 
 	public override void OnExit()

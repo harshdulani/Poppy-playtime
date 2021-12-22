@@ -6,7 +6,8 @@ public class HandController : MonoBehaviour
 	public bool isLeftHand;
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
-
+	[SerializeField] private float ragdollWfpDistance, propWfpDistance;
+	
 	private Animator _anim;
 	private static RopeController _rope;
 	private static Animation _armAnimation;
@@ -15,8 +16,8 @@ public class HandController : MonoBehaviour
 	private static bool _isCarryingBody;
 	
 	private Transform _palmParentInit;
-	private Quaternion _palmInitRot, _lastNormal;
-	private Vector3 _palmInitPos, _lastHitPoint;
+	private Quaternion _palmInitLocalRot, _lastNormal;
+	private Vector3 _palmInitLocalPos, _lastHitPoint;
 	private bool _isHandMoving;
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	
@@ -49,8 +50,8 @@ public class HandController : MonoBehaviour
 		_armAnimation = transform.root.GetComponent<Animation>();
 		
 		_palmParentInit = palm.parent;
-		_palmInitPos = palm.position;
-		_palmInitRot = palm.rotation;
+		_palmInitLocalPos = palm.localPosition;
+		_palmInitLocalRot = palm.localRotation;
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -63,17 +64,17 @@ public class HandController : MonoBehaviour
 					Vector3.MoveTowards(palm.root.position,
 						transform.position + (_isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
 						returnSpeed * Time.deltaTime);
-
+				
 				return;
 			}
 			
-			palm.position = 
-				Vector3.MoveTowards(palm.position,
-				_palmInitPos,
+			palm.localPosition = 
+				Vector3.MoveTowards(palm.localPosition,
+				_palmInitLocalPos,
 				returnSpeed * Time.deltaTime);
 
-			palm.rotation =
-				Quaternion.Lerp(palm.rotation, _palmInitRot, returnSpeed * Time.deltaTime);
+			palm.localRotation =
+				Quaternion.Lerp(palm.localRotation, _palmInitLocalRot, returnSpeed * Time.deltaTime);
 		}
 		else
 		{
@@ -96,7 +97,7 @@ public class HandController : MonoBehaviour
 		}
 	}
 	
-	public void UpdateRope() => _rope.UpdateRope();
+	public static void UpdateRope() => _rope.UpdateRope();
 
 	public void HandReachTarget(Transform other)
 	{
@@ -130,8 +131,6 @@ public class HandController : MonoBehaviour
 
 	public void HandReachHome()
 	{
-		palm.DOMove(_palmInitPos, 0.1f);
-		palm.DORotateQuaternion(_palmInitRot, 0.1f);
 		InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
@@ -156,15 +155,19 @@ public class HandController : MonoBehaviour
 		ResetPalmParent();
 	}
 
-	public void WaitForPunch(Transform other, float zPos)
+	public void WaitForPunch(Transform other)
 	{
 		if (!other) return;
 		
 		var root = other.root;
-		root.DOMove(new Vector3(
-			0f,
-			_isCarryingRagdoll ? 1f : 3f,
-			zPos + 0.5f * (_isCarryingRagdoll ? 1f : -1f)), .2f);
+
+		var direction = (root.position - transform.position).normalized;
+		
+		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance);
+		endValue.y = _isCarryingRagdoll ? 1f : 3f;
+		
+		root.DOMove(endValue, 0.2f);
+		
 		_anim.SetBool(IsPunching, true);
 		_rope.ReturnHome();
 		
@@ -192,8 +195,8 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) return;
 		
 		palm.parent = _palmParentInit;
-		palm.DOMove(_palmInitPos, 0.2f);
-		palm.DORotateQuaternion(_palmInitRot, 0.2f);
+		palm.DOLocalMove(_palmInitLocalPos, 0.2f);
+		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f);
 		_isCarryingBody = false;
 	}
 

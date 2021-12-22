@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class HitBoxController : MonoBehaviour
 {
-	private List<Collider> _targets;
 	private bool _inHitBox;
 	
-	private bool _canRegisterEntry = true;
-
 	private void OnEnable()
 	{
 		GameEvents.only.punchHit += OnPunchHit;
@@ -19,44 +16,23 @@ public class HitBoxController : MonoBehaviour
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
 
-	private void Start()
-	{
-		_targets = new List<Collider>();
-	}
-
 	private void OnTriggerEnter(Collider other)
 	{
-		if(!_canRegisterEntry) return;
-		
-		if(!other.CompareTag("Target")) return;
-		
-		_targets.Add(other);
-		
 		if (_inHitBox) return;
-		
-		GameEvents.only.InvokeEnterHitBox(other.transform);
-		InputHandler.Only.WaitForPunch(other.transform, transform.position.z);
-		_inHitBox = true;
-		_canRegisterEntry = false;
-	}
-
-	private void OnTriggerExit(Collider other)
-	{
 		if(!other.CompareTag("Target")) return;
-		
-		_targets.Remove(other);
-		
-		if (_targets.Count == 0)
-			_inHitBox = false;
+
+		GameEvents.only.InvokeEnterHitBox(other.transform);
+		InputHandler.Only.WaitForPunch(other.transform);
+		_inHitBox = true;
 	}
 
-	private void ResetRegisterable()
+	private void ResetInHitBox()
 	{
-		_canRegisterEntry = true;
+		_inHitBox = false;
 	}
 	
 	private void OnPunchHit()
 	{
-		Invoke(nameof(ResetRegisterable), 1f);
+		Invoke(nameof(ResetInHitBox), 1f);
 	}
 }

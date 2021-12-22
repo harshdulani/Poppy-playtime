@@ -6,7 +6,9 @@ public class InputHandler : MonoBehaviour
 	public static InputHandler Only;
 
 	public bool testingUsingTouch;
-	[SerializeField] private float targetDragForce;
+
+	private HandController _leftHand, _rightHand;
+	private Transform _lastPickedTarget;
 
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
@@ -15,10 +17,6 @@ public class InputHandler : MonoBehaviour
 
 	//current state holder	
 	private static InputStateBase _leftHandState;
-
-	private HandController _leftHand, _rightHand;
-
-	private Transform _lastPickedTarget;
 
 	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled;
 
@@ -129,9 +127,9 @@ public class InputHandler : MonoBehaviour
 		return false;
 	}
 
-	public void WaitForPunch(Transform other, float zPos)
+	public void WaitForPunch(Transform other)
 	{
-		_rightHand.WaitForPunch(other.transform, zPos);
+		_rightHand.WaitForPunch(other.transform);
 	}
 	
 	public Transform GetCurrentTransform() => _lastPickedTarget;

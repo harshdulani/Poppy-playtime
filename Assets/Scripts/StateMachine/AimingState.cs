@@ -33,7 +33,7 @@ public class AimingState : InputStateBase
 
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen());
 		
-		if (!Physics.Raycast(ray, out _hit)) 
+		if (!Physics.Raycast(ray, out _hit, 50f)) 
 		{
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;

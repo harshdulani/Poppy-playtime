@@ -1061,7 +1061,6 @@ GameObject:
   - component: {fileID: 6864366402366365717}
   - component: {fileID: 365861115}
   - component: {fileID: 6915813814098566418}
-  - component: {fileID: 4503690043464328964}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Hand
@@ -1104,6 +1103,8 @@ MonoBehaviour:
   moveSpeed: 20
   returnSpeed: 30
   punchForce: 0
+  ragdollWfpDistance: 0
+  propWfpDistance: 0
 --- !u!95 &365861115
 Animator:
   serializedVersion: 4
@@ -1125,21 +1126,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &6915813814098566418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6864366402366365716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8a5f1af8e982f4fb18c17fd9db9c21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ropeStart: {fileID: 790879103827091490}
-  ropeEnd: {fileID: 3642697864827366682}
-  cylinder: {fileID: 7814560620920583919}
---- !u!114 &4503690043464328964
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1412,6 +1398,8 @@ MonoBehaviour:
   moveSpeed: 20
   returnSpeed: 30
   punchForce: 200
+  ragdollWfpDistance: 2
+  propWfpDistance: 1.5
 --- !u!65 &2128689352
 BoxCollider:
   m_ObjectHideFlags: 0

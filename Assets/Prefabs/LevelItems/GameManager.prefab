@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9072408286042569333}
   - component: {fileID: 9072408286042569334}
   - component: {fileID: 9072408286042569335}
+  - component: {fileID: 4706669470160752694}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testingUsingTouch: 0
-  targetDragForce: 100
 --- !u!114 &9072408286042569335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +58,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 424581c1a76dde6478866335ee23fcf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemiesInArea: 
+  enemiesInCurrentArea: 0
+  enemiesKilledInCurrentArea: 0
+  currentArea: 0
+--- !u!114 &4706669470160752694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9072408286042569332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375fc63216899f7449d6485da7330271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slowedTimeScale: 0.7

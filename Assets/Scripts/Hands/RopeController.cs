@@ -7,13 +7,13 @@ public class RopeController : MonoBehaviour
 	[SerializeField] private Transform ropeStart, ropeEnd;
 	[SerializeField] private CylinderGeneration cylinder;
 
-	private Vector3 _initPos;
-	private Quaternion _initRot;
+	private Vector3 _initLocalPos;
+	private Quaternion _initLocalRot;
 
 	private void Start()
 	{
-		_initPos = ropeEnd.position;
-		_initRot = transform.rotation;
+		_initLocalPos = ropeEnd.localPosition;
+		_initLocalRot = transform.localRotation;
 	}
 
 	public void UpdateRope()
@@ -25,8 +25,8 @@ public class RopeController : MonoBehaviour
 
 	public void ReturnHome()
 	{
-		transform.DORotateQuaternion(_initRot, 0.2f);
-		ropeEnd.DOMove(_initPos, 0.2f)
+		transform.DOLocalRotateQuaternion(_initLocalRot, 0.2f);
+		ropeEnd.DOLocalMove(_initLocalPos, 0.2f)
 			.OnUpdate(UpdateRope);
 	}
 }
