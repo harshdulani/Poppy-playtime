@@ -111,7 +111,7 @@ public class HandController : MonoBehaviour
 			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
 				raghu.TellParent();
 			
-			palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
+			//palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));
 		}
@@ -195,8 +195,8 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) return;
 		
 		palm.parent = _palmParentInit;
-		palm.DOLocalMove(_palmInitLocalPos, 0.2f);
-		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f);
+		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
+		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
 		_isCarryingBody = false;
 	}
 

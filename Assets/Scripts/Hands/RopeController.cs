@@ -26,7 +26,7 @@ public class RopeController : MonoBehaviour
 	public void ReturnHome()
 	{
 		transform.DOLocalRotateQuaternion(_initLocalRot, 0.2f);
-		ropeEnd.DOLocalMove(_initLocalPos, 0.2f)
+		ropeEnd.DOLocalMove(Vector3.zero, 0.2f)
 			.OnUpdate(UpdateRope);
 	}
 }
