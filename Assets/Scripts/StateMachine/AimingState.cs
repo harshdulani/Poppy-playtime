@@ -10,15 +10,7 @@ public class AimingState : InputStateBase
 	{
 		_aimer = aimer;
 	}
-
-	//on tap/hold, you enter aiming state
 	
-	//onexecute, rotate camera + hands around Y axis, reticle color changes according to raycast hit
-	//on exit,check the bool holding is hitting raycast
-	//if yes, execute onexit
-	//assign new state intransit state
-	//else inputhandler will autoassign idle state
-
 	public override void OnEnter()
 	{
 		IsPersistent = false;
@@ -31,7 +23,8 @@ public class AimingState : InputStateBase
 		
 		_aimer.Aim(InputExtensions.GetInputDelta());
 
-		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen());
+		//the magic number percentage 0.5905f is the screen Y pos when you center the crosshair on anchorY as minY = 0.565, maxY = 0.615
+		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(0.5905f));
 		
 		if (!Physics.Raycast(ray, out _hit, 50f)) 
 		{
@@ -52,7 +45,7 @@ public class AimingState : InputStateBase
 		base.OnExit();
 		_aimer.SetReticleStatus(false);
 		
-		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen());
+		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(0.5905f));
 		if (!Physics.Raycast(ray, out var hit))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);

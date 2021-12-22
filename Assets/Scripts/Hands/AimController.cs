@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class AimController : MonoBehaviour
@@ -7,11 +8,14 @@ public class AimController : MonoBehaviour
 	[SerializeField] private Color findTargetColor, missingTargetColor;
 	[SerializeField] private Image reticle;
 
-	private float _rotX, _rotY;
+	private float _rotX, _rotY, _initRotAxisX;
 	
 	private void Start ()
 	{
 		Vector3 rot = transform.eulerAngles;
+
+		_initRotAxisX = rot.x;
+		
 		_rotY = rot.y;
 		_rotX = rot.x;
 	}
@@ -37,7 +41,7 @@ public class AimController : MonoBehaviour
 		_rotX -= inputDelta.y * aimSpeedVertical * Time.deltaTime;
  
 		_rotY = Mathf.Clamp(_rotY, -clampAngleHorizontal, clampAngleHorizontal);
-		_rotX = Mathf.Clamp(_rotX, -clampAngleVertical, clampAngleVertical);
+		_rotX = Mathf.Clamp(_rotX, _initRotAxisX - clampAngleVertical, _initRotAxisX + clampAngleVertical);
  
 		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
 		transform.rotation = newRot;

@@ -20,6 +20,12 @@ public class LevelFlowController : MonoBehaviour
 
 	private void Start()
 	{
+		if(enemiesInArea.Count == 0)
+		{
+			Debug.LogWarning("Level Flow Controller values not changed");
+			Debug.Break();
+		}
+		
 		enemiesInCurrentArea = enemiesInArea[currentArea];
 		enemiesKilledInCurrentArea = 0;
 	}
@@ -34,7 +40,10 @@ public class LevelFlowController : MonoBehaviour
 	private void MoveToNextArea()
 	{
 		if (currentArea == enemiesInArea.Count - 1)
+		{
+			print("game end");
 			GameEvents.only.InvokeGameEnd();
+		}
 		else
 		{
 			enemiesInCurrentArea = enemiesInArea[++currentArea];

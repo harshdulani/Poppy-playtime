@@ -174,10 +174,10 @@ RectTransform:
   m_Father: {fileID: 3290622344563462903}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.565}
+  m_AnchorMax: {x: 0.5, y: 0.615}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &914441079344584209
 CanvasRenderer:
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e554dd9b1e9c7a4e8c7ef6b07ab362b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c617ce1c27262bc41b0ca079cc4a6bf7, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -217,37 +217,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.01
---- !u!1 &1252593621300896576
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2506212409231428439}
-  m_Layer: 0
-  m_Name: Wrist
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2506212409231428439
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252593621300896576}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: 0.3594}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 39035852083628652}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415459684730010623
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,8 +278,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.056049265, y: 0.09303816, z: 0.033934742}
-  m_Center: {x: -0.018061033, y: -0.12380198, z: -0.053252842}
+  m_Size: {x: 0.056049265, y: 0.1167611, z: 0.056987666}
+  m_Center: {x: -0.018061064, y: -0.123802155, z: -0.06477934}
 --- !u!114 &4877977996674466788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +306,7 @@ GameObject:
   - component: {fileID: 600195056}
   - component: {fileID: 4277739896697809485}
   - component: {fileID: 1113535304993847336}
+  - component: {fileID: 3150578100713885321}
   m_Layer: 0
   m_Name: Hands
   m_TagString: Player
@@ -408,8 +378,8 @@ MonoBehaviour:
   aimSpeedHorizontal: 45
   clampAngleVertical: 15
   clampAngleHorizontal: 20
-  findTargetColor: {r: 0.24056602, g: 1, b: 0.26014385, a: 1}
-  missingTargetColor: {r: 1, g: 0.0990566, b: 0.239829, a: 1}
+  findTargetColor: {r: 0.5801887, g: 1, b: 0.5910086, a: 0.6156863}
+  missingTargetColor: {r: 1, g: 0.43867922, b: 0.52653813, a: 0.6156863}
   reticle: {fileID: 4288060829665981910}
 --- !u!114 &1113535304993847336
 MonoBehaviour:
@@ -572,6 +542,18 @@ MonoBehaviour:
   _followDuration: 1
   _startPosition: 0
   editorSetPosition: 1
+--- !u!114 &3150578100713885321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668030867423338667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d4031718b94e341b3dacdb52d7df64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2250485342096107938
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,7 +846,7 @@ Transform:
   m_Children:
   - {fileID: 2144127611349782697}
   m_Father: {fileID: 39035852083628652}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5668284073949922651
 GameObject:
@@ -1029,7 +1011,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2506212409231428439}
   - {fileID: 6205576158438039961}
   m_Father: {fileID: 6055354076376087214}
   m_RootOrder: 0
@@ -1164,8 +1145,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLeftHand: 1
   palm: {fileID: 2144127611349782697}
-  moveSpeed: 20
-  returnSpeed: 30
+  moveSpeed: 50
+  returnSpeed: 45
   punchForce: 0
   ragdollWfpDistance: 0
   propWfpDistance: 0

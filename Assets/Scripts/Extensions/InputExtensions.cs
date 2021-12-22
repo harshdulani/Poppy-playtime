@@ -9,7 +9,7 @@ public static class InputExtensions
 	/// </summary>
 	public static float TouchInputDivisor;
 
-	private static Vector3 previousViewportPos;
+	private static Vector3 _previousViewportPos;
 	
 	/// <summary>
 	/// Returns Screen position pixel co-ordinates. Ignorant to where the input is coming from.  
@@ -92,8 +92,8 @@ public static class InputExtensions
 		return Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary;
 	}
 
-	public static Vector3 GetCenterOfScreen()
+	public static Vector3 GetCenterOfScreen(float percentageOnY = -2f)
 	{
-		return new Vector3(Screen.width / 2f, Screen.height / 2f);
+		return new Vector3(Screen.width * 0.5f, Screen.height * (percentageOnY < -1f || percentageOnY > 1f ? 0.5f : percentageOnY));
 	}
 }

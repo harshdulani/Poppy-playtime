@@ -64,7 +64,8 @@ public class InputHandler : MonoBehaviour
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
+		
+		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -153,15 +154,19 @@ public class InputHandler : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		AssignNewState(IdleState);
-		
-		_isTemporarilyDisabled = false;
-		_inDisabledState = false;
-		
+		Invoke(nameof(AssignIdleState), .1f);
 	}
 
 	public void StopCarryingBody()
 	{
 		_leftHand.StopCarryingBody();
+	}
+
+	private void AssignIdleState()
+	{
+		AssignNewState(IdleState);
+
+		_isTemporarilyDisabled = false;
+		_inDisabledState = false;
 	}
 }

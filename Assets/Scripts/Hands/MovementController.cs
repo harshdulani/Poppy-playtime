@@ -5,20 +5,34 @@ public class MovementController : MonoBehaviour
 {
 	private SplineFollower _spline;
 
+	private bool _isSubscribed;
+	
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		_isSubscribed = true;
 	}
 
 	private void OnDisable()
 	{
+		if(!_isSubscribed) return;
+		
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		_isSubscribed = false;
 	}
 
 	private void Start()
 	{
 		_spline = GetComponent<SplineFollower>();
-		_spline.spline = GameObject.FindGameObjectWithTag("SplinePath").GetComponent<SplineComputer>();
+
+		var path = GameObject.FindGameObjectWithTag("SplinePath");
+		
+		if(!path)
+		{
+			OnDisable();
+			return;
+		}
+		_spline.spline = path.GetComponent<SplineComputer>();
 	}
 
 	private void OnMoveToNextArea()
