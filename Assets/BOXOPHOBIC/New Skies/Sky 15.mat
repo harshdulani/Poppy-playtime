@@ -9,9 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Sky 15
   m_Shader: {fileID: 4800000, guid: 6fc9318f5193c094c98c0d450cd61e3b, type: 3}
-  m_ShaderKeywords: _BACKGROUNDMODE_CUBEMAP _CLOUDSLITBYSUN_ON _DISABLEDIRECTIONLIGHT_ON
-    _ENABLEBUILTINFOG_ON _ENABLECLOUDSROTATION_ON _ENABLESUNMOONMASK_ON _ENABLESUNMOON_ON
-    _USECUBEMAP_ON _USEENVIRONMENTGRADIENT_ON _USETEXTURE_ON
+  m_ShaderKeywords: _BACKGROUNDMODE_CUBEMAP _CLOUDSLITBYSUN_ON _ENABLECLOUDSROTATION_ON
+    _ENABLEPATTERNOVERLAY_ON _ENABLESTARSTWINKLING_ON _ENABLESTARS_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -82,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PatternCubemap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 8900000, guid: 5e08451c0e8bb7a4f9ca20067695cda7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PatternOverlay:
@@ -174,14 +173,14 @@ Material:
     - _DisableRotation: 0
     - _DstBlend: 0
     - _Enable1Twinkling: 0
-    - _EnableBuiltinFog: 1
+    - _EnableBuiltinFog: 0
     - _EnableClouds: 0
     - _EnableCloudsRotation: 1
     - _EnableDirectionLight: 0
     - _EnableMoon: 0
-    - _EnablePatternOverlay: 0
+    - _EnablePatternOverlay: 1
     - _EnableSkyPatternOverlay: 0
-    - _EnableStars: 0
+    - _EnableStars: 1
     - _EnableStarsRotation: 0
     - _EnableStarsTwinkling: 1
     - _EnableSun: 0
@@ -218,7 +217,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _PatternCat: 1
-    - _PatternContrast: 1
+    - _PatternContrast: 0.469
     - _RoatationSpeed: 0.4
     - _Rotation: 0
     - _RotationSpeed: 0.5

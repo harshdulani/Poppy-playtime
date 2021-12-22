@@ -65,7 +65,7 @@ public class BarrelController : MonoBehaviour
 	public void Explode()
 	{
 		_collider.enabled = false;
-		for(int i = 0; i < rigidbodies.Count; i++)
+		for(var i = 0; i < rigidbodies.Count; i++)
 		{
 			colliders[i].enabled = true;
 			rigidbodies[i].transform.parent = null;

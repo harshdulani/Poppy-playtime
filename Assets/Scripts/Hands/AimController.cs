@@ -1,5 +1,5 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class AimController : MonoBehaviour
@@ -9,7 +9,21 @@ public class AimController : MonoBehaviour
 	[SerializeField] private Image reticle;
 
 	private float _rotX, _rotY, _initRotAxisX;
-	
+
+	private Tweener _punchHit;
+
+	private void OnEnable()
+	{
+		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.only.punchHit += OnPunchHit;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		GameEvents.only.punchHit -= OnPunchHit;
+	}
+
 	private void Start ()
 	{
 		Vector3 rot = transform.eulerAngles;
@@ -45,5 +59,16 @@ public class AimController : MonoBehaviour
  
 		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
 		transform.rotation = newRot;
+	}
+
+	private void OnPunchHit()
+	{
+		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, 0, 0), 1f);
+	}
+	
+	private void OnMoveToNextArea()
+	{
+		_punchHit.Kill();
+		DOTween.Sequence().Append(transform.DORotate(Vector3.zero, 0.5f));
 	}
 }
