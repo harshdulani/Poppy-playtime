@@ -164,7 +164,7 @@ public class HandController : MonoBehaviour
 		var direction = (root.position - transform.position).normalized;
 		
 		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance);
-		endValue.y = _isCarryingRagdoll ? 1f : 3f;
+		endValue.y = transform.root.position.y + (_isCarryingRagdoll ? 1f : 3f);
 		
 		root.DOMove(endValue, 0.2f);
 		

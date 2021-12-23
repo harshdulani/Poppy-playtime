@@ -5,10 +5,12 @@ public class AimingState : InputStateBase
 	private static AimController _aimer;
 	private RaycastHit _hit;
 	private static bool _hasTarget;
+	private static float _screenPercentageOnY;
 
 	public AimingState(AimController aimer)
 	{
 		_aimer = aimer;
+		_screenPercentageOnY = _aimer.screenPercentageOnY;
 	}
 	
 	public override void OnEnter()
@@ -24,7 +26,7 @@ public class AimingState : InputStateBase
 		_aimer.Aim(InputExtensions.GetInputDelta());
 
 		//the magic number percentage 0.5905f is the screen Y pos when you center the crosshair on anchorY as minY = 0.565, maxY = 0.615
-		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(0.5905f));
+		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(_screenPercentageOnY));
 		
 		if (!Physics.Raycast(ray, out _hit, 50f)) 
 		{

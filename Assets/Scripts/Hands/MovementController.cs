@@ -48,5 +48,6 @@ public class MovementController : MonoBehaviour
 	public void StopFollowing()
 	{
 		_spline.follow = false;
+		InputHandler.Only.AssignIdleState();
 	}
 }

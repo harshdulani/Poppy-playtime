@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class LevelFlowController : MonoBehaviour
 {
+	public static LevelFlowController only;
+	
 	[SerializeField] private List<int> enemiesInArea;
 
 	public int enemiesInCurrentArea, enemiesKilledInCurrentArea;
 	public int currentArea;
+
+	private int _totalEnemiesRemaining;
 
 	private void OnEnable()
 	{
@@ -16,6 +20,12 @@ public class LevelFlowController : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.enemyKilled -= OnEnemyKilled;
+	}
+
+	private void Awake()
+	{
+		if (!only) only = this;
+		else Destroy(gameObject);
 	}
 
 	private void Start()
@@ -28,11 +38,15 @@ public class LevelFlowController : MonoBehaviour
 		
 		enemiesInCurrentArea = enemiesInArea[currentArea];
 		enemiesKilledInCurrentArea = 0;
+
+		foreach (var area in enemiesInArea)
+			_totalEnemiesRemaining += area;
 	}
 
 	private void OnEnemyKilled()
 	{
 		enemiesKilledInCurrentArea++;
+		_totalEnemiesRemaining--;
 		if(enemiesKilledInCurrentArea >= enemiesInCurrentArea)
 			MoveToNextArea();
 	}
@@ -49,7 +63,9 @@ public class LevelFlowController : MonoBehaviour
 			enemiesInCurrentArea = enemiesInArea[++currentArea];
 			enemiesKilledInCurrentArea = 0;
 			GameEvents.only.InvokeNextArea();
-			//assign disabled state, remove it at trigger
+			InputHandler.Only.AssignDisabledState();
 		}
 	}
+
+	public bool IsThisLastEnemy() => _totalEnemiesRemaining == 1;
 }

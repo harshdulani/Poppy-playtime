@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InputHandler : MonoBehaviour
 {
@@ -22,12 +21,14 @@ public class InputHandler : MonoBehaviour
 
 	private void OnEnable()
 	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
@@ -62,10 +63,9 @@ public class InputHandler : MonoBehaviour
 	}
 
 	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	{ 
+		if(!_tappedToPlay) return;
 		
-		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -136,7 +136,7 @@ public class InputHandler : MonoBehaviour
 	public Transform GetCurrentTransform() => _lastPickedTarget;
 	public void SetCurrentTransform(Transform newT) => _lastPickedTarget = newT;
 
-	private void OnGameStart() => _tappedToPlay = true;
+	private void OnTapToPlay() => _tappedToPlay = true;
 
 	private void OnGameOver()
 	{
@@ -146,10 +146,7 @@ public class InputHandler : MonoBehaviour
 
 	private void OnEnterHitBox(Transform target)
 	{
-		//also level flow controller knows to slow down and fasten time up using this event
-		AssignNewState(DisabledState);
-		_isTemporarilyDisabled = true;
-		_inDisabledState = true;
+		AssignDisabledState();
 	}
 
 	private void OnPunchHit()
@@ -162,11 +159,18 @@ public class InputHandler : MonoBehaviour
 		_leftHand.StopCarryingBody();
 	}
 
-	private void AssignIdleState()
+	public void AssignIdleState()
 	{
 		AssignNewState(IdleState);
 
 		_isTemporarilyDisabled = false;
 		_inDisabledState = false;
+	}
+
+	public void AssignDisabledState()
+	{
+		AssignNewState(DisabledState);
+		_isTemporarilyDisabled = true;
+		_inDisabledState = true;
 	}
 }

@@ -14,7 +14,9 @@ public class GameEvents : MonoBehaviour
 	}
 
 	#endregion
-	
+
+	public Action tapToPlay;
+		
 	public Action<Transform> enterHitBox;
 	public Action punchHit;
 
@@ -22,7 +24,9 @@ public class GameEvents : MonoBehaviour
 
 	public Action moveToNextArea;
 	public Action gameEnd;
-	
+
+
+	public void InvokeTapToPlay() => tapToPlay?.Invoke();
 	public void InvokeEnterHitBox(Transform target) => enterHitBox?.Invoke(target);
 
 	public void InvokePunchHit() => punchHit?.Invoke();
