@@ -24,15 +24,10 @@ public class MovementController : MonoBehaviour
 	private void Start()
 	{
 		_spline = GetComponent<SplineFollower>();
-
-		var path = GameObject.FindGameObjectWithTag("SplinePath");
 		
-		if(!path)
-		{
-			OnDisable();
-			return;
-		}
-		_spline.spline = path.GetComponent<SplineComputer>();
+		if(_spline.spline) return;
+		
+		OnDisable();
 	}
 
 	private void OnMoveToNextArea()

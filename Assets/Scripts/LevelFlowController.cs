@@ -54,10 +54,7 @@ public class LevelFlowController : MonoBehaviour
 	private void MoveToNextArea()
 	{
 		if (currentArea == enemiesInArea.Count - 1)
-		{
-			print("game end");
 			GameEvents.only.InvokeGameEnd();
-		}
 		else
 		{
 			enemiesInCurrentArea = enemiesInArea[++currentArea];

@@ -48,7 +48,7 @@ public class MainCanvasController : MonoBehaviour
 
 	public void NextLevel()
 	{
-		AudioManager.instance.Play("button");
+		//AudioManager.instance.Play("button");
 		if (PlayerPrefs.GetInt("levelNo") < SceneManager.sceneCountInBuildSettings - 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo") + 1;
