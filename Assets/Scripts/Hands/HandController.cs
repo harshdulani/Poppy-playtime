@@ -113,7 +113,6 @@ public class HandController : MonoBehaviour
 			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
 				raghu.TellParent();
 			
-			//palm.DOLocalMove(Vector3.forward * .5f, 0.5f);
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));
 		}

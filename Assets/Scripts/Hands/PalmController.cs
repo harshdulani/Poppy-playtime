@@ -5,23 +5,40 @@ public class PalmController : MonoBehaviour
 	[SerializeField] private HandController myHand;
 
 	[SerializeField] private float punchWaitTime = 1f;
-	
-	public static Transform _lastPickedTarget;
-	private bool _canBeAdopted = true;
+
+	private static Transform _lastPickedTarget;
+	private static bool _canBeAdopted = true;
 	
 	private void OnEnable()
 	{
-		GameEvents.only.punchHit += OnPunchHit;
 		
 		if(myHand.isLeftHand)
+		{
 			GameEvents.only.propDestroyed += OnPropDestroyed;
+		}
+		else
+		{
+			GameEvents.only.punchHit += OnPunchHit;
+
+		}
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.punchHit -= OnPunchHit;
 		if(myHand.isLeftHand)
+		{
 			GameEvents.only.propDestroyed -= OnPropDestroyed;
+		}
+		else
+		{
+			GameEvents.only.punchHit -= OnPunchHit;
+		}
+	}
+
+	private void Start()
+	{
+		_lastPickedTarget = null;
+		_canBeAdopted = true;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -29,10 +46,9 @@ public class PalmController : MonoBehaviour
 		if(!_canBeAdopted) return;
 		if(!other.CompareTag("Target")) return;
 		
-		//play sound
+		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
-		
-		print("on trigg trans " + GetCurrentTransform());
+	
 		if(HasTargetTransform()) return;
 		
 		SetCurrentTransform(other.transform);
@@ -47,11 +63,12 @@ public class PalmController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
+		print(GetCurrentTransform());
 		myHand.HandReachTarget(GetCurrentTransform());
 		
 		SetCurrentTransform(null);
 		Invoke(nameof(EnablePunching), punchWaitTime);
-		Invoke(nameof(ResetAdoptability), punchWaitTime);
+		Invoke(nameof(ResetAdoptability), 0.5f);
 	}
 
 	private void OnPropDestroyed(Transform target)
@@ -59,7 +76,7 @@ public class PalmController : MonoBehaviour
 		if(target != _lastPickedTarget) return;
 		
 		SetCurrentTransform(null);
-		Invoke(nameof(ResetAdoptability), punchWaitTime);
+		Invoke(nameof(ResetAdoptability), 0.5f);
 	}
 
 	private void ResetAdoptability()

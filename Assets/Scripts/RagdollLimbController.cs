@@ -20,7 +20,7 @@ public class RagdollLimbController : MonoBehaviour
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
 		_parent.GoRagdoll(direction);
-		_rb.AddForce(Vector3.forward * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
+		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
@@ -34,7 +34,7 @@ public class RagdollLimbController : MonoBehaviour
 
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
 		{
-			raghu.GetPunched(other.transform.position - transform.position, 0f);
+			raghu.GetPunched(other.transform.position - transform.position, 10f);
 		}
 		else
 		{
