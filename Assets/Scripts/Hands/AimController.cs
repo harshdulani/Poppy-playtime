@@ -12,10 +12,12 @@ public class AimController : MonoBehaviour
 	//0.5899 for 0.55, 0.63
 	[Header("Aiming")] public float screenPercentageOnY = 0.5899f;
 
-
-	private float _rotX, _rotY, _initRotAxisX;
+	[SerializeField] private Canvas canvas;
+	
+	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
 
 	private Tweener _punchHit;
+	
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
@@ -30,9 +32,12 @@ public class AimController : MonoBehaviour
 
 	private void Start ()
 	{
+		canvas.worldCamera = Camera.main;
+
 		Vector3 rot = transform.eulerAngles;
 
 		_initRotAxisX = rot.x;
+		_initRotAxisY = rot.y;
 		
 		_rotY = rot.y;
 		_rotX = rot.x;
@@ -63,7 +68,7 @@ public class AimController : MonoBehaviour
 		_rotY += inputDelta.x * aimSpeedHorizontal * Time.deltaTime;
 		_rotX -= inputDelta.y * aimSpeedVertical * Time.deltaTime;
  
-		_rotY = Mathf.Clamp(_rotY, -clampAngleHorizontal, clampAngleHorizontal);
+		_rotY = Mathf.Clamp(_rotY, _initRotAxisY - clampAngleHorizontal, _initRotAxisY + clampAngleHorizontal);
 		_rotX = Mathf.Clamp(_rotX, _initRotAxisX - clampAngleVertical, _initRotAxisX + clampAngleVertical);
 
 		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
@@ -72,9 +77,9 @@ public class AimController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, 0, 0), 1f);
+		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
 		_rotX = _initRotAxisX;
-		_rotY = 0f;
+		_rotY = _initRotAxisY;
 	}
 	
 	private void OnMoveToNextArea()

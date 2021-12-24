@@ -38,7 +38,7 @@ public class RagdollLimbController : MonoBehaviour
 		}
 		else
 		{
-			other.gameObject.GetComponent<BarrelController>().Explode();
+			other.gameObject.GetComponent<PropController>().Explode();
 		}
 	}
 }

@@ -64,11 +64,9 @@ public class HandController : MonoBehaviour
 					Vector3.MoveTowards(palm.root.position,
 						transform.position + (_isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
 						returnSpeed * Time.deltaTime);
-				
-				print("in side");
+
 				return;
 			}
-			print("out side");
 			
 			palm.localPosition = 
 				Vector3.MoveTowards(palm.localPosition,
@@ -124,7 +122,7 @@ public class HandController : MonoBehaviour
 			else
 			{
 				_targetInitPos.y = other.position.y;
-				other.root.GetComponent<BarrelController>()
+				other.root.GetComponent<PropController>()
 					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce);
 			}
 		}
@@ -135,11 +133,10 @@ public class HandController : MonoBehaviour
 		InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
-	public void StartCarryingBody(Transform target)
+	private void StartCarryingBody(Transform target)
 	{
 		_isCarryingBody = true;
 		
-		print("start carrying " + target);
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			palm.parent = raghu.AskParentForHook().transform;
@@ -169,6 +166,7 @@ public class HandController : MonoBehaviour
 		endValue.y = transform.root.position.y + (_isCarryingRagdoll ? 1f : 3f);
 		
 		root.DOMove(endValue, 0.2f);
+		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
 		
 		_anim.SetBool(IsPunching, true);
 		_rope.ReturnHome();

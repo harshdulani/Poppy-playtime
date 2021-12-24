@@ -78,7 +78,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowedTimeScale: 0.7
   timeRampDownDuration: 0.5
-  timeRampUpDuration: 0.5
+  timeRampUpDuration: 1
+  easing:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.4028061
+      outSlope: 0.4028061
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.66009486
+    - serializedVersion: 3
+      time: 0.026968032
+      value: -1.9801586
+      inSlope: -0.40727574
+      outSlope: -0.40727574
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.41855988
+    - serializedVersion: 3
+      time: 0.19940144
+      value: -1.8852029
+      inSlope: 6.9725227
+      outSlope: 6.9725227
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05055288
+    - serializedVersion: 3
+      time: 0.8174601
+      value: 0.35428637
+      inSlope: 1.5029328
+      outSlope: 1.5029328
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.88215965
+      value: 0.57023454
+      inSlope: 11.114282
+      outSlope: 11.114282
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2261419
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.0596447
+      outSlope: 2.0596447
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.05963944
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &9072408286195113102
 GameObject:
   m_ObjectHideFlags: 0

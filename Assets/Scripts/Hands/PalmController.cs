@@ -63,7 +63,6 @@ public class PalmController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		print(GetCurrentTransform());
 		myHand.HandReachTarget(GetCurrentTransform());
 		
 		SetCurrentTransform(null);
