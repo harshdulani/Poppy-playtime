@@ -27,17 +27,17 @@ public class HandController : MonoBehaviour
 	private void OnEnable()
 	{
 		if(!isLeftHand)
-		{
 			GameEvents.only.enterHitBox += OnEnterHitBox;
-		}
+		else
+			GameEvents.only.propDestroyed += OnPropDestroyed;
 	}
 	
 	private void OnDisable()
 	{
 		if (!isLeftHand)
-		{
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
-		}
+		else
+			GameEvents.only.propDestroyed -= OnPropDestroyed;
 	}
 	
 	private void Start()
@@ -65,8 +65,10 @@ public class HandController : MonoBehaviour
 						transform.position + (_isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
 						returnSpeed * Time.deltaTime);
 				
+				print("in side");
 				return;
 			}
+			print("out side");
 			
 			palm.localPosition = 
 				Vector3.MoveTowards(palm.localPosition,
@@ -138,6 +140,7 @@ public class HandController : MonoBehaviour
 	{
 		_isCarryingBody = true;
 		
+		print("start carrying " + target);
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			palm.parent = raghu.AskParentForHook().transform;
@@ -204,6 +207,12 @@ public class HandController : MonoBehaviour
 	{
 		if(!isLeftHand) return;
 
+		ResetPalmParent();
+	}
+
+	private void OnPropDestroyed(Transform target)
+	{
+		_isCarryingBody = false;
 		ResetPalmParent();
 	}
 

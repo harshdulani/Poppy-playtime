@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class BarrelController : MonoBehaviour
@@ -13,7 +14,7 @@ public class BarrelController : MonoBehaviour
 	private Rigidbody _rb;
 	private Collider _collider;
 	private Vector3 _previousPerlin, _previousPerlinRot;
-	private bool _inHitBox, _hasBeenPickedUp;
+	private bool _inHitBox, _hasBeenPickedUp, _amDestroyed;
 
 	private void OnEnable()
 	{
@@ -55,23 +56,32 @@ public class BarrelController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
+		
 		Invoke(nameof(Explode), .2f);
-		
-		if(!other.transform.root.CompareTag("Target")) return;
-		
-		other.transform.root.GetComponent<RagdollController>().GoRagdoll((other.contacts[0].point - transform.position).normalized);
+
+		if (!other.transform.root.CompareTag("Target")) return;
+
+		other.transform.root.GetComponent<RagdollController>()
+			.GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}
 
 	public void Explode()
 	{
+		if(_amDestroyed) return;
+		
 		_collider.enabled = false;
+		var parent = new GameObject(gameObject.name + " debris").transform;
+		
 		for(var i = 0; i < rigidbodies.Count; i++)
 		{
 			colliders[i].enabled = true;
-			rigidbodies[i].transform.parent = null;
+			rigidbodies[i].transform.parent = parent;
 			rigidbodies[i].isKinematic = false;
 			rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 5f);
 		}
+		GameEvents.only.InvokePropDestroy(transform);
+		_amDestroyed = true;
 	}
 
 	public void GetPunched(Vector3 direction, float punchForce)
@@ -84,8 +94,7 @@ public class BarrelController : MonoBehaviour
 	private IEnumerator DisablePiece(GameObject piece, float time)
 	{
 		yield return GameExtensions.GetWaiter(time);
-		
-		piece.SetActive(false);
+		piece.transform.DOScale(Vector3.zero, 1f).OnComplete(() => piece.SetActive(false));
 	}
 
 	private void OnEnterHitBox(Transform target)

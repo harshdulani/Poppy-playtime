@@ -20,6 +20,7 @@ public class GameEvents : MonoBehaviour
 	public Action<Transform> enterHitBox;
 	public Action punchHit;
 
+	public Action<Transform> propDestroyed;
 	public Action enemyKilled;
 
 	public Action moveToNextArea;
@@ -31,6 +32,8 @@ public class GameEvents : MonoBehaviour
 
 	public void InvokePunchHit() => punchHit?.Invoke();
 
+	public void InvokePropDestroy(Transform target) => propDestroyed?.Invoke(target);
+	
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
 
 	public void InvokeGameEnd() => gameEnd?.Invoke();

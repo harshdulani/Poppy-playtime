@@ -7,7 +7,6 @@ public class InputHandler : MonoBehaviour
 	public bool testingUsingTouch;
 
 	private HandController _leftHand, _rightHand;
-	private Transform _lastPickedTarget;
 
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
@@ -66,6 +65,7 @@ public class InputHandler : MonoBehaviour
 	{ 
 		if(!_tappedToPlay) return;
 		
+		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -132,9 +132,6 @@ public class InputHandler : MonoBehaviour
 	{
 		_rightHand.WaitForPunch(other.transform);
 	}
-	
-	public Transform GetCurrentTransform() => _lastPickedTarget;
-	public void SetCurrentTransform(Transform newT) => _lastPickedTarget = newT;
 
 	private void OnTapToPlay() => _tappedToPlay = true;
 

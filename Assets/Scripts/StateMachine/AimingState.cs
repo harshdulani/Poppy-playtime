@@ -38,7 +38,6 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget();
 			return;
 		}
-		
 		_aimer.FindTarget();
 	}
 
@@ -47,7 +46,7 @@ public class AimingState : InputStateBase
 		base.OnExit();
 		_aimer.SetReticleStatus(false);
 		
-		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(0.5905f));
+		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(_screenPercentageOnY));
 		if (!Physics.Raycast(ray, out var hit))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
@@ -65,7 +64,6 @@ public class AimingState : InputStateBase
 				return;
 			}
 		
-		InputHandler.Only.SetCurrentTransform(hit.transform);
 		InputHandler.AssignNewState(new InTransitState(false, hit), false);
 	}
 }
