@@ -65,7 +65,6 @@ public class InputHandler : MonoBehaviour
 	{ 
 		if(!_tappedToPlay) return;
 		
-		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;

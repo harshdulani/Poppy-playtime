@@ -6,17 +6,21 @@ public class RagdollController : MonoBehaviour
 	[SerializeField] private Rigidbody[] rigidbodies;
 	private Animator _anim;
 	public bool isRagdoll;
-	
+
 	private static readonly int IsFlying = Animator.StringToHash("isFlying");
+	private EnemyPatroller _patroller;
+
 
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
+		_patroller = GetComponent<EnemyPatroller>();
 	}
 
 	public void HoldInAir()
 	{
 		_anim.SetBool(IsFlying, true);
+		_patroller.ToggleAI(false);
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
 	}
@@ -26,6 +30,7 @@ public class RagdollController : MonoBehaviour
 		if(isRagdoll) return;
 		
 		_anim.enabled = false;
+		_anim.applyRootMotion = false;
 		isRagdoll = true;
 
 		foreach (var rb in rigidbodies)
