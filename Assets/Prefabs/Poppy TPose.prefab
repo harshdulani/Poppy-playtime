@@ -1404,7 +1404,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5203044148722267622}
   - component: {fileID: 2221613557823188892}
+  - component: {fileID: 9206247648727730289}
   - component: {fileID: 1931224729484197933}
+  - component: {fileID: 1147834440865098777}
   m_Layer: 0
   m_Name: Poppy TPose
   m_TagString: Target
@@ -1449,6 +1451,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!195 &9206247648727730289
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4863673993836867420}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 0.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1931224729484197933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1499,21 @@ MonoBehaviour:
   - {fileID: 5746122993984992041}
   - {fileID: 5746122994977476054}
   isRagdoll: 0
-  shouldWalk: 0
+--- !u!114 &1147834440865098777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4863673993836867420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09a7d1df444cda4e87497add58480d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 0}
+  shouldPatrol: 1
 --- !u!1 &5047182606700894910
 GameObject:
   m_ObjectHideFlags: 0

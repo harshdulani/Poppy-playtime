@@ -27,11 +27,17 @@ public class RagdollLimbController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		if(!_parent.isRagdoll) return;
+		if(!_parent.isRagdoll)
+		{
+			if(!other.transform.root.CompareTag("Player")) return;
+		
+			_parent.AttackEnemy();
+			GameEvents.only.InvokeEnemyReachPlayer();
+			return;
+		}
 		
 		if(other.transform.root == transform.root) return;
-		if(!other.collider.CompareTag("Target")) return;
-
+		if (!other.collider.CompareTag("Target")) return;
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
 		{
 			raghu.GetPunched(other.transform.position - transform.position, 10f);

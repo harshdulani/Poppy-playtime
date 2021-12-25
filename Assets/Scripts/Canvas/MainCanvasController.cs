@@ -1,21 +1,26 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainCanvasController : MonoBehaviour
 {
-	[SerializeField] private GameObject holdToAim, victory, nextLevel;
+	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry;
 	[SerializeField] private TextMeshProUGUI levelText;
+	[SerializeField] private Image red;
 
 	private bool _hasTapped;
 	
 	private void OnEnable()
 	{
+		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
 		GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
@@ -64,6 +69,11 @@ public class MainCanvasController : MonoBehaviour
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo") + 1);
 	}
 
+	private void OnEnemyReachPlayer()
+	{
+		Invoke(nameof(EnableLossObjects), 1f);
+	}
+	
 	private void OnGameEnd()
 	{
 		Invoke(nameof(EnableVictoryObjects), 1f);
@@ -73,5 +83,16 @@ public class MainCanvasController : MonoBehaviour
 	{
 		victory.SetActive(true);
 		nextLevel.SetActive(true);
+	}
+
+	private void EnableLossObjects()
+	{
+		red.enabled = true;
+		var originalColor = red.color;
+		red.color = Color.clear;
+		red.DOColor(originalColor, 1f);
+
+		defeat.SetActive(true);
+		retry.SetActive(true);
 	}
 }

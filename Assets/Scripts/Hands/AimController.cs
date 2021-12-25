@@ -20,14 +20,16 @@ public class AimController : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		GameEvents.only.punchHit += OnPunchHit;
+		
+		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 		GameEvents.only.punchHit -= OnPunchHit;
+		
+		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 	}
 
 	private void Start ()

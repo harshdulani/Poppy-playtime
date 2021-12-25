@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class HitBoxController : MonoBehaviour
 {
 	private bool _inHitBox;
@@ -16,8 +17,11 @@ public class HitBoxController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if (_inHitBox) return;
+		
 		if(!other.CompareTag("Target")) return;
-
+		
+		if(other.transform.root.TryGetComponent(out RagdollController raghu) && raghu.isWaitingForPunch) return;
+		
 		GameEvents.only.InvokeEnterHitBox(other.transform);
 		InputHandler.Only.WaitForPunch(other.transform);
 		_inHitBox = true;

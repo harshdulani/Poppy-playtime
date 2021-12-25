@@ -87,7 +87,6 @@ public class PropController : MonoBehaviour
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
 		_rb.isKinematic = false;
-		//print(direction);
 		_rb.AddForce(direction * punchForce, ForceMode.Impulse);
 	}
 

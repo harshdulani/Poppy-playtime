@@ -24,6 +24,8 @@ public class GameEvents : MonoBehaviour
 	public Action enemyKilled;
 
 	public Action moveToNextArea;
+
+	public Action enemyReachPlayer;
 	public Action gameEnd;
 
 
@@ -35,7 +37,9 @@ public class GameEvents : MonoBehaviour
 	public void InvokePropDestroy(Transform target) => propDestroyed?.Invoke(target);
 	
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
-
+	
+	public void InvokeEnemyReachPlayer() => enemyReachPlayer?.Invoke();
+	
 	public void InvokeGameEnd() => gameEnd?.Invoke();
 
 	public void InvokeNextArea() => moveToNextArea?.Invoke();

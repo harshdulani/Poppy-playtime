@@ -19,7 +19,6 @@ public class PalmController : MonoBehaviour
 		else
 		{
 			GameEvents.only.punchHit += OnPunchHit;
-
 		}
 	}
 

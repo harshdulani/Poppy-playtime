@@ -11,12 +11,16 @@ public class CameraController : MonoBehaviour
 	{
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
+		
+		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
+		
+		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 	}
 
 	private void Start()
@@ -25,14 +29,29 @@ public class CameraController : MonoBehaviour
 
 		_normalFov = _me.fieldOfView;
 	}
+	
+	private void ZoomNormal()
+	{
+		DOTween.To(() => _me.fieldOfView, value => _me.fieldOfView = value, _normalFov, zoomDuration);
+	}
 
-	private void OnEnterHitBox(Transform target)
+	private void ZoomAction()
 	{
 		DOTween.To(() => _me.fieldOfView, value => _me.fieldOfView = value, actionFov, zoomDuration);
 	}
 
+	private void OnEnterHitBox(Transform target)
+	{
+		ZoomAction();
+	}
+
 	private void OnPunchHit()
 	{
-		DOTween.To(() => _me.fieldOfView, value => _me.fieldOfView = value, _normalFov, zoomDuration);
+		ZoomNormal();
+	}
+
+	private void OnEnemyReachPlayer()
+	{
+		ZoomAction();
 	}
 }

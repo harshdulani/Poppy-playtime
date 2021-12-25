@@ -66,7 +66,6 @@ public class LevelFlowController : MonoBehaviour
 
 	public bool IsThisLastEnemy()
 	{
-		print(_totalEnemiesRemaining);
 		return _totalEnemiesRemaining == 1;
 	}
 }

@@ -13,11 +13,11 @@ public class HandController : MonoBehaviour
 	private static Animation _armAnimation;
 
 	private static bool _isCarryingRagdoll;
-	private static bool _isCarryingBody;
+	public static bool IsCarryingBody;
 	
-	private Transform _palmParentInit;
+	private Transform _palmParentInit,_lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
-	private Vector3 _palmInitLocalPos, _lastHitPoint;
+	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving;
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	
@@ -48,7 +48,8 @@ public class HandController : MonoBehaviour
 				_rope = rope;
 		
 		_armAnimation = transform.root.GetComponent<Animation>();
-		
+
+		_initPosSet = false;
 		_palmParentInit = palm.parent;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
@@ -58,19 +59,19 @@ public class HandController : MonoBehaviour
 	{
 		if (goHome)
 		{
-			if (_isCarryingBody)
+			if (IsCarryingBody)
 			{
-				palm.root.position = 
-					Vector3.MoveTowards(palm.root.position,
-						transform.position + (_isCarryingRagdoll ? Vector3.down * 1.5f : Vector3.zero),
-						returnSpeed * Time.deltaTime);
+				var direction = (_palmParentInit.position - palm.position).normalized;
+				//palm.root.position += direction * (returnSpeed * Time.deltaTime);
+				palm.localPosition =
+					Vector3.MoveTowards(palm.localPosition, Vector3.zero, returnSpeed * Time.deltaTime);
 
 				return;
 			}
 			
 			palm.localPosition = 
 				Vector3.MoveTowards(palm.localPosition,
-				_palmInitLocalPos,
+				Vector3.zero, 
 				returnSpeed * Time.deltaTime);
 
 			palm.localRotation =
@@ -81,15 +82,16 @@ public class HandController : MonoBehaviour
 			if (!_initPosSet)
 			{
 				_targetInitPos = hit.transform.position;
+				_lastTarget = hit.transform;
+				_lastOffset = hit.point - hit.transform.position;
+				_lastNormal = Quaternion.LookRotation(-hit.normal);
+
 				_initPosSet = true;
 			}
 			
-			_lastHitPoint = hit.point;
-			_lastNormal = Quaternion.LookRotation(-hit.normal);
-			
 			palm.position =
 				Vector3.MoveTowards(palm.position,
-				_lastHitPoint,
+				_lastTarget.position + _lastOffset,
 				 moveSpeed * Time.deltaTime);
 
 			palm.rotation = 
@@ -101,7 +103,7 @@ public class HandController : MonoBehaviour
 
 	public void HandReachTarget(Transform other)
 	{
-		if (_isCarryingBody) return;
+		if (IsCarryingBody) return;
 		
 		if(isLeftHand)
 		{
@@ -118,7 +120,7 @@ public class HandController : MonoBehaviour
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
 			if(_isCarryingRagdoll)
-				other.GetComponent<RagdollLimbController>().GetPunched((other.position - transform.position).normalized, punchForce);
+				other.GetComponent<RagdollLimbController>().GetPunched((_targetInitPos - transform.position).normalized, punchForce);
 			else
 			{
 				_targetInitPos.y = other.position.y;
@@ -135,16 +137,16 @@ public class HandController : MonoBehaviour
 
 	private void StartCarryingBody(Transform target)
 	{
-		_isCarryingBody = true;
+		IsCarryingBody = true;
 		
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
-			palm.parent = raghu.AskParentForHook().transform;
+			raghu.AskParentForHook().transform.root.parent = palm;
 			_isCarryingRagdoll = true;
 		}
 		else
 		{
-			palm.parent = target.transform;
+			target.transform.parent = palm;
 			_isCarryingRagdoll = false;
 		}
 	}
@@ -158,20 +160,19 @@ public class HandController : MonoBehaviour
 	{
 		if (!other) return;
 		
+		InputHandler.Only.StopCarryingBody();
+		
 		var root = other.root;
 
 		var direction = (root.position - transform.position).normalized;
 		
-		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance);
-		endValue.y = transform.root.position.y + (_isCarryingRagdoll ? 1f : 3f);
-		
+		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up.normalized * (_isCarryingRagdoll ? -.5f : 1f);
+
 		root.DOMove(endValue, 0.2f);
 		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
 		
 		_anim.SetBool(IsPunching, true);
 		_rope.ReturnHome();
-		
-		InputHandler.Only.StopCarryingBody();
 	}
 
 	public void GivePunch()
@@ -194,10 +195,13 @@ public class HandController : MonoBehaviour
 	{
 		if(!isLeftHand) return;
 		
-		palm.parent = _palmParentInit;
+		if(palm.childCount > 2)
+			palm.GetChild(2).parent = null;
+
+		//palm.parent = _palmParentInit;
 		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
 		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
-		_isCarryingBody = false;
+		IsCarryingBody = false;
 	}
 
 	private void OnEnterHitBox(Transform target)
@@ -209,8 +213,9 @@ public class HandController : MonoBehaviour
 
 	private void OnPropDestroyed(Transform target)
 	{
-		_isCarryingBody = false;
+		IsCarryingBody = false;
 		ResetPalmParent();
+		ClearInitTargetPos();
 	}
 
 	public AimController GetAimController()

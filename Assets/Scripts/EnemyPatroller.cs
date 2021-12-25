@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatroller : MonoBehaviour
 {
 	[SerializeField] private Transform[] waypoints;
@@ -20,6 +21,16 @@ public class EnemyPatroller : MonoBehaviour
 	
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
 
+	private void OnEnable()
+	{
+		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
+	}
+
 	private void Start()
 	{
 		_agent = GetComponent<NavMeshAgent>();
@@ -31,7 +42,7 @@ public class EnemyPatroller : MonoBehaviour
 
 	private void Update()
 	{
-		print(_agent.isStopped + ", " + _agent.hasPath);
+		if(!shouldPatrol) return;
 		
 		if(Vector3.Distance(transform.position, _currentDest) > 0.5f) return;
 
@@ -46,6 +57,14 @@ public class EnemyPatroller : MonoBehaviour
 
 	public void ToggleAI(bool status)
 	{
+		shouldPatrol = status;
 		_agent.enabled = status;
+		_anim.SetBool(IsWalking, status);
+
+	}
+
+	private void OnEnemyReachPlayer()
+	{
+		ToggleAI(false);
 	}
 }
