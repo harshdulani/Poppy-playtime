@@ -75,6 +75,7 @@ public class RagdollController : MonoBehaviour
 	
 	private void OnEnemyReachPlayer()
 	{
+		if(_isAttacking) return;
 		_anim.SetBool(HasWon, true);
 	}
 }

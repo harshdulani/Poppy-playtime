@@ -12,8 +12,8 @@ public class HandController : MonoBehaviour
 	private static RopeController _rope;
 	private static Animation _armAnimation;
 
-	private static bool _isCarryingRagdoll;
-	public static bool IsCarryingBody;
+	public static bool _isCarryingRagdoll;
+	private static bool IsCarryingBody;
 	
 	private Transform _palmParentInit,_lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;

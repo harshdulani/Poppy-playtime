@@ -10,7 +10,7 @@ public class MainCanvasController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI levelText;
 	[SerializeField] private Image red;
 
-	private bool _hasTapped;
+	private bool _hasTapped, _hasLost;
 	
 	private void OnEnable()
 	{
@@ -87,6 +87,8 @@ public class MainCanvasController : MonoBehaviour
 
 	private void EnableLossObjects()
 	{
+		if (_hasLost) return;
+		
 		red.enabled = true;
 		var originalColor = red.color;
 		red.color = Color.clear;
@@ -94,5 +96,6 @@ public class MainCanvasController : MonoBehaviour
 
 		defeat.SetActive(true);
 		retry.SetActive(true);
+		_hasLost = true;
 	}
 }

@@ -6,7 +6,7 @@ public class PunchAnimationController : MonoBehaviour
 
 	public void PunchSlowMoOnAnimation()
 	{
-		TimeController.only.RevertTime(LevelFlowController.only.IsThisLastEnemy());
+		TimeController.only.RevertTime(HandController._isCarryingRagdoll && LevelFlowController.only.IsThisLastEnemy());
 	}
 
 	public void GivePunchOnAnimation()

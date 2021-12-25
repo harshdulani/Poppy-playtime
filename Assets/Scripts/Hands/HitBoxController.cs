@@ -20,8 +20,9 @@ public class HitBoxController : MonoBehaviour
 		
 		if(!other.CompareTag("Target")) return;
 		
-		if(other.transform.root.TryGetComponent(out RagdollController raghu) && raghu.isWaitingForPunch) return;
+		if(other.transform.root.TryGetComponent(out RagdollController raghu) && !raghu.isWaitingForPunch) return;
 		
+		print(1);
 		GameEvents.only.InvokeEnterHitBox(other.transform);
 		InputHandler.Only.WaitForPunch(other.transform);
 		_inHitBox = true;

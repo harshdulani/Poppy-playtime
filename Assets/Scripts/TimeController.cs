@@ -18,6 +18,8 @@ public class TimeController : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
+
+		Time.timeScale = _defaultTimeScale;
 	}
 
 	private void Awake()

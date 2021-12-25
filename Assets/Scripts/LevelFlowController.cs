@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class LevelFlowController : MonoBehaviour
@@ -41,6 +42,8 @@ public class LevelFlowController : MonoBehaviour
 
 		foreach (var area in enemiesInArea)
 			_totalEnemiesRemaining += area;
+
+		DOTween.KillAll();
 	}
 
 	private void OnEnemyKilled()

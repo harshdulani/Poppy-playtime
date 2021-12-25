@@ -27,6 +27,8 @@ public class RagdollLimbController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		//working on this, refer nbk
+		print(other.gameObject);
 		if(!_parent.isRagdoll)
 		{
 			if(!other.transform.root.CompareTag("Player")) return;

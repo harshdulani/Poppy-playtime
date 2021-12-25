@@ -23,11 +23,13 @@ public class EnemyPatroller : MonoBehaviour
 
 	private void OnEnable()
 	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 	}
 
@@ -35,18 +37,17 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		_agent = GetComponent<NavMeshAgent>();
 		_anim = GetComponent<Animator>();
-		
-		_anim.SetBool(IsWalking, shouldPatrol);
-		SetNextWaypoint();
 	}
 
 	private void Update()
 	{
 		if(!shouldPatrol) return;
-		
-		if(Vector3.Distance(transform.position, _currentDest) > 0.5f) return;
 
-		SetNextWaypoint();
+		var distance = Vector3.Distance(transform.position, _currentDest); 
+		if(distance > 0.5f) return;
+
+		if(waypoints.Length > 1)
+			SetNextWaypoint();
 	}
 
 	private void SetNextWaypoint()
@@ -61,6 +62,12 @@ public class EnemyPatroller : MonoBehaviour
 		_agent.enabled = status;
 		_anim.SetBool(IsWalking, status);
 
+	}
+
+	private void OnTapToPlay()
+	{
+		_anim.SetBool(IsWalking, shouldPatrol);
+		SetNextWaypoint();
 	}
 
 	private void OnEnemyReachPlayer()
