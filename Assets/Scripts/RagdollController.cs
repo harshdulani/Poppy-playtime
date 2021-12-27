@@ -23,11 +23,13 @@ public class RagdollController : MonoBehaviour
 
 	private void OnEnable()
 	{
+		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 	}
 	
@@ -39,14 +41,7 @@ public class RagdollController : MonoBehaviour
 		_anim.SetBool(IsMirrored, Random.value > 0.5f);
 		
 		if(isPoppy) return;
-
-		var random = Random.Range(0, 1);
-		if(random < 0.33f)
-			_anim.SetTrigger(Idle1);
-		else if(random < 0.66f)
-			_anim.SetTrigger(Idle2);
-		else
-			_anim.SetTrigger(Idle3);
+		PlayRandomAnim();
 	}
 
 	public void HoldInAir()
@@ -78,6 +73,17 @@ public class RagdollController : MonoBehaviour
 			rb.tag = "Untagged";
 	}
 
+	public void PlayRandomAnim()
+	{
+		var random = Random.Range(0f, 1f);
+		if(random < 0.33f)
+			_anim.SetTrigger(Idle1);
+		else if(random < 0.66f)
+			_anim.SetTrigger(Idle2);
+		else
+			_anim.SetTrigger(Idle3);
+	}
+	
 	public void AttackEnemy()
 	{
 		if(_isAttacking) return;
@@ -85,6 +91,11 @@ public class RagdollController : MonoBehaviour
 		_anim.SetTrigger(Random.value > 0.5f ? Attack1 : Attack2);
 		_patroller.ToggleAI(false);
 		_isAttacking = true;
+	}
+	
+	private void OnMoveToNextArea()
+	{
+		PlayRandomAnim();
 	}
 	
 	private void OnEnemyReachPlayer()

@@ -6,13 +6,13 @@ public class AimController : MonoBehaviour
 {
 	[SerializeField] private float aimSpeedVertical, aimSpeedHorizontal, clampAngleVertical, clampAngleHorizontal;
 	[SerializeField] private Color findTargetColor, missingTargetColor;
-	[SerializeField] private Image reticle;
+	private Image _reticle;
 	
 	//the magic number percentage 0.5905f is the screen Y pos when you center the crosshair on anchorY as minY = 0.565, maxY = 0.615
 	//0.5899 for 0.55, 0.63
 	[Header("Aiming")] public float screenPercentageOnY = 0.5899f;
 
-	[SerializeField] private Canvas canvas;
+	private Canvas _canvas;
 	
 	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
 
@@ -34,8 +34,11 @@ public class AimController : MonoBehaviour
 
 	private void Start ()
 	{
-		canvas.worldCamera = Camera.main;
+		_canvas = GameObject.FindGameObjectWithTag("AimCanvas").GetComponent<Canvas>();
+		_canvas.worldCamera = Camera.main;
 
+		_reticle = _canvas.transform.GetChild(0).GetComponent<Image>();
+		
 		Vector3 rot = transform.eulerAngles;
 
 		_initRotAxisX = rot.x;
@@ -52,17 +55,17 @@ public class AimController : MonoBehaviour
 
 	public void SetReticleStatus(bool isOn)
 	{
-		reticle.enabled = isOn;
+		_reticle.enabled = isOn;
 	}
 
 	public void FindTarget()
     {
-	    reticle.color = findTargetColor;
+	    _reticle.color = findTargetColor;
 	}
 
     public void LoseTarget()
     {
-	    reticle.color = missingTargetColor;
+	    _reticle.color = missingTargetColor;
     }
 
     public void Aim(Vector2 inputDelta)

@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatroller : MonoBehaviour
 {
-	[SerializeField] private Transform[] waypoints;
+	[SerializeField] private int myPatrolArea;
+	[SerializeField] private List<Transform> waypoints;
 	public bool shouldPatrol;
 	
 	private NavMeshAgent _agent;
@@ -14,7 +16,7 @@ public class EnemyPatroller : MonoBehaviour
 	private int CurrentWayPoint
 	{
 		get => _currentWayPoint;
-		set => _currentWayPoint = value % waypoints.Length;
+		set => _currentWayPoint = value % waypoints.Count;
 	}
 
 	private int _currentWayPoint;
@@ -24,12 +26,16 @@ public class EnemyPatroller : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		
 		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		
 		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 	}
 
@@ -37,6 +43,9 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		_agent = GetComponent<NavMeshAgent>();
 		_anim = GetComponent<Animator>();
+		
+		if(waypoints.Count == 0)
+			waypoints.Add(GameObject.FindGameObjectWithTag("Player").transform);
 	}
 
 	private void Update()
@@ -46,7 +55,7 @@ public class EnemyPatroller : MonoBehaviour
 		var distance = Vector3.Distance(transform.position, _currentDest); 
 		if(distance > 0.5f) return;
 
-		if(waypoints.Length > 2)
+		if(waypoints.Count > 2)
 			SetNextWaypoint();
 	}
 
@@ -61,11 +70,12 @@ public class EnemyPatroller : MonoBehaviour
 		shouldPatrol = status;
 		_agent.enabled = status;
 		_anim.SetBool(IsWalking, status);
-
 	}
 
 	private void OnTapToPlay()
 	{
+		if(myPatrolArea > 0) return;
+		
 		_anim.SetBool(IsWalking, shouldPatrol);
 		SetNextWaypoint();
 	}
@@ -73,5 +83,12 @@ public class EnemyPatroller : MonoBehaviour
 	private void OnEnemyReachPlayer()
 	{
 		ToggleAI(false);
+	}
+
+	private void OnMoveToNextArea()
+	{
+		if(myPatrolArea != LevelFlowController.only.currentArea) return;
+		SetNextWaypoint();
+		ToggleAI(true);
 	}
 }
