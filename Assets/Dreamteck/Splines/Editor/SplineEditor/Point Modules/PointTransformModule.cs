@@ -42,7 +42,7 @@ namespace Dreamteck.Splines.Editor
             switch (editSpace)
             {
                 case EditSpace.World: rotation = Quaternion.identity; break;
-                case EditSpace.Transform: rotation = editor.transform.rotation; break;
+                case EditSpace.Transform: rotation = TransformUtility.GetRotation(editor.matrix); break;
                 case EditSpace.Spline:
                     if (editor.evaluate == null)
                     {

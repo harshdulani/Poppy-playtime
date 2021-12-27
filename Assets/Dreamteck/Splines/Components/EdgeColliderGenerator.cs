@@ -3,7 +3,7 @@ using System.Collections;
 using System.Threading;
 namespace Dreamteck.Splines
 {
-    [AddComponentMenu("Dreamteck/Splines/Edge Collider Generator")]
+    [AddComponentMenu("Dreamteck/Splines/Users/Edge Collider Generator")]
     [RequireComponent(typeof(EdgeCollider2D))]
     public class EdgeColliderGenerator : SplineUser
     {
@@ -93,7 +93,6 @@ namespace Dreamteck.Splines
         protected override void Build()
         {
             base.Build();
-            if (sampleCount == 0) return;
             if (vertices.Length != sampleCount) vertices = new Vector2[sampleCount];
             bool hasOffset = offset != 0f;
             for (int i = 0; i < sampleCount; i++)

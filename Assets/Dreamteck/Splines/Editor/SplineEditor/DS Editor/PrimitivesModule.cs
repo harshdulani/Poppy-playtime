@@ -1,6 +1,5 @@
 namespace Dreamteck.Splines.Editor
 {
-#if DREAMTECK_SPLINES
     using System;
     using UnityEngine;
     using Dreamteck.Splines;
@@ -221,8 +220,12 @@ namespace Dreamteck.Splines.Editor
             ApplyDialog();
             RecordUndo("Spline Preset");
             presets = SplinePreset.LoadAll();
+            Debug.Log("Load Presets");
             presetNames = new string[presets.Length];
-            for (int i = 0; i < presets.Length; i++) presetNames[i] = presets[i].name;
+            for (int i = 0; i < presets.Length; i++)
+            {
+                presetNames[i] = presets[i].name;
+            }
             ClearSelection();
         }
 
@@ -250,5 +253,4 @@ namespace Dreamteck.Splines.Editor
             return avg;
         }
     }
-#endif
 }

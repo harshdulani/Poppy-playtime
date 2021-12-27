@@ -41,8 +41,7 @@ namespace Dreamteck
         public static readonly Color darkColor = Color.white;
         public static readonly Color borderColor = Color.white;
 
-        private static string[] layerNames = new string[0];
-        private static int[] layerIndices = new int[0];
+        private static List<int> layerNumbers = new List<int>();
 
         public static readonly GUIStyle labelText = null;
         private static float scale = -1f;
@@ -93,47 +92,43 @@ namespace Dreamteck
             GUI.Label(position, text, style);
         }
 
-        public static LayerMask LayermaskField(string name, LayerMask input)
+        public static LayerMask LayermaskField(string label, LayerMask layerMask)
         {
-            int layersCount = 0;
-            for (int i = 0; i < 32; i++)
+            string[] layers = UnityEditorInternal.InternalEditorUtility.layers;
+
+            layerNumbers.Clear();
+
+            for (int i = 0; i < layers.Length; i++)
             {
-                if (LayerMask.LayerToName(i) != "") layersCount++;
+                layerNumbers.Add(LayerMask.NameToLayer(layers[i]));
             }
-            if(layerNames.Length != layersCount)
+
+            int maskWithoutEmpty = 0;
+            for (int i = 0; i < layerNumbers.Count; i++)
             {
-                layerNames = new string[layersCount];
-                layerIndices = new int[layersCount];
-            }
-            int index = 0;
-            for (int i = 0; i < 32; i++)
-            {
-                string layerName = LayerMask.LayerToName(i);
-                if (layerName != null)
+                if (((1 << layerNumbers[i]) & layerMask.value) > 0)
                 {
-                    if (index >= layerName.Length) continue;
-                    layerNames[index] = layerName;
-                    layerIndices[index] = i;
-                    index++;
+                    maskWithoutEmpty |= (1 << i);
                 }
             }
-            int maskWithoutEmpty = 0;
-            for (int i = 0; i < layerIndices.Length; i++)
-            {
-                if (((1 << layerIndices[i]) & input.value) > 0)
-                    maskWithoutEmpty |= (1 << i);
-            }
-            maskWithoutEmpty = EditorGUILayout.MaskField(name, maskWithoutEmpty, layerNames);
+
+            maskWithoutEmpty = EditorGUILayout.MaskField(label, maskWithoutEmpty, layers);
+
             int mask = 0;
-            for (int i = 0; i < layerIndices.Length; i++)
+            for (int i = 0; i < layerNumbers.Count; i++)
             {
                 if ((maskWithoutEmpty & (1 << i)) > 0)
-                    mask |= (1 << layerIndices[i]);
+                {
+                    mask |= (1 << layerNumbers[i]);
+                }
             }
-            return mask;
+
+            layerMask.value = mask;
+
+            return layerMask;
         }
 
-        public static bool DropArea<T>(Rect rect, out T[] content)
+        public static bool DropArea<T>(Rect rect, out T[] content, bool acceptProjectAssets = false)
         {
             content = new T[0];
             switch (Event.current.type)
@@ -153,13 +148,7 @@ namespace Dreamteck
                             if (dragged_object is GameObject)
                             {
                                 GameObject gameObject = (GameObject)dragged_object;
-#if UNITY_2018_3_OR_NEWER
-                                bool isNotAprefab = PrefabUtility.GetPrefabAssetType(gameObject) == PrefabAssetType.NotAPrefab;
-#else
-                                bool isNotAprefab = PrefabUtility.GetPrefabType(gameObject) == PrefabType.None;
-#endif
-
-                                if (isNotAprefab)
+                                if (acceptProjectAssets || !AssetDatabase.Contains(gameObject))
                                 {
                                     if (gameObject.GetComponent<T>() != null) contentList.Add(gameObject.GetComponent<T>());
                                 }

@@ -63,7 +63,7 @@ namespace Dreamteck.Splines.Editor
             Camera editorCamera = SceneView.currentDrawingSceneView.camera;
             for (int i = 0; i < availableMergeComputers.Length; i++)
             {
-                SplineDrawer.DrawSplineComputer(availableMergeComputers[i]);
+                DSSplineDrawer.DrawSplineComputer(availableMergeComputers[i]);
                 SplinePoint startPoint = availableMergeComputers[i].GetPoint(0);
                 SplinePoint endPoint = availableMergeComputers[i].GetPoint(availableMergeComputers[i].pointCount - 1);
                 Handles.color = availableMergeComputers[i].editorPathColor;

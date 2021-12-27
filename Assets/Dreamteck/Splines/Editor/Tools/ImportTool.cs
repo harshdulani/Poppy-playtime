@@ -171,7 +171,7 @@ namespace Dreamteck.Splines.Editor
         {
             for (int i = 0; i < imported.Count; i++)
             {
-                SplineDrawer.DrawSplineComputer(imported[i]);
+                DSSplineDrawer.DrawSplineComputer(imported[i]);
             }
         }
 
@@ -304,8 +304,14 @@ namespace Dreamteck.Splines.Editor
                     transformed[j].normal = lookRot * transformed[j].normal;
                 }
                 imported[i].SetPoints(transformed);
-                if(alwaysDraw) SplineDrawer.RegisterComputer(imported[i]);
-                else SplineDrawer.UnregisterComputer(imported[i]);
+                if (alwaysDraw)
+                {
+                    DSSplineDrawer.RegisterComputer(imported[i]);
+                }
+                else
+                {
+                    DSSplineDrawer.UnregisterComputer(imported[i]);
+                }
             }
             SceneView.RepaintAll();
         }

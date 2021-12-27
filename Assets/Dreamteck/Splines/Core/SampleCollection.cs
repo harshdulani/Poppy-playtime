@@ -19,25 +19,15 @@ namespace Dreamteck.Splines
             get { return Count > 0; }
         }
         public SplineComputer.SampleMode sampleMode = SplineComputer.SampleMode.Default;
+
+        private SplineSample _workSample = new SplineSample();
+
+
+        //legacy properties
+        [HideInInspector]
         public double clipFrom = 0.0, clipTo = 1.0;
-
+        [HideInInspector]
         public bool loopSamples = false;
-
-        public bool samplesAreLooped
-        {
-            get
-            {
-                return loopSamples && clipFrom >= clipTo;
-            }
-        }
-        public double span
-        {
-            get
-            {
-                if (samplesAreLooped) return (1.0 - clipFrom) + clipTo;
-                return clipTo - clipFrom;
-            }
-        }
 
         public SampleCollection()
         {
@@ -49,11 +39,9 @@ namespace Dreamteck.Splines
             samples = input.samples;
             optimizedIndices = input.optimizedIndices;
             sampleMode = input.sampleMode;
-            clipFrom = input.clipFrom;
-            clipTo = input.clipTo;
         }
 
-        public int GetClippedSampleCount(out int startIndex, out int endIndex)
+        public int GetClippedSampleCount(double clipFrom, double clipTo, out int startIndex, out int endIndex)
         {
             startIndex = endIndex = 0;
             if (sampleMode == SplineComputer.SampleMode.Default)
@@ -68,7 +56,8 @@ namespace Dreamteck.Splines
                 GetSamplingValues(clipTo, out endIndex, out clipToLerp);
                 if (clipToLerp > 0.0 && endIndex < Count - 1) endIndex++;
             }
-            if (samplesAreLooped) //Handle looping segments
+
+            if (clipTo < clipFrom) //Handle looping segments
             {
                 int toSamples = endIndex + 1;
                 int fromSamples = Count - startIndex;
@@ -76,81 +65,6 @@ namespace Dreamteck.Splines
             }
 
             return endIndex - startIndex + 1;
-        }
-
-        /// <summary>
-        /// Takes a regular 0-1 percent mapped to the start and end of the spline and maps it to the clipFrom and clipTo valies. Useful for working with clipped samples
-        /// </summary>
-        /// <param name="percent"></param>
-        /// <returns></returns>
-        public double ClipPercent(double percent)
-        {
-            ClipPercent(ref percent);
-            return percent;
-        }
-
-        /// <summary>
-        /// Takes a regular 0-1 percent mapped to the start and end of the spline and maps it to the clipFrom and clipTo valies. Useful for working with clipped samples
-        /// </summary>
-        /// <param name="percent"></param>
-        /// <returns></returns>
-        public void ClipPercent(ref double percent)
-        {
-            if (Count == 0)
-            {
-                percent = 0.0;
-                return;
-            }
-
-            if (samplesAreLooped)
-            {
-                if (percent >= clipFrom && percent <= 1.0) { percent = DMath.InverseLerp(clipFrom, clipFrom + span, percent); }//If in the range clipFrom - 1.0
-                else if (percent <= clipTo) { percent = DMath.InverseLerp(clipTo - span, clipTo, percent); } //if in the range 0.0 - clipTo
-                else
-                {
-                    //Find the nearest clip start
-                    if (DMath.InverseLerp(clipTo, clipFrom, percent) < 0.5) percent = 1.0;
-                    else percent = 0.0;
-                }
-            }
-            else percent = DMath.InverseLerp(clipFrom, clipTo, percent);
-        }
-
-        public double UnclipPercent(double percent)
-        {
-            UnclipPercent(ref percent);
-            return percent;
-        }
-
-        public void UnclipPercent(ref double percent)
-        {
-            if(percent == 0.0)
-            {
-                percent = clipFrom;
-                return;
-            } else if(percent == 1.0)
-            {
-                percent = clipTo;
-                return;
-            }
-            if (samplesAreLooped)
-            {
-                double fromLength = (1.0 - clipFrom) / span;
-                if (fromLength == 0.0)
-                {
-                    percent = 0.0;
-                    return;
-                }
-                if (percent < fromLength) percent = DMath.Lerp(clipFrom, 1.0, percent / fromLength);
-                else if (clipTo == 0.0)
-                {
-                    percent = 0.0;
-                    return;
-                }
-                else percent = DMath.Lerp(0.0, clipTo, (percent - fromLength) / (clipTo / span));
-            }
-            else percent = DMath.Lerp(clipFrom, clipTo, percent);
-            percent = DMath.Clamp01(percent);
         }
 
         public void GetSamplingValues(double percent, out int sampleIndex, out double lerp)
@@ -171,7 +85,6 @@ namespace Dreamteck.Splines
                     //Percent 0-1 of the sample between the sampleIndices' percents
                     lerpPercent = DMath.Lerp(sampleIndexPercent, nextSampleIndexPercent, indexLerp);
                 }
-                //Debug.Log(percent + " sample index " + index + " -> " + sampleIndex);
                 if (sampleIndex < Count - 1) lerp = DMath.InverseLerp(samples[sampleIndex].percent, samples[sampleIndex + 1].percent, lerpPercent);
                 return;
             }
@@ -189,7 +102,6 @@ namespace Dreamteck.Splines
         public Vector3 EvaluatePosition(double percent)
         {
             if (!hasSamples) return Vector3.zero;
-            UnclipPercent(ref percent);
             int index;
             double lerp;
             GetSamplingValues(percent, out index, out lerp);
@@ -222,7 +134,6 @@ namespace Dreamteck.Splines
                 result = new SplineSample();
                 return;
             }
-            UnclipPercent(ref percent);
             int index;
             double lerp;
             GetSamplingValues(percent, out index, out lerp);
@@ -291,14 +202,14 @@ namespace Dreamteck.Splines
         /// /// <param name="distance">The distance to travel</param>
         /// <param name="direction">The direction towards which to move</param>
         /// <returns></returns>
-        public double Travel(double start, float distance, Spline.Direction direction, out float moved)
+        public double Travel(double start, float distance, Spline.Direction direction, out float moved, double clipFrom = 0.0, double clipTo = 1.0)
         {
             moved = 0f;
             if (!hasSamples) return 0.0;
             if (direction == Spline.Direction.Forward && start >= 1.0) return clipTo;
             else if (direction == Spline.Direction.Backward && start <= 0.0) return clipFrom;
 
-            double lastPercent = UnclipPercent(DMath.Clamp01(start));
+            double lastPercent = start;
             if (distance == 0f) return lastPercent;
             Vector3 lastPos = EvaluatePosition(start);
             int sampleIndex;
@@ -308,12 +219,16 @@ namespace Dreamteck.Splines
             float lastDistance = 0f;
             int minIndex = 0;
             int maxIndex = Count - 1;
+
+            bool samplesAreLooped = clipTo < clipFrom;
+
             if (samplesAreLooped)
             {
                 GetSamplingValues(clipFrom, out minIndex, out lerp);
                 GetSamplingValues(clipTo, out maxIndex, out lerp);
                 if (lerp > 0.0) maxIndex++;
             }
+
             while (moved < distance)
             {
                 lastDistance = Vector3.Distance(samples[sampleIndex].position, lastPos);
@@ -355,6 +270,104 @@ namespace Dreamteck.Splines
             float moveExcess = 0f;
             if (moved > distance) moveExcess = moved - distance;
 
+
+            double lerpPercent = 0.0;
+            if(lastDistance > 0.0)
+            {
+                lerpPercent = moveExcess / lastDistance;
+            }
+            double p = DMath.Lerp(lastPercent, samples[sampleIndex].percent, 1f - lerpPercent);
+            moved -= moveExcess;
+            return p;
+        }
+
+        /// <summary>
+        /// Returns the percent from the spline at a given distance from the start point while applying a local <paramref name="offset"/> to each sample
+        /// The offset is multiplied by the sample sizes
+        /// </summary>
+        /// <param name="start">The start point</param>
+        /// /// <param name="distance">The distance to travel</param>
+        /// <param name="direction">The direction towards which to move</param>
+        /// <returns></returns>
+        public double TravelWithOffset(double start, float distance, Spline.Direction direction, Vector3 offset, out float moved, double clipFrom = 0.0, double clipTo = 1.0)
+        {
+            moved = 0f;
+            if (!hasSamples) return 0.0;
+            if (direction == Spline.Direction.Forward && start >= 1.0) return clipTo;
+            else if (direction == Spline.Direction.Backward && start <= 0.0) return clipFrom;
+
+            double lastPercent = start;
+            if (distance == 0f) return lastPercent;
+
+            Evaluate(start, _workSample);
+            Vector3 lastPos = _workSample.position + _workSample.up * (offset.y * _workSample.size) + _workSample.right * (offset.x * _workSample.size) + _workSample.forward * (offset.z * _workSample.size);
+
+            int sampleIndex;
+            double lerp;
+            GetSamplingValues(lastPercent, out sampleIndex, out lerp);
+            if (direction == Spline.Direction.Forward && lerp > 0.0) sampleIndex++;
+            float lastDistance = 0f;
+            int minIndex = 0;
+            int maxIndex = Count - 1;
+
+            bool samplesAreLooped = clipTo < clipFrom;
+
+            if (samplesAreLooped)
+            {
+                GetSamplingValues(clipFrom, out minIndex, out lerp);
+                GetSamplingValues(clipTo, out maxIndex, out lerp);
+                if (lerp > 0.0) maxIndex++;
+            }
+
+            while (moved < distance)
+            {
+                Vector3 newPos = samples[sampleIndex].position + samples[sampleIndex].up * (offset.y * samples[sampleIndex].size) + samples[sampleIndex].right * (offset.x * samples[sampleIndex].size) + samples[sampleIndex].forward * (offset.z * samples[sampleIndex].size);
+                lastDistance = Vector3.Distance(newPos, lastPos);
+                moved += lastDistance;
+                if (moved >= distance)
+                {
+                    break;
+                }
+                lastPos = newPos;
+                lastPercent = samples[sampleIndex].percent;
+                if (direction == Spline.Direction.Forward)
+                {
+                    if (sampleIndex == Count - 1)
+                    {
+                        if (samplesAreLooped)
+                        {
+                            lastPos = samples[0].position + samples[0].up * (offset.y * samples[0].size) + samples[0].right * (offset.x * samples[0].size) + samples[0].forward * (offset.z * samples[0].size);
+                            lastPercent = samples[0].percent;
+                            sampleIndex = 1;
+                        }
+                        else break;
+                    }
+                    if (samplesAreLooped && sampleIndex == maxIndex) break;
+                    sampleIndex++;
+                }
+                else
+                {
+                    if (sampleIndex == 0)
+                    {
+                        if (samplesAreLooped)
+                        {
+                            int lastIndex = Count - 1;
+                            lastPos = samples[lastIndex].position + samples[lastIndex].up * (offset.y * samples[lastIndex].size) + samples[lastIndex].right * (offset.x * samples[lastIndex].size) + samples[lastIndex].forward * (offset.z * samples[lastIndex].size);
+                            lastPercent = samples[lastIndex].percent;
+                            sampleIndex = Count - 2;
+                        }
+                        else break;
+                    }
+                    if (samplesAreLooped && sampleIndex == minIndex) break;
+                    sampleIndex--;
+                }
+            }
+            float moveExcess = 0f;
+            if (moved > distance)
+            {
+                moveExcess = moved - distance;
+            }
+
             double p = DMath.Lerp(lastPercent, samples[sampleIndex].percent, 1f - moveExcess / lastDistance);
             moved -= moveExcess;
             return p;
@@ -387,7 +400,7 @@ namespace Dreamteck.Splines
             }
             Spline.FormatFromTo(ref from, ref to);
             //First make a very rough sample of the from-to region 
-            int steps = (controlPointCount - 1) * 6; //Sampling six points per segment is enough to find the closest point range
+            int steps = (controlPointCount - 1) * 4; //Sampling four points per segment is enough to find the closest point range
             int step = Count / steps;
             if (step < 1) step = 1;
             float minDist = (position - samples[0].position).sqrMagnitude;
@@ -404,10 +417,11 @@ namespace Dreamteck.Splines
             int checkTo = toIndex;
 
             //Find the closest point range which will be checked in detail later
-            for (int i = fromIndex; i <= toIndex; i += step)
+            for (int i = fromIndex; i < toIndex; i += step)
             {
-                if (i > toIndex) i = toIndex;
-                float dist = (position - samples[i].position).sqrMagnitude;
+                if (i >= toIndex) i = toIndex-1;
+                Vector3 projected = LinearAlgebraUtility.ProjectOnLine(samples[i].position, samples[Mathf.Min(i + step, toIndex)].position, position);
+                float dist = (position - projected).sqrMagnitude;
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -503,13 +517,54 @@ namespace Dreamteck.Splines
             double lerp;
             GetSamplingValues(from, out fromIndex, out lerp);
             GetSamplingValues(to, out toIndex, out lerp);
-            if (lerp > 0.0 && toIndex < Count - 1) toIndex++;
+            if (lerp > 0.0 && toIndex < Count - 1)
+            {
+                toIndex++;
+            }
             for (int i = fromIndex+1; i < toIndex; i++)
             {
                 length += Vector3.Distance(samples[i].position, pos);
                 pos = samples[i].position;
             }
             length += Vector3.Distance(EvaluatePosition(to), pos);
+            return length;
+        }
+
+        /// <summary>
+        /// Calculates the length between <paramref name="from"/> and <paramref name="to"/> with applied local offset to to the samples
+        /// The offset is multiplied by the sample sizes
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public float CalculateLengthWithOffset(Vector3 offset, double from = 0.0, double to = 1.0)
+        {
+            if (!hasSamples) return 0f;
+            Spline.FormatFromTo(ref from, ref to);
+            float length = 0f;
+            Evaluate(from, _workSample);
+            Vector3 pos = _workSample.position + _workSample.up * (offset.y * _workSample.size) + _workSample.right * (offset.x * _workSample.size) + _workSample.forward * (offset.z * _workSample.size);
+            int fromIndex, toIndex;
+            double lerp;
+            GetSamplingValues(from, out fromIndex, out lerp);
+            GetSamplingValues(to, out toIndex, out lerp);
+
+            if (lerp > 0.0 && toIndex < Count - 1)
+            {
+                toIndex++;
+            }
+
+            for (int i = fromIndex + 1; i < toIndex; i++)
+            {
+                Vector3 newPos = samples[i].position + samples[i].up * (offset.y * samples[i].size) + samples[i].right * (offset.x * samples[i].size) + samples[i].forward * (offset.z * samples[i].size);
+                length += Vector3.Distance(newPos, pos);
+                pos = newPos;
+            }
+
+            Evaluate(to, _workSample);
+            _workSample.position += _workSample.up * (offset.y * _workSample.size) + _workSample.right * (offset.x * _workSample.size) + _workSample.forward * (offset.z * _workSample.size);
+            length += Vector3.Distance(_workSample.position, pos);
             return length;
         }
 

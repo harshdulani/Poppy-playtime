@@ -10,17 +10,31 @@ namespace Dreamteck
         public delegate void EmptyHandler();
         protected WindowPanel[] panels = new WindowPanel[0];
         protected Texture2D header;
-        private bool init = false;
         protected static GUIStyle wrapText;
         protected static GUIStyle buttonTitleText;
         protected static GUIStyle warningText;
         protected static GUIStyle titleText;
         protected string headerTitle = "";
+        private static bool init = true;
 
         public virtual void Load()
         {
-            init = false;
             minSize = maxSize = new Vector2(450, 500);
+            buttonTitleText = new GUIStyle(GUI.skin.GetStyle("label"));
+            buttonTitleText.fontStyle = FontStyle.Bold;
+            titleText = new GUIStyle(GUI.skin.GetStyle("label"));
+            titleText.fontSize = 25;
+            titleText.fontStyle = FontStyle.Bold;
+            titleText.alignment = TextAnchor.MiddleLeft;
+            titleText.normal.textColor = Color.white;
+            warningText = new GUIStyle(GUI.skin.GetStyle("label"));
+            warningText.fontSize = 18;
+            warningText.fontStyle = FontStyle.Bold;
+            warningText.normal.textColor = Color.red;
+            warningText.alignment = TextAnchor.MiddleCenter;
+            wrapText = new GUIStyle(GUI.skin.GetStyle("label"));
+            wrapText.wordWrap = true;
+            init = false; 
         }
 
         protected virtual void SetTitle(string titleBar, string header)
@@ -34,34 +48,26 @@ namespace Dreamteck
             header = null;
         }
 
+        protected void OnEnable()
+        {
+            init = true;
+        }
+
         protected void OnGUI()
         {
-            if (!init)
+            if (init)
             {
-                buttonTitleText = new GUIStyle(GUI.skin.GetStyle("label"));
-                buttonTitleText.fontStyle = FontStyle.Bold;
-                titleText = new GUIStyle(GUI.skin.GetStyle("label"));
-                titleText.fontSize = 25;
-                titleText.fontStyle = FontStyle.Bold;
-                titleText.alignment = TextAnchor.MiddleLeft;
-                titleText.normal.textColor = Color.white;
-                warningText = new GUIStyle(GUI.skin.GetStyle("label"));
-                warningText.fontSize = 18;
-                warningText.fontStyle = FontStyle.Bold;
-                warningText.normal.textColor = Color.red;
-                warningText.alignment = TextAnchor.MiddleCenter;
-                wrapText = new GUIStyle(GUI.skin.GetStyle("label"));
-                wrapText.wordWrap = true;
                 Load();
-                init = true;
             }
-
             if (header == null) GetHeader();
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, 82), header, ScaleMode.StretchToFill);
             GUI.Label(new Rect(90, 15, Screen.width - 95, 50), headerTitle, titleText);
-            for (int i = 0; i < panels.Length; i++) panels[i].Draw();
-
+            for (int i = 0; i < panels.Length; i++)
+            {
+                panels[i].Draw();
+            }
             Repaint();
+
         }
 
         public class WindowPanel
@@ -263,13 +269,14 @@ namespace Dreamteck
                 public string title = "";
                 public string description = "";
 
-                public Thumbnail(string path, string fileName, string t, string d, ActionLink a, float x = 400, float y = 50) : base(x, y, a)
+                public Thumbnail(string path, string fileName, string t, string d, ActionLink a, float x = 400, float y = 60) : base(x, y, a)
                 {
                     title = t;
                     description = d;
                     thumbnailPath = path;
                     thumbnailName = fileName;
-                    thumbnail = ImageDB.GetImage(thumbnailName, thumbnailPath);
+                    
+                    thumbnail = ResourceUtility.EditorLoadTexture(thumbnailPath, thumbnailName);
                 }
 
                 internal override void Draw()
@@ -281,7 +288,11 @@ namespace Dreamteck
                     GUI.color = buttonColor;
                     if (GUI.Button(new Rect(0, 0, size.x, size.y), "")) action.Do();
                     GUI.color = Color.white;
-                    if (thumbnail != null) GUI.DrawTexture(new Rect(0, 0, 50, 50), thumbnail, ScaleMode.StretchToFill);
+                    if (thumbnail != null)
+                    {
+                        Vector2 offset = new Vector2(0, (size.y - 50) / 2);
+                        GUI.DrawTexture(new Rect(offset, Vector2.one * 50), thumbnail, ScaleMode.StretchToFill);
+                    }
                     GUI.Label(new Rect(60, 5, 370 - 65, 16), title, buttonTitleText);
                     GUI.Label(new Rect(60, 20, 370 - 65, 40), description, wrapText);
                     GUI.EndGroup();

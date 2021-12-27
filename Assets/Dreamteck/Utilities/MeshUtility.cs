@@ -454,7 +454,7 @@ namespace Dreamteck
                         triangles[i] + 1, triangles[i + 1] + 1, triangles[i + 2] + 1));
                 }
             }
-            return sb.ToString();
+            return sb.ToString().Replace(',', '.');
         }
 
         public static Mesh Copy(Mesh input)
@@ -469,6 +469,8 @@ namespace Dreamteck
             copy.uv3 = input.uv3;
             copy.uv4 = input.uv4;
             copy.tangents = input.tangents;
+            copy.boneWeights = input.boneWeights;
+            copy.bindposes = input.bindposes;
             copy.triangles = input.triangles;
             copy.subMeshCount = input.subMeshCount;
             for (int i = 0; i < input.subMeshCount; i++)
@@ -504,10 +506,11 @@ namespace Dreamteck
             int count = 2 * nv;
             for (int m = 0, v = nv - 1; nv > 2;)
             {
-                if ((count--) <= 0) { 
-                     if (output.Length != indices.Count) output = new int[indices.Count];
-                     indices.CopyTo(output, 0);
-                     return;
+                if ((count--) <= 0)
+                {
+                    if (output.Length != indices.Count) output = new int[indices.Count];
+                    indices.CopyTo(output, 0);
+                    return;
                 }
 
                 int u = v;
@@ -554,13 +557,13 @@ namespace Dreamteck
 
         public static void FlipFaces(TS_Mesh input)
         {
-            for(int i =0; i < input.subMeshes.Count; i++)
+            for (int i = 0; i < input.subMeshes.Count; i++)
             {
                 int[] array = input.subMeshes[i];
                 FlipTriangles(ref array);
             }
             FlipTriangles(ref input.triangles);
-            for(int i = 0; i < input.normals.Length; i++)
+            for (int i = 0; i < input.normals.Length; i++)
             {
                 input.normals[i] *= -1f;
             }
@@ -573,12 +576,14 @@ namespace Dreamteck
             Vector2[] newUVs = new Vector2[newVertices.Length];
             Vector4[] newTangents = new Vector4[newVertices.Length];
             Color[] newColors = new Color[newVertices.Length];
+            BoneWeight[] newBoneWeights = new BoneWeight[newVertices.Length];
 
             Vector3[] oldVertices = input.vertices;
             Vector2[] oldUvs = input.uv;
             Vector3[] oldNormals = input.normals;
             Vector4[] oldTangents = input.tangents;
             Color[] oldColors = input.colors;
+            BoneWeight[] oldBoneWeights = input.boneWeights;
 
             if (oldColors.Length != oldVertices.Length)
             {
@@ -630,6 +635,13 @@ namespace Dreamteck
                         newTangents[vertIndex + 2] = oldTangents[submesh[n + 2]];
                     }
 
+                    if (oldBoneWeights.Length > submesh[n + 2])
+                    {
+                        newBoneWeights[vertIndex] = oldBoneWeights[submesh[n]];
+                        newBoneWeights[vertIndex + 1] = oldBoneWeights[submesh[n + 1]];
+                        newBoneWeights[vertIndex + 2] = oldBoneWeights[submesh[n + 2]];
+                    }
+
                     submesh[n] = vertIndex;
                     submesh[n + 1] = vertIndex + 1;
                     submesh[n + 2] = vertIndex + 2;
@@ -644,7 +656,11 @@ namespace Dreamteck
             input.uv = newUVs;
             input.tangents = newTangents;
             input.subMeshCount = submeshList.Count;
-            for (int i = 0; i < submeshList.Count; i++) input.SetTriangles(submeshList[i], i);
+            input.boneWeights = newBoneWeights;
+            for (int i = 0; i < submeshList.Count; i++)
+            {
+                input.SetTriangles(submeshList[i], i);
+            }
         }
 
         private static float Area(Vector2[] points, int maxCount)

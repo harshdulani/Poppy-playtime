@@ -138,7 +138,7 @@ namespace Dreamteck.Splines.Editor
         {
             for (int i = 0; i < collections.Count; i++)
             {
-                if (collections[i].spline != null) SplineDrawer.DrawSplineComputer(collections[i].spline);
+                if (collections[i].spline != null) DSSplineDrawer.DrawSplineComputer(collections[i].spline);
             }
         }
 

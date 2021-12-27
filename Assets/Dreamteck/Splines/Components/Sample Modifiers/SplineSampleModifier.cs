@@ -170,8 +170,15 @@
             public float Evaluate(double t)
             {
                 t = (float)GlobalToLocalPercent(t);
-                if(t < _centerStart) return interpolation.Evaluate((float)t / (float)_centerStart);
-                if(t > _centerEnd) return interpolation.Evaluate(1f - (float)DMath.InverseLerp(_centerEnd, 1.0, t));
+                if (t < _centerStart)
+                {
+                    return interpolation.Evaluate((float)t / (float)_centerStart) * blend;
+                }
+
+                if (t > _centerEnd)
+                {
+                    return interpolation.Evaluate(1f - (float)DMath.InverseLerp(_centerEnd, 1.0, t)) * blend;
+                }
                 return interpolation.Evaluate(1f) * blend;
             }
 

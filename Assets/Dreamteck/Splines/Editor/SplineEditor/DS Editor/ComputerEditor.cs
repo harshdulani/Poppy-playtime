@@ -7,18 +7,32 @@ namespace Dreamteck.Splines.Editor
 
     public class ComputerEditor : SplineEditorBase
     {
-        SplineComputer spline = null;
-        SplineComputer[] splines = new SplineComputer[0];
-        SerializedObject serializedObject;
-        bool pathToolsFoldout = false, interpolationFoldout = false;
+        private SplineComputer spline = null;
+        private SplineComputer[] splines = new SplineComputer[0];
+        private SerializedObject serializedObject;
+        private bool pathToolsFoldout = false, interpolationFoldout = false;
         public bool drawComputer = true;
         public bool drawConnectedComputers = true;
-        DreamteckSplinesEditor pathEditor;
-        int operation = -1, module = -1, transformTool = 1;
-        ComputerEditorModule[] modules = new ComputerEditorModule[0];
-        Dreamteck.Editor.Toolbar utilityToolbar;
-        Dreamteck.Editor.Toolbar operationsToolbar;
-        Dreamteck.Editor.Toolbar transformToolbar;
+        private DreamteckSplinesEditor pathEditor;
+        private int operation = -1, module = -1, transformTool = 1;
+        private ComputerEditorModule[] modules = new ComputerEditorModule[0];
+        private Dreamteck.Editor.Toolbar utilityToolbar;
+        private Dreamteck.Editor.Toolbar operationsToolbar;
+        private Dreamteck.Editor.Toolbar transformToolbar;
+
+        private SerializedProperty splineProperty;
+        private SerializedProperty sampleRate;
+        private SerializedProperty type;
+        private SerializedProperty linearAverageDirection;
+        private SerializedProperty space;
+        private SerializedProperty sampleMode;
+        private SerializedProperty optimizeAngleThreshold;
+        private SerializedProperty updateMode;
+        private SerializedProperty rebuildOnAwake;
+        private SerializedProperty multithreaded;
+        private SerializedProperty customNormalInterpolation;
+        private SerializedProperty customValueInterpolation;
+
 
         public ComputerEditor(SplineComputer[] splines, SerializedObject serializedObject, DreamteckSplinesEditor pathEditor) : base()
         {
@@ -26,6 +40,21 @@ namespace Dreamteck.Splines.Editor
             this.splines = splines;
             this.pathEditor = pathEditor;
             this.serializedObject = serializedObject;
+
+            splineProperty = serializedObject.FindProperty("spline");
+            sampleRate = serializedObject.FindProperty("spline").FindPropertyRelative("sampleRate");
+            type = serializedObject.FindProperty("spline").FindPropertyRelative("type");
+            linearAverageDirection = splineProperty.FindPropertyRelative("linearAverageDirection");
+            space = serializedObject.FindProperty("_space");
+            sampleMode = serializedObject.FindProperty("_sampleMode");
+            optimizeAngleThreshold = serializedObject.FindProperty("_optimizeAngleThreshold");
+            updateMode = serializedObject.FindProperty("updateMode");
+            rebuildOnAwake = serializedObject.FindProperty("rebuildOnAwake");
+            multithreaded = serializedObject.FindProperty("multithreaded");
+            customNormalInterpolation = splineProperty.FindPropertyRelative("customNormalInterpolation");
+            customValueInterpolation = splineProperty.FindPropertyRelative("customValueInterpolation");
+
+
             modules = new ComputerEditorModule[2];
             modules[0] = new ComputerMergeModule(spline);
             modules[1] = new ComputerSplitModule(spline);
@@ -113,7 +142,6 @@ namespace Dreamteck.Splines.Editor
             operationsToolbar.SetContent(1, new GUIContent("Reverse"));
             operationsToolbar.SetContent(2, new GUIContent(spline.is2D ? "3D Mode" : "2D Mode"));
             operationsToolbar.Draw(ref operation);
-            //operation = GUILayout.Toolbar(operation, new string[] { , "Reverse", text2D }, GUILayout.Width(220f));
             if (EditorGUI.EndChangeCheck()) PerformOperation();
             EditorGUI.BeginChangeCheck();
             if (splines.Length == 1)
@@ -131,27 +159,17 @@ namespace Dreamteck.Splines.Editor
             EditorGUILayout.Space();
             
             serializedObject.Update();
-            SerializedProperty splineProperty = serializedObject.FindProperty("spline");
-            SerializedProperty sampleRate = serializedObject.FindProperty("spline").FindPropertyRelative("sampleRate");
-            SerializedProperty type = serializedObject.FindProperty("spline").FindPropertyRelative("type");
-            SerializedProperty linearAverageDirection = splineProperty.FindPropertyRelative("linearAverageDirection");
-            SerializedProperty space = serializedObject.FindProperty("_space");
-            SerializedProperty sampleMode = serializedObject.FindProperty("_sampleMode");
-            SerializedProperty optimizeAngleThreshold = serializedObject.FindProperty("_optimizeAngleThreshold");
-            SerializedProperty updateMode = serializedObject.FindProperty("updateMode");
-            SerializedProperty rebuildOnAwake = serializedObject.FindProperty("rebuildOnAwake");
-            SerializedProperty multithreaded = serializedObject.FindProperty("multithreaded");
-            SerializedProperty customNormalInterpolation = splineProperty.FindPropertyRelative("customNormalInterpolation");
-            SerializedProperty customValueInterpolation = splineProperty.FindPropertyRelative("customValueInterpolation");
+
+
 
             EditorGUI.BeginChangeCheck();
             Spline.Type lastType = (Spline.Type)type.intValue;
             EditorGUILayout.PropertyField(type);
-            if(lastType == Spline.Type.Hermite && type.intValue == (int)Spline.Type.Bezier)
+            if(lastType == Spline.Type.CatmullRom && type.intValue == (int)Spline.Type.Bezier)
             {
-                if(EditorUtility.DisplayDialog("Hermite to Bezier", "Would you like to retain the Hermite shape in Bezier mode?", "Yes", "No"))
+                if(EditorUtility.DisplayDialog("Hermite to Bezier", "Would you like to retain the Catmull Rom shape in Bezier mode?", "Yes", "No"))
                 {
-                    for (int i = 0; i < splines.Length; i++) splines[i].HermiteToBezierTangents();
+                    for (int i = 0; i < splines.Length; i++) splines[i].CatToBezierTangents();
                     
                     serializedObject.Update();
                     pathEditor.Refresh();
@@ -163,9 +181,9 @@ namespace Dreamteck.Splines.Editor
             EditorGUILayout.PropertyField(sampleMode, new GUIContent("Sample Mode"));
             if (sampleMode.intValue == (int)SplineComputer.SampleMode.Optimized) EditorGUILayout.PropertyField(optimizeAngleThreshold);
             EditorGUILayout.PropertyField(updateMode);
-            if (updateMode.intValue == (int)SplineComputer.UpdateMode.None)
+            if (updateMode.intValue == (int)SplineComputer.UpdateMode.None && Application.isPlaying)
             {
-                if (GUILayout.Button("Manual Update"))
+                if (GUILayout.Button("Rebuild"))
                 {
                     for (int i = 0; i < splines.Length; i++) splines[i].RebuildImmediate(true, true);
                 }
@@ -176,12 +194,12 @@ namespace Dreamteck.Splines.Editor
 
             EditorGUI.indentLevel++;
             bool curveUpdate = false;
-            interpolationFoldout = EditorGUILayout.Foldout(interpolationFoldout, "Custom interpolation");
+            interpolationFoldout = EditorGUILayout.Foldout(interpolationFoldout, "Point Value Interpolation");
             if (interpolationFoldout)
             {
                 if (customValueInterpolation.animationCurveValue == null || customValueInterpolation.animationCurveValue.keys.Length == 0)
                 {
-                    if (GUILayout.Button("Add Value Interpolation"))
+                    if (GUILayout.Button("Size & Color Interpolation"))
                     {
                         AnimationCurve curve = new AnimationCurve();
                         curve.AddKey(new Keyframe(0, 0, 0, 0));
@@ -194,7 +212,7 @@ namespace Dreamteck.Splines.Editor
                 else
                 {
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.PropertyField(customValueInterpolation, new GUIContent("Value Interpolation"));
+                    EditorGUILayout.PropertyField(customValueInterpolation, new GUIContent("Size & Color Interpolation"));
                     if (GUILayout.Button("x", GUILayout.MaxWidth(25)))
                     {
                         customValueInterpolation.animationCurveValue = null;
@@ -206,7 +224,7 @@ namespace Dreamteck.Splines.Editor
                 }
                 if (customNormalInterpolation.animationCurveValue == null || customNormalInterpolation.animationCurveValue.keys.Length == 0)
                 {
-                    if (GUILayout.Button("Add Normal Interpolation"))
+                    if (GUILayout.Button("Normal Interpolation"))
                     {
                         AnimationCurve curve = new AnimationCurve();
                         curve.AddKey(new Keyframe(0, 0));
@@ -242,20 +260,34 @@ namespace Dreamteck.Splines.Editor
                     serializedObject.Update();
                     if (splines.Length == 1) pathEditor.Refresh();
                 }
+
                 serializedObject.ApplyModifiedProperties();
-                for (int i = 0; i < splines.Length; i++) splines[i].Rebuild(true);
+                for (int i = 0; i < splines.Length; i++)
+                {
+                    splines[i].Rebuild(true);
+                }
             }
 
-            if (space.intValue == (int)SplineComputer.Space.Local)
+
+            if (pathEditor.currentModule != null)
             {
-                if (pathEditor.currentModule != null) transformTool = 0;
+                transformTool = 0;
+            }
+            if (splines.Length == 1)
+            {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Edit Transform");
                 GUILayout.FlexibleSpace();
                 int lastTool = transformTool;
                 transformToolbar.Draw(ref transformTool);
-                if (lastTool != transformTool && transformTool > 0) pathEditor.UntoggleCurrentModule();
+                if (lastTool != transformTool && transformTool > 0)
+                {
+                    pathEditor.UntoggleCurrentModule();
+                }
                 EditorGUILayout.EndHorizontal();
+            } else
+            {
+                GUILayout.Label("Edit Transform unavailable with multiple splines");
             }
         }
 
@@ -339,14 +371,14 @@ namespace Dreamteck.Splines.Editor
             spline.SetPoints(points);
         }
 
-        public override void DrawScene()
+        public override void DrawScene(SceneView current)
         {
-            base.DrawScene();
+            base.DrawScene(current);
             if (drawComputer)
             {
                 for (int i = 0; i < splines.Length; i++)
                 {
-                    SplineDrawer.DrawSplineComputer(splines[i]);
+                    DSSplineDrawer.DrawSplineComputer(splines[i]);
                 }
 
             }
@@ -357,7 +389,7 @@ namespace Dreamteck.Splines.Editor
                     List<SplineComputer> computers = splines[i].GetConnectedComputers();
                     for (int j = 1; j < computers.Count; j++)
                     {
-                        SplineDrawer.DrawSplineComputer(computers[j], 0.0, 1.0, 0.5f);
+                        DSSplineDrawer.DrawSplineComputer(computers[j], 0.0, 1.0, 0.5f);
                     }
                 }
             }
@@ -366,6 +398,10 @@ namespace Dreamteck.Splines.Editor
 
             if (pathEditor.currentModule == null)
             {
+                if(splines.Length > 1)
+                {
+                    transformTool = 0;
+                }
                 switch (transformTool)
                 {
                     case 1:

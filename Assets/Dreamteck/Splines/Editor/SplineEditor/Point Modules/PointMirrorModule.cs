@@ -297,7 +297,6 @@ namespace Dreamteck.Splines.Editor
                     newPoint.normal.x *= -1f;
                     newPoint.tangent.x = mirrorCenter.x - (newPoint.tangent.x - mirrorCenter.x);
                     newPoint.tangent2.x = mirrorCenter.x - (newPoint.tangent2.x - mirrorCenter.x);
-                    SwapTangents(ref newPoint);
                     break;
                 case Axis.Y:
                     newPoint.position.y = mirrorCenter.y - (newPoint.position.y - mirrorCenter.y);
@@ -312,6 +311,7 @@ namespace Dreamteck.Splines.Editor
                     newPoint.tangent2.z = mirrorCenter.z - (newPoint.tangent2.z - mirrorCenter.z);
                     break;
             }
+            SwapTangents(ref newPoint);
             TransformPoint(ref newPoint);
             return newPoint;
         }

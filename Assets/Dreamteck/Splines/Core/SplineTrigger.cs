@@ -14,12 +14,19 @@ namespace Dreamteck.Splines
         public Color color = Color.white;
         public SplineTrigger[] triggers = new SplineTrigger[0];
 
-        public void Check(double start, double end)
+        public void Check(double start, double end, SplineUser user = null)
         {
             for (int i = 0; i < triggers.Length; i++)
             {
-                if (triggers[i] == null) continue;
-                if (triggers[i].Check(start, end)) triggers[i].Invoke();
+                if (triggers[i] == null)
+                {
+                    continue;
+                }
+
+                if (triggers[i].Check(start, end))
+                {
+                    triggers[i].Invoke(user);
+                }
             }
         }
 
@@ -47,6 +54,7 @@ namespace Dreamteck.Splines
         [SerializeField]
         [HideInInspector]
         public UnityEvent onCross = new UnityEvent();
+        public event System.Action<SplineUser> onUserCross;
 
         public SplineTrigger(Type t)
         {
@@ -84,12 +92,19 @@ namespace Dreamteck.Splines
             return passed;
         }
 
-        public void Invoke()
+        public void Invoke(SplineUser user = null)
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying) return;
 #endif
             onCross.Invoke();
+            if (user)
+            {
+                if (onUserCross != null)
+                {
+                    onUserCross(user);
+                }
+            }
         }
     }
 }

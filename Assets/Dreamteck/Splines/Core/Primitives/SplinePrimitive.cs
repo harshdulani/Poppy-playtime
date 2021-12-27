@@ -73,7 +73,7 @@ namespace Dreamteck.Splines.Primitives {
 
         public virtual Spline.Type GetSplineType()
         {
-            return Spline.Type.Hermite;
+            return Spline.Type.CatmullRom;
         }
 
         public bool GetIsClosed()

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace Dreamteck.Splines
 {
-    [AddComponentMenu("Dreamteck/Splines/Length Calculator")]
+    [AddComponentMenu("Dreamteck/Splines/Users/Length Calculator")]
     public class LengthCalculator : SplineUser
     {
         [System.Serializable]
@@ -78,7 +78,7 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void AddEvent(LengthEvent lengthEvent)
+        public void AddEvent(LengthEvent lengthEvent)
         {
             LengthEvent[] newEvents = new LengthEvent[lengthEvents.Length + 1];
             lengthEvents.CopyTo(newEvents, 0);

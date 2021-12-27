@@ -8,7 +8,7 @@ namespace Dreamteck.Splines {
     [System.Serializable]
     public class Spline {
         public enum Direction { Forward = 1, Backward = -1 }
-        public enum Type { Hermite, BSpline, Bezier, Linear };
+        public enum Type { CatmullRom, BSpline, Bezier, Linear };
         public SplinePoint[] points = new SplinePoint[0];
         [SerializeField]
         private bool closed = false;
@@ -17,7 +17,7 @@ namespace Dreamteck.Splines {
         public AnimationCurve customValueInterpolation = null;
         public AnimationCurve customNormalInterpolation = null;
         public int sampleRate = 10;
-        private static Vector3[] hermitePoints = new Vector3[4];
+        private static Vector3[] catPoints = new Vector3[4];
 
         /// <summary>
         /// Returns true if the spline is closed
@@ -234,7 +234,7 @@ namespace Dreamteck.Splines {
         }
 
         /// <summary>
-        /// Evaluate the spline at the given time and return a SplineResult
+        /// Evaluate the spline at the given time and return a SplineSample
         /// </summary>
         /// <param name="percent">Percent of evaluation [0-1]</param>
         public SplineSample Evaluate(double percent)
@@ -245,7 +245,7 @@ namespace Dreamteck.Splines {
 		}
 
         /// <summary>
-        /// Evaluate the spline at the position of a given point and return a SplineResult
+        /// Evaluate the spline at the position of a given point and return a SplineSample
         /// </summary>
         /// <param name="pointIndex">Point index</param>
         public SplineSample Evaluate(int pointIndex)
@@ -601,7 +601,7 @@ namespace Dreamteck.Splines {
         /// <summary>
         /// Convert the spline to a Bezier path
         /// </summary>
-        public void HermiteToBezierTangents()
+        public void CatToBezierTangents()
         {
             switch (type)
             {
@@ -613,14 +613,14 @@ namespace Dreamteck.Splines {
                         points[i].SetTangent2Position(points[i].position);
                     }
                     break;
-                case Type.Hermite:
+                case Type.CatmullRom:
                     for (int i = 0; i < points.Length; i++)
                     {
-                        GetHermitePoints(i);
+                        GetCatPoints(i);
                         points[i].type = SplinePoint.Type.SmoothMirrored;
                         if (i == 0)
                         {
-                            Vector3 direction = hermitePoints[1] - hermitePoints[2];
+                            Vector3 direction = catPoints[1] - catPoints[2];
                             if (closed)
                             {
                                 direction = points[points.Length - 2].position - points[i + 1].position;
@@ -629,12 +629,12 @@ namespace Dreamteck.Splines {
                         }
                         else if (i == points.Length - 1)
                         {
-                            Vector3 direction = hermitePoints[2] - hermitePoints[3];
+                            Vector3 direction = catPoints[2] - catPoints[3];
                             points[i].SetTangentPosition(points[i].position + direction / 3f);
                         }
                         else
                         {
-                            Vector3 direction = hermitePoints[0] - hermitePoints[2];
+                            Vector3 direction = catPoints[0] - catPoints[2];
                             points[i].SetTangentPosition(points[i].position + direction / 6f);
                         }
                     }
@@ -660,7 +660,7 @@ namespace Dreamteck.Splines {
             } else closed = false;
             switch (type)
             {
-                case Type.Hermite: HermiteGetPoint(ref point, percent, pointIndex); break;
+                case Type.CatmullRom: CatmullRomGetPoint(ref point, percent, pointIndex); break;
                 case Type.Bezier: BezierGetPoint(ref point, percent, pointIndex); break;
                 case Type.BSpline: BSPGetPoint(ref point, percent, pointIndex); break;
                 case Type.Linear: LinearGetPoint(ref point, percent, pointIndex); break;
@@ -671,7 +671,7 @@ namespace Dreamteck.Splines {
         {
             switch (type)
             {
-                case Type.Hermite: GetHermiteTangent(ref tangent, percent, pointIndex); break;
+                case Type.CatmullRom: GetCatmullRomTangent(ref tangent, percent, pointIndex); break;
                 case Type.Bezier: BezierGetTangent(ref tangent, percent, pointIndex); break;
                 //case Type.BSpline: BSPGetTangent(ref tangent, percent, pointIndex);  break;
                 case Type.Linear: LinearGetTangent(ref tangent, percent, pointIndex); break;
@@ -700,9 +700,9 @@ namespace Dreamteck.Splines {
                 tangent = Vector3.forward;
                 return;
             }
-            GetHermitePoints(i);
-            if (linearAverageDirection) tangent = Vector3.Slerp(hermitePoints[1] - hermitePoints[0], hermitePoints[2] - hermitePoints[1], 0.5f);
-            else tangent = hermitePoints[2] - hermitePoints[1];
+            GetCatPoints(i);
+            if (linearAverageDirection) tangent = Vector3.Slerp(catPoints[1] - catPoints[0], catPoints[2] - catPoints[1], 0.5f);
+            else tangent = catPoints[2] - catPoints[1];
         }
 
         private void BSPGetPoint(ref Vector3 point, double time, int i)
@@ -712,11 +712,11 @@ namespace Dreamteck.Splines {
             if (points.Length > 1)
             {
                 float t1 = (float)DMath.Clamp01(time);
-                GetHermitePoints(i);
-                point = ((-hermitePoints[0] + hermitePoints[2]) / 2f 
-                + t1 * ((hermitePoints[0] - 2f * hermitePoints[1] + hermitePoints[2]) / 2f 
-                + t1 * (-hermitePoints[0] + 3f * hermitePoints[1] - 3f * hermitePoints[2] + hermitePoints[3]) / 6f)) * t1 
-                + (hermitePoints[0] + 4f * hermitePoints[1] + hermitePoints[2]) / 6f;
+                GetCatPoints(i);
+                point = ((-catPoints[0] + catPoints[2]) / 2f 
+                + t1 * ((catPoints[0] - 2f * catPoints[1] + catPoints[2]) / 2f 
+                + t1 * (-catPoints[0] + 3f * catPoints[1] - 3f * catPoints[2] + catPoints[3]) / 6f)) * t1 
+                + (catPoints[0] + 4f * catPoints[1] + catPoints[2]) / 6f;
             }
         }
 
@@ -759,7 +759,7 @@ namespace Dreamteck.Splines {
             }
         }
 
-        private void HermiteGetPoint(ref Vector3 point, double t, int i)
+        private void CatmullRomGetPoint(ref Vector3 point, double t, int i)
         {
             float t1 = (float)t;
             float t2 = t1 * t1;
@@ -768,14 +768,14 @@ namespace Dreamteck.Splines {
             if (i >= points.Length) return;
             if (points.Length > 1)
             {
-                GetHermitePoints(i);
-                point = 0.5f * ((2f * hermitePoints[1]) + (-hermitePoints[0] + hermitePoints[2]) * t1
-                + (2f * hermitePoints[0] - 5f * hermitePoints[1] + 4f * hermitePoints[2] - hermitePoints[3]) * t2
-                + (-hermitePoints[0] + 3f * hermitePoints[1] - 3f * hermitePoints[2] + hermitePoints[3]) * t3);
+                GetCatPoints(i);
+                point = 0.5f * ((2f * catPoints[1]) + (-catPoints[0] + catPoints[2]) * t1
+                + (2f * catPoints[0] - 5f * catPoints[1] + 4f * catPoints[2] - catPoints[3]) * t2
+                + (-catPoints[0] + 3f * catPoints[1] - 3f * catPoints[2] + catPoints[3]) * t3);
             }
 		}
 
-        private void GetHermiteTangent(ref Vector3 direction, double t, int i)
+        private void GetCatmullRomTangent(ref Vector3 direction, double t, int i)
         {
             float t1 = (float)t;
             float t2 = t1 * t1;
@@ -783,28 +783,28 @@ namespace Dreamteck.Splines {
             if (i >= points.Length) return;
             if (points.Length > 1)
             {
-                GetHermitePoints(i);
-                direction = (6 * t2 - 6 * t1) * hermitePoints[1]
-                + (3 * t2 - 4 * t1 + 1) * (hermitePoints[2] - hermitePoints[0]) * 0.5f
-                + (-6 * t2 + 6 * t1) * hermitePoints[2]
-                + (3 * t2 - 2 * t1) * (hermitePoints[3] - hermitePoints[1]) * 0.5f;
+                GetCatPoints(i);
+                direction = (6 * t2 - 6 * t1) * catPoints[1]
+                + (3 * t2 - 4 * t1 + 1) * (catPoints[2] - catPoints[0]) * 0.5f
+                + (-6 * t2 + 6 * t1) * catPoints[2]
+                + (3 * t2 - 2 * t1) * (catPoints[3] - catPoints[1]) * 0.5f;
             }
         }
 
-        private void GetHermitePoints(int i)
+        private void GetCatPoints(int i)
         {
-            //Fills the array with the current point, the previous one, the next one and the one after that. Used for Hermite and Bspline
-            if (i > 0) hermitePoints[0] = points[i - 1].position;
-            else if (closed && points.Length - 2 > i) hermitePoints[0] = points[points.Length - 2].position;
-            else if (i + 1 < points.Length) hermitePoints[0] = points[i].position + (points[i].position - points[i + 1].position); //Extrapolate
-            else hermitePoints[0] = points[i].position;
-            hermitePoints[1] = points[i].position;
-            if (i + 1 < points.Length) hermitePoints[2] = points[i + 1].position;
-            else if (closed && (i + 2) - points.Length != i) hermitePoints[2] = points[(i + 2) - points.Length].position;
-            else hermitePoints[2] = hermitePoints[1] + (hermitePoints[1] - hermitePoints[0]); //Extrapolate
-            if (i + 2 < points.Length) hermitePoints[3] = points[i + 2].position;
-            else if (closed && (i + 3) - points.Length != i) hermitePoints[3] = points[(i + 3) - points.Length].position;
-            else hermitePoints[3] = hermitePoints[2] + (hermitePoints[2] - hermitePoints[1]); //Extrapolate
+            //Fills the array with the current point, the previous one, the next one and the one after that. Used for Catmull Rom and Bspline
+            if (i > 0) catPoints[0] = points[i - 1].position;
+            else if (closed && points.Length - 2 > i) catPoints[0] = points[points.Length - 2].position;
+            else if (i + 1 < points.Length) catPoints[0] = points[i].position + (points[i].position - points[i + 1].position); //Extrapolate
+            else catPoints[0] = points[i].position;
+            catPoints[1] = points[i].position;
+            if (i + 1 < points.Length) catPoints[2] = points[i + 1].position;
+            else if (closed && (i + 2) - points.Length != i) catPoints[2] = points[(i + 2) - points.Length].position;
+            else catPoints[2] = catPoints[1] + (catPoints[1] - catPoints[0]); //Extrapolate
+            if (i + 2 < points.Length) catPoints[3] = points[i + 2].position;
+            else if (closed && (i + 3) - points.Length != i) catPoints[3] = points[(i + 3) - points.Length].position;
+            else catPoints[3] = catPoints[2] + (catPoints[2] - catPoints[1]); //Extrapolate
         }
 
         public static void FormatFromTo(ref double from, ref double to, bool preventInvert = true)

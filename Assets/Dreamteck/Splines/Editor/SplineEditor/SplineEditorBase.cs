@@ -16,6 +16,13 @@ namespace Dreamteck.Splines.Editor
         public UndoHandler undoHandler;
         public EmptyHandler repaintHandler;
 
+        protected bool gizmosEnabled
+        {
+            get { return _gizmosEnabled; }
+        }
+
+        private bool _gizmosEnabled = true; 
+
         public SplineEditorBase()
         {
             Load();
@@ -39,10 +46,16 @@ namespace Dreamteck.Splines.Editor
 
         public virtual void DrawInspector()
         {
+            if(SceneView.lastActiveSceneView != null)
+            {
+#if UNITY_2019_1_OR_NEWER
+                _gizmosEnabled = SceneView.lastActiveSceneView.drawGizmos;
+#endif
+            }
             eventModule.Update(Event.current);
         }
 
-        public virtual void DrawScene()
+        public virtual void DrawScene(SceneView current)
         {
             eventModule.Update(Event.current);
         }
@@ -54,12 +67,20 @@ namespace Dreamteck.Splines.Editor
 
         protected virtual void Repaint()
         {
-            if (repaintHandler != null) repaintHandler();
+            if (repaintHandler != null)
+            {
+                repaintHandler();
+            }
         }
 
         public virtual void UndoRedoPerformed()
         {
             
+        }
+
+        protected string GetSaveName(string valueName)
+        {
+            return GetType().FullName + "." + valueName;
         }
 
         protected void SaveBool(string variableName, bool value)

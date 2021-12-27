@@ -3,7 +3,7 @@ using System.Collections;
 using System.Threading;
 namespace Dreamteck.Splines
 {
-    [AddComponentMenu("Dreamteck/Splines/Polygon Collider Generator")]
+    [AddComponentMenu("Dreamteck/Splines/Users/Polygon Collider Generator")]
     [RequireComponent(typeof(PolygonCollider2D))]
     public class PolygonColliderGenerator : SplineUser
     {
@@ -128,7 +128,6 @@ namespace Dreamteck.Splines
         protected override void Build()
         {
             base.Build();
-            if (sampleCount == 0) return;
             switch(type){
                 case Type.Path:
                 GeneratePath();

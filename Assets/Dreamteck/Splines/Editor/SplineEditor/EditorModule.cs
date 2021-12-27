@@ -115,9 +115,11 @@
         internal static GUIContent IconContent(string title, string iconName, string description)
         {
             GUIContent content = new GUIContent(title, description);
-            string path = "Splines/Editor/Icons";
-            if (EditorGUIUtility.isProSkin) iconName += "_dark";
-            Texture2D tex = ImageDB.GetImage(iconName + ".png", path);
+            if (EditorGUIUtility.isProSkin)
+            {
+                iconName += "_dark";
+            }
+            Texture2D tex = ResourceUtility.EditorLoadTexture("Splines/Editor/Icons", iconName);
             if (tex != null)
             {
                 content.image = tex;

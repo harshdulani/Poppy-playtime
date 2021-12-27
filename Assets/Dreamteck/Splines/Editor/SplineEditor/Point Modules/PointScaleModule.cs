@@ -49,6 +49,10 @@ namespace Dreamteck.Splines.Editor
         public override void DrawScene()
         {
             if (selectedPoints.Count == 0) return;
+            if (eventModule.mouseLeftUp)
+            {
+                Reset();
+            }
             Vector3 lastScale = scale;
             Vector3 c = selectionCenter;
             scale = Handles.ScaleHandle(scale, c, rotation, HandleUtility.GetHandleSize(c));

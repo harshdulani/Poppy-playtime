@@ -44,6 +44,8 @@ public class RagdollLimbController : MonoBehaviour
 		
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
+		
+		if(_rb.velocity.sqrMagnitude < 1f) return;
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
 		{
 			raghu.GetPunched(other.transform.position - transform.position, 10f);

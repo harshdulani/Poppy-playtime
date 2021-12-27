@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Dreamteck.Splines
 {
-    [AddComponentMenu("Dreamteck/Splines/Object Bender")]
+    [AddComponentMenu("Dreamteck/Splines/Users/Object Bender")]
     public class ObjectBender : SplineUser
     {
         public enum Axis { X, Y, Z }
@@ -106,6 +106,9 @@ namespace Dreamteck.Splines
         public BendProperty[] bendProperties = new BendProperty[0];
         [SerializeField]
         [HideInInspector]
+        private bool _parentIsTheSpline = false;
+        [SerializeField]
+        [HideInInspector]
         private TS_Bounds bounds = null;
 
         [SerializeField]
@@ -146,6 +149,8 @@ namespace Dreamteck.Splines
                 CreateProperty(ref newProperties[i], found[i]);
             }
             bendProperties = newProperties;
+            SplineComputer splineComponent = GetComponent<SplineComputer>();
+            _parentIsTheSpline = splineComponent == spline;
         }
 
         public TS_Bounds GetBounds()
@@ -172,7 +177,7 @@ namespace Dreamteck.Splines
 
         private void CreateProperty(ref BendProperty property, Transform t)
         {
-            property = new BendProperty(t, t == trs); //Create a new bend property for each child
+            property = new BendProperty(t, t == transform); //Create a new bend property for each child
             for (int i = 0; i < bendProperties.Length; i++)
             {
                 //Search for properties that have the same trasform and copy their settings
@@ -212,6 +217,8 @@ namespace Dreamteck.Splines
 
         private void CalculatePropertyBounds(ref BendProperty property)
         {
+            if (!property.enabled) return;
+            if (property.isParent && _parentIsTheSpline) return;
             if (property.transform.transform == trs)
             {
                 if (0f < bounds.min.x) bounds.min.x = 0f;
@@ -335,7 +342,10 @@ namespace Dreamteck.Splines
 #endif
 
 #endif
-            trs = transform;
+            if (!hasTransform)
+            {
+                CacheTransform();
+            }
             if (_bend)
             {
                 for (int i = 0; i < bendProperties.Length; i++) bendProperties[i].Revert();
@@ -412,16 +422,17 @@ namespace Dreamteck.Splines
         {
             if (sampleCount <= 1) return;
             if (bendProperties.Length == 0) return;
-            for (int i = 0; i < bendProperties.Length; i++) BendObject(bendProperties[i]);
+            for (int i = 0; i < bendProperties.Length; i++)
+            {
+                BendObject(bendProperties[i]);
+            }
         }
 
         public void BendObject(BendProperty p)
         {
             if (!p.enabled) return;
-
-
+            if (p.isParent && _parentIsTheSpline) return;
             GetevalResult(p.positionPercent);
-
             p.transform.position = evalResult.position;
             if (p.applyRotation)
             {
@@ -443,7 +454,7 @@ namespace Dreamteck.Splines
                 p.editColliderMesh.hasUpdate = true;
             }
 
-            if (p.originalSpline != null)
+            if (p.originalSpline != null && !p.isParent)
             {
                 for (int n = 0; n < p.splinePointPercents.Length; n++)
                 {
@@ -650,11 +661,16 @@ namespace Dreamteck.Splines
 
             [SerializeField]
             [HideInInspector]
-            private bool parent;
+            private bool parent = false;
 
-            public BendProperty(Transform t, bool isParent = false)
+            public bool isParent {
+                get { return parent;  }
+            }
+
+
+            public BendProperty(Transform t, bool parent = false)
             {
-                parent = isParent;
+                this.parent = parent;
                 transform = new TS_Transform(t);
                 originalPosition = t.localPosition;
                 originalScale = t.localScale;

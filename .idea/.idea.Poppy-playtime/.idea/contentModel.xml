@@ -4,7 +4,6 @@
     <e p="C:\Users\DDZ\AppData\Local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
     <e p="C:\Users\DDZ\AppData\Local\JetBrains\Rider2020.1\resharper-host\Local\Transient\ReSharperHost\v201\SolutionCaches\_Poppy-playtime.283828810.00" t="ExcludeRecursive" />
     <e p="C:\Workspace\Poppy-playtime" t="IncludeRecursive">
-      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -114,47 +113,25 @@
             <e p="Components" t="Include">
               <e p="BlankUser.cs" t="Include" />
               <e p="EdgeColliderGenerator.cs" t="Include" />
-              <e p="Editor" t="Include">
-                <e p="BakeMeshWindow.cs" t="Include" />
-                <e p="LengthCalculatorEditor.cs" t="Include" />
-                <e p="MeshGenEditor.cs" t="Include" />
-                <e p="NodeEditor.cs" t="Include" />
-                <e p="ObjectBenderEditor.cs" t="Include" />
-                <e p="ObjectControllerEditor.cs" t="Include" />
-                <e p="ParticleControllerEditor.cs" t="Include" />
-                <e p="PathGeneratorEditor.cs" t="Include" />
-                <e p="PolygonColliderGenEditor.cs" t="Include" />
-                <e p="SetDistanceWindow.cs" t="Include" />
-                <e p="SplineFollowerEditor.cs" t="Include" />
-                <e p="SplineMeshEditor.cs" t="Include" />
-                <e p="SplineMorphEditor.cs" t="Include" />
-                <e p="SplinePositionerEditor.cs" t="Include" />
-                <e p="SplineProjectorEditor.cs" t="Include" />
-                <e p="SplineRendererEditor.cs" t="Include" />
-                <e p="SplineTracerEditor.cs" t="Include" />
-                <e p="SplineUserEditor.cs" t="Include" />
-                <e p="SplineUserSubEditor.cs" t="Include" />
-                <e p="SurfaceGeneratorEditor.cs" t="Include" />
-                <e p="TubeGeneratorEditor.cs" t="Include" />
-                <e p="WaveformGeneratorEditor.cs" t="Include" />
-              </e>
               <e p="LengthCalculator.cs" t="Include" />
               <e p="MeshGenerator.cs" t="Include" />
               <e p="Node.cs" t="Include" />
               <e p="ObjectBender.cs" t="Include" />
+              <e p="ObjectController CustomRules" t="Include">
+                <e p="Classes" t="Include">
+                  <e p="ObjectControllerCustomRuleBase.cs" t="Include" />
+                  <e p="ObjectControllerSineRule.cs" t="Include" />
+                  <e p="ObjectControllerSpiralRule.cs" t="Include" />
+                </e>
+              </e>
               <e p="ObjectController.cs" t="Include" />
               <e p="ParticleController.cs" t="Include" />
               <e p="PathGenerator.cs" t="Include" />
               <e p="PolygonColliderGenerator.cs" t="Include" />
               <e p="Sample Modifiers" t="Include">
                 <e p="ColorModifier.cs" t="Include" />
-                <e p="Editor" t="Include">
-                  <e p="ColorModifierEditor.cs" t="Include" />
-                  <e p="OffsetModifierEditor.cs" t="Include" />
-                  <e p="RotationModifierEditor.cs" t="Include" />
-                  <e p="SizeModifierEditor.cs" t="Include" />
-                  <e p="SplineSampleModifierEditor.cs" t="Include" />
-                </e>
+                <e p="FollowerSpeedModifier.cs" t="Include" />
+                <e p="MeshScaleModifier.cs" t="Include" />
                 <e p="OffsetModifier.cs" t="Include" />
                 <e p="RotationModifier.cs" t="Include" />
                 <e p="SizeModifier.cs" t="Include" />
@@ -163,6 +140,7 @@
               <e p="SplineComputer.cs" t="Include" />
               <e p="SplineFollower.cs" t="Include" />
               <e p="SplineMesh.cs" t="Include" />
+              <e p="SplineMeshChannel.cs" t="Include" />
               <e p="SplineMorph.cs" t="Include" />
               <e p="SplinePositioner.cs" t="Include" />
               <e p="SplineProjector.cs" t="Include" />
@@ -200,9 +178,37 @@
               <e p="SplineTrigger.cs" t="Include" />
               <e p="TransformModule.cs" t="Include" />
             </e>
+            <e p="Dreamteck.Splines.asmdef" t="Include" />
             <e p="Editor" t="Include">
               <e p="changelog.txt" t="Include" />
+              <e p="Components" t="Include">
+                <e p="BakeMeshWindow.cs" t="Include" />
+                <e p="LengthCalculatorEditor.cs" t="Include" />
+                <e p="MeshGenEditor.cs" t="Include" />
+                <e p="NodeEditor.cs" t="Include" />
+                <e p="ObjectBenderEditor.cs" t="Include" />
+                <e p="ObjectControllerEditor.cs" t="Include" />
+                <e p="ParticleControllerEditor.cs" t="Include" />
+                <e p="PathGeneratorEditor.cs" t="Include" />
+                <e p="PolygonColliderGenEditor.cs" t="Include" />
+                <e p="SetClipRangeWindow.cs" t="Include" />
+                <e p="SetDistanceWindow.cs" t="Include" />
+                <e p="SplineFollowerEditor.cs" t="Include" />
+                <e p="SplineMeshEditor.cs" t="Include" />
+                <e p="SplineMorphEditor.cs" t="Include" />
+                <e p="SplinePositionerEditor.cs" t="Include" />
+                <e p="SplineProjectorEditor.cs" t="Include" />
+                <e p="SplineRendererEditor.cs" t="Include" />
+                <e p="SplineTracerEditor.cs" t="Include" />
+                <e p="SplineUserEditor.cs" t="Include" />
+                <e p="SplineUserSubEditor.cs" t="Include" />
+                <e p="SurfaceGeneratorEditor.cs" t="Include" />
+                <e p="TubeGeneratorEditor.cs" t="Include" />
+                <e p="WaveformGeneratorEditor.cs" t="Include" />
+              </e>
               <e p="ComputerSplitModule.cs" t="Include" />
+              <e p="Dreamteck.Splines.Editor.asmdef" t="Include" />
+              <e p="DSSplineDrawer.cs" t="Include" />
               <e p="Primitives" t="Include">
                 <e p="CapsuleEditor.cs" t="Include" />
                 <e p="EllipseEditor.cs" t="Include" />
@@ -214,7 +220,17 @@
                 <e p="SpiralEditor.cs" t="Include" />
                 <e p="StarEditor.cs" t="Include" />
               </e>
+              <e p="Sample Modifiers" t="Include">
+                <e p="ColorModifierEditor.cs" t="Include" />
+                <e p="FollowerSpeedModifierEditor.cs" t="Include" />
+                <e p="MeshScaleModifierEditor.cs" t="Include" />
+                <e p="OffsetModifierEditor.cs" t="Include" />
+                <e p="RotationModifierEditor.cs" t="Include" />
+                <e p="SizeModifierEditor.cs" t="Include" />
+                <e p="SplineSampleModifierEditor.cs" t="Include" />
+              </e>
               <e p="SplineComputerEditor.cs" t="Include" />
+              <e p="SplineComputerEditorHandles.cs" t="Include" />
               <e p="SplineDrawer.cs" t="Include" />
               <e p="SplineEditor" t="Include">
                 <e p="DS Editor" t="Include">
@@ -245,7 +261,6 @@
               </e>
               <e p="SplineEditorGUI.cs" t="Include" />
               <e p="SplineEditorHandles.cs" t="Include" />
-              <e p="SplineEditorToolbar.cs" t="Include" />
               <e p="SplineEditorWindow.cs" t="Include" />
               <e p="SplinePreset.cs" t="Include" />
               <e p="Tools" t="Include">
@@ -264,26 +279,29 @@
           </e>
           <e p="Utilities" t="Include">
             <e p="ArrayUtility.cs" t="Include" />
+            <e p="AsyncJobSystem.cs" t="Include" />
+            <e p="ColorUtility.cs" t="Include" />
             <e p="DMath.cs" t="Include" />
+            <e p="Dreamteck.Utilities.asmdef" t="Include" />
             <e p="DuplicateUtility.cs" t="Include" />
             <e p="Editor" t="Include">
-              <e p="AudioUtility.cs" t="Include" />
+              <e p="Dreamteck.Utilities.Editor.asmdef" t="Include" />
               <e p="DreamteckEditorGUI.cs" t="Include" />
               <e p="EditorGUIEvents.cs" t="Include" />
               <e p="FindDerivedClasses.cs" t="Include" />
+              <e p="ResourceUtility.cs" t="Include" />
               <e p="Toolbar.cs" t="Include" />
               <e p="WelcomeWindow.cs" t="Include" />
             </e>
-            <e p="ImageDB.cs" t="Include" />
             <e p="LinearAlgebraUtility.cs" t="Include" />
             <e p="MeshUtility.cs" t="Include" />
-            <e p="ResourceUtility.cs" t="Include" />
-            <e p="SceneUtility.cs" t="Include" />
             <e p="ScriptableObjectUtility.cs" t="Include" />
+            <e p="Singleton.cs" t="Include" />
             <e p="TransformUtility.cs" t="Include" />
             <e p="TS_Bounds.cs" t="Include" />
             <e p="TS_Mesh.cs" t="Include" />
             <e p="TS_Transform.cs" t="Include" />
+            <e p="Utilities.cs" t="Include" />
           </e>
         </e>
         <e p="Epic Toon FX" t="Include">
@@ -453,6 +471,10 @@
       <e p="Boxophobic.PolyverseSkies.Scripts.csproj" t="IncludeRecursive" />
       <e p="Boxophobic.Utils.Editor.csproj" t="IncludeRecursive" />
       <e p="Boxophobic.Utils.Scripts.csproj" t="IncludeRecursive" />
+      <e p="Dreamteck.Splines.csproj" t="IncludeRecursive" />
+      <e p="Dreamteck.Splines.Editor.csproj" t="IncludeRecursive" />
+      <e p="Dreamteck.Utilities.csproj" t="IncludeRecursive" />
+      <e p="Dreamteck.Utilities.Editor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Poppy-playtime.sln" t="IncludeFlat" />

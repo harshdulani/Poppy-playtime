@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 namespace Dreamteck.Splines
 {
     [ExecuteInEditMode]
-    [AddComponentMenu("Dreamteck/Splines/Spline Projector")]
+    [AddComponentMenu("Dreamteck/Splines/Users/Spline Projector")]
     public class SplineProjector : SplineTracer
     {
         public enum Mode {Accurate, Cached}
@@ -114,8 +114,6 @@ namespace Dreamteck.Splines
         [HideInInspector]
         private GameObject _targetObject;
 
-        double traceFromA = -1.0, traceToA = -1.0, traceFromB = -1.0;
-
         [SerializeField]
         [HideInInspector]
         public Vector2 _offset;
@@ -154,13 +152,13 @@ namespace Dreamteck.Splines
             return targetObject.GetComponent<Rigidbody2D>();
         }
 
+
         protected override void LateRun()
         {
             base.LateRun();
             if (autoProject)
             {
-                if (projectTarget == null) return;
-                if (lastPosition != projectTarget.position)
+                if (projectTarget && lastPosition != projectTarget.position)
                 {
                     lastPosition = projectTarget.position;
                     CalculateProjection();
@@ -174,60 +172,80 @@ namespace Dreamteck.Splines
             CalculateProjection();
         }
 
-        private void CheckTriggers()
+        protected override void OnSplineChanged()
         {
-            if (traceFromA >= 0f)
+            if (spline != null)
             {
-                if (clipTo - traceFromA > traceFromB)
+                if (_mode == Mode.Accurate)
                 {
-                    traceToA = clipTo;
-                    traceFromB = clipFrom;
-                }
+                    spline.Project(_result, _projectTarget.position, clipFrom, clipTo, SplineComputer.EvaluateMode.Calculate, subdivide);
+                } 
                 else
                 {
-                    traceToA = clipFrom;
-                    traceFromB = clipTo;
+                    spline.Project(_result, _projectTarget.position, clipFrom, clipTo);
                 }
-                if (System.Math.Abs(traceToA - traceFromA) + System.Math.Abs(result.percent - traceFromB) < System.Math.Abs(result.percent - traceFromA))
-                {
-                    CheckTriggers(traceFromA, traceToA);
-                    CheckTriggers(traceFromB, result.percent);
-                }
-                else CheckTriggers(traceFromA, result.percent);
+                _result.percent = ClipPercent(_result.percent);
+            }
+        }
+
+
+        private void Project()
+        {
+            if (_mode == Mode.Accurate && spline != null)
+            {
+                spline.Project(_result, _projectTarget.position, clipFrom, clipTo, SplineComputer.EvaluateMode.Calculate, subdivide);
+                _result.percent = ClipPercent(_result.percent);
+            }
+            else
+            {
+                Project(_projectTarget.position, _result);
             }
         }
 
         public void CalculateProjection()
         {
             if (_projectTarget == null) return;
-            traceFromA = -1.0;
-            traceToA = -1.0;
-            traceFromB = -1.0;
             double lastPercent = _result.percent;
-            traceFromA = _result.percent;
-            if (_mode == Mode.Accurate && spline != null)
-            {
-                spline.Project(_result, _projectTarget.position, clipFrom, clipTo, SplineComputer.EvaluateMode.Calculate);
-            } else Project(_projectTarget.position, _result);
+            Project();
+
             if (onBeginningReached != null && _result.percent <= clipFrom)
             {
-                if (!Mathf.Approximately((float)lastPercent, (float)_result.percent)) onBeginningReached();
+                if (!Mathf.Approximately((float)lastPercent, (float)_result.percent))
+                {
+                    onBeginningReached();
+                    if (samplesAreLooped)
+                    {
+                        CheckTriggers(lastPercent, 0.0);
+                        CheckNodes(lastPercent, 0.0);
+                        lastPercent = 1.0;
+                    }
+                }
             }
             else if (onEndReached != null && _result.percent >= clipTo)
             {
-                if (!Mathf.Approximately((float)lastPercent, (float)_result.percent)) onEndReached();
+                if (!Mathf.Approximately((float)lastPercent, (float)_result.percent))
+                {
+                    onEndReached();
+                    if (samplesAreLooped)
+                    {
+                        CheckTriggers(lastPercent, 1.0);
+                        CheckNodes(lastPercent, 1.0);
+                        lastPercent = 0.0;
+                    }
+                }
             }
-            if (targetObject != null) ApplyMotion();
-#if UNITY_EDITOR
-            if (Application.isPlaying)
+
+            CheckTriggers(lastPercent, _result.percent);
+            CheckNodes(lastPercent, _result.percent);
+            
+
+            if (targetObject != null)
             {
-                CheckTriggers();
-                InvokeTriggers();
+                ApplyMotion();
             }
-#else
-            CheckTriggers();
+
             InvokeTriggers();
-#endif
+            InvokeNodes();
             lastPosition = projectTarget.position;
         }
     }

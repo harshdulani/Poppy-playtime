@@ -59,8 +59,8 @@ namespace Dreamteck.Splines.Editor
                 SceneView.RepaintAll();
             }
             Handles.color = Color.white;
-            SplineDrawer.DrawSplineComputer(spline, 0.0, projected.percent, 1f);
-            SplineDrawer.DrawSplineComputer(spline, projected.percent, 1.0, 0.4f);
+            DSSplineDrawer.DrawSplineComputer(spline, 0.0, projected.percent, 1f);
+            DSSplineDrawer.DrawSplineComputer(spline, projected.percent, 1.0, 0.4f);
         }
         
         

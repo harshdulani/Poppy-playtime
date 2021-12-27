@@ -10,15 +10,21 @@ namespace Dreamteck.Splines.Editor
     [InitializeOnLoad]
     public static class PluginInfo
     {
-        public static string version = "2.00 BETA";
+        public static string version = "2.12";
         private static bool open = false;
         static PluginInfo()
         {
             if (open) return;
             bool showInfo = EditorPrefs.GetString("Dreamteck.Splines.Info.version", "") != version;
             if (!showInfo) return;
-            EditorWindow.GetWindow<WelcomeScreen>(true);
             EditorPrefs.SetString("Dreamteck.Splines.Info.version", version);
+            EditorApplication.update += OpenWindowOnUpdate;
+        }
+
+        private static void OpenWindowOnUpdate()
+        {
+            EditorApplication.update -= OpenWindowOnUpdate;
+            EditorWindow.GetWindow<WelcomeScreen>(true);      
             open = true;
         }
     }
@@ -47,13 +53,12 @@ namespace Dreamteck.Splines.Editor
         [MenuItem("Help/Dreamteck/About Dreamteck Splines")]
         public static void OpenWindow()
         {
-            WelcomeScreen window = EditorWindow.GetWindow<WelcomeScreen>(true);
-            window.Load();
+            GetWindow<WelcomeScreen>(true);
         }
 
         protected override void GetHeader()
         {
-            header = ImageDB.GetImage("plugin_header.png", "Splines/Editor/Icons");
+            header = ResourceUtility.EditorLoadTexture("Splines/Editor/Icons", "plugin_header");
         }
 
         public override void Load()
@@ -72,13 +77,13 @@ namespace Dreamteck.Splines.Editor
 
 
             panels[0].elements.Add(new WindowPanel.Space(400, 10));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "changelog.png", "What's new?", "See all new features, important changes and bugfixes in " + PluginInfo.version, new ActionLink(panels[1], panels[0])));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "get_started.png", "Get Started", "Learn how to use Dreamteck Splines in a matter of minutes", new ActionLink(panels[2], panels[0])));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "support.png", "Community & Support", "Got a problem or a feature request? Our support is here to help!", new ActionLink(panels[3], panels[0])));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "rate.png", "Rate", "If you like Dreamteck Splines, please consider rating it on the Asset Store", new ActionLink("http://u3d.as/sLk")));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "changelog", "What's new?", "See all new features, important changes and bugfixes in " + PluginInfo.version, new ActionLink(panels[1], panels[0])));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "get_started", "Get Started", "Learn how to use Dreamteck Splines in a matter of minutes", new ActionLink(panels[2], panels[0])));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "support", "Community & Support", "Got a problem or a feature request? Our support is here to help!", new ActionLink(panels[3], panels[0])));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "rate", "Rate", "If you like Dreamteck Splines, please consider rating it on the Asset Store", new ActionLink("http://u3d.as/sLk")));
             panels[0].elements.Add(new WindowPanel.Space(400, 20));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "playmaker.png", "Playmaker Actions", "Install Playmaker actions for Dreamteck Splines", new ActionLink(panels[5], panels[0])));
-            panels[0].elements.Add(new WindowPanel.Thumbnail("Splines/Editor/Icons", "forever.png", "Forever", "Creating endless runners has never been easier. Forever is here to change the game!", new ActionLink("http://u3d.as/1t9T")));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "playmaker", "Playmaker Actions", "Install Playmaker actions for Dreamteck Splines", new ActionLink(panels[5], panels[0])));
+            panels[0].elements.Add(new WindowPanel.Thumbnail("Splines/Editor/Icons", "forever", "Forever", "Creating endless runners has never been easier. Forever is here to change the game!", new ActionLink("http://u3d.as/1t9T")));
             panels[0].elements.Add(new WindowPanel.Space(400, 10));
             panels[0].elements.Add(new WindowPanel.Label("This window will not appear again automatically. To open it manually go to Help/Dreamteck/About Dreamteck Splines", wrapText, new Color(1f, 1f, 1f, 0.5f), 400, 100));
 
@@ -102,13 +107,13 @@ namespace Dreamteck.Splines.Editor
             panels[1].elements.Add(new WindowPanel.ScrollText(400, 400, changelogText));
 
             panels[2].elements.Add(new WindowPanel.Space(400, 10));
-            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "tutorials.png", "Video Tutorials", "Watch a series of Youtube videos to get started.", new ActionLink("https://www.youtube.com/playlist?list=PLkZqalQdFIQ4S-UGPWCZTTZXiE5MebrVo")));
-            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "manual.png", "User Manual", "Read a thorough documentation of the whole package along with a list of API methods.", new ActionLink("http://dreamteck.io/page/dreamteck_splines/user_manual.pdf")));
-            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "examples.png", "Examples", "Install example scenes", new ActionLink(panels[4], panels[2])));
+            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "manual", "User Manual", "Read a thorough documentation of the whole package along with a list of API methods.", new ActionLink("http://dreamteck.io/page/dreamteck_splines/user_manual.pdf")));
+            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "tutorials", "Video Tutorials", "Watch a series of Youtube videos to get started.", new ActionLink("https://www.youtube.com/playlist?list=PLkZqalQdFIQ6zym8RwSWWl3PZJuUdvNK6")));
+            panels[2].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "examples", "Examples", "Install example scenes", new ActionLink(panels[4], panels[2])));
 
             panels[3].elements.Add(new WindowPanel.Space(400, 10));
-            panels[3].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "discord.png", "Discord Server", "Join our Discord community and chat with other developers and the team.", new ActionLink("https://discord.gg/bkYDq8v")));
-            panels[3].elements.Add(new WindowPanel.Button(400, 30, "Contact Support", new ActionLink("http://dreamteck.io/support/contact.php")));
+            panels[3].elements.Add(new WindowPanel.Thumbnail("Utilities/Editor/Images", "discord", "Discord Server", "Join our Discord community and chat with other developers who use Dreamteck Splines.", new ActionLink("https://discord.gg/bkYDq8v")));
+            panels[3].elements.Add(new WindowPanel.Button(400, 30, "Contact Support", new ActionLink("http://dreamteck.io/support/contact.php"))); 
 
             panels[4].elements.Add(new WindowPanel.Space(400, 10));
             bool packagExists = false;
