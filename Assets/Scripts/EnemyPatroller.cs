@@ -46,7 +46,7 @@ public class EnemyPatroller : MonoBehaviour
 		var distance = Vector3.Distance(transform.position, _currentDest); 
 		if(distance > 0.5f) return;
 
-		if(waypoints.Length > 1)
+		if(waypoints.Length > 2)
 			SetNextWaypoint();
 	}
 

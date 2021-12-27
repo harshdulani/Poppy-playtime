@@ -112,6 +112,8 @@ public class HandController : MonoBehaviour
 			StartCarryingBody(other.transform);
 			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
 				raghu.TellParent();
+			else if (other.TryGetComponent(out PropController prop))
+				prop.hasBeenInteractedWith = true;
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));

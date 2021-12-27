@@ -21,13 +21,25 @@
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 6.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 6.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Close Fist.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Close Fist.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Open Fist.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Open Fist.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Punch.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Punch.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Ragdoll.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Ragdoll.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Victory.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Victory.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/ZoomIn.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/ZoomIn.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/HandSkins/Spidey.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/HandSkins/Spidey.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Frisbee Breakable.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Frisbee Breakable.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PropController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PropController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,18 +167,18 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
       </list>
     </option>
   </component>
@@ -214,7 +226,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added ragdolling to poppy character and dragging around with mouse, introduced bug to hand come back to wrist" />
     <MESSAGE value="lmao false bug, actually just needed to set a float, state machine works perfectly now. need to add a feature" />
     <MESSAGE value="Player now pulls ragdoll towards himself" />
     <MESSAGE value="Added right hand rope using dreamteck splines" />
@@ -239,7 +250,8 @@
     <MESSAGE value="Added patrolling mini script" />
     <MESSAGE value="pulling everything is fixed, patrolling enemies added, bugs are still there, this is a safety commit" />
     <MESSAGE value="working on debugging hitbox collision" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on debugging hitbox collision" />
+    <MESSAGE value="hitbox attack -&gt; gameover bug solved, reticle enlarged" />
+    <option name="LAST_COMMIT_MESSAGE" value="hitbox attack -&gt; gameover bug solved, reticle enlarged" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -263,11 +275,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1640425586131" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1640438724194">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1640585542149">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="465" y="167" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1639995761930" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1640438724194" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1640585542149" />
     <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1640582838625">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -278,10 +290,10 @@
     </state>
     <state x="489" y="198" width="727" height="530" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1640001687723" />
     <state x="916" y="433" width="727" height="534" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1640580646975" />
-    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup" timestamp="1640583569826">
+    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup" timestamp="1640594324864">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
-    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1640583569826" />
+    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1640594324864" />
   </component>
 </project>

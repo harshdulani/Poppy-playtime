@@ -4,7 +4,8 @@ using DG.Tweening;
 using UnityEngine;
 
 public class PropController : MonoBehaviour
-{	
+{
+	public bool hasBeenInteractedWith;
 	[SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;
@@ -59,11 +60,13 @@ public class PropController : MonoBehaviour
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
 		
 		Invoke(nameof(Explode), .2f);
-
+		
+		if(!hasBeenInteractedWith) return;
+		
 		if (!other.transform.root.CompareTag("Target")) return;
-
-		other.transform.root.GetComponent<RagdollController>()
-			.GoRagdoll((other.contacts[0].point - transform.position).normalized);
+		
+		if(other.transform.root.TryGetComponent(out RagdollController raghu))
+			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}
 
 	public void Explode()

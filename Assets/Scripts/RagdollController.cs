@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
+	[SerializeField] private bool isPoppy;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	public bool isRagdoll, isWaitingForPunch;
@@ -16,7 +17,10 @@ public class RagdollController : MonoBehaviour
 	private static readonly int Attack2 = Animator.StringToHash("attack2");
 	private static readonly int IsMirrored = Animator.StringToHash("isMirrored");	
 	private static readonly int HasWon = Animator.StringToHash("hasWon");
-	
+	private static readonly int Idle1 = Animator.StringToHash("idle1");
+	private static readonly int Idle2 = Animator.StringToHash("idle2");
+	private static readonly int Idle3 = Animator.StringToHash("idle3");
+
 	private void OnEnable()
 	{
 		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
@@ -33,6 +37,16 @@ public class RagdollController : MonoBehaviour
 		TryGetComponent(out _patroller);
 		
 		_anim.SetBool(IsMirrored, Random.value > 0.5f);
+		
+		if(isPoppy) return;
+
+		var random = Random.Range(0, 1);
+		if(random < 0.33f)
+			_anim.SetTrigger(Idle1);
+		else if(random < 0.66f)
+			_anim.SetTrigger(Idle2);
+		else
+			_anim.SetTrigger(Idle3);
 	}
 
 	public void HoldInAir()
