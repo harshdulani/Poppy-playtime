@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class RagdollLimbController : MonoBehaviour
@@ -24,19 +25,22 @@ public class RagdollLimbController : MonoBehaviour
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
+	
+	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;
 
+	public void Attack(Vector3 endPos)
+	{
+		if (_parent.isRagdoll) return;
+
+		endPos.y = transform.root.position.y;
+		_parent.transform.DOMove(endPos, 0.2f);
+		_parent.AttackEnemy();
+		GameEvents.only.InvokeEnemyReachPlayer();
+	}
+	
 	private void OnCollisionEnter(Collision other)
 	{
-		//working on this, refer nbk
-		print(other.gameObject);
-		if(!_parent.isRagdoll)
-		{
-			if(!other.transform.root.CompareTag("Player")) return;
-		
-			_parent.AttackEnemy();
-			GameEvents.only.InvokeEnemyReachPlayer();
-			return;
-		}
+		if(!_parent.isRagdoll) return;
 		
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
