@@ -77,6 +77,7 @@ public class EnemyPatroller : MonoBehaviour
 		if(myPatrolArea > 0) return;
 		
 		_anim.SetBool(IsWalking, shouldPatrol);
+		ToggleAI(true);
 		SetNextWaypoint();
 	}
 

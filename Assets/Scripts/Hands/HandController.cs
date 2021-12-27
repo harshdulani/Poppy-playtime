@@ -168,7 +168,7 @@ public class HandController : MonoBehaviour
 
 		var direction = (root.position - transform.position).normalized;
 		
-		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up.normalized * (_isCarryingRagdoll ? -.5f : 1f);
+		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (_isCarryingRagdoll ? root.GetComponent<RagdollController>().isPoppy ? -.5f : -2.5f : 1f);
 
 		root.DOMove(endValue, 0.2f);
 		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);

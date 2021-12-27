@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+	public static CameraController only; 
+	
 	[SerializeField] private float actionFov, zoomDuration;
+
+	[Header("ScreenShake"), SerializeField]
+	private float shakeDuration;
+	[SerializeField] private float shakeStrength;
+	
 	private float _normalFov;
 	private Camera _me;
 	
@@ -23,6 +30,12 @@ public class CameraController : MonoBehaviour
 		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
 	}
 
+	private void Awake()
+	{
+		if (!only) only = this;
+		else Destroy(only);
+	}
+
 	private void Start()
 	{
 		_me = GetComponent<Camera>();
@@ -40,6 +53,11 @@ public class CameraController : MonoBehaviour
 		DOTween.To(() => _me.fieldOfView, value => _me.fieldOfView = value, actionFov, zoomDuration);
 	}
 
+	public void ScreenShake(float intensity)
+	{
+		_me.DOShakePosition(shakeDuration * intensity / 2f, shakeStrength * intensity, 10, 45f);
+	}
+	
 	private void OnEnterHitBox(Transform target)
 	{
 		ZoomAction();

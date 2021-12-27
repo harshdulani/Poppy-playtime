@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
-	[SerializeField] private bool isPoppy;
+	public bool isPoppy;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	public bool isRagdoll, isWaitingForPunch;
@@ -91,6 +91,19 @@ public class RagdollController : MonoBehaviour
 		_anim.SetTrigger(Random.value > 0.5f ? Attack1 : Attack2);
 		_patroller.ToggleAI(false);
 		_isAttacking = true;
+	}
+
+	public void WalkOnAnimation()
+	{
+		print("screenshake light");
+		CameraController.only.ScreenShake(1f);
+	}
+
+	public void HitOnAnimation()
+	{
+		print("screenshake heavy");
+		//vibration heavy
+		CameraController.only.ScreenShake(2f);
 	}
 	
 	private void OnMoveToNextArea()
