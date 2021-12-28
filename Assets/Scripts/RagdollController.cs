@@ -7,8 +7,12 @@ public class RagdollController : MonoBehaviour
 	[SerializeField] private Rigidbody[] rigidbodies;
 	public bool isRagdoll, isWaitingForPunch;
 
+	[Header("Audio"), SerializeField] private AudioClip punch1;
+	[SerializeField] private AudioClip punch2;
+	
 	private Animator _anim;
 	private EnemyPatroller _patroller;
+	private AudioSource _audioSource;
 	
 	private bool _isAttacking;
 
@@ -36,6 +40,7 @@ public class RagdollController : MonoBehaviour
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
+		_audioSource = GetComponent<AudioSource>();
 		TryGetComponent(out _patroller);
 		
 		_anim.SetBool(IsMirrored, Random.value > 0.5f);
@@ -71,9 +76,11 @@ public class RagdollController : MonoBehaviour
 
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
+		
+		_audioSource.Play();
 	}
 
-	public void PlayRandomAnim()
+	private void PlayRandomAnim()
 	{
 		var random = Random.Range(0f, 1f);
 		if(random < 0.33f)
@@ -95,15 +102,14 @@ public class RagdollController : MonoBehaviour
 
 	public void WalkOnAnimation()
 	{
-		print("screenshake light");
 		CameraController.only.ScreenShake(1f);
 	}
 
 	public void HitOnAnimation()
 	{
-		print("screenshake heavy");
 		//vibration heavy
 		CameraController.only.ScreenShake(2f);
+		_audioSource.PlayOneShot(Random.Range(0f, 1f) > 0.5f ? punch1 : punch2);
 	}
 	
 	private void OnMoveToNextArea()

@@ -62,7 +62,7 @@ public class LevelFlowController : MonoBehaviour
 		{
 			enemiesInCurrentArea = enemiesInArea[++currentArea];
 			enemiesKilledInCurrentArea = 0;
-			GameEvents.only.InvokeNextArea();
+			GameEvents.only.InvokeMoveToNextArea();
 			InputHandler.Only.AssignDisabledState();
 		}
 	}

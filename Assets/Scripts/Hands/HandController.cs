@@ -9,20 +9,22 @@ public class HandController : MonoBehaviour
 	[SerializeField] private float ragdollWfpDistance, propWfpDistance;
 	
 	private Animator _anim;
-	private static RopeController _rope;
 	private static Animation _armAnimation;
+	private static RopeController _rope;
+	public static PlayerSoundController Sounds;
 
-	public static bool _isCarryingRagdoll;
-	private static bool IsCarryingBody;
+	public static bool IsCarryingRagdoll;
+	private static bool _isCarryingBody;
 	
 	private Transform _palmParentInit,_lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving;
-	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
+	
+	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 
 	private void OnEnable()
 	{
@@ -43,11 +45,14 @@ public class HandController : MonoBehaviour
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
-		if(!_rope)
-			if(TryGetComponent(out RopeController rope))
+		if(!_rope) //if static variables aren't initialised
+		{
+			if (TryGetComponent(out RopeController rope))
 				_rope = rope;
-		
-		_armAnimation = transform.root.GetComponent<Animation>();
+
+			_armAnimation = transform.root.GetComponent<Animation>();
+			Sounds = _armAnimation.GetComponent<PlayerSoundController>();
+		}
 
 		_initPosSet = false;
 		_palmParentInit = palm.parent;
@@ -59,10 +64,8 @@ public class HandController : MonoBehaviour
 	{
 		if (goHome)
 		{
-			if (IsCarryingBody)
+			if (_isCarryingBody)
 			{
-				var direction = (_palmParentInit.position - palm.position).normalized;
-				//palm.root.position += direction * (returnSpeed * Time.deltaTime);
 				palm.localPosition =
 					Vector3.MoveTowards(palm.localPosition, Vector3.zero, returnSpeed * Time.deltaTime);
 
@@ -87,6 +90,8 @@ public class HandController : MonoBehaviour
 				_lastNormal = Quaternion.LookRotation(-hit.normal);
 
 				_initPosSet = true;
+				
+				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
 			}
 			
 			palm.position =
@@ -103,7 +108,7 @@ public class HandController : MonoBehaviour
 
 	public void HandReachTarget(Transform other)
 	{
-		if (IsCarryingBody) return;
+		if (_isCarryingBody) return;
 		
 		if(isLeftHand)
 		{
@@ -121,7 +126,7 @@ public class HandController : MonoBehaviour
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-			if(_isCarryingRagdoll)
+			if(IsCarryingRagdoll)
 				other.GetComponent<RagdollLimbController>().GetPunched((_targetInitPos - transform.position).normalized, punchForce);
 			else
 			{
@@ -139,17 +144,17 @@ public class HandController : MonoBehaviour
 
 	private void StartCarryingBody(Transform target)
 	{
-		IsCarryingBody = true;
+		_isCarryingBody = true;
 		
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			raghu.AskParentForHook().transform.root.parent = palm;
-			_isCarryingRagdoll = true;
+			IsCarryingRagdoll = true;
 		}
 		else
 		{
 			target.transform.parent = palm;
-			_isCarryingRagdoll = false;
+			IsCarryingRagdoll = false;
 		}
 	}
 
@@ -168,7 +173,7 @@ public class HandController : MonoBehaviour
 
 		var direction = (root.position - transform.position).normalized;
 		
-		var endValue = transform.position + direction * (_isCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (_isCarryingRagdoll ? root.GetComponent<RagdollController>().isPoppy ? -.5f : -2.5f : 1f);
+		var endValue = transform.position + direction * (IsCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (IsCarryingRagdoll ? root.GetComponent<RagdollController>().isPoppy ? -.5f : -2.5f : 1f);
 
 		root.DOMove(endValue, 0.2f);
 		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
@@ -203,7 +208,7 @@ public class HandController : MonoBehaviour
 		//palm.parent = _palmParentInit;
 		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
 		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
-		IsCarryingBody = false;
+		_isCarryingBody = false;
 	}
 
 	private void OnEnterHitBox(Transform target)
@@ -215,7 +220,7 @@ public class HandController : MonoBehaviour
 
 	private void OnPropDestroyed(Transform target)
 	{
-		IsCarryingBody = false;
+		_isCarryingBody = false;
 		ResetPalmParent();
 		ClearInitTargetPos();
 	}

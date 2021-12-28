@@ -12,9 +12,14 @@ public class PropController : MonoBehaviour
 	[SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
 
+	[SerializeField] private AudioClip[] explosionFx;
+	private AudioSource _source;
+	private static int _explosionSoundCounter;
+	
 	private Rigidbody _rb;
 	private Collider _collider;
 	private Vector3 _previousPerlin, _previousPerlinRot;
+
 	private bool _inHitBox, _hasBeenPickedUp, _amDestroyed;
 
 	private void OnEnable()
@@ -33,6 +38,7 @@ public class PropController : MonoBehaviour
 	{
 		_rb = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
+		_source = GetComponent<AudioSource>();
 	}
 
 	private void Update()
@@ -85,6 +91,8 @@ public class PropController : MonoBehaviour
 		}
 		GameEvents.only.InvokePropDestroy(transform);
 		_amDestroyed = true;
+		
+		_source.PlayOneShot(explosionFx[_explosionSoundCounter++ % explosionFx.Length]);
 	}
 
 	public void GetPunched(Vector3 direction, float punchForce)

@@ -67,6 +67,8 @@ public class MainCanvasController : MonoBehaviour
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo") + 1);
+		
+		AudioManager.instance.Play("Button");
 	}
 
 	private void OnEnemyReachPlayer()
@@ -83,6 +85,8 @@ public class MainCanvasController : MonoBehaviour
 	{
 		victory.SetActive(true);
 		nextLevel.SetActive(true);
+		
+		AudioManager.instance.Play("Win");
 	}
 
 	private void EnableLossObjects()
@@ -97,5 +101,8 @@ public class MainCanvasController : MonoBehaviour
 		defeat.SetActive(true);
 		retry.SetActive(true);
 		_hasLost = true;
+		
+		AudioManager.instance.Play("Lose");
+		//AudioManager.instance.Play("LoseBG");
 	}
 }

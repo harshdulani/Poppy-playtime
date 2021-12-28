@@ -8,10 +8,10 @@ public class PalmController : MonoBehaviour
 
 	private static Transform _lastPickedTarget;
 	private static bool _canBeAdopted = true;
-	
+	private static int _punchIndex;
+
 	private void OnEnable()
 	{
-		
 		if(myHand.isLeftHand)
 		{
 			GameEvents.only.propDestroyed += OnPropDestroyed;
@@ -67,6 +67,7 @@ public class PalmController : MonoBehaviour
 		SetCurrentTransform(null);
 		Invoke(nameof(EnablePunching), punchWaitTime);
 		Invoke(nameof(ResetAdoptability), 0.5f);
+		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex ++ % HandController.Sounds.punch.Length], 1f);
 	}
 
 	private void OnPropDestroyed(Transform target)

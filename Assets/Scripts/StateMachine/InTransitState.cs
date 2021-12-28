@@ -16,6 +16,10 @@ public class InTransitState : InputStateBase
 	public override void OnEnter()
 	{
 		IsPersistent = false;
+		if (GoHome)
+			PlayerSoundController.only.ZiplineCome();
+		else
+			PlayerSoundController.only.ZiplineGo();
 	}
 
 	public override void Execute()

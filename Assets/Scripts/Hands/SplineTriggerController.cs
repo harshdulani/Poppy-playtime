@@ -11,6 +11,7 @@ public class SplineTriggerController : MonoBehaviour
 
 	public void StopFollowing()
 	{
+		GameEvents.only.InvokeReachNextArea();
 		_movementController.StopFollowing();
 	}
 }

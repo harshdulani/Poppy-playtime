@@ -111,7 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 0.25
-  inTransitTime: 2
 --- !u!1 &335397018752601505
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +232,8 @@ GameObject:
   - component: {fileID: 4277739896697809485}
   - component: {fileID: 1113535304993847336}
   - component: {fileID: 3150578100713885321}
+  - component: {fileID: 6464711869485574782}
+  - component: {fileID: 104946964270778096}
   m_Layer: 0
   m_Name: Hands
   m_TagString: Player
@@ -306,9 +307,7 @@ MonoBehaviour:
   clampAngleHorizontal: 20
   findTargetColor: {r: 0.5801887, g: 1, b: 0.5910086, a: 0.83137256}
   missingTargetColor: {r: 1, g: 0.43867922, b: 0.52653813, a: 0.83137256}
-  reticle: {fileID: 0}
   screenPercentageOnY: 0.589733
-  canvas: {fileID: 0}
 --- !u!114 &1113535304993847336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,6 +578,9 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 1
+  _loopSamples: 0
+  _clipFrom: 0
+  _clipTo: 1
   animClipFrom: 0
   animClipTo: 1
   _sampleCount: 37
@@ -586,23 +588,32 @@ MonoBehaviour:
   multithreaded: 0
   buildOnAwake: 0
   buildOnEnable: 0
+  _isUpdated: 1
   applyDirectionRotation: 0
   useTriggers: 1
   triggerGroup: 0
   _direction: 1
+  _dontLerpDirection: 0
   _physicsMode: 0
   _motion:
+    _hasOffset: 0
+    _hasRotationOffset: 0
     _offset: {x: 0, y: 0}
     _rotationOffset: {x: 0, y: 0, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
+    _2dMode: 0
     velocityHandleMode: 0
     applyPositionX: 1
     applyPositionY: 1
     applyPositionZ: 1
+    applyPosition2D: 1
+    retainLocalPosition: 0
     direction: 1
     applyRotationX: 0
     applyRotationY: 1
     applyRotationZ: 1
+    applyRotation2D: 1
+    retainLocalRotation: 0
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0
@@ -627,11 +638,20 @@ MonoBehaviour:
   wrapMode: 0
   followMode: 0
   autoStartPosition: 0
-  follow: 0
+  _follow: 0
+  preserveUniformSpeedWithOffset: 0
   _followSpeed: 25
   _followDuration: 1
   _startPosition: 0
-  editorSetPosition: 1
+  _speedModifier:
+    blend: 1
+    keys: []
+  _unityOnEndReached:
+    m_PersistentCalls:
+      m_Calls: []
+  _unityOnBeginningReached:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3150578100713885321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,6 +664,126 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d4031718b94e341b3dacdb52d7df64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6464711869485574782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668030867423338667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dc1db49c2649a244ba34030082f57b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prePunch:
+  - {fileID: 8300000, guid: 3b2518af5caaf784e8c766d85fcd60ab, type: 3}
+  - {fileID: 8300000, guid: d2c92b76716a63c42b2eb59891e51bfd, type: 3}
+  punch:
+  - {fileID: 8300000, guid: 717bbbc0d4f18cc4696041fa6c4b1bcd, type: 3}
+  - {fileID: 8300000, guid: 61b40c6e692ffdf4a89aba7ad5b71aca, type: 3}
+  ziplineLeave: {fileID: 8300000, guid: 7f44160e10a7a6c49ae3186251aae73c, type: 3}
+  ziplineGo: {fileID: 8300000, guid: 1883633e6fac88c4c93c4076cade319b, type: 3}
+  ziplineCome: {fileID: 8300000, guid: d2c92b76716a63c42b2eb59891e51bfd, type: 3}
+  ziplineReturn: {fileID: 8300000, guid: 79f7d90cd28b5314c95a3e702dc9cb34, type: 3}
+  ziplineClick: {fileID: 8300000, guid: 4591757a29d38674480a9819a8c6ffe4, type: 3}
+  footsteps: {fileID: 8300000, guid: 782a8b5dd6aecc740af44ea92428a7ca, type: 3}
+--- !u!82 &104946964270778096
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668030867423338667}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 0.75
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2250485342096107938
 GameObject:
   m_ObjectHideFlags: 0

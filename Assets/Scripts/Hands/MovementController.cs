@@ -38,6 +38,7 @@ public class MovementController : MonoBehaviour
 	private void StartFollowing()
 	{
 		_spline.follow = true;
+		PlayerSoundController.only.PlayFootSteps();
 	}
 
 	public void StopFollowing()

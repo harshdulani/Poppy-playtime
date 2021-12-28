@@ -2,19 +2,21 @@ using UnityEngine;
 
 public class HitBoxController : MonoBehaviour
 {
-	[SerializeField] private float attackDistance, inTransitTime = 2f;
+	[SerializeField] private float attackDistance;
 	private bool _inHitBox, _inTransit;
 	
 	private void OnEnable()
 	{
 		GameEvents.only.punchHit += OnPunchHit;
-		GameEvents.only.moveToNextArea += MoveToNextArea;
+		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.punchHit -= OnPunchHit;
-		GameEvents.only.moveToNextArea += MoveToNextArea;
+		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -46,13 +48,12 @@ public class HitBoxController : MonoBehaviour
 	}
 	
 	
-	private void MoveToNextArea()
+	private void OnMoveToNextArea()
 	{
 		_inTransit = true;
-		Invoke(nameof(DisableTransit), inTransitTime);
 	}
 
-	private void DisableTransit()
+	private void OnReachNextArea()
 	{
 		_inTransit = false;
 	}
