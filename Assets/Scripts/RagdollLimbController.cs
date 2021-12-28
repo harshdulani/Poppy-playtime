@@ -4,12 +4,15 @@ using UnityEngine;
 public class RagdollLimbController : MonoBehaviour
 {
 	private RagdollController _parent;
+	private HostageController _hostage;
 
 	private Rigidbody _rb;
 	
 	private void Start()
 	{
-		_parent = transform.root.GetComponent<RagdollController>();
+		if (!transform.root.TryGetComponent(out _parent))
+			_hostage = transform.root.GetComponent<HostageController>();
+		
 		_rb = GetComponent<Rigidbody>();
 	}
 
@@ -20,7 +23,10 @@ public class RagdollLimbController : MonoBehaviour
 	
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
-		_parent.GoRagdoll(direction);
+		if (_parent)
+			_parent.GoRagdoll(direction);
+		else
+			_hostage.GoRagdoll(direction);
 		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
@@ -40,12 +46,15 @@ public class RagdollLimbController : MonoBehaviour
 	
 	private void OnCollisionEnter(Collision other)
 	{
+		if(!_parent) return;
+	
 		if(!_parent.isRagdoll) return;
-		
+
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
-		
+
 		if(_rb.velocity.sqrMagnitude < 1f) return;
+		
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
 		{
 			raghu.GetPunched(other.transform.position - transform.position, 10f);

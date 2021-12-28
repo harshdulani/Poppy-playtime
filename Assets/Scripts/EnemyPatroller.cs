@@ -5,8 +5,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatroller : MonoBehaviour
 {
+	[SerializeField] private bool hasWeapon;
 	[SerializeField] private int myPatrolArea;
 	[SerializeField] private List<Transform> waypoints;
+	[SerializeField] private float waypointChangeDistance = 0.5f;
 	public bool shouldPatrol;
 	
 	private NavMeshAgent _agent;
@@ -20,8 +22,9 @@ public class EnemyPatroller : MonoBehaviour
 	}
 
 	private int _currentWayPoint;
-	
+
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
+	private static readonly int Attack = Animator.StringToHash("attack1");
 
 	private void OnEnable()
 	{
@@ -55,10 +58,25 @@ public class EnemyPatroller : MonoBehaviour
 		if(!shouldPatrol) return;
 
 		var distance = Vector3.Distance(transform.position, _currentDest); 
-		if(distance > 0.5f) return;
+		
+		if(distance > waypointChangeDistance) return;
+		
+		if (hasWeapon)
+		{
+			ToggleAI(false);
+			_anim.SetTrigger(Attack);
+			GameEvents.only.InvokeEnemyReachPlayer();
+			shouldPatrol = false;
+			return;
+		}
 
-		if(waypoints.Count > 2)
+		if (waypoints.Count > 1)
 			SetNextWaypoint();
+		else
+		{
+			shouldPatrol = false;
+			ToggleAI(false);
+		}
 	}
 
 	private void SetNextWaypoint()
