@@ -93,6 +93,7 @@ public class PropController : MonoBehaviour
 		_amDestroyed = true;
 		
 		_source.PlayOneShot(explosionFx[_explosionSoundCounter++ % explosionFx.Length]);
+		Vibration.Vibrate(25);
 	}
 
 	public void GetPunched(Vector3 direction, float punchForce)

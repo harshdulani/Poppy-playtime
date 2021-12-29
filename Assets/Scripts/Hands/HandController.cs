@@ -7,6 +7,8 @@ public class HandController : MonoBehaviour
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
 	[SerializeField] private float ragdollWfpDistance, propWfpDistance;
+
+	[SerializeField] private ParticleSystem windLines;
 	
 	private Animator _anim;
 	private static Animation _armAnimation;
@@ -16,7 +18,7 @@ public class HandController : MonoBehaviour
 	public static bool IsCarryingRagdoll;
 	private static bool _isCarryingBody;
 	
-	private Transform _palmParentInit,_lastTarget;
+	private Transform _lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving;
@@ -32,6 +34,8 @@ public class HandController : MonoBehaviour
 			GameEvents.only.enterHitBox += OnEnterHitBox;
 		else
 			GameEvents.only.propDestroyed += OnPropDestroyed;
+
+		GameEvents.only.punchHit += OnPunchHit;
 	}
 	
 	private void OnDisable()
@@ -40,6 +44,8 @@ public class HandController : MonoBehaviour
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		else
 			GameEvents.only.propDestroyed -= OnPropDestroyed;
+		
+		GameEvents.only.punchHit -= OnPunchHit;
 	}
 	
 	private void Start()
@@ -55,7 +61,6 @@ public class HandController : MonoBehaviour
 		}
 
 		_initPosSet = false;
-		_palmParentInit = palm.parent;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
 	}
@@ -135,11 +140,14 @@ public class HandController : MonoBehaviour
 					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce);
 			}
 		}
+
+		Vibration.Vibrate(15);
 	}
 
 	public void HandReachHome()
 	{
-		InputHandler.AssignNewState(InputHandler.IdleState);
+		if(!InputHandler.Only.IsInDisabledState())
+			InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
 	private void StartCarryingBody(Transform target)
@@ -180,11 +188,13 @@ public class HandController : MonoBehaviour
 		
 		_anim.SetBool(IsPunching, true);
 		_rope.ReturnHome();
+		windLines.Play();
 	}
 
 	public void GivePunch()
 	{
 		_armAnimation.Play();
+		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
 
 	private static void ClearInitTargetPos()
@@ -211,6 +221,9 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = false;
 	}
 
+	
+	public AimController GetAimController() => transform.root.GetComponent<AimController>();
+	
 	private void OnEnterHitBox(Transform target)
 	{
 		if(!isLeftHand) return;
@@ -224,9 +237,9 @@ public class HandController : MonoBehaviour
 		ResetPalmParent();
 		ClearInitTargetPos();
 	}
-
-	public AimController GetAimController()
+	
+	private void OnPunchHit()
 	{
-		return transform.root.GetComponent<AimController>();
+		windLines.Stop();
 	}
 }

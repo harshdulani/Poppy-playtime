@@ -4,8 +4,8 @@ public class PlayerSoundController : MonoBehaviour
 {
 	public static PlayerSoundController only;
 	
-	public AudioClip[] prePunch, punch;
-	public AudioClip ziplineLeave, ziplineGo, ziplineCome;
+	public AudioClip[] punch;
+	public AudioClip ziplineLeave, ziplineGo, ziplineCome, clickForPunch;
 	public AudioClip footsteps; 
 	
 	private AudioSource _source;

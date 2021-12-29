@@ -61,6 +61,7 @@ public class AimController : MonoBehaviour
 	public void FindTarget()
     {
 	    _reticle.color = findTargetColor;
+		Vibration.Vibrate(15);
 	}
 
     public void LoseTarget()

@@ -23,6 +23,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.only.gameEnd += OnGameOver;
 	}
 
 	private void OnDisable()
@@ -30,6 +31,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
+		GameEvents.only.gameEnd -= OnGameOver;
 	}
 
 	private void Awake()
@@ -128,6 +130,8 @@ public class InputHandler : MonoBehaviour
 		return false;
 	}
 
+	public bool IsInDisabledState() => _leftHandState is DisabledState;
+
 	public void WaitForPunch(Transform other)
 	{
 		_rightHand.WaitForPunch(other.transform);
@@ -137,7 +141,8 @@ public class InputHandler : MonoBehaviour
 
 	private void OnGameOver()
 	{
-		_inDisabledState = false;
+		_inDisabledState = true;
+		_isTemporarilyDisabled = false;
 		ChangeStateToDisabled();
 	}
 
@@ -148,7 +153,8 @@ public class InputHandler : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		Invoke(nameof(AssignIdleState), .1f);
+		if(!_inDisabledState || (_inDisabledState && _isTemporarilyDisabled))
+			Invoke(nameof(AssignIdleState), .1f);
 	}
 
 	public void StopCarryingBody()
@@ -158,6 +164,7 @@ public class InputHandler : MonoBehaviour
 
 	public void AssignIdleState()
 	{
+		if(_inDisabledState && !_isTemporarilyDisabled) return;
 		AssignNewState(IdleState);
 
 		_isTemporarilyDisabled = false;

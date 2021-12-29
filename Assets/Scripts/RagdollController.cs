@@ -78,6 +78,7 @@ public class RagdollController : MonoBehaviour
 			rb.tag = "Untagged";
 		
 		_audioSource.Play();
+		Vibration.Vibrate(25);
 	}
 
 	private void PlayRandomAnim()
@@ -107,7 +108,7 @@ public class RagdollController : MonoBehaviour
 
 	public void HitOnAnimation()
 	{
-		//vibration heavy
+		Vibration.Vibrate(35);
 		CameraController.only.ScreenShake(2f);
 		_audioSource.PlayOneShot(Random.Range(0f, 1f) > 0.5f ? punch1 : punch2);
 	}

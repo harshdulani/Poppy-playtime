@@ -44,6 +44,7 @@ public class LevelFlowController : MonoBehaviour
 			_totalEnemiesRemaining += area;
 
 		DOTween.KillAll();
+		Vibration.Init();
 	}
 
 	private void OnEnemyKilled()
