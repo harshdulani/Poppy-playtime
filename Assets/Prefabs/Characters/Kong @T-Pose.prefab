@@ -565,8 +565,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.47450885
-  m_Center: {x: 0, y: 0.47450885, z: 0}
+  m_Radius: 0.19294135
+  m_Center: {x: -4.828846e-14, y: 0.19567506, z: 0.12848215}
 --- !u!54 &9159509194848487612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1403,8 +1403,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09a7d1df444cda4e87497add58480d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasWeapon: 0
   myPatrolArea: 0
   waypoints: []
+  waypointChangeDistance: 0.5
   shouldPatrol: 1
 --- !u!82 &7170277841708874516
 AudioSource:

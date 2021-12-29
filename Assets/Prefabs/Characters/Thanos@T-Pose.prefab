@@ -1567,7 +1567,6 @@ MonoBehaviour:
   - {fileID: 8766759735178014373}
   isRagdoll: 0
   isWaitingForPunch: 0
-  die: {fileID: 8300000, guid: c5e6b0bd7d1b6934998894ab81c98a2e, type: 3}
   punch1: {fileID: 8300000, guid: 717bbbc0d4f18cc4696041fa6c4b1bcd, type: 3}
   punch2: {fileID: 8300000, guid: 61b40c6e692ffdf4a89aba7ad5b71aca, type: 3}
 --- !u!114 &6758070771685457935
@@ -1582,8 +1581,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09a7d1df444cda4e87497add58480d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasWeapon: 0
   myPatrolArea: 0
   waypoints: []
+  waypointChangeDistance: 0.5
   shouldPatrol: 0
 --- !u!82 &2042515596495213094
 AudioSource:
@@ -3337,8 +3338,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5238962, y: 0.090305015, z: 0.27860007}
-  m_Center: {x: -0.000000059604645, y: 0.0451527, z: -0.005521551}
+  m_Size: {x: 0.5238962, y: 0.23809898, z: 0.27860007}
+  m_Center: {x: -0.00000005962493, y: 0.10376402, z: -0.005521546}
 --- !u!54 &7015176626860590093
 Rigidbody:
   m_ObjectHideFlags: 0

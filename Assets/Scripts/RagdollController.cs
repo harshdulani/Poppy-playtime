@@ -76,6 +76,11 @@ public class RagdollController : MonoBehaviour
 
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
+
+		
+		var x = GetComponentInChildren<EnemyWeaponController>();
+		if (x)
+			x.OnDeath();
 		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
@@ -95,10 +100,12 @@ public class RagdollController : MonoBehaviour
 	public void AttackEnemy()
 	{
 		if(_isAttacking) return;
-		
+
+		_anim.applyRootMotion = true;
 		_anim.SetTrigger(Random.value > 0.5f ? Attack1 : Attack2);
 		_patroller.ToggleAI(false);
 		_isAttacking = true;
+		InputHandler.Only.AssignDisabledState();
 	}
 
 	public void WalkOnAnimation()

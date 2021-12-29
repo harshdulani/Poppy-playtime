@@ -74,7 +74,7 @@ public class MainCanvasController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
-		Invoke(nameof(EnableLossObjects), 1f);
+		Invoke(nameof(EnableLossObjects), 1.5f);
 	}
 	
 	private void OnGameEnd()

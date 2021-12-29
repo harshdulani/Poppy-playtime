@@ -21,7 +21,7 @@ public class HandController : MonoBehaviour
 	private Transform _lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
-	private bool _isHandMoving;
+	private bool _isHandMoving, _canGivePunch;
 	
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
@@ -187,12 +187,16 @@ public class HandController : MonoBehaviour
 		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
 		
 		_anim.SetBool(IsPunching, true);
+		_canGivePunch = true;
 		_rope.ReturnHome();
 		windLines.Play();
 	}
 
 	public void GivePunch()
 	{
+		if (!_canGivePunch) return;
+		
+		_canGivePunch = false;
 		_armAnimation.Play();
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}

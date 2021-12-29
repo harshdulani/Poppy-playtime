@@ -39,7 +39,7 @@ public class RagdollLimbController : MonoBehaviour
 		if (_parent.isRagdoll) return;
 
 		endPos.y = transform.root.position.y;
-		_parent.transform.DOMove(endPos, 0.2f);
+		_parent.transform.DOMove(endPos, 0.5f);
 		_parent.AttackEnemy();
 		GameEvents.only.InvokeEnemyReachPlayer();
 	}

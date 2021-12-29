@@ -48,7 +48,8 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		_agent = GetComponent<NavMeshAgent>();
 		_anim = GetComponent<Animator>();
-		
+
+		_anim.applyRootMotion = true;
 		if(waypoints.Count == 0)
 			waypoints.Add(GameObject.FindGameObjectWithTag("Player").transform);
 	}
@@ -95,7 +96,8 @@ public class EnemyPatroller : MonoBehaviour
 	private void OnTapToPlay()
 	{
 		if(myPatrolArea > 0) return;
-		
+
+		_anim.applyRootMotion = false;
 		_anim.SetBool(IsWalking, shouldPatrol);
 		ToggleAI(true);
 		SetNextWaypoint();
