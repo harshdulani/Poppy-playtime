@@ -32,8 +32,6 @@ public class HandController : MonoBehaviour
 	{
 		if(!isLeftHand)
 			GameEvents.only.enterHitBox += OnEnterHitBox;
-		else
-			GameEvents.only.propDestroyed += OnPropDestroyed;
 
 		GameEvents.only.punchHit += OnPunchHit;
 	}
@@ -42,8 +40,6 @@ public class HandController : MonoBehaviour
 	{
 		if (!isLeftHand)
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
-		else
-			GameEvents.only.propDestroyed -= OnPropDestroyed;
 		
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
@@ -235,7 +231,7 @@ public class HandController : MonoBehaviour
 		ResetPalmParent();
 	}
 
-	private void OnPropDestroyed(Transform target)
+	public void OnPropDestroyed()
 	{
 		_isCarryingBody = false;
 		ResetPalmParent();

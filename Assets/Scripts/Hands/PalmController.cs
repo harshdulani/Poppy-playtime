@@ -75,6 +75,7 @@ public class PalmController : MonoBehaviour
 		if(target != _lastPickedTarget) return;
 		
 		SetCurrentTransform(null);
+		myHand.OnPropDestroyed();
 		Invoke(nameof(ResetAdoptability), 0.5f);
 	}
 
