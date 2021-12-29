@@ -24,6 +24,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
 		GameEvents.only.gameEnd += OnGameOver;
+		GameEvents.only.enemyReachPlayer += OnGameOver;
 	}
 
 	private void OnDisable()
@@ -32,6 +33,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
 		GameEvents.only.gameEnd -= OnGameOver;
+		GameEvents.only.enemyReachPlayer -= OnGameOver;
 	}
 
 	private void Awake()

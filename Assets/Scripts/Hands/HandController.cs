@@ -6,7 +6,7 @@ public class HandController : MonoBehaviour
 	public bool isLeftHand;
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
-	[SerializeField] private float ragdollWfpDistance, propWfpDistance;
+	[SerializeField] private float ragdollWfpDistance, propWfpDistance, enemyWfpHeight = -0.5f;
 
 	[SerializeField] private ParticleSystem windLines;
 	
@@ -181,7 +181,7 @@ public class HandController : MonoBehaviour
 
 		var direction = (root.position - transform.position).normalized;
 		
-		var endValue = transform.position + direction * (IsCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (IsCarryingRagdoll ? root.GetComponent<RagdollController>().isPoppy ? -.5f : -2.5f : 1f);
+		var endValue = transform.position + direction * (IsCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (IsCarryingRagdoll ? enemyWfpHeight : 1f);
 
 		root.DOMove(endValue, 0.2f);
 		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);

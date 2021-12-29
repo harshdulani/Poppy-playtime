@@ -66,7 +66,6 @@ public class EnemyPatroller : MonoBehaviour
 		{
 			ToggleAI(false);
 			_anim.SetTrigger(Attack);
-			GameEvents.only.InvokeEnemyReachPlayer();
 			shouldPatrol = false;
 			return;
 		}

@@ -45,8 +45,6 @@ public class HostageController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 		}
 
-		GameEvents.only.InvokeEnemyKill();
-
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
 		

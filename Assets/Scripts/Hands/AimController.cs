@@ -12,10 +12,12 @@ public class AimController : MonoBehaviour
 	//0.5899 for 0.55, 0.63
 	[Header("Aiming")] public float screenPercentageOnY = 0.5899f;
 
+	private PlayerSoundController _soundController;
 	private Canvas _canvas;
 	
 	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
-
+	private bool _canPlayLockOnSound = true;
+	
 	private Tweener _punchHit;
 	
 	private void OnEnable()
@@ -35,6 +37,8 @@ public class AimController : MonoBehaviour
 	private void Start ()
 	{
 		_canvas = GameObject.FindGameObjectWithTag("AimCanvas").GetComponent<Canvas>();
+		_soundController = GetComponent<PlayerSoundController>();
+		
 		_canvas.worldCamera = Camera.main;
 
 		_reticle = _canvas.transform.GetChild(0).GetComponent<Image>();
@@ -62,6 +66,11 @@ public class AimController : MonoBehaviour
     {
 	    _reticle.color = findTargetColor;
 		Vibration.Vibrate(15);
+
+		if(!_canPlayLockOnSound) return;
+		_soundController.PlaySound(_soundController.findTarget, .6f);
+		_canPlayLockOnSound = false;
+		Invoke(nameof(ResetLockOnSound), 1f);
 	}
 
     public void LoseTarget()
@@ -69,6 +78,11 @@ public class AimController : MonoBehaviour
 	    _reticle.color = missingTargetColor;
     }
 
+	private void ResetLockOnSound()
+	{
+		_canPlayLockOnSound = true;
+	}
+	
     public void Aim(Vector2 inputDelta)
     {
 		_rotY += inputDelta.x * aimSpeedHorizontal * Time.deltaTime;

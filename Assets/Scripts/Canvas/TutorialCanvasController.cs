@@ -2,23 +2,49 @@ using UnityEngine;
 
 public class TutorialCanvasController : MonoBehaviour
 {
-	public enum TutorialType
-	{
-		
-	}
+	[SerializeField] private TutorialType myType;
+	[SerializeField] private GameObject toDisable;
 	
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
+		if (myType != TutorialType.Punching)
+			GameEvents.only.tapToPlay += OnTapToPlay;
+		else
+		{
+			GameEvents.only.enterHitBox += OnEnterHitBox;
+			GameEvents.only.punchHit += OnPunchHit;
+		}
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
+		if(myType != TutorialType.Punching)
+			GameEvents.only.tapToPlay -= OnTapToPlay;
+		else
+		{
+			GameEvents.only.enterHitBox -= OnEnterHitBox;
+			GameEvents.only.punchHit -= OnPunchHit;
+		}
 	}
 
 	private void OnTapToPlay()
 	{
 		gameObject.SetActive(false);
 	}
+
+	private void OnEnterHitBox(Transform target)
+	{
+		toDisable.SetActive(true);
+	}
+
+	private void OnPunchHit()
+	{
+		toDisable.SetActive(false);
+	}
+}
+public enum TutorialType
+{
+	Aiming,
+	Punching,
+	Barrel
 }

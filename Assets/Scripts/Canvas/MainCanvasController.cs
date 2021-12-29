@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MainCanvasController : MonoBehaviour
 {
-	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry;
+	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton;
 	[SerializeField] private TextMeshProUGUI levelText;
 	[SerializeField] private Image red;
 
@@ -28,8 +28,8 @@ public class MainCanvasController : MonoBehaviour
 	{
 		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo");
 		
-		// if(GAScript.Instance)
-		// 	GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo").ToString());
+		if(GAScript.Instance)
+			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo").ToString());
 	}
 
 	private void Update()
@@ -51,6 +51,12 @@ public class MainCanvasController : MonoBehaviour
 			GameEvents.only.InvokeTapToPlay();
 	}
 
+	public void Retry()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		AudioManager.instance.Play("Button");
+	}
+	
 	public void NextLevel()
 	{
 		//AudioManager.instance.Play("button");
@@ -74,11 +80,17 @@ public class MainCanvasController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
+		if(GAScript.Instance)
+			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
+		
 		Invoke(nameof(EnableLossObjects), 1.5f);
 	}
 	
 	private void OnGameEnd()
 	{
+		if(GAScript.Instance)
+			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
+		
 		Invoke(nameof(EnableVictoryObjects), 1f);
 	}
 
@@ -86,6 +98,7 @@ public class MainCanvasController : MonoBehaviour
 	{
 		victory.SetActive(true);
 		nextLevel.SetActive(true);
+		constantRetryButton.SetActive(false);
 		
 		AudioManager.instance.Play("Win");
 	}
@@ -101,6 +114,7 @@ public class MainCanvasController : MonoBehaviour
 
 		defeat.SetActive(true);
 		retry.SetActive(true);
+		constantRetryButton.SetActive(false);
 		_hasLost = true;
 		
 		AudioManager.instance.Play("Lose");
