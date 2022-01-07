@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Sky 15
   m_Shader: {fileID: 4800000, guid: 6fc9318f5193c094c98c0d450cd61e3b, type: 3}
-  m_ShaderKeywords: _BACKGROUNDMODE_CUBEMAP _CLOUDSLITBYSUN_ON _ENABLECLOUDSROTATION_ON
-    _ENABLEPATTERNOVERLAY_ON _ENABLESTARSTWINKLING_ON _ENABLESTARS_ON
+  m_ShaderKeywords: _BACKGROUNDMODE_CUBEMAP _CLOUDSLITBYSUN_ON _ENABLEBUILTINFOG_ON
+    _ENABLECLOUDSROTATION_ON _ENABLEPATTERNOVERLAY_ON _ENABLESTARSTWINKLING_ON _ENABLESTARS_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -173,7 +173,7 @@ Material:
     - _DisableRotation: 0
     - _DstBlend: 0
     - _Enable1Twinkling: 0
-    - _EnableBuiltinFog: 0
+    - _EnableBuiltinFog: 1
     - _EnableClouds: 0
     - _EnableCloudsRotation: 1
     - _EnableDirectionLight: 0
@@ -201,10 +201,10 @@ Material:
     - _Float5: -0.2
     - _Float6: 1
     - _FogCat: 1
-    - _FogFill: 0
-    - _FogHeight: 0
+    - _FogFill: 0.314
+    - _FogHeight: 0.507
     - _FogIntensity: 0
-    - _FogSmoothness: 0.01
+    - _FogSmoothness: 0.239
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

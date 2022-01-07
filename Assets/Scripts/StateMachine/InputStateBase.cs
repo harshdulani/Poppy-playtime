@@ -4,7 +4,7 @@ public class InputStateBase
 {
 	public static bool IsPersistent;
 	protected static HandController LeftHand;
-	public static Camera Cam;
+	protected static Camera Cam;
 
 	public static RaycastHit EmptyHit = new RaycastHit();
 	private static float _decreaseMultiplier;

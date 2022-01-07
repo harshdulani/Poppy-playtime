@@ -122,6 +122,8 @@ public class RagdollController : MonoBehaviour
 	
 	private void OnMoveToNextArea()
 	{
+		if(isPoppy) return;
+		
 		PlayRandomAnim();
 	}
 	

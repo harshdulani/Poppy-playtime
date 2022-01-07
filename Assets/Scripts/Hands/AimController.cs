@@ -25,6 +25,7 @@ public class AimController : MonoBehaviour
 		GameEvents.only.punchHit += OnPunchHit;
 		
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
@@ -32,6 +33,7 @@ public class AimController : MonoBehaviour
 		GameEvents.only.punchHit -= OnPunchHit;
 		
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		GameEvents.only.moveToNextArea -= OnReachNextArea;
 	}
 
 	private void Start ()
@@ -108,5 +110,16 @@ public class AimController : MonoBehaviour
 		DOTween.Sequence().Append(transform.DORotate(Vector3.zero, 0.5f));
 		_rotX = 0f;
 		_rotY = 0f;
+	}
+
+	private void OnReachNextArea()
+	{
+		var rot = transform.eulerAngles;
+
+		_initRotAxisX = rot.x;
+		_initRotAxisY = rot.y;
+		
+		_rotY = rot.y;
+		_rotX = rot.x;
 	}
 }

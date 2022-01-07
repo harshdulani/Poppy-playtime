@@ -29,7 +29,6 @@ public class EnemyPatroller : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 		
 		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
@@ -38,7 +37,6 @@ public class EnemyPatroller : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 		
 		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
@@ -106,16 +104,11 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		ToggleAI(false);
 	}
-
-	private void OnMoveToNextArea()
+	
+	private void OnReachNextArea()
 	{
 		if(myPatrolArea != LevelFlowController.only.currentArea) return;
 		SetNextWaypoint();
 		ToggleAI(true);
-	}
-
-	private void OnReachNextArea()
-	{
-		
 	}
 }
