@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class RagdollController : MonoBehaviour
@@ -5,7 +6,13 @@ public class RagdollController : MonoBehaviour
 	public bool isPoppy;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
-	public bool isRagdoll, isWaitingForPunch;
+	[HideInInspector] public bool isRagdoll, isWaitingForPunch;
+
+	[SerializeField] private bool shouldTurnToGrey;
+	[SerializeField] private Renderer skin;
+	[SerializeField] private int toChangeMatIndex;
+	private Material _material;
+	[SerializeField] private Color deadColor;
 
 	[Header("Audio"), SerializeField] private AudioClip punch1;
 	[SerializeField] private AudioClip punch2;
@@ -24,7 +31,7 @@ public class RagdollController : MonoBehaviour
 	private static readonly int Idle1 = Animator.StringToHash("idle1");
 	private static readonly int Idle2 = Animator.StringToHash("idle2");
 	private static readonly int Idle3 = Animator.StringToHash("idle3");
-
+	
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
@@ -44,6 +51,9 @@ public class RagdollController : MonoBehaviour
 		TryGetComponent(out _patroller);
 		
 		_anim.SetBool(IsMirrored, Random.value > 0.5f);
+
+		if (shouldTurnToGrey)
+			_material = skin.materials[toChangeMatIndex];
 		
 		if(isPoppy) return;
 		PlayRandomAnim();
@@ -72,15 +82,18 @@ public class RagdollController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 		}
 
+		Invoke(nameof(GoKinematic), 4f);
+		
 		GameEvents.only.InvokeEnemyKill();
 
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
-
 		
 		var x = GetComponentInChildren<EnemyWeaponController>();
 		if (x)
 			x.OnDeath();
+
+		_material.DOColor(deadColor, 1f);
 		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
@@ -106,6 +119,12 @@ public class RagdollController : MonoBehaviour
 		_patroller.ToggleAI(false);
 		_isAttacking = true;
 		InputHandler.Only.AssignDisabledState();
+	}
+
+	private void GoKinematic()
+	{
+		foreach (var rb in rigidbodies)
+			rb.isKinematic = false;
 	}
 
 	public void WalkOnAnimation()
