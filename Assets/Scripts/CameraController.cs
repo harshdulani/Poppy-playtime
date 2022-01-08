@@ -10,7 +10,8 @@ public class CameraController : MonoBehaviour
 	[Header("ScreenShake"), SerializeField]
 	private float shakeDuration;
 	[SerializeField] private float shakeStrength;
-	
+
+	private Vector3 _initialLocalPos;
 	private float _normalFov;
 	private Camera _me;
 	
@@ -41,6 +42,7 @@ public class CameraController : MonoBehaviour
 		_me = GetComponent<Camera>();
 
 		_normalFov = _me.fieldOfView;
+		_initialLocalPos = transform.localPosition;
 	}
 	
 	private void ZoomNormal()
@@ -55,7 +57,7 @@ public class CameraController : MonoBehaviour
 
 	public void ScreenShake(float intensity)
 	{
-		_me.DOShakePosition(shakeDuration * intensity / 2f, shakeStrength * intensity, 10, 45f);
+		_me.DOShakePosition(shakeDuration * intensity / 2f, shakeStrength * intensity, 10, 45f).OnComplete(() => transform.DOLocalMove(_initialLocalPos, 0.15f));
 	}
 	
 	private void OnEnterHitBox(Transform target)

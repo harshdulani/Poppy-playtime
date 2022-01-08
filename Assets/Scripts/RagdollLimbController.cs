@@ -57,7 +57,8 @@ public class RagdollLimbController : MonoBehaviour
 		
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
 		{
-			raghu.GetPunched(other.transform.position - transform.position, 10f);
+			var direction = other.transform.position - transform.position;
+			raghu.GetPunched(direction, direction.magnitude);
 		}
 		else
 		{

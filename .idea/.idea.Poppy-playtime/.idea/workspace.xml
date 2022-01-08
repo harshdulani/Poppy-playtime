@@ -22,8 +22,10 @@
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 16.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 16.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 16.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 16.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +168,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/BarrelController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/SplineTriggerController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
@@ -174,7 +175,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/GAScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
@@ -191,6 +191,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
       </list>
     </option>
   </component>
@@ -238,7 +240,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added dreamteck splines again for movement, movement works, going into second area doesnt work. aiming also works" />
     <MESSAGE value="Fixed going to second area, fixed direction oriented waitforpunch state for enemies, fixed rope end glitches" />
     <MESSAGE value="fixed palm glitches" />
     <MESSAGE value="All 6 levels fixed, crosshair now not in the center but at the 60% mark of the screen. Fixed some levels getting stuck on transit state after punch, saved a copy of the reflection map so it can be used in lighting settings" />
@@ -263,7 +264,8 @@
     <MESSAGE value="fixed bugs, build made, added tutorials, kong still has a bug" />
     <MESSAGE value="fixed kong bug, build 2" />
     <MESSAGE value="Added 2 new characters and a city environment" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added 2 new characters and a city environment" />
+    <MESSAGE value="level 16 complete, added fade to grey after death option on enemy" />
+    <option name="LAST_COMMIT_MESSAGE" value="level 16 complete, added fade to grey after death option on enemy" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -291,11 +293,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1640425586131" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1641559222604">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1641561264839">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="465" y="167" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1639995761930" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1641559222604" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1641561264839" />
     <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1640761719944">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -310,10 +312,10 @@
     </state>
     <state x="489" y="198" width="727" height="530" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1640001687723" />
     <state x="916" y="433" width="727" height="534" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1641553188144" />
-    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup" timestamp="1641558439340">
+    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup" timestamp="1641617695189">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
-    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1641558439340" />
+    <state x="943" y="315" width="672" height="160" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1641617695189" />
   </component>
 </project>
