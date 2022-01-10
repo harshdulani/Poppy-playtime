@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatroller : MonoBehaviour
 {
-	[SerializeField] private bool hasWeapon;
+	[SerializeField] private bool hasWeapon, enterPatrolAreaRunning;
 	[SerializeField] private int myPatrolArea;
 	[SerializeField] private List<Transform> waypoints;
 	[SerializeField] private float waypointChangeDistance = 0.5f;
@@ -104,9 +104,22 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		ToggleAI(false);
 	}
+
+	private void OnMoveToNextArea()
+	{
+		
+	}
 	
 	private void OnReachNextArea()
 	{
+		if (enterPatrolAreaRunning)
+		{
+			
+		}
+		//on move to next area, call this
+		//AI at high movement speed goes to waypoint 0
+		//when current waypoint == 1, slow movement speed
+		//if(!enterPatrolAreaRunning) return;
 		if(myPatrolArea != LevelFlowController.only.currentArea) return;
 		SetNextWaypoint();
 		ToggleAI(true);

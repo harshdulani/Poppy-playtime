@@ -52,17 +52,21 @@ public class RagdollLimbController : MonoBehaviour
 
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
-
-		if(_rb.velocity.sqrMagnitude < 1f) return;
 		
-		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu))
+		var direction = other.transform.position - transform.position;
+		if (_rb.velocity.sqrMagnitude < 4f)
 		{
-			var direction = other.transform.position - transform.position;
-			raghu.GetPunched(direction, direction.magnitude);
+			GetPunched(-direction, direction.magnitude);
+			return;
 		}
+		
+		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu) && !raghu._parent.isWaitingForPunch)
+			raghu.GetPunched(direction, direction.magnitude);
 		else
 		{
-			other.gameObject.GetComponent<PropController>().Explode();
+			var prop = other.gameObject.GetComponent<PropController>();
+			if(prop.shouldExplode)
+				prop.Explode();
 		}
 	}
 }

@@ -1,12 +1,18 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+
+public enum CarriedObjectType
+{
+	Ragdoll, Prop, Car
+}
 
 public class HandController : MonoBehaviour
 {
 	public bool isLeftHand;
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
-	[SerializeField] private float ragdollWfpDistance, propWfpDistance, enemyWfpHeight = -0.5f;
+	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight;
 
 	[SerializeField] private ParticleSystem windLines;
 	
@@ -15,7 +21,7 @@ public class HandController : MonoBehaviour
 	private static RopeController _rope;
 	public static PlayerSoundController Sounds;
 
-	public static bool IsCarryingRagdoll;
+	public static CarriedObjectType CurrentObjectCarriedType;
 	private static bool _isCarryingBody;
 	
 	private Transform _lastTarget;
@@ -118,6 +124,11 @@ public class HandController : MonoBehaviour
 			StartCarryingBody(other.transform);
 			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
 				raghu.TellParent();
+			else if (CurrentObjectCarriedType == CarriedObjectType.Car)
+			{
+				other.GetComponent<CarController>().StopMoving();
+				print("here");
+			}
 			else if (other.TryGetComponent(out PropController prop))
 				prop.hasBeenInteractedWith = true;
 			
@@ -127,13 +138,18 @@ public class HandController : MonoBehaviour
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-			if(IsCarryingRagdoll)
+			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 				other.GetComponent<RagdollLimbController>().GetPunched((_targetInitPos - transform.position).normalized, punchForce);
-			else
+			else if(CurrentObjectCarriedType == CarriedObjectType.Prop)
 			{
 				_targetInitPos.y = other.position.y;
 				other.root.GetComponent<PropController>()
-					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce);
+					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
+			}
+			else
+			{ 
+               other.root.GetComponent<PropController>()
+                	.GetPunched((GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
 			}
 		}
 
@@ -153,12 +169,12 @@ public class HandController : MonoBehaviour
 		if(target.TryGetComponent(out RagdollLimbController raghu))
 		{
 			raghu.AskParentForHook().transform.root.parent = palm;
-			IsCarryingRagdoll = true;
+			CurrentObjectCarriedType = CarriedObjectType.Ragdoll;
 		}
 		else
 		{
 			target.transform.parent = palm;
-			IsCarryingRagdoll = false;
+			CurrentObjectCarriedType = target.TryGetComponent(out CarController _) ? CarriedObjectType.Car : CarriedObjectType.Prop;
 		}
 	}
 
@@ -176,11 +192,32 @@ public class HandController : MonoBehaviour
 		var root = other.root;
 
 		var direction = (root.position - transform.position).normalized;
+
+		float distance, height;
+
+		switch (CurrentObjectCarriedType)
+		{
+			case CarriedObjectType.Ragdoll:
+				distance = ragdollWfpDistance;
+				height = enemyWfpHeight;
+				break;
+			case CarriedObjectType.Prop:
+				distance = propWfpDistance;
+				height = 1f;
+				break;
+			case CarriedObjectType.Car:
+				distance = carWfpDistance;
+				height = carWfpHeight;
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 		
-		var endValue = transform.position + direction * (IsCarryingRagdoll ? ragdollWfpDistance : propWfpDistance) + transform.up * (IsCarryingRagdoll ? enemyWfpHeight : 1f);
+		var endValue = transform.position + direction * distance + transform.up * height;
 
 		root.DOMove(endValue, 0.2f);
-		root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
+		if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
 		
 		_anim.SetBool(IsPunching, true);
 		_canGivePunch = true;

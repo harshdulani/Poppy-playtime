@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
-	public bool isPoppy;
+	public bool isPoppy, isGiant;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	[HideInInspector] public bool isRagdoll, isWaitingForPunch;
@@ -54,6 +54,8 @@ public class RagdollController : MonoBehaviour
 
 		if (shouldTurnToGrey)
 			_material = skin.materials[toChangeMatIndex];
+
+		if (isGiant) return;
 		
 		if(isPoppy) return;
 		PlayRandomAnim();

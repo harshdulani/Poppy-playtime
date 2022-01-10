@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PropController : MonoBehaviour
 {
-	public bool hasBeenInteractedWith;
+	public bool shouldExplode, hasBeenInteractedWith;
 	[SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;
@@ -65,8 +65,9 @@ public class PropController : MonoBehaviour
 	{
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
 		
-		Invoke(nameof(Explode), .2f);
-		
+		if(shouldExplode)
+			Invoke(nameof(Explode), .2f);
+
 		if(!hasBeenInteractedWith) return;
 		
 		if (!other.transform.root.CompareTag("Target")) return;

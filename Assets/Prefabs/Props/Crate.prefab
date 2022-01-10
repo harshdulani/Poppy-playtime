@@ -1015,6 +1015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldExplode: 1
+  hasBeenInteractedWith: 0
   explosionForce: 50
   rigidbodies:
   - {fileID: 3244222931219369840}
@@ -1060,6 +1062,7 @@ MonoBehaviour:
   - {fileID: 3244222930846614679}
   magnitude: 1
   rotationMagnitude: 10
+  explosionFx: []
 --- !u!1 &3274736508054395597
 GameObject:
   m_ObjectHideFlags: 0
