@@ -33,7 +33,7 @@ public class AimController : MonoBehaviour
 		GameEvents.only.punchHit -= OnPunchHit;
 		
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		GameEvents.only.moveToNextArea -= OnReachNextArea;
+		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
 
 	private void Start ()

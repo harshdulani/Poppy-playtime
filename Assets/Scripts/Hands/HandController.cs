@@ -127,7 +127,6 @@ public class HandController : MonoBehaviour
 			else if (CurrentObjectCarriedType == CarriedObjectType.Car)
 			{
 				other.GetComponent<CarController>().StopMoving();
-				print("here");
 			}
 			else if (other.TryGetComponent(out PropController prop))
 				prop.hasBeenInteractedWith = true;
@@ -139,17 +138,18 @@ public class HandController : MonoBehaviour
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
 			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
-				other.GetComponent<RagdollLimbController>().GetPunched((_targetInitPos - transform.position).normalized, punchForce);
-			else if(CurrentObjectCarriedType == CarriedObjectType.Prop)
+			{
+				other.GetComponent<RagdollLimbController>().GetPunched((
+					(LevelFlowController.only.IsInGiantFight()
+						? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center
+						: _targetInitPos) - transform.position).normalized, punchForce);
+			}
+			else
 			{
 				_targetInitPos.y = other.position.y;
 				other.root.GetComponent<PropController>()
-					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
-			}
-			else
-			{ 
-               other.root.GetComponent<PropController>()
-                	.GetPunched((GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
+					.GetPunched(((LevelFlowController.only.IsInGiantFight() ? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center : _targetInitPos) - other.root.position).normalized, 
+						punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
 			}
 		}
 

@@ -13,11 +13,11 @@ public class GiantLimbController : MonoBehaviour
 	{
 		if(!_parent) return;
 	
-		if(!_parent.isDead) return;
+		if(_parent.isDead) return;
 
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
 
-		_parent.GetHit();
+		_parent.GetHit(other.transform);
 	}
 }

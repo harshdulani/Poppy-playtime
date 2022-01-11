@@ -5,7 +5,8 @@ using UnityEngine;
 public class LevelFlowController : MonoBehaviour
 {
 	public static LevelFlowController only;
-	
+
+	public bool isGiantLevel;
 	[SerializeField] private List<int> enemiesInArea;
 
 	public int enemiesInCurrentArea, enemiesKilledInCurrentArea;
@@ -16,11 +17,13 @@ public class LevelFlowController : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.enemyKilled += OnEnemyKilled;
+		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.enemyKilled -= OnEnemyKilled;
+		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
 
 	private void Awake()
@@ -31,12 +34,12 @@ public class LevelFlowController : MonoBehaviour
 
 	private void Start()
 	{
-		if(enemiesInArea.Count == 0)
+		if (enemiesInArea.Count == 0)
 		{
 			Debug.LogWarning("Level Flow Controller values not changed");
 			Debug.Break();
 		}
-		
+
 		enemiesInCurrentArea = enemiesInArea[currentArea];
 		enemiesKilledInCurrentArea = 0;
 
@@ -51,7 +54,7 @@ public class LevelFlowController : MonoBehaviour
 	{
 		enemiesKilledInCurrentArea++;
 		_totalEnemiesRemaining--;
-		if(enemiesKilledInCurrentArea >= enemiesInCurrentArea)
+		if (enemiesKilledInCurrentArea >= enemiesInCurrentArea)
 			MoveToNextArea();
 	}
 
@@ -61,15 +64,29 @@ public class LevelFlowController : MonoBehaviour
 			GameEvents.only.InvokeGameEnd();
 		else
 		{
-			enemiesInCurrentArea = enemiesInArea[++currentArea];
-			enemiesKilledInCurrentArea = 0;
 			GameEvents.only.InvokeMoveToNextArea();
 			InputHandler.Only.AssignDisabledState();
 		}
 	}
 
+	private void OnReachNextArea()
+	{
+		enemiesInCurrentArea = enemiesInArea[++currentArea];
+		enemiesKilledInCurrentArea = 0;
+	}
+
 	public bool IsThisLastEnemy()
 	{
 		return _totalEnemiesRemaining == 1;
+	}
+
+	public bool DidKillLastEnemyOfArea()
+	{
+		return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 0;
+	}
+
+public bool IsInGiantFight()
+	{
+		return IsThisLastEnemy() && isGiantLevel;
 	}
 }

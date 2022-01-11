@@ -69,7 +69,7 @@ public class InputHandler : MonoBehaviour
 	{ 
 		if(!_tappedToPlay) return;
 		
-		//print(_leftHandState);
+		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -155,10 +155,12 @@ public class InputHandler : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		if(!_inDisabledState || (_inDisabledState && _isTemporarilyDisabled))
+		//might need to come back here to add flexibility for enemies that take multiple hits
+		if(LevelFlowController.only.DidKillLastEnemyOfArea()) return;
+
 			Invoke(nameof(AssignIdleState), .1f);
 	}
-
+	
 	public void StopCarryingBody()
 	{
 		_leftHand.StopCarryingBody();
