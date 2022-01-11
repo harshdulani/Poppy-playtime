@@ -41,7 +41,7 @@ public class RagdollLimbController : MonoBehaviour
 		endPos.y = transform.root.position.y;
 		_parent.transform.DOMove(endPos, 0.5f);
 		_parent.AttackEnemy();
-		GameEvents.only.InvokeEnemyReachPlayer();
+		GameEvents.only.InvokeEnemyKillPlayer();
 	}
 	
 	private void OnCollisionEnter(Collision other)

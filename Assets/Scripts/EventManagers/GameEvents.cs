@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameEvents : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class GameEvents : MonoBehaviour
 
 	public Action moveToNextArea, reachNextArea;
 
-	public Action enemyReachPlayer;
+	public Action<Transform> enemyHitPlayer;
+	public Action enemyKillPlayer;
 	public Action gameEnd;
 
 
@@ -38,7 +40,10 @@ public class GameEvents : MonoBehaviour
 	
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
 	
-	public void InvokeEnemyReachPlayer() => enemyReachPlayer?.Invoke();
+	public void InvokeEnemyHitPlayer(Transform hitter) => enemyHitPlayer?.Invoke(hitter);
+	
+	//Mass migration of kill player subscribers and invokers coming to hit player 
+	public void InvokeEnemyKillPlayer() => enemyKillPlayer?.Invoke();
 	
 	public void InvokeMoveToNextArea() => moveToNextArea?.Invoke();
 	public void InvokeReachNextArea() => reachNextArea?.Invoke();

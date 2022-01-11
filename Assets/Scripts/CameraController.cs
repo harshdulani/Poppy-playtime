@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
 		
-		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
 		
-		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 	}
 
 	private void Awake()

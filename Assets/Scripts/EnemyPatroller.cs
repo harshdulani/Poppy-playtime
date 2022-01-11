@@ -31,7 +31,7 @@ public class EnemyPatroller : MonoBehaviour
 		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 		
-		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
@@ -39,7 +39,7 @@ public class EnemyPatroller : MonoBehaviour
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 		
-		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 	}
 
 	private void Start()

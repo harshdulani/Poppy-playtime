@@ -14,6 +14,7 @@ public class HealthController : MonoBehaviour
 
 	public bool AddHit(Transform hitter)
 	{
+		//might need to add a bool for if this is not a car and venom-esque enemy, you can allow them to hit you twice
 		if(_hitters.Contains(hitter)) return false;
 		
 		_hitters.Add(hitter);

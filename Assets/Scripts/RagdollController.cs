@@ -35,13 +35,13 @@ public class RagdollController : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
-		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 	}
 	
 	private void Start()

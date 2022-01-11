@@ -1,5 +1,7 @@
 using System.Collections;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 public class GiantController : MonoBehaviour
@@ -11,16 +13,17 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private Rigidbody[] rigidbodies;
 	
 	[SerializeField] private Transform carHolderSlot;
-	[SerializeField] private float carInterpDuration, throwForce;
+	[SerializeField] private float throwForce, waitBetweenAttacks;
 
-	private Transform _grabbedCar;
+	private Transform _grabbedCar, _player;
 
-	private Tweener _tween;
-	
 	private Animator _anim;
 	private AudioSource _audioSource;
 	private HealthController _health;
 
+	private TweenerCore<Quaternion, Vector3, QuaternionOptions> _tweener;
+	private bool _isAttacking;
+	
 	private static readonly int Hit = Animator.StringToHash("Hit");
 	private static readonly int Jump = Animator.StringToHash("Jump");
 	private static readonly int Attack = Animator.StringToHash("Attack");
@@ -42,6 +45,8 @@ public class GiantController : MonoBehaviour
 		_audioSource = GetComponent<AudioSource>();
 		_health = GetComponent<HealthController>();
 		rend.enabled = false;
+
+		_player = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
 	public void GoRagdoll(Vector3 direction)
@@ -69,7 +74,6 @@ public class GiantController : MonoBehaviour
 		_audioSource.Play();
 		Vibration.Vibrate(25);
 	}
-
 	
 	private void GoKinematic()
 	{
@@ -77,37 +81,55 @@ public class GiantController : MonoBehaviour
 			rb.isKinematic = false;
 	}
 
+	private IEnumerator AttackCycle()
+	{
+		var playerTemp = _player.position;
+		var myTemp = transform.position;
+
+		playerTemp.y = myTemp.y = 0f;
+		
+		while (!isDead)
+		{
+			_anim.SetTrigger(Grab);
+			_isAttacking = true;
+
+			//grab animation calls get car on animation -> grab vehicle -> attack anim -> throws car
+			
+			yield return new WaitUntil(() => !_isAttacking);
+			yield return GameExtensions.GetWaiter(waitBetweenAttacks);
+			transform.DORotateQuaternion(Quaternion.LookRotation(playerTemp - myTemp), 0.2f);
+			transform.DOMoveY(0f, 0.2f);
+		}
+	}
+	
 	private IEnumerator GrabVehicle()
 	{
-		while(transform.position.y > 0.2f)
+		while(transform.position.y > 0.5f)
 			yield return GameExtensions.GetWaiter(0.25f);
-
+		
 		_grabbedCar = null;
 		
 		do
 		{
 			var colliders = Physics.OverlapBox(transform.position + transform.forward * 25f, new Vector3(10, 5f, 10f), Quaternion.identity);
 
-			Debug.DrawRay(transform.position + transform.forward * 25f, Vector3.right * 10f, Color.red, 0.2f);
-			Debug.DrawRay(transform.position + transform.forward * 25f, Vector3.up * 5f, Color.green, 0.2f);
-			Debug.DrawRay(transform.position + transform.forward * 25f, Vector3.forward * 10, Color.blue, 0.2f);
-			
 			foreach (var item in colliders)
 			{
 				if(!item.CompareTag("Target")) continue;
 
 				_grabbedCar = item.transform;
+				_grabbedCar.tag = "EnemyAttack";
 				break;
 			}
 
 			yield return GameExtensions.GetWaiter(0.2f);
 		} while (!_grabbedCar);
-		
+
 		_health.AddGrabbedCar(_grabbedCar);
 		_grabbedCar.GetComponent<CarController>().StopMoving();
 
 		_grabbedCar.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
-		_grabbedCar.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd);
+		_tweener = _grabbedCar.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
 	}
 
 	public void GetCarOnAnimation()
@@ -121,8 +143,10 @@ public class GiantController : MonoBehaviour
 		_grabbedCar.transform.parent = null;
 
 		rb.isKinematic = false;
-		_grabbedCar.tag = "EnemyAttack";
 		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedCar.position).normalized * throwForce, ForceMode.Impulse);
+		_tweener.Kill();
+		_tweener = null;
+		_isAttacking = false;
 	}
 
 	public void StartJumpOnAnimation()
@@ -135,8 +159,8 @@ public class GiantController : MonoBehaviour
 	{
 		Vibration.Vibrate(20);
 		CameraController.only.ScreenShake(2f);
-		
-		_anim.SetTrigger(Grab);
+
+		StartCoroutine(AttackCycle());
 	}
 
 	public void GetHit(Transform hitter)

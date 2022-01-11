@@ -18,7 +18,7 @@ public class EnemyWeaponController : MonoBehaviour
 		if(!other.collider.TryGetComponent(out RagdollLimbController raghu)) return;
 
 		raghu.GetPunched((other.transform.root.position - transform.position).normalized, 10f);
-		GameEvents.only.InvokeEnemyReachPlayer();
+		GameEvents.only.InvokeEnemyKillPlayer();
 		AudioManager.instance.Play("Bonk");
 	}
 }
