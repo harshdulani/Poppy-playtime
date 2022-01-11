@@ -7,16 +7,18 @@ public class CarController : MonoBehaviour
 	[SerializeField] private float movementSpeed;
 	[SerializeField] private Transform laneStartPoint;
 	private Bounds _bounds;
+	private Rigidbody _rb;
 	
 	private void Start()
 	{
 		_bounds = GetComponent<Renderer>().bounds;
+		_rb = GetComponent<Rigidbody>();
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		if(shouldMove)
-			transform.position += transform.forward * (movementSpeed * Time.deltaTime);
+			_rb.MovePosition(transform.position + transform.forward.normalized * (movementSpeed * Time.fixedDeltaTime));
 	}
 
 	public void StopMoving()

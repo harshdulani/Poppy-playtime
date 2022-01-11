@@ -20,4 +20,9 @@ public class HealthController : MonoBehaviour
 		hitsReceived++;
 		return true;
 	}
+
+	public void AddGrabbedCar(Transform car)
+	{
+		_hitters.Add(car);
+	}
 }
