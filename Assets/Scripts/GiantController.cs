@@ -11,13 +11,16 @@ public class GiantController : MonoBehaviour
 	
 	[SerializeField] private bool isRagdoll;
 	[SerializeField] private Rigidbody[] rigidbodies;
-	
+
+	[SerializeField] private bool showOverlapBoxDebug;
 	[SerializeField] private Transform carHolderSlot;
-	[SerializeField] private float throwForce, waitBetweenAttacks;
+	[SerializeField] private float overlapBoxDistance, throwForce, waitBetweenAttacks;
 
 	private Transform _player;
 	private CarController _grabbedCar;
-
+	private Collider[] _colliders = new Collider[50];
+	private Coroutine _grabCarCoroutine, _attackCycleCoroutine;
+	
 	private Animator _anim;
 	private AudioSource _audioSource;
 	private HealthController _health;
@@ -32,12 +35,14 @@ public class GiantController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.reachNextArea += ReachNextArea;
+		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.only.playerPickupCar += OnPlayerPickupCar;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.reachNextArea -= ReachNextArea;
+		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.only.playerPickupCar -= OnPlayerPickupCar;
 	}
 
 	private void Start()
@@ -48,6 +53,14 @@ public class GiantController : MonoBehaviour
 		rend.enabled = false;
 
 		_player = GameObject.FindGameObjectWithTag("Player").transform;
+	}
+
+	private void OnDrawGizmos()
+	{
+		if(!showOverlapBoxDebug) return;
+		
+		Gizmos.color = new Color(0f, 0.75f, 1f, 0.5f);
+		Gizmos.DrawCube(transform.position + transform.forward * overlapBoxDistance, new Vector3(20, 10f, 20f));
 	}
 
 	public void GoRagdoll(Vector3 direction)
@@ -112,7 +125,7 @@ public class GiantController : MonoBehaviour
 		
 		do
 		{
-			var colliders = Physics.OverlapBox(transform.position + transform.forward * 25f, new Vector3(10, 5f, 10f), Quaternion.identity);
+			var colliders = Physics.OverlapBox(transform.position + transform.forward * overlapBoxDistance, new Vector3(10, 5f, 10f), Quaternion.identity);
 
 			foreach (var item in colliders)
 			{
@@ -120,6 +133,7 @@ public class GiantController : MonoBehaviour
 
 				_grabbedCar = item.transform.GetComponent<CarController>();
 				_grabbedCar.tag = "EnemyAttack";
+				GameEvents.only.InvokeGiantPickupCar(_grabbedCar.transform);
 				break;
 			}
 
@@ -127,7 +141,6 @@ public class GiantController : MonoBehaviour
 		} while (!_grabbedCar);
 
 		_health.AddGrabbedCar(_grabbedCar.transform);
-		GameEvents.only.InvokeGiantPickupCar(_grabbedCar.transform);
 		_grabbedCar.StopMoving();
 
 		_grabbedCar.transform.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
@@ -136,7 +149,7 @@ public class GiantController : MonoBehaviour
 
 	public void GetCarOnAnimation()
 	{
-		StartCoroutine(GrabVehicle());
+		_grabCarCoroutine = StartCoroutine(GrabVehicle());
 	}
 	
 	public void ThrowVehicleOnAnimation()
@@ -162,7 +175,7 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 		CameraController.only.ScreenShake(2f);
 
-		StartCoroutine(AttackCycle());
+		_attackCycleCoroutine = StartCoroutine(AttackCycle());
 	}
 
 	public void GetHit(Transform hitter)
@@ -171,11 +184,10 @@ public class GiantController : MonoBehaviour
 		_anim.SetTrigger(Hit);
 		Vibration.Vibrate(20);
 
-		if (_health.IsDead())
-		{
-			GoRagdoll(-transform.forward);
-			ReleaseVehicle();
-		}
+		if (!_health.IsDead()) return;
+		
+		GoRagdoll(-transform.forward);
+		ReleaseVehicle();
 	}
 
 	private void ReleaseVehicle()
@@ -184,7 +196,17 @@ public class GiantController : MonoBehaviour
 		_tweener?.Kill();
 	}
 
-	private void ReachNextArea()
+	private void OnPlayerPickupCar(Transform car)
+	{
+		if(car != _grabbedCar.transform) return;
+		
+		StopCoroutine(_grabCarCoroutine);
+		_isAttacking = false;
+		StopCoroutine(_attackCycleCoroutine);
+		_attackCycleCoroutine = StartCoroutine(AttackCycle());
+	}
+	
+	private void OnReachNextArea()
 	{
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
 		

@@ -21,7 +21,7 @@ public class GameEvents : MonoBehaviour
 	public Action<Transform> enterHitBox;
 	public Action punchHit;
 
-	public Action<Transform> propDestroyed, giantPickupCar;
+	public Action<Transform> propDestroyed, giantPickupCar, playerPickupCar;
 	public Action enemyKilled;
 
 	public Action moveToNextArea, reachNextArea;
@@ -39,6 +39,7 @@ public class GameEvents : MonoBehaviour
 	public void InvokePropDestroy(Transform target) => propDestroyed?.Invoke(target);
 
 	public void InvokeGiantPickupCar(Transform car) => giantPickupCar?.Invoke(car);
+	public void InvokePlayerPickupCar(Transform car) => playerPickupCar?.Invoke(car);
 	
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
 	

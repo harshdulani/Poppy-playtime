@@ -36,17 +36,20 @@ public class HandController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if(!isLeftHand)
+		if(!isLeftHand) //only for right/punching hand
 			GameEvents.only.enterHitBox += OnEnterHitBox;
-
+		
+		GameEvents.only.giantPickupCar += OnGiantPickupCar;
 		GameEvents.only.punchHit += OnPunchHit;
 	}
 	
 	private void OnDisable()
 	{
-		if (!isLeftHand)
+		if (!isLeftHand) //only for right/punching hand
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		
+		
+		GameEvents.only.giantPickupCar -= OnGiantPickupCar;
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
 	
@@ -257,9 +260,18 @@ public class HandController : MonoBehaviour
 		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
 		_isCarryingBody = false;
 	}
-
 	
 	public AimController GetAimController() => transform.root.GetComponent<AimController>();
+
+	private void OnGiantPickupCar(Transform car)
+	{
+		if (_lastTarget != car) return;
+		
+		_isCarryingBody = false;
+		ResetPalmParent();
+		ClearInitTargetPos();
+		InputHandler.Only.AssignReturnTransitState();
+	}
 	
 	private void OnEnterHitBox(Transform target)
 	{
@@ -273,6 +285,7 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = false;
 		ResetPalmParent();
 		ClearInitTargetPos();
+		InputHandler.Only.AssignReturnTransitState();
 	}
 	
 	private void OnPunchHit()

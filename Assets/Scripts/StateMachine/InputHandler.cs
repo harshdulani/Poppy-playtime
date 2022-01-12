@@ -139,6 +139,33 @@ public class InputHandler : MonoBehaviour
 		_rightHand.WaitForPunch(other.transform);
 	}
 
+	public void StopCarryingBody()
+	{
+		_leftHand.StopCarryingBody();
+	}
+
+	public void AssignIdleState()
+	{
+		if(_inDisabledState && !_isTemporarilyDisabled) return;
+		AssignNewState(IdleState);
+
+		_isTemporarilyDisabled = false;
+		_inDisabledState = false;
+	}
+
+	public void AssignDisabledState()
+	{
+		AssignNewState(DisabledState);
+		_isTemporarilyDisabled = true;
+		_inDisabledState = true;
+	}
+
+	public void AssignReturnTransitState()
+	{
+		AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
+	}
+	
+
 	private void OnTapToPlay() => _tappedToPlay = true;
 
 	private void OnGameOver()
@@ -159,26 +186,5 @@ public class InputHandler : MonoBehaviour
 		if(LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 
 			Invoke(nameof(AssignIdleState), .1f);
-	}
-	
-	public void StopCarryingBody()
-	{
-		_leftHand.StopCarryingBody();
-	}
-
-	public void AssignIdleState()
-	{
-		if(_inDisabledState && !_isTemporarilyDisabled) return;
-		AssignNewState(IdleState);
-
-		_isTemporarilyDisabled = false;
-		_inDisabledState = false;
-	}
-
-	public void AssignDisabledState()
-	{
-		AssignNewState(DisabledState);
-		_isTemporarilyDisabled = true;
-		_inDisabledState = true;
 	}
 }

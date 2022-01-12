@@ -1,7 +1,9 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class GiantLimbController : MonoBehaviour
 {
+	[SerializeField] private GameObject explosion;
 	private GiantController _parent;
 
 	private void Start()
@@ -18,6 +20,8 @@ public class GiantLimbController : MonoBehaviour
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target")) return;
 
+		Destroy(Instantiate(explosion, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal)), 3f);
+		other.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => other.gameObject.SetActive(false));
 		_parent.GetHit(other.transform);
 	}
 }
