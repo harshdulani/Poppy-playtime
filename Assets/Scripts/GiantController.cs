@@ -86,7 +86,6 @@ public class GiantController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
 		
-		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
 	}
