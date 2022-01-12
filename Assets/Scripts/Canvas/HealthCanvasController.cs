@@ -9,7 +9,7 @@ public class HealthCanvasController : MonoBehaviour
 	private Canvas _canvas;
 	private int _healthReduced;
 
-	private void Start()
+	private void Awake()
 	{
 		_canvas = GetComponent<Canvas>();
 	}

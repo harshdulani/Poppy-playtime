@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		_health = GetComponent<HealthController>();
+		_health.VisibilityToggle(false);
 	}
 
 	private void OnEnemyHitPlayer(Transform hitter)
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnReachNextArea()
 	{
+		_health.VisibilityToggle(true);
 		_health.hitsRequiredToKill = 3;
 	}
 }

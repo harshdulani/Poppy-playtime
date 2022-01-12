@@ -31,6 +31,81 @@ Transform:
   m_Father: {fileID: 4360972115549299639}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3277425350580318577
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7703930528234615092}
+    m_Modifications:
+    - target: {fileID: 1014993842736104, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_Name
+      value: VikingHelmet
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.919277
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.919277
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.919277
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0000000022731
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.026686
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.018536
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608305247916411, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114629202481586551, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+--- !u!1 &3276469730642311833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1014993842736104, guid: bdca93191dac2b74097bbab0147ed7bf, type: 3}
+  m_PrefabInstance: {fileID: 3277425350580318577}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3444689057695337638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -337,10 +412,12 @@ MonoBehaviour:
   - {fileID: 6833300223450074089}
   - {fileID: 6031479940864838632}
   - {fileID: 917091916833936917}
+  headgear:
+  - {fileID: 3276469730642311833}
   showOverlapBoxDebug: 0
   carHolderSlot: {fileID: 6529486044838872085}
   overlapBoxDistance: 45
-  throwForce: 200
+  throwForce: 400
   waitBetweenAttacks: 10
   trailPrefab: {fileID: 6030206713254743423, guid: a0f8ef6c21b6b45449d9f0fb2a5a918f, type: 3}
 --- !u!114 &7373078913561269808
@@ -463,6 +540,11 @@ Rigidbody:
 --- !u!137 &7124955497028912927 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5561122229426260921, guid: a56f10cdaa3f97f469ed97240cba15c3, type: 3}
+  m_PrefabInstance: {fileID: 3444689057695337638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7703930528234615092 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4982148379328724370, guid: a56f10cdaa3f97f469ed97240cba15c3, type: 3}
   m_PrefabInstance: {fileID: 3444689057695337638}
   m_PrefabAsset: {fileID: 0}
 --- !u!54 &7857488932032465428 stripped

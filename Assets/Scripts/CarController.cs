@@ -46,7 +46,10 @@ public class CarController : MonoBehaviour
 	{
 		if (!other.CompareTag("CarLaneEnd")) return;
 
-		transform.position = laneStartPoint.position - Vector3.right * _bounds.extents.x * (isRightLane ? 1f : -1f);
+		var position = laneStartPoint.position - Vector3.right * _bounds.extents.x * (isRightLane ? 1f : -1f);
+
+		position.y = 0f;
+		transform.position = position;
 	}
 
 	private void OnCollisionEnter(Collision other)

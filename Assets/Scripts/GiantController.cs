@@ -11,11 +11,12 @@ public class GiantController : MonoBehaviour
 	
 	[SerializeField] private bool isRagdoll;
 	[SerializeField] private Rigidbody[] rigidbodies;
+	[SerializeField] private GameObject[] headgear;
 
 	[SerializeField] private bool showOverlapBoxDebug;
 	[SerializeField] private Transform carHolderSlot;
 	[SerializeField] private float overlapBoxDistance, throwForce, waitBetweenAttacks;
-
+	
 	[SerializeField] private GameObject trailPrefab;
 	
 	private Transform _player;
@@ -55,6 +56,9 @@ public class GiantController : MonoBehaviour
 
 		_player = GameObject.FindGameObjectWithTag("Player").transform;
 		_health.VisibilityToggle(false);
+		
+		foreach (var item in headgear)
+			item.SetActive(false);
 	}
 
 	private void OnDrawGizmos()
@@ -213,6 +217,9 @@ public class GiantController : MonoBehaviour
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
 		
 		_health.VisibilityToggle(true);
+		foreach (var item in headgear)
+			item.SetActive(true);
+		
 		rend.enabled = true;
 		_anim.SetTrigger(Jump);
 	}
