@@ -95,8 +95,9 @@ public class EnemyPatroller : MonoBehaviour
 		if(myPatrolArea > 0) return;
 
 		_anim.applyRootMotion = false;
-		_anim.SetBool(IsWalking, shouldPatrol);
-		ToggleAI(true);
+		//this is perma true because uske bina soona soona lagta hai ghar
+		ToggleAI(shouldPatrol);
+		_anim.SetBool(IsWalking, true);
 		SetNextWaypoint();
 	}
 
@@ -120,7 +121,11 @@ public class EnemyPatroller : MonoBehaviour
 		//AI at high movement speed goes to waypoint 0
 		//when current waypoint == 1, slow movement speed
 		//if(!enterPatrolAreaRunning) return;
+		
+		if(!shouldPatrol) return;
+		
 		if(myPatrolArea != LevelFlowController.only.currentArea) return;
+		
 		SetNextWaypoint();
 		ToggleAI(true);
 	}

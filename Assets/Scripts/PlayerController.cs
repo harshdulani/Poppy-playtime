@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnReachNextArea()
 	{
+		if(!LevelFlowController.only.IsInGiantFight()) return;
 		_health.VisibilityToggle(true);
 		_health.hitsRequiredToKill = 3;
 	}
