@@ -27,6 +27,12 @@ public class CarController : MonoBehaviour
 		shouldMove = false;
 	}
 	
+	public void DropVehicle()
+	{
+		_rb.isKinematic = false;
+		transform.parent = null;
+	}
+	
 	private void OnTriggerEnter(Collider other)
 	{
 		if (!other.CompareTag("CarLaneEnd")) return;

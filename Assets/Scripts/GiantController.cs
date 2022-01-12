@@ -15,7 +15,8 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private Transform carHolderSlot;
 	[SerializeField] private float throwForce, waitBetweenAttacks;
 
-	private Transform _grabbedCar, _player;
+	private Transform _player;
+	private CarController _grabbedCar;
 
 	private Animator _anim;
 	private AudioSource _audioSource;
@@ -117,7 +118,7 @@ public class GiantController : MonoBehaviour
 			{
 				if(!item.CompareTag("Target")) continue;
 
-				_grabbedCar = item.transform;
+				_grabbedCar = item.transform.GetComponent<CarController>();
 				_grabbedCar.tag = "EnemyAttack";
 				break;
 			}
@@ -125,11 +126,12 @@ public class GiantController : MonoBehaviour
 			yield return GameExtensions.GetWaiter(0.2f);
 		} while (!_grabbedCar);
 
-		_health.AddGrabbedCar(_grabbedCar);
-		_grabbedCar.GetComponent<CarController>().StopMoving();
+		_health.AddGrabbedCar(_grabbedCar.transform);
+		GameEvents.only.InvokeGiantPickupCar(_grabbedCar.transform);
+		_grabbedCar.StopMoving();
 
-		_grabbedCar.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
-		_tweener = _grabbedCar.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
+		_grabbedCar.transform.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
+		_tweener = _grabbedCar.transform.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
 	}
 
 	public void GetCarOnAnimation()
@@ -143,7 +145,7 @@ public class GiantController : MonoBehaviour
 		_grabbedCar.transform.parent = null;
 
 		rb.isKinematic = false;
-		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedCar.position).normalized * throwForce, ForceMode.Impulse);
+		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedCar.transform.position).normalized * throwForce, ForceMode.Impulse);
 		_tweener.Kill();
 		_tweener = null;
 		_isAttacking = false;
@@ -170,9 +172,18 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 
 		if (_health.IsDead())
+		{
 			GoRagdoll(-transform.forward);
+			ReleaseVehicle();
+		}
 	}
-	
+
+	private void ReleaseVehicle()
+	{
+		_grabbedCar.DropVehicle();
+		_tweener?.Kill();
+	}
+
 	private void ReachNextArea()
 	{
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
