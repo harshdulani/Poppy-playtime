@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using GameAnalyticsSDK.Setup;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,8 +19,7 @@ public class HandController : MonoBehaviour
 
 	[SerializeField] private ParticleSystem windLines;
 	
-	private Animator _anim;
-	public Animator rightHandAnim;
+	private Animator _myAnimator, _rootAnimator;
 	private static Animation _armAnimation;
 	private static RopeController _rope;
 	public static PlayerSoundController Sounds;
@@ -38,8 +38,10 @@ public class HandController : MonoBehaviour
 	
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
+	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int Punch = Animator.StringToHash("Punch");
 
+	public GameObject HammerFBX;
 
 	private void OnEnable()
 	{
@@ -59,21 +61,25 @@ public class HandController : MonoBehaviour
 	
 	private void Start()
 	{
-		_anim = GetComponent<Animator>();
+		_myAnimator = GetComponent<Animator>();
 		if(!_rope) //if static variables aren't initialised
 		{
 			if (TryGetComponent(out RopeController rope))
 				_rope = rope;
-
-			_anim = transform.root.GetComponent<Animator>();
-			Sounds = _anim.GetComponent<PlayerSoundController>();
+			
+			_rootAnimator = transform.root.GetComponent<Animator>();
+			Sounds = _myAnimator.GetComponent<PlayerSoundController>();
 		}
 
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
 		
-		_anim.SetBool(IsHoldingHammerHash, isHoldingHammer);
+		_myAnimator.SetBool(IsHoldingHammerHash, isHoldingHammer);
+		_rootAnimator.SetTrigger(IsHoldingHammerHash);
+		
+		if(isHoldingHammer)
+			HammerFBX.SetActive(true);
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -229,12 +235,12 @@ public class HandController : MonoBehaviour
 			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
 
 			if (isHoldingHammer)
-				rightHandAnim.SetTrigger(IsHoldingHammerHash);
+				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 			else
-				rightHandAnim.SetTrigger(Punch);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
 		}
 
-		_anim.SetBool(IsPunching, true);
+		_myAnimator.SetBool(IsPunching, true);
 		_canGivePunch = true;
 		_rope.ReturnHome();
 		windLines.Play();
@@ -245,7 +251,7 @@ public class HandController : MonoBehaviour
 		if (!_canGivePunch) return;
 		
 		_canGivePunch = false;
-		rightHandAnim.SetTrigger(Punch);
+		_rootAnimator.SetTrigger(Punch);
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
 	private static void ClearInitTargetPos()
@@ -255,7 +261,7 @@ public class HandController : MonoBehaviour
 	
 	public void StopPunching()
 	{
-		_anim.SetBool(IsPunching, false);
+		_myAnimator.SetBool(IsPunching, false);
 		ClearInitTargetPos();
 	}
 
