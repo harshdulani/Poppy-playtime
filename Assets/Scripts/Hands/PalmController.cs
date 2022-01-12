@@ -67,7 +67,6 @@ public class PalmController : MonoBehaviour
 		SetCurrentTransform(null);
 		Invoke(nameof(EnablePunching), punchWaitTime);
 		Invoke(nameof(ResetAdoptability), 0.5f);
-		print("hi");
 		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex ++ % HandController.Sounds.punch.Length], 1f);
 	}
 

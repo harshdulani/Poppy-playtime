@@ -68,7 +68,7 @@ public class HandController : MonoBehaviour
 				_rope = rope;
 			
 			_rootAnimator = transform.root.GetComponent<Animator>();
-			Sounds = _myAnimator.GetComponent<PlayerSoundController>();
+			Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
 		}
 
 		_initPosSet = false;
@@ -76,10 +76,14 @@ public class HandController : MonoBehaviour
 		_palmInitLocalRot = palm.localRotation;
 		
 		_myAnimator.SetBool(IsHoldingHammerHash, isHoldingHammer);
-		_rootAnimator.SetTrigger(IsHoldingHammerHash);
-		
-		if(isHoldingHammer)
+
+		if (isHoldingHammer)
+		{
 			HammerFBX.SetActive(true);
+			_rootAnimator.SetTrigger(IsHoldingHammerHash);
+		}
+		else
+			_rootAnimator.SetTrigger(IsUsingHandsHash);
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
