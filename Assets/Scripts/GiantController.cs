@@ -54,6 +54,7 @@ public class GiantController : MonoBehaviour
 		rend.enabled = false;
 
 		_player = GameObject.FindGameObjectWithTag("Player").transform;
+		_health.VisibilityToggle(false);
 	}
 
 	private void OnDrawGizmos()
@@ -212,6 +213,7 @@ public class GiantController : MonoBehaviour
 	{
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
 		
+		_health.VisibilityToggle(true);
 		rend.enabled = true;
 		_anim.SetTrigger(Jump);
 	}

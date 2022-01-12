@@ -30,4 +30,9 @@ public class HealthController : MonoBehaviour
 	{
 		_hitters.Add(car);
 	}
+
+	public void VisibilityToggle(bool status)
+	{
+		healthCanvas.VisibilityToggle(status);
+	}
 }
