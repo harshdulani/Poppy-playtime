@@ -7,6 +7,8 @@ public class CarController : MonoBehaviour
 	
 	[SerializeField] private float movementSpeed;
 	[SerializeField] private Transform laneStartPoint;
+
+	private GameObject _trail;
 	private Bounds _bounds;
 	private Rigidbody _rb;
 	
@@ -31,6 +33,13 @@ public class CarController : MonoBehaviour
 	{
 		_rb.isKinematic = false;
 		transform.parent = null;
+		_trail.SetActive(false);
+	}
+
+	public void AddTrail(GameObject trailPrefab)
+	{
+		_trail = Instantiate(trailPrefab, transform.position, transform.rotation);
+		_trail.transform.parent = transform;
 	}
 	
 	private void OnTriggerEnter(Collider other)

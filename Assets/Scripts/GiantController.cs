@@ -16,9 +16,10 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private Transform carHolderSlot;
 	[SerializeField] private float overlapBoxDistance, throwForce, waitBetweenAttacks;
 
+	[SerializeField] private GameObject trailPrefab;
+	
 	private Transform _player;
 	private CarController _grabbedCar;
-	private Collider[] _colliders = new Collider[50];
 	private Coroutine _grabCarCoroutine, _attackCycleCoroutine;
 	
 	private Animator _anim;
@@ -63,7 +64,7 @@ public class GiantController : MonoBehaviour
 		Gizmos.DrawCube(transform.position + transform.forward * overlapBoxDistance, new Vector3(20, 10f, 20f));
 	}
 
-	public void GoRagdoll(Vector3 direction)
+	private void GoRagdoll(Vector3 direction)
 	{
 		if(isRagdoll) return;
 		
@@ -142,6 +143,7 @@ public class GiantController : MonoBehaviour
 
 		_health.AddGrabbedCar(_grabbedCar.transform);
 		_grabbedCar.StopMoving();
+		_grabbedCar.AddTrail(trailPrefab);
 
 		_grabbedCar.transform.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
 		_tweener = _grabbedCar.transform.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
