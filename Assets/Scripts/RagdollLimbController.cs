@@ -54,7 +54,7 @@ public class RagdollLimbController : MonoBehaviour
 		if (!other.collider.CompareTag("Target")) return;
 		
 		var direction = other.transform.position - transform.position;
-		if (_rb.velocity.sqrMagnitude < 2f)
+		if (_rb.velocity.sqrMagnitude < 4f)
 		{
 			GetPunched(-direction, direction.magnitude);
 			return;
