@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
 		if(!_health.AddHit(hitter)) return;
 
 		CameraController.only.ScreenShake(3f);
-		//_anim.SetTrigger(Hit);
 		//show cracked screen
 		Vibration.Vibrate(20);
 		

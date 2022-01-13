@@ -16,6 +16,8 @@ public class RagdollController : MonoBehaviour
 
 	[Header("Audio"), SerializeField] private AudioClip punch1;
 	[SerializeField] private AudioClip punch2;
+
+	[SerializeField] private float giantStompForce;
 	
 	private Animator _anim;
 	private EnemyPatroller _patroller;
@@ -35,12 +37,17 @@ public class RagdollController : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.only.giantLanding += OnGiantLanding;
+
 		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		
+		GameEvents.only.giantLanding -= OnGiantLanding;
+		
 		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 	}
 	
@@ -147,7 +154,22 @@ public class RagdollController : MonoBehaviour
 		
 		PlayRandomAnim();
 	}
-	
+
+	private void OnGiantLanding(Transform giant)
+	{
+		if (!LevelFlowController.only.isGiantLevel) return;
+		
+		var direction = (transform.position - giant.position).normalized;
+		direction.x *= 3f;
+		direction.z = 0f;
+		direction.y *= 3f;
+		foreach (var rb in rigidbodies)
+		{
+			rb.isKinematic = false;
+			rb.AddForce(direction * giantStompForce, ForceMode.Impulse);
+		}
+	}
+
 	private void OnEnemyReachPlayer()
 	{
 		if(_isAttacking) return;

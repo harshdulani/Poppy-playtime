@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -12,15 +11,19 @@ public class PropController : MonoBehaviour
 	[SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
 
+	[SerializeField] private GameObject explosion;
 	[SerializeField] private AudioClip[] explosionFx;
 	private AudioSource _source;
 	private static int _explosionSoundCounter;
-	
+	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier;
+
+	private readonly List<Transform> _pieces = new List<Transform>();
 	private Rigidbody _rb;
 	private Collider _collider;
 	private Vector3 _previousPerlin, _previousPerlinRot;
 
 	private bool _inHitBox, _hasBeenPickedUp, _amDestroyed;
+	private GameObject _trail;
 
 	private void OnEnable()
 	{
@@ -43,8 +46,22 @@ public class PropController : MonoBehaviour
 
 	private void Update()
 	{
-		if(_inHitBox)
+		if (_inHitBox)
 			PerlinNoise();
+		
+		if(_pieces.Count == 0) return;
+
+		for(var i = 0; i < _pieces.Count; i++)
+		{
+			if (_pieces[i].localScale.x < 0.05f)
+			{
+				_pieces[i].gameObject.SetActive(false);
+				_pieces.Remove(_pieces[i]);
+				continue;
+			}
+
+			_pieces[i].localScale -= Vector3.one * (Time.deltaTime * shrinkSpeedMultiplier);
+		}
 	}
 	
 	private void PerlinNoise()
@@ -61,21 +78,6 @@ public class PropController : MonoBehaviour
 		_previousPerlinRot = perlinRot;
 	}
 
-	private void OnCollisionEnter(Collision other)
-	{
-		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
-		
-		if(shouldExplode)
-			Invoke(nameof(Explode), .2f);
-
-		if(!hasBeenInteractedWith) return;
-		
-		if (!other.transform.root.CompareTag("Target")) return;
-		
-		if(other.transform.root.TryGetComponent(out RagdollController raghu))
-			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
-	}
-
 	public void Explode()
 	{
 		if(_amDestroyed) return;
@@ -89,10 +91,12 @@ public class PropController : MonoBehaviour
 			rigidbodies[i].transform.parent = parent;
 			rigidbodies[i].isKinematic = false;
 			rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 5f);
+
+			_pieces.Add(rigidbodies[i].transform);
 		}
 		GameEvents.only.InvokePropDestroy(transform);
 		_amDestroyed = true;
-		
+
 		_source.PlayOneShot(explosionFx[_explosionSoundCounter++ % explosionFx.Length]);
 		Vibration.Vibrate(25);
 	}
@@ -103,10 +107,18 @@ public class PropController : MonoBehaviour
 		_rb.AddForce(direction * punchForce, ForceMode.Impulse);
 	}
 
-	private IEnumerator DisablePiece(GameObject piece, float time)
+	
+	public void AddTrail(GameObject trailPrefab)
 	{
-		yield return GameExtensions.GetWaiter(time);
-		piece.transform.DOScale(Vector3.zero, 1f).OnComplete(() => piece.SetActive(false));
+		_trail = Instantiate(trailPrefab, transform.position, transform.rotation);
+		_trail.transform.parent = transform;
+	}
+	
+	public void DropProp()
+	{
+		_rb.isKinematic = false;
+		transform.parent = null;
+		_trail.SetActive(false);
 	}
 
 	private void OnEnterHitBox(Transform target)
@@ -121,5 +133,32 @@ public class PropController : MonoBehaviour
 		if(!_inHitBox) return;
 
 		_inHitBox = true;
+	}
+	
+	private void OnCollisionEnter(Collision other)
+	{
+		if(CompareTag("EnemyAttack"))
+		{
+			if (!(other.gameObject.CompareTag("HitBox") || other.gameObject.CompareTag("Arm") ||
+				  other.gameObject.CompareTag("Player"))) return;
+
+			GameEvents.only.InvokeEnemyHitPlayer(transform);
+
+			Destroy(Instantiate(explosion, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal)), 3f);
+			transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));
+			return;
+		}
+		
+		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
+		
+		if(shouldExplode)
+			Invoke(nameof(Explode), .2f);
+
+		if(!hasBeenInteractedWith) return;
+		
+		if (!other.transform.root.CompareTag("Target")) return;
+		
+		if(other.transform.root.TryGetComponent(out RagdollController raghu))
+			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}
 }

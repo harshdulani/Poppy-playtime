@@ -30,7 +30,7 @@ MonoBehaviour:
   secretKey:
   - 499b2f65a16b8d3216655dfe3c3fffaef1d8c448
   Build:
-  - 0.2
+  - 0.3
   SelectedPlatformOrganization:
   - Day Dreamz Studio
   SelectedPlatformStudio:
@@ -41,23 +41,98 @@ MonoBehaviour:
   SelectedOrganization: 01000000
   SelectedStudio: 01000000
   SelectedGame: 2f000000
-  NewVersion: 7.3.2
-  Changes: '7.3.2
+  NewVersion: 7.3.14
+  Changes: '7.3.14
 
-    - fixed missing custom event fields for when trying to fix
-    missing session end events
+    - small fix
+
+
+    7.3.13
+
+    - fixed crash for android builds
+
+
+    7.3.12
+
+    -
+    removed imei identifiers and other alternative identifiers from user identifier
+    logic (android)
+
+
+    7.3.11
+
+    - updated dependency to external dependency
+    resolver
+
+
+    7.3.10
+
+    - adding missing .meta file for upm release
+
+    -
+    switched to using openupm for scoped registry when using upm, please update the
+    upm setup for the unity sdk
+
+
+    7.3.9
+
+    - fixed upm package.json
+
+
+    7.3.8
+
+    -
+    fixed upm dependecy
+
+
+    7.3.7
+
+    - added depedencies.xml for upm release
+
+
+    7.3.6
+
+    -
+    fixed playmaker bugs
+
+
+    7.3.5
+
+    - changed settings to have FPS events turned
+    off by default
+
+
+    7.3.4
+
+    - added error events to be sent for invalid custom
+    event fields used
+
+    - added optional mergeFields argument to event methods
+    to merge with global custom fields instead of overwrite them
+
+
+    7.3.3
+
+    -
+    playmaker fixes
+
+
+    7.3.2
+
+    - fixed missing custom event fields for when
+    trying to fix missing session end events
 
 
     7.3.1
 
-    - fixed editor ui bug with games
-    with the same name
+    - fixed editor ui bug
+    with games with the same name
 
 
     7.3.0
 
-    - added global custom event fields function
-    to allow to add custom fields to events sent automatically by the SDK'
+    - added global custom event fields
+    function to allow to add custom fields to events sent automatically by the SDK'
   SignUpOpen: 0
   StudioName: 
   GameName: 

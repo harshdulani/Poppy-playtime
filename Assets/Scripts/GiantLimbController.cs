@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -33,7 +32,7 @@ public class GiantLimbController : MonoBehaviour
 		//i required this method to fire off independently and have a COPY of the victim to be disabled because
 		//a dotween .oncomplete was checking the "other" variable at that instant
 		//this method is called continuously
-		//i just turn this all this flags on this so it doesn't get to do anything
+		//i just turn put all these flags on this so it doesn't get to DO anything
 		//but every frame/physics step, Collision other ka value change hota hai
 		
 		victim.DOScale(Vector3.zero, 0.2f).OnComplete(() =>

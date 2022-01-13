@@ -4,6 +4,9 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
+[System.Serializable]
+public struct BoxBounds { public float x, y, z, distance; }
+
 public class GiantController : MonoBehaviour
 {
 	[HideInInspector] public bool isDead;
@@ -14,14 +17,15 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private GameObject[] headgear;
 
 	[SerializeField] private bool showOverlapBoxDebug;
+	[SerializeField] private BoxBounds overlapBoxBounds;
 	[SerializeField] private Transform carHolderSlot;
-	[SerializeField] private float overlapBoxDistance, throwForce, waitBetweenAttacks;
+	[SerializeField] private float throwForce, waitBetweenAttacks;
 	
 	[SerializeField] private GameObject trailPrefab;
 	
-	private Transform _player;
-	private CarController _grabbedCar;
-	private Coroutine _grabCarCoroutine, _attackCycleCoroutine;
+	private Transform _player, _grabbedTargetTransform;
+	private CarController _grabbedTargetCarController;
+	private PropController _grabbedTargetPropController;
 	
 	private Animator _anim;
 	private AudioSource _audioSource;
@@ -38,13 +42,11 @@ public class GiantController : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.playerPickupCar += OnPlayerPickupCar;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.playerPickupCar -= OnPlayerPickupCar;
 	}
 
 	private void Start()
@@ -66,7 +68,7 @@ public class GiantController : MonoBehaviour
 		if(!showOverlapBoxDebug) return;
 		
 		Gizmos.color = new Color(0f, 0.75f, 1f, 0.5f);
-		Gizmos.DrawCube(transform.position + transform.forward * overlapBoxDistance, new Vector3(20, 10f, 20f));
+		Gizmos.DrawCube(transform.position + transform.forward * overlapBoxBounds.distance, new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z));
 	}
 
 	private void GoRagdoll(Vector3 direction)
@@ -126,45 +128,56 @@ public class GiantController : MonoBehaviour
 		while(transform.position.y > 0.5f)
 			yield return GameExtensions.GetWaiter(0.25f);
 		
-		_grabbedCar = null;
+		_grabbedTargetCarController = null;
 		
 		do
 		{
-			var colliders = Physics.OverlapBox(transform.position + transform.forward * overlapBoxDistance, new Vector3(10, 5f, 10f), Quaternion.identity);
+			var colliders = Physics.OverlapBox(transform.position + transform.forward * overlapBoxBounds.distance, 
+				new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2), Quaternion.identity);
 
 			foreach (var item in colliders)
 			{
 				if(!item.CompareTag("Target")) continue;
+				
+				_grabbedTargetTransform = item.transform;
+				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetCarController);
+				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetPropController);
+				
+				_grabbedTargetTransform.tag = "EnemyAttack";
 
-				_grabbedCar = item.transform.GetComponent<CarController>();
-				_grabbedCar.tag = "EnemyAttack";
-				GameEvents.only.InvokeGiantPickupCar(_grabbedCar.transform);
+				GameEvents.only.InvokeGiantPickupCar(_grabbedTargetTransform);
 				break;
 			}
 
 			yield return GameExtensions.GetWaiter(0.2f);
-		} while (!_grabbedCar);
+		} while (!_grabbedTargetTransform);
 
-		_health.AddGrabbedCar(_grabbedCar.transform);
-		_grabbedCar.StopMoving();
-		_grabbedCar.AddTrail(trailPrefab);
+		_health.AddGrabbedCar(_grabbedTargetTransform);
 
-		_grabbedCar.transform.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
-		_tweener = _grabbedCar.transform.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
+		if (_grabbedTargetCarController)
+		{
+			_grabbedTargetCarController.StopMoving();
+			_grabbedTargetCarController.AddTrail(trailPrefab);
+		}
+		else
+			_grabbedTargetPropController.AddTrail(trailPrefab);
+
+		_grabbedTargetTransform.DOMove(carHolderSlot.position, 0.5f).OnComplete(() => _anim.SetTrigger(Attack));
+		_tweener = _grabbedTargetTransform.DOLocalRotate(Vector3.up * 360f, 2f, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(-1);
 	}
 
 	public void GetCarOnAnimation()
 	{
-		_grabCarCoroutine = StartCoroutine(GrabVehicle());
+		StartCoroutine(GrabVehicle());
 	}
 	
 	public void ThrowVehicleOnAnimation()
 	{
-		var rb = _grabbedCar.GetComponent<Rigidbody>();
-		_grabbedCar.transform.parent = null;
+		var rb = _grabbedTargetTransform.GetComponent<Rigidbody>();
+		_grabbedTargetTransform.parent = null;
 
 		rb.isKinematic = false;
-		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedCar.transform.position).normalized * throwForce, ForceMode.Impulse);
+		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedTargetTransform.position).normalized * throwForce, ForceMode.Impulse);
 		_tweener.Kill();
 		_tweener = null;
 		_isAttacking = false;
@@ -181,7 +194,8 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 		CameraController.only.ScreenShake(2f);
 
-		_attackCycleCoroutine = StartCoroutine(AttackCycle());
+		GameEvents.only.InvokeGiantLanding(transform);
+		StartCoroutine(AttackCycle());
 	}
 
 	public void GetHit(Transform hitter)
@@ -198,20 +212,14 @@ public class GiantController : MonoBehaviour
 
 	private void ReleaseVehicle()
 	{
-		_grabbedCar.DropVehicle();
+		if(_grabbedTargetCarController)
+			_grabbedTargetCarController.DropVehicle();
+		else
+			_grabbedTargetPropController.DropProp();
+		
 		_tweener?.Kill();
 	}
 
-	private void OnPlayerPickupCar(Transform car)
-	{
-		if(car != _grabbedCar.transform) return;
-		
-		StopCoroutine(_grabCarCoroutine);
-		_isAttacking = false;
-		StopCoroutine(_attackCycleCoroutine);
-		_attackCycleCoroutine = StartCoroutine(AttackCycle());
-	}
-	
 	private void OnReachNextArea()
 	{
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
