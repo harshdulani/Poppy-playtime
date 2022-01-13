@@ -177,7 +177,16 @@ public class GiantController : MonoBehaviour
 		_grabbedTargetTransform.parent = null;
 
 		rb.isKinematic = false;
-		rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedTargetTransform.position).normalized * throwForce, ForceMode.Impulse);
+		//if it collides w another barrel mid air, it falls and lays there - you know, just killing the vibe
+		var seq = DOTween.Sequence();
+		seq.AppendCallback(() => rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedTargetTransform.position).normalized * throwForce, ForceMode.Impulse));
+		seq.AppendInterval(3f);
+		seq.AppendCallback(() =>
+		{
+			if (rb)
+				rb.AddForce(Vector3.right * 200f, ForceMode.Impulse);
+		});
+		
 		_tweener.Kill();
 		_tweener = null;
 		_isAttacking = false;

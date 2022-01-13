@@ -254,8 +254,7 @@ public class HandController : MonoBehaviour
 		
 		if(palm.childCount > 2)
 			palm.GetChild(2).parent = null;
-
-		//palm.parent = _palmParentInit;
+		
 		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
 		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
 		_isCarryingBody = false;

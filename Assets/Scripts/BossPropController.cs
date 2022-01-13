@@ -35,7 +35,9 @@ public class BossPropController : MonoBehaviour
 	}
 
 	private IEnumerator ThrowingCycle()
-	{
+	{			
+		yield return GameExtensions.GetWaiter(1f);
+
 		while (transform.childCount > 0)
 		{
 			SpawnProp();

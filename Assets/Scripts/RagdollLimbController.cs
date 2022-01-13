@@ -64,6 +64,8 @@ public class RagdollLimbController : MonoBehaviour
 		else
 		{
 			var prop = other.gameObject.GetComponent<PropController>();
+			if (!prop) return;
+			
 			if(prop.shouldExplode)
 				prop.Explode();
 		}

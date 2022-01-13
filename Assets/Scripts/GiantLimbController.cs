@@ -20,7 +20,7 @@ public class GiantLimbController : MonoBehaviour
 		if(other.transform.root == transform.root) return;
 		
 		if (!other.collider.CompareTag("Target")) return;
-		
+
 		Destroy(Instantiate(explosion, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal)), 3f);
 		TakeCareOfThis(other.transform);
 	}

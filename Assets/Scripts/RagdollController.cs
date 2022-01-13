@@ -162,7 +162,7 @@ public class RagdollController : MonoBehaviour
 		var direction = (transform.position - giant.position).normalized;
 		direction.x *= 3f;
 		direction.z = 0f;
-		direction.y *= 3f;
+		direction.y *= 30f;
 		foreach (var rb in rigidbodies)
 		{
 			rb.isKinematic = false;
