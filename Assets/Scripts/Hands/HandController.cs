@@ -11,7 +11,11 @@ public enum TypesOfAttacks
 {
 	Punch,
 	Hammer,
-	Gun
+	Gun,
+	Boot,
+	Heel,
+	Sneaker,
+	Shield
 }
 
 public class HandController : MonoBehaviour
@@ -29,10 +33,10 @@ public class HandController : MonoBehaviour
 	public static PlayerSoundController Sounds;
 
 	public static CarriedObjectType CurrentObjectCarriedType;
-	[SerializeField] private TypesOfAttacks CurrentAttackType; 
-	public GameObject HammerFBX,GunFBX;
+	[SerializeField] private TypesOfAttacks currentAttackType; 
+	public GameObject hammer, gun, boot, heel, sneaker,  shield;
 	private static bool _isCarryingBody;
-	[SerializeField] private GameObject _fireExplosion;
+	[SerializeField] private GameObject fireExplosion;
 
 	private Transform _lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
@@ -46,6 +50,8 @@ public class HandController : MonoBehaviour
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
+	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
+	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
 	private static readonly int Punch = Animator.StringToHash("Punch");
 
 	private void OnEnable()
@@ -85,23 +91,48 @@ public class HandController : MonoBehaviour
 
 		if (isLeftHand) return;
 		
-		_fireExplosion.SetActive(false);
+		fireExplosion.SetActive(false);
 
-		switch (CurrentAttackType)
+		switch (currentAttackType)
 		{
 			case TypesOfAttacks.Punch:
 				_myAnimator.SetBool(IsHoldingHammerHash, false);
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 			case TypesOfAttacks.Hammer:
-				HammerFBX.SetActive(true);
+				hammer.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 				break;
 			case TypesOfAttacks.Gun:
-				GunFBX.SetActive(true);
+				gun.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Boot:
+				boot.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Heel:
+				heel.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Sneaker:
+				sneaker.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Shield:
+				shield.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingShieldHash);
+				Debug.Log(gameObject.name);
 				break;
 		}
 	}
@@ -230,7 +261,6 @@ public class HandController : MonoBehaviour
 		
 		var root = other.root;
 
-		//Debug.DrawLine(transform.root.position, root.position, Color.blue, 2f);
 		var direction = (root.position - transform.root.position).normalized;
 
 		float distance, height;
@@ -271,8 +301,8 @@ public class HandController : MonoBehaviour
 		
 		_canGivePunch = false;
 		_rootAnimator.SetTrigger(Punch);
-		if(CurrentAttackType == TypesOfAttacks.Gun)
-			_fireExplosion.SetActive(true);
+		if(currentAttackType == TypesOfAttacks.Gun)
+			fireExplosion.SetActive(true);
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
 	private static void ClearInitTargetPos()
