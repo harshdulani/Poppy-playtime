@@ -26,7 +26,7 @@ public class GiantController : MonoBehaviour
 	private Transform _player, _grabbedTargetTransform;
 	private CarController _grabbedTargetCarController;
 	private PropController _grabbedTargetPropController;
-	
+
 	private Animator _anim;
 	private AudioSource _audioSource;
 	private HealthController _health;
@@ -234,7 +234,7 @@ public class GiantController : MonoBehaviour
 	private void OnReachNextArea()
 	{
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
-		
+
 		_health.VisibilityToggle(true);
 		foreach (var item in headgear)
 			item.SetActive(true);

@@ -24,7 +24,7 @@ public class BossPropController : MonoBehaviour
 
 	private void OnReachNextArea()
 	{
-		if (!LevelFlowController.only.isGiantLevel) return;
+		if(!LevelFlowController.only.IsInGiantFight()) return;
 
 		_cycle = StartCoroutine(ThrowingCycle());
 	}

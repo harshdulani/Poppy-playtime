@@ -1,9 +1,6 @@
 using System;
 using DG.Tweening;
-using GameAnalyticsSDK.Setup;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum CarriedObjectType
 {
@@ -27,7 +24,6 @@ public class HandController : MonoBehaviour
 	[SerializeField] private ParticleSystem windLines;
 	
 	private Animator _myAnimator, _rootAnimator;
-	private static Animation _armAnimation;
 	private static RopeController _rope;
 	public static PlayerSoundController Sounds;
 
@@ -72,44 +68,38 @@ public class HandController : MonoBehaviour
 	
 	private void Start()
 	{
-		_fireExplosion.SetActive(false);
-		
-		_myAnimator = GetComponent<Animator>();
-		if(!_rope) //if static variables aren't initialised
-		{
-			if (TryGetComponent(out RopeController rope))
-				_rope = rope;
-			
-			_rootAnimator = transform.root.GetComponent<Animator>();
-			Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
-		}
+		TryGetComponent(out _rope);
 
+		_rootAnimator = transform.root.GetComponent<Animator>();
+		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
+		
+		print($"{gameObject.name} hi {_rope}");
+		
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
 
 		if (isLeftHand) return;
 		
-		if (CurrentAttackType == TypesOfAttacks.Punch)
+		_myAnimator = GetComponent<Animator>();
+		_fireExplosion.SetActive(false);
+
+		switch (CurrentAttackType)
 		{
-			print("Punch");
-			_myAnimator.SetBool(IsHoldingHammerHash, false);
-			_rootAnimator.SetTrigger(IsUsingHandsHash);
-		}
-		else if (CurrentAttackType == TypesOfAttacks.Hammer)
-		{
-			print("Hammer");
-			HammerFBX.SetActive(true);
-			_myAnimator.SetBool(IsHoldingHammerHash, true);
-			_rootAnimator.SetTrigger(IsHoldingHammerHash);
-		}
-		else if (CurrentAttackType == TypesOfAttacks.Gun)
-		{
-			print("Gun");
-			GunFBX.SetActive(true);
-			_myAnimator.SetBool(IsHoldingHammerHash, true);
-			_rootAnimator.SetTrigger(IsHoldingGunHash);
-			Debug.Log(gameObject.name);
+			case TypesOfAttacks.Punch:
+				_myAnimator.SetBool(IsHoldingHammerHash, false);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
+				break;
+			case TypesOfAttacks.Hammer:
+				HammerFBX.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingHammerHash);
+				break;
+			case TypesOfAttacks.Gun:
+				GunFBX.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingGunHash);
+				break;
 		}
 	}
 
@@ -237,7 +227,7 @@ public class HandController : MonoBehaviour
 		
 		var root = other.root;
 
-		var direction = (root.position - transform.position).normalized;
+		var direction = (root.position - transform.root.position).normalized;
 
 		float distance, height;
 
@@ -259,13 +249,11 @@ public class HandController : MonoBehaviour
 				throw new ArgumentOutOfRangeException();
 		}
 		
-		var endValue = transform.position + direction * distance + transform.up * height;
+		var endValue = transform.root.position + direction * distance + transform.up * height;
 
 		root.DOMove(endValue, 0.2f);
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
-		{
 			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
-		}
 
 		_myAnimator.SetBool(IsPunching, true);
 		_canGivePunch = true;
