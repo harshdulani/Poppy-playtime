@@ -315,8 +315,8 @@ MonoBehaviour:
   aimSpeedHorizontal: 45
   clampAngleVertical: 15
   clampAngleHorizontal: 20
-  findTargetColor: {r: 0.5801887, g: 1, b: 0.5910086, a: 0.83137256}
-  missingTargetColor: {r: 1, g: 0.43867922, b: 0.52653813, a: 0.83137256}
+  findTargetColor: {r: 0.3537736, g: 1, b: 0.37189204, a: 0.83137256}
+  missingTargetColor: {r: 1, g: 0.16509432, b: 0.29354143, a: 0.83137256}
   screenPercentageOnY: 0.589733
 --- !u!114 &1113535304993847336
 MonoBehaviour:
@@ -1286,6 +1286,7 @@ MonoBehaviour:
   moveSpeed: 50
   returnSpeed: 45
   punchForce: 0
+  carPunchForce: 0
   ragdollWfpDistance: 0
   propWfpDistance: 0
   carWfpDistance: 0
@@ -1493,11 +1494,12 @@ MonoBehaviour:
   moveSpeed: 20
   returnSpeed: 30
   punchForce: 200
+  carPunchForce: 0
   ragdollWfpDistance: 4
   propWfpDistance: 4
   carWfpDistance: 3
-  enemyWfpHeight: -0.5
-  carWfpHeight: 0
+  enemyWfpHeight: 1
+  carWfpHeight: 2
   propWfpHeight: 2
   windLines: {fileID: 4561808305841353675}
   currentAttackType: 0

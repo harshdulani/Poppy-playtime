@@ -3323,6 +3323,7 @@ Transform:
   - {fileID: 2347932973483899890}
   - {fileID: 440707714774114116}
   - {fileID: 6783545108434947953}
+  - {fileID: 5127491056216817182}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3487,12 +3488,14 @@ MonoBehaviour:
   - {fileID: 3948925637326822028}
   magnitude: 1
   rotationMagnitude: 10
+  trailParent: {fileID: 5127491056216817182}
   explosion: {fileID: 105310, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
   explosionFx:
   - {fileID: 8300000, guid: 9963fdc7cf06ca142b7e646ec9131f0e, type: 3}
   - {fileID: 8300000, guid: a595e81c787e9ea47bb24ea023fb1a07, type: 3}
   - {fileID: 8300000, guid: 57ed69012a4f2644e9497a8b6e15ce8d, type: 3}
   shrinkSpeedMultiplier: 0.2
+  explosionScale: 0.3
 --- !u!82 &4192992000478872328
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6593,6 +6596,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4091301307740055229, guid: fdb0aa904c50dd74194be9350659d948, type: 3}
+--- !u!1 &8592858789858107035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5127491056216817182}
+  m_Layer: 0
+  m_Name: TrailSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5127491056216817182
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592858789858107035}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3551052627073910799}
+  m_RootOrder: 56
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8593430374069557971
 GameObject:
   m_ObjectHideFlags: 0

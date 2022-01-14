@@ -21,7 +21,11 @@ public class GiantLimbController : MonoBehaviour
 		
 		if (!other.collider.CompareTag("Target")) return;
 
-		Destroy(Instantiate(explosion, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal)), 3f);
+		var exploder = Instantiate(explosion, other.contacts[0].point,
+			Quaternion.LookRotation(other.contacts[0].normal));
+
+		exploder.transform.localScale *= _parent.explosionScale;
+		Destroy(exploder, 3f);
 		TakeCareOfThis(other.transform);
 	}
 

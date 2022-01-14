@@ -19,9 +19,11 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private bool showOverlapBoxDebug;
 	[SerializeField] private BoxBounds overlapBoxBounds;
 	[SerializeField] private Transform carHolderSlot;
+	[Range(0.1f, 1f)] public float explosionScale = 1f;
 	[SerializeField] private float throwForce, waitBetweenAttacks;
 	
 	[SerializeField] private GameObject trailPrefab;
+	[SerializeField] private GameObject smokeEffectOnLand;
 	
 	private Transform _player, _grabbedTargetTransform;
 	private CarController _grabbedTargetCarController;
@@ -205,6 +207,8 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 		CameraController.only.ScreenShake(2f);
 
+		smokeEffectOnLand.SetActive(true);
+		
 		GameEvents.only.InvokeGiantLanding(transform);
 		StartCoroutine(AttackCycle());
 	}

@@ -11,11 +11,12 @@ public class PropController : MonoBehaviour
 	[SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
 
+	[SerializeField] private Transform trailParent; 
 	[SerializeField] private GameObject explosion;
 	[SerializeField] private AudioClip[] explosionFx;
 	private AudioSource _source;
 	private static int _explosionSoundCounter;
-	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier;
+	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier, explosionScale;
 
 	private readonly List<Transform> _pieces = new List<Transform>();
 	private Rigidbody _rb;
@@ -111,7 +112,7 @@ public class PropController : MonoBehaviour
 	public void AddTrail(GameObject trailPrefab)
 	{
 		_trail = Instantiate(trailPrefab, transform.position, transform.rotation);
-		_trail.transform.parent = transform;
+		_trail.transform.parent = trailParent ? trailParent : transform;
 	}
 	
 	public void DropProp()
@@ -144,7 +145,12 @@ public class PropController : MonoBehaviour
 
 			GameEvents.only.InvokeEnemyHitPlayer(transform);
 
-			Destroy(Instantiate(explosion, other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal)), 3f);
+			var exploder = Instantiate(explosion, other.contacts[0].point,
+				Quaternion.LookRotation(other.contacts[0].normal));
+
+			exploder.transform.localScale *= explosionScale;
+			
+			Destroy(exploder, 3f);
 			transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));
 			return;
 		}
@@ -157,7 +163,7 @@ public class PropController : MonoBehaviour
 		if(!hasBeenInteractedWith) return;
 		
 		if (!other.transform.root.CompareTag("Target")) return;
-		
+
 		if(other.transform.root.TryGetComponent(out RagdollController raghu))
 			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
 	}

@@ -22,7 +22,7 @@ public class HandController : MonoBehaviour
 {
 	public bool isLeftHand;
 	public Transform palm;
-	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
+	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
 	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight, propWfpHeight;
 
 	[SerializeField] private ParticleSystem windLines;
@@ -108,31 +108,26 @@ public class HandController : MonoBehaviour
 				gun.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
-				Debug.Log(gameObject.name);
 				break;
 			case TypesOfAttacks.Boot:
 				boot.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				Debug.Log(gameObject.name);
 				break;
 			case TypesOfAttacks.Heel:
 				heel.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				Debug.Log(gameObject.name);
 				break;
 			case TypesOfAttacks.Sneaker:
 				sneaker.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				Debug.Log(gameObject.name);
 				break;
 			case TypesOfAttacks.Shield:
 				shield.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingShieldHash);
-				Debug.Log(gameObject.name);
 				break;
 		}
 	}
@@ -198,7 +193,7 @@ public class HandController : MonoBehaviour
 			{
 				other.GetComponent<CarController>().StopMoving();
 			}
-			else if (other.TryGetComponent(out PropController prop))
+			if (other.TryGetComponent(out PropController prop))
 				prop.hasBeenInteractedWith = true;
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
@@ -219,7 +214,7 @@ public class HandController : MonoBehaviour
 				_targetInitPos.y = other.position.y;
 				other.root.GetComponent<PropController>()
 					.GetPunched(((LevelFlowController.only.IsInGiantFight() ? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center : _targetInitPos) - other.root.position).normalized, 
-						punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
+						(CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce));
 			}
 		}
 
