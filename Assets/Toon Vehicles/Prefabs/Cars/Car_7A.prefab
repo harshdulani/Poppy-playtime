@@ -97,9 +97,11 @@ GameObject:
   - component: {fileID: 64000010856656108}
   - component: {fileID: -8514116773363208774}
   - component: {fileID: -8166619434045694353}
+  - component: {fileID: -5363777575147467027}
+  - component: {fileID: -3928668112466165474}
   m_Layer: 0
   m_Name: Car_7A
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,9 +219,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f35028f7880b14a9886f9417202c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldMove: 0
-  movementSpeed: 0.5
+  shouldMove: 1
+  isRightLane: 0
+  movementSpeed: 7.5
   laneStartPoint: {fileID: 0}
+--- !u!65 &-5363777575147467027
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011213225704}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.634387, y: 1.6959305, z: 4.8052197}
+  m_Center: {x: 0, y: 1.043731, z: 0.06667721}
+--- !u!114 &-3928668112466165474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011213225704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldExplode: 0
+  hasBeenInteractedWith: 0
+  explosionForce: 0
+  rigidbodies: []
+  colliders: []
+  magnitude: 1
+  rotationMagnitude: 10
+  explosionFx: []
 --- !u!1 &1000011244408774
 GameObject:
   m_ObjectHideFlags: 0

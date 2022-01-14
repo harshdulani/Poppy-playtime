@@ -1,4 +1,6 @@
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
@@ -8,7 +10,11 @@ public class TimeController : MonoBehaviour
 	[SerializeField] private float slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
 	[SerializeField] private AnimationCurve easing;
 	private float _defaultTimeScale = 1;
-	private float _defaultDeltaTime = 0.02f, _slowedDeltaTime;
+	private readonly float _defaultDeltaTime = 0.02f;
+	private float _slowedDeltaTime;
+
+	private TweenerCore<float, float, FloatOptions> _timeDeltaTween, _fixedTimeDeltaTween;
+
 
 	private void OnEnable()
 	{
@@ -42,21 +48,27 @@ public class TimeController : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.T)) print("timeScale = " + Time.timeScale);
 	}
 
-	private void SlowDownTime()
+	public void SlowDownTime(float multiplier = 1f)
 	{
-		DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale, timeRampDownDuration);
-		DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _slowedDeltaTime, timeRampDownDuration);
+		_timeDeltaTween.Kill();
+		_fixedTimeDeltaTween.Kill();
+		
+		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale * multiplier, timeRampDownDuration);
+		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _slowedDeltaTime * multiplier, timeRampDownDuration);
 	}
 
 	public void RevertTime(bool lastEnemy = false)
 	{
-		var tween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
+		_timeDeltaTween.Kill();
+		_fixedTimeDeltaTween.Kill();
 
+		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
+		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _defaultDeltaTime, timeRampUpDuration);
+		
 		if (!lastEnemy) return;
 		
-		tween.SetEase(easing);
-		DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _defaultDeltaTime,
-			timeRampUpDuration).SetEase(easing);
+		_timeDeltaTween.SetEase(easing);
+		_fixedTimeDeltaTween.SetEase(easing);
 	}
 
 	private void OnEnterHitBox(Transform target)

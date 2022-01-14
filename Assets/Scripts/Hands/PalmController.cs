@@ -15,6 +15,7 @@ public class PalmController : MonoBehaviour
 		if(myHand.isLeftHand)
 		{
 			GameEvents.only.propDestroyed += OnPropDestroyed;
+			GameEvents.only.giantPickupCar += OnPropDestroyed;
 		}
 		else
 		{
@@ -27,6 +28,7 @@ public class PalmController : MonoBehaviour
 		if(myHand.isLeftHand)
 		{
 			GameEvents.only.propDestroyed -= OnPropDestroyed;
+			GameEvents.only.giantPickupCar -= OnPropDestroyed;
 		}
 		else
 		{
@@ -72,7 +74,7 @@ public class PalmController : MonoBehaviour
 
 	private void OnPropDestroyed(Transform target)
 	{
-		if(target != _lastPickedTarget) return;
+		if(target != GetCurrentTransform()) return;
 		
 		SetCurrentTransform(null);
 		myHand.OnPropDestroyed();

@@ -352,6 +352,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4038356669617334427, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
+      propertyPath: shouldMove
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010972309836, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
       propertyPath: m_Name
       value: Car_14A (1)
@@ -403,6 +407,18 @@ PrefabInstance:
     - target: {fileID: 4000013597350158, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 64000010835554680, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 64000010835554680, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 552013419368861614, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
@@ -618,31 +634,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a56f10cdaa3f97f469ed97240cba15c3, type: 3}
---- !u!1 &663544187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1000010972309836, guid: 6fb16cebb304347929cdbf44fcb0d3ea, type: 3}
-  m_PrefabInstance: {fileID: 224277930}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &663544188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 663544187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shouldExplode: 0
-  hasBeenInteractedWith: 0
-  explosionForce: 0
-  rigidbodies: []
-  colliders: []
-  magnitude: 0
-  rotationMagnitude: 0
-  explosionFx: []
 --- !u!1001 &745139958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -747,6 +738,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7169173415169093561, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
+      propertyPath: shouldMove
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010565175058, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
       propertyPath: m_Name
       value: Car_8B (2)
@@ -803,7 +798,12 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: aa24f24076be4485a87f1b93538a507f, type: 3}
-    m_RemovedComponents: []
+    - target: {fileID: 64000010270796706, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3893433778810463133, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
 --- !u!1001 &932744932
 PrefabInstance:
@@ -1854,6 +1854,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7169173415169093561, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
+      propertyPath: shouldMove
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000010565175058, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
       propertyPath: m_Name
       value: Car_8B (3)
@@ -1910,7 +1914,12 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: aa24f24076be4485a87f1b93538a507f, type: 3}
-    m_RemovedComponents: []
+    - target: {fileID: 64000010270796706, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3893433778810463133, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6d4907d711d7f40ee9052e2dd6f8fb6a, type: 3}
 --- !u!1001 &1731353820
 PrefabInstance:
@@ -4030,6 +4039,10 @@ PrefabInstance:
     - target: {fileID: 3290622344563462903, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332434888978194876, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
+      propertyPath: punchForce
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}

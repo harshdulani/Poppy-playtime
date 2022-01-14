@@ -5,6 +5,7 @@
 	public override void OnEnter()
 	{
 		IsPersistent = false;
+		HandController.UpdateRope();
 	}
 
 	public override void Execute()

@@ -14,13 +14,13 @@ public class MainCanvasController : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.enemyReachPlayer += OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 		GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enemyReachPlayer -= OnEnemyReachPlayer;
+		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
 

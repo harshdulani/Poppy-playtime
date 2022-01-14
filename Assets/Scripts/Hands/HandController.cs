@@ -53,17 +53,20 @@ public class HandController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if(!isLeftHand)
+		if(!isLeftHand) //only for right/punching hand
 			GameEvents.only.enterHitBox += OnEnterHitBox;
-
+		
+		GameEvents.only.giantPickupCar += OnGiantPickupCar;
 		GameEvents.only.punchHit += OnPunchHit;
 	}
 	
 	private void OnDisable()
 	{
-		if (!isLeftHand)
+		if (!isLeftHand) //only for right/punching hand
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		
+		
+		GameEvents.only.giantPickupCar -= OnGiantPickupCar;
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
 	
@@ -181,17 +184,18 @@ public class HandController : MonoBehaviour
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
 			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
-				other.GetComponent<RagdollLimbController>().GetPunched((_targetInitPos - transform.position).normalized, punchForce);
-			else if(CurrentObjectCarriedType == CarriedObjectType.Prop)
+			{
+				other.GetComponent<RagdollLimbController>().GetPunched((
+					(LevelFlowController.only.IsInGiantFight()
+						? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center
+						: _targetInitPos) - transform.position).normalized, punchForce);
+			}
+			else
 			{
 				_targetInitPos.y = other.position.y;
 				other.root.GetComponent<PropController>()
-					.GetPunched((_targetInitPos - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
-			}
-			else
-			{ 
-               other.root.GetComponent<PropController>()
-                	.GetPunched((GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center - other.root.position).normalized, punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
+					.GetPunched(((LevelFlowController.only.IsInGiantFight() ? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center : _targetInitPos) - other.root.position).normalized, 
+						punchForce * (CurrentObjectCarriedType == CarriedObjectType.Car ? 2f : 1f));
 			}
 		}
 
@@ -301,9 +305,18 @@ public class HandController : MonoBehaviour
 		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
 		_isCarryingBody = false;
 	}
-
 	
 	public AimController GetAimController() => transform.root.GetComponent<AimController>();
+
+	private void OnGiantPickupCar(Transform car)
+	{
+		if (_lastTarget != car) return;
+		
+		_isCarryingBody = false;
+		ResetPalmParent();
+		ClearInitTargetPos();
+		InputHandler.Only.AssignReturnTransitState();
+	}
 	
 	private void OnEnterHitBox(Transform target)
 	{
@@ -317,6 +330,7 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = false;
 		ResetPalmParent();
 		ClearInitTargetPos();
+		InputHandler.Only.AssignReturnTransitState();
 	}
 	
 	private void OnPunchHit()

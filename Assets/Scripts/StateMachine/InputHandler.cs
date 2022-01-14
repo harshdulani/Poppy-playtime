@@ -24,7 +24,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.enterHitBox += OnEnterHitBox;
 		GameEvents.only.punchHit += OnPunchHit;
 		GameEvents.only.gameEnd += OnGameOver;
-		GameEvents.only.enemyReachPlayer += OnGameOver;
+		GameEvents.only.enemyKillPlayer += OnGameOver;
 	}
 
 	private void OnDisable()
@@ -33,7 +33,7 @@ public class InputHandler : MonoBehaviour
 		GameEvents.only.enterHitBox -= OnEnterHitBox;
 		GameEvents.only.punchHit -= OnPunchHit;
 		GameEvents.only.gameEnd -= OnGameOver;
-		GameEvents.only.enemyReachPlayer -= OnGameOver;
+		GameEvents.only.enemyKillPlayer -= OnGameOver;
 	}
 
 	private void Awake()
@@ -139,26 +139,6 @@ public class InputHandler : MonoBehaviour
 		_rightHand.WaitForPunch(other.transform);
 	}
 
-	private void OnTapToPlay() => _tappedToPlay = true;
-
-	private void OnGameOver()
-	{
-		_inDisabledState = true;
-		_isTemporarilyDisabled = false;
-		ChangeStateToDisabled();
-	}
-
-	private void OnEnterHitBox(Transform target)
-	{
-		AssignDisabledState();
-	}
-
-	private void OnPunchHit()
-	{
-		if(!_inDisabledState || (_inDisabledState && _isTemporarilyDisabled))
-			Invoke(nameof(AssignIdleState), .1f);
-	}
-
 	public void StopCarryingBody()
 	{
 		_leftHand.StopCarryingBody();
@@ -178,5 +158,33 @@ public class InputHandler : MonoBehaviour
 		AssignNewState(DisabledState);
 		_isTemporarilyDisabled = true;
 		_inDisabledState = true;
+	}
+
+	public void AssignReturnTransitState()
+	{
+		AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
+	}
+	
+
+	private void OnTapToPlay() => _tappedToPlay = true;
+
+	private void OnGameOver()
+	{
+		_inDisabledState = true;
+		_isTemporarilyDisabled = false;
+		ChangeStateToDisabled();
+	}
+
+	private void OnEnterHitBox(Transform target)
+	{
+		AssignDisabledState();
+	}
+
+	private void OnPunchHit()
+	{
+		//might need to come back here to add flexibility for enemies that take multiple hits
+		if(LevelFlowController.only.DidKillLastEnemyOfArea()) return;
+
+			Invoke(nameof(AssignIdleState), .1f);
 	}
 }
