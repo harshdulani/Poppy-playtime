@@ -12,7 +12,7 @@ public class CanvasLookAtCam : MonoBehaviour
 
     private void Update()
     {
-        var direction = transform.root .position - _canvas.worldCamera.transform.position;
+        var direction = transform.root.position - _canvas.worldCamera.transform.position;
         transform.rotation = Quaternion.LookRotation(direction);
     }
 }

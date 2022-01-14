@@ -41,7 +41,7 @@ public class RagdollLimbController : MonoBehaviour
 		endPos.y = transform.root.position.y;
 		_parent.transform.DOMove(endPos, 0.5f);
 		_parent.AttackEnemy();
-		GameEvents.only.InvokeEnemyReachPlayer();
+		GameEvents.only.InvokeEnemyKillPlayer();
 	}
 	
 	private void OnCollisionEnter(Collision other)
@@ -59,12 +59,13 @@ public class RagdollLimbController : MonoBehaviour
 			GetPunched(-direction, direction.magnitude);
 			return;
 		}
-		
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu) && !raghu._parent.isWaitingForPunch)
 			raghu.GetPunched(direction, direction.magnitude);
 		else
 		{
 			var prop = other.gameObject.GetComponent<PropController>();
+			if (!prop) return;
+			
 			if(prop.shouldExplode)
 				prop.Explode();
 		}

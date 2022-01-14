@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3557124791320080453}
   m_Layer: 0
   m_Name: Car_2A
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,7 +114,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000010844206500}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 2.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldMove: 0
+  isRightLane: 0
   movementSpeed: 0.5
   laneStartPoint: {fileID: 0}
 --- !u!1 &1000010993293706
