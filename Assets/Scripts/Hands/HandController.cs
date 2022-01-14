@@ -1,10 +1,20 @@
 using System;
 using DG.Tweening;
+using GameAnalyticsSDK.Setup;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum CarriedObjectType
 {
 	Ragdoll, Prop, Car
+}
+
+public enum TypesOfAttacks
+{
+	Punch,
+	Hammer,
+	Gun
 }
 
 public class HandController : MonoBehaviour
@@ -16,23 +26,30 @@ public class HandController : MonoBehaviour
 
 	[SerializeField] private ParticleSystem windLines;
 	
-	private Animator _anim;
+	private Animator _myAnimator, _rootAnimator;
 	private static Animation _armAnimation;
 	private static RopeController _rope;
 	public static PlayerSoundController Sounds;
 
 	public static CarriedObjectType CurrentObjectCarriedType;
+	[SerializeField] private TypesOfAttacks CurrentAttackType; 
+	public GameObject HammerFBX,GunFBX;
 	private static bool _isCarryingBody;
-	
+	[SerializeField] private GameObject _fireExplosion;
+
 	private Transform _lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving, _canGivePunch;
-	
+
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
 	
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
+	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
+	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
+	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
+	private static readonly int Punch = Animator.StringToHash("Punch");
 
 	private void OnEnable()
 	{
@@ -55,19 +72,45 @@ public class HandController : MonoBehaviour
 	
 	private void Start()
 	{
-		_anim = GetComponent<Animator>();
+		_fireExplosion.SetActive(false);
+		
+		_myAnimator = GetComponent<Animator>();
 		if(!_rope) //if static variables aren't initialised
 		{
 			if (TryGetComponent(out RopeController rope))
 				_rope = rope;
-
-			_armAnimation = transform.root.GetComponent<Animation>();
-			Sounds = _armAnimation.GetComponent<PlayerSoundController>();
+			
+			_rootAnimator = transform.root.GetComponent<Animator>();
+			Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
 		}
 
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
+
+		if (isLeftHand) return;
+		
+		if (CurrentAttackType == TypesOfAttacks.Punch)
+		{
+			print("Punch");
+			_myAnimator.SetBool(IsHoldingHammerHash, false);
+			_rootAnimator.SetTrigger(IsUsingHandsHash);
+		}
+		else if (CurrentAttackType == TypesOfAttacks.Hammer)
+		{
+			print("Hammer");
+			HammerFBX.SetActive(true);
+			_myAnimator.SetBool(IsHoldingHammerHash, true);
+			_rootAnimator.SetTrigger(IsHoldingHammerHash);
+		}
+		else if (CurrentAttackType == TypesOfAttacks.Gun)
+		{
+			print("Gun");
+			GunFBX.SetActive(true);
+			_myAnimator.SetBool(IsHoldingHammerHash, true);
+			_rootAnimator.SetTrigger(IsHoldingGunHash);
+			Debug.Log(gameObject.name);
+		}
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -219,10 +262,12 @@ public class HandController : MonoBehaviour
 		var endValue = transform.position + direction * distance + transform.up * height;
 
 		root.DOMove(endValue, 0.2f);
-		if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+		{
 			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
-		
-		_anim.SetBool(IsPunching, true);
+		}
+
+		_myAnimator.SetBool(IsPunching, true);
 		_canGivePunch = true;
 		_rope.ReturnHome();
 		windLines.Play();
@@ -233,10 +278,11 @@ public class HandController : MonoBehaviour
 		if (!_canGivePunch) return;
 		
 		_canGivePunch = false;
-		_armAnimation.Play();
+		_rootAnimator.SetTrigger(Punch);
+		if(CurrentAttackType == TypesOfAttacks.Gun)
+			_fireExplosion.SetActive(true);
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
-
 	private static void ClearInitTargetPos()
 	{
 		_initPosSet = false;
@@ -244,7 +290,7 @@ public class HandController : MonoBehaviour
 	
 	public void StopPunching()
 	{
-		_anim.SetBool(IsPunching, false);
+		_myAnimator.SetBool(IsPunching, false);
 		ClearInitTargetPos();
 	}
 
