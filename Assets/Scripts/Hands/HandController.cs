@@ -19,11 +19,12 @@ public class HandController : MonoBehaviour
 	public bool isLeftHand;
 	public Transform palm;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce;
-	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight;
+	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight, propWfpHeight;
 
 	[SerializeField] private ParticleSystem windLines;
-	
-	private Animator _myAnimator, _rootAnimator;
+
+	private Animator _myAnimator;
+	private static Animator _rootAnimator;
 	private static RopeController _rope;
 	public static PlayerSoundController Sounds;
 
@@ -68,11 +69,16 @@ public class HandController : MonoBehaviour
 	
 	private void Start()
 	{
-		TryGetComponent(out _rope);
+        _myAnimator = GetComponent<Animator>();
 
-		_rootAnimator = transform.root.GetComponent<Animator>();
-		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
+		if (isLeftHand)
+				_rope = GetComponent<RopeController>();
+
+		if(!_rootAnimator)
+			_rootAnimator = transform.root.GetComponent<Animator>();
 		
+		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
+
 		print($"{gameObject.name} hi {_rope}");
 		
 		_initPosSet = false;
@@ -81,7 +87,6 @@ public class HandController : MonoBehaviour
 
 		if (isLeftHand) return;
 		
-		_myAnimator = GetComponent<Animator>();
 		_fireExplosion.SetActive(false);
 
 		switch (CurrentAttackType)
@@ -239,7 +244,7 @@ public class HandController : MonoBehaviour
 				break;
 			case CarriedObjectType.Prop:
 				distance = propWfpDistance;
-				height = 1f;
+				height = propWfpHeight;
 				break;
 			case CarriedObjectType.Car:
 				distance = carWfpDistance;
@@ -250,6 +255,7 @@ public class HandController : MonoBehaviour
 		}
 		
 		var endValue = transform.root.position + direction * distance + transform.up * height;
+		Debug.DrawLine(transform.root.position, transform.root.position + direction * distance + transform.up * height, Color.red, 2f);
 
 		root.DOMove(endValue, 0.2f);
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
