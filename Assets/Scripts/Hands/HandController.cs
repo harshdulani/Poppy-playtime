@@ -17,7 +17,8 @@ public enum TypesOfAttacks
 	Gun,
 	Boot,
 	Heel,
-	Sneaker
+	Sneaker,
+	Shield
 }
 
 public class HandController : MonoBehaviour
@@ -36,7 +37,7 @@ public class HandController : MonoBehaviour
 
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[SerializeField] private TypesOfAttacks CurrentAttackType; 
-	public GameObject HammerFBX,GunFBX,Boot,Heel,Sneaker;
+	public GameObject Hammer,Gun,Boot,Heel,Sneaker,Shield;
 	private static bool _isCarryingBody;
 	[SerializeField] private GameObject _fireExplosion;
 
@@ -53,6 +54,7 @@ public class HandController : MonoBehaviour
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
+	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
 	private static readonly int Punch = Animator.StringToHash("Punch");
 
 	private void OnEnable()
@@ -101,12 +103,12 @@ public class HandController : MonoBehaviour
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 			case TypesOfAttacks.Hammer:
-				HammerFBX.SetActive(true);
+				Hammer.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 				break;
 			case TypesOfAttacks.Gun:
-				GunFBX.SetActive(true);
+				Gun.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
 				Debug.Log(gameObject.name);
@@ -127,6 +129,12 @@ public class HandController : MonoBehaviour
 				Sneaker.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Shield:
+				Shield.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingShieldHash);
 				Debug.Log(gameObject.name);
 				break;
 		}
