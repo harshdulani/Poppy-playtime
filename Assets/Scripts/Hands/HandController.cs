@@ -14,7 +14,10 @@ public enum TypesOfAttacks
 {
 	Punch,
 	Hammer,
-	Gun
+	Gun,
+	Boot,
+	Heel,
+	Sneaker
 }
 
 public class HandController : MonoBehaviour
@@ -33,7 +36,7 @@ public class HandController : MonoBehaviour
 
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[SerializeField] private TypesOfAttacks CurrentAttackType; 
-	public GameObject HammerFBX,GunFBX;
+	public GameObject HammerFBX,GunFBX,Boot,Heel,Sneaker;
 	private static bool _isCarryingBody;
 	[SerializeField] private GameObject _fireExplosion;
 
@@ -49,6 +52,7 @@ public class HandController : MonoBehaviour
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
+	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
 	private static readonly int Punch = Animator.StringToHash("Punch");
 
 	private void OnEnable()
@@ -90,26 +94,41 @@ public class HandController : MonoBehaviour
 
 		if (isLeftHand) return;
 		
-		if (CurrentAttackType == TypesOfAttacks.Punch)
+		switch (CurrentAttackType)
 		{
-			print("Punch");
-			_myAnimator.SetBool(IsHoldingHammerHash, false);
-			_rootAnimator.SetTrigger(IsUsingHandsHash);
-		}
-		else if (CurrentAttackType == TypesOfAttacks.Hammer)
-		{
-			print("Hammer");
-			HammerFBX.SetActive(true);
-			_myAnimator.SetBool(IsHoldingHammerHash, true);
-			_rootAnimator.SetTrigger(IsHoldingHammerHash);
-		}
-		else if (CurrentAttackType == TypesOfAttacks.Gun)
-		{
-			print("Gun");
-			GunFBX.SetActive(true);
-			_myAnimator.SetBool(IsHoldingHammerHash, true);
-			_rootAnimator.SetTrigger(IsHoldingGunHash);
-			Debug.Log(gameObject.name);
+			case TypesOfAttacks.Punch:
+				_myAnimator.SetBool(IsHoldingHammerHash, false);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
+				break;
+			case TypesOfAttacks.Hammer:
+				HammerFBX.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingHammerHash);
+				break;
+			case TypesOfAttacks.Gun:
+				GunFBX.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingGunHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Boot:
+				Boot.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Heel:
+				Heel.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
+			case TypesOfAttacks.Sneaker:
+				Sneaker.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				Debug.Log(gameObject.name);
+				break;
 		}
 	}
 
