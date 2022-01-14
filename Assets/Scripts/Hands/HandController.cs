@@ -79,8 +79,6 @@ public class HandController : MonoBehaviour
 		
 		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
 
-		print($"{gameObject.name} hi {_rope}");
-		
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
@@ -232,6 +230,7 @@ public class HandController : MonoBehaviour
 		
 		var root = other.root;
 
+		//Debug.DrawLine(transform.root.position, root.position, Color.blue, 2f);
 		var direction = (root.position - transform.root.position).normalized;
 
 		float distance, height;
@@ -254,9 +253,8 @@ public class HandController : MonoBehaviour
 				throw new ArgumentOutOfRangeException();
 		}
 		
-		var endValue = transform.root.position + direction * distance + transform.up * height;
-		Debug.DrawLine(transform.root.position, transform.root.position + direction * distance + transform.up * height, Color.red, 2f);
-
+		var endValue = transform.root.position + direction * distance + transform.root.up * height;
+		
 		root.DOMove(endValue, 0.2f);
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
