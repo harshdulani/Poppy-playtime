@@ -10,7 +10,7 @@ public struct BoxBounds { public float x, y, z, distance; }
 public class GiantController : MonoBehaviour
 {
 	[HideInInspector] public bool isDead;
-	[SerializeField] private Renderer rend;
+	[SerializeField] private Renderer[] rends;
 	
 	[SerializeField] private bool isRagdoll;
 	[SerializeField] private Rigidbody[] rigidbodies;
@@ -54,7 +54,9 @@ public class GiantController : MonoBehaviour
 		_anim = GetComponent<Animator>();
 		_audioSource = GetComponent<AudioSource>();
 		_health = GetComponent<HealthController>();
-		rend.enabled = false;
+
+		foreach (var rend in rends)
+			rend.enabled = false;
 
 		_player = GameObject.FindGameObjectWithTag("Player").transform;
 		_health.VisibilityToggle(false);
@@ -237,7 +239,8 @@ public class GiantController : MonoBehaviour
 		foreach (var item in headgear)
 			item.SetActive(true);
 		
-		rend.enabled = true;
+		foreach (var rend in rends)
+			rend.enabled = true;
 		_anim.SetTrigger(Jump);
 	}
 }
