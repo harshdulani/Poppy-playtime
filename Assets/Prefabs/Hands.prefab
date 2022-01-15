@@ -1509,7 +1509,7 @@ MonoBehaviour:
   heel: {fileID: 1454985506046922995}
   sneaker: {fileID: 7176662710959714721}
   shield: {fileID: 1069342349017736861}
-  fireExplosion: {fileID: 3838861591950136461}
+  fireExplosion: {fileID: 3838861591969467149}
 --- !u!65 &2128689352
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1782,6 +1782,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1775148699927193152, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775148699949246516, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8584241499430699383, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1828,9 +1836,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
---- !u!1 &3838861591950136461 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1775148699930310580, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+--- !u!198 &3838861591969467149 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1775148699949246516, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
   m_PrefabInstance: {fileID: 3307040779247264569}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4502882612041721255 stripped

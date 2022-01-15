@@ -33,10 +33,12 @@ public class HandController : MonoBehaviour
 	public static PlayerSoundController Sounds;
 
 	public static CarriedObjectType CurrentObjectCarriedType;
-	[SerializeField] private TypesOfAttacks currentAttackType; 
-	public GameObject hammer, gun, boot, heel, sneaker,  shield;
+
+	[SerializeField] private TypesOfAttacks currentAttackType;
+	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker,  shield;
+	[SerializeField] private ParticleSystem fireExplosion;
+	private AudioSource _gunshot; 
 	private static bool _isCarryingBody;
-	[SerializeField] private GameObject fireExplosion;
 
 	private Transform _lastTarget;
 	private Quaternion _palmInitLocalRot, _lastNormal;
@@ -90,9 +92,9 @@ public class HandController : MonoBehaviour
 		_palmInitLocalRot = palm.localRotation;
 
 		if (isLeftHand) return;
-		
-		fireExplosion.SetActive(false);
 
+		_gunshot = fireExplosion.GetComponent<AudioSource>();
+		
 		switch (currentAttackType)
 		{
 			case TypesOfAttacks.Punch:
@@ -297,9 +299,13 @@ public class HandController : MonoBehaviour
 		_canGivePunch = false;
 		_rootAnimator.SetTrigger(Punch);
 		if(currentAttackType == TypesOfAttacks.Gun)
-			fireExplosion.SetActive(true);
+		{
+			fireExplosion.Play();
+			_gunshot.Play();
+		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
+
 	private static void ClearInitTargetPos()
 	{
 		_initPosSet = false;

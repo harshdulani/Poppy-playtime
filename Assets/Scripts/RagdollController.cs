@@ -45,7 +45,6 @@ public class RagdollController : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		
 		GameEvents.only.giantLanding -= OnGiantLanding;
 		
 		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
@@ -72,6 +71,7 @@ public class RagdollController : MonoBehaviour
 	{
 		isWaitingForPunch = true;
 		_anim.SetBool(IsFlying, true);
+		_anim.applyRootMotion = false;
 		_patroller?.ToggleAI(false);
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;

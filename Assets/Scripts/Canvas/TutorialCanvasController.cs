@@ -1,6 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
+public enum TutorialType
+{
+	Aiming,
+	Punching,
+	Barrel,
+	Boss
+}
 public class TutorialCanvasController : MonoBehaviour
 {
 	[SerializeField] private TutorialType myType;
@@ -11,7 +18,10 @@ public class TutorialCanvasController : MonoBehaviour
 	private void OnEnable()
 	{
 		if (myType == TutorialType.Boss)
+		{
+			GameEvents.only.reachNextArea += OnReachNextArea;
 			GameEvents.only.giantLanding += OnGiantLand;
+		}
 		if (myType != TutorialType.Punching)
 			GameEvents.only.tapToPlay += OnTapToPlay;
 		else
@@ -24,7 +34,10 @@ public class TutorialCanvasController : MonoBehaviour
 	private void OnDisable()
 	{
 		if (myType == TutorialType.Boss)
+		{
+			GameEvents.only.reachNextArea -= OnReachNextArea;
 			GameEvents.only.giantLanding -= OnGiantLand;
+		}
 		if(myType != TutorialType.Punching)
 			GameEvents.only.tapToPlay -= OnTapToPlay;
 		else
@@ -51,6 +64,7 @@ public class TutorialCanvasController : MonoBehaviour
 		TimeController.only.RevertTime();
 		toDisable.SetActive(false);
 		_bossTutorialAnimationOn = false;
+		InputHandler.Only.AssignIdleState();
 	}
 
 	private void OnTapToPlay()
@@ -68,6 +82,13 @@ public class TutorialCanvasController : MonoBehaviour
 	{
 		toDisable.SetActive(false);
 	}
+
+	private void OnReachNextArea()
+	{
+		if(!LevelFlowController.only.IsInGiantFight()) return;
+		
+		InputHandler.Only.AssignDisabledState();
+	}
 	
 	private void OnGiantLand(Transform giant)
 	{
@@ -82,11 +103,4 @@ public class TutorialCanvasController : MonoBehaviour
 
 		_bossTutorialAnimationOn = true;
 	}
-}
-public enum TutorialType
-{
-	Aiming,
-	Punching,
-	Barrel,
-	Boss
 }

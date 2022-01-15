@@ -31,6 +31,7 @@ public class EnemyPatroller : MonoBehaviour
 		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 		
+		GameEvents.only.rayfireShattered += OnRayfireShattered;
 		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
 	}
 
@@ -38,7 +39,8 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
-		
+
+		GameEvents.only.rayfireShattered -= OnRayfireShattered;
 		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
 	}
 
@@ -92,6 +94,7 @@ public class EnemyPatroller : MonoBehaviour
 
 	private void OnTapToPlay()
 	{
+		if(!shouldPatrol) return;
 		if(myPatrolArea > 0) return;
 
 		_anim.applyRootMotion = false;
@@ -106,6 +109,13 @@ public class EnemyPatroller : MonoBehaviour
 		ToggleAI(false);
 	}
 
+	private void OnRayfireShattered(Transform shattered)
+	{
+		ToggleAI(false);
+		_anim.enabled = false;
+		shouldPatrol = false;
+	}
+	
 	private void OnMoveToNextArea()
 	{
 		

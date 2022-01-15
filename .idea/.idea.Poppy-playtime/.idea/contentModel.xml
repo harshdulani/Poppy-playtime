@@ -498,6 +498,109 @@
             <e p="FlurryEvent.cs" t="Include" />
           </e>
         </e>
+        <e p="RayFire" t="Include">
+          <e p="Info" t="Include">
+            <e p="changelog.txt" t="Include" />
+            <e p="License.txt" t="Include" />
+            <e p="readme.txt" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Classes" t="Include">
+              <e p="Cluster" t="Include">
+                <e p="RFFace.cs" t="Include" />
+                <e p="RFTriangle.cs" t="Include" />
+              </e>
+              <e p="Man" t="Include">
+                <e p="RFManDemolition.cs" t="Include" />
+                <e p="RFMaterial.cs" t="Include" />
+                <e p="RFPooling.cs" t="Include" />
+              </e>
+              <e p="RayFire.cs" t="Include" />
+              <e p="RFCluster.cs" t="Include" />
+              <e p="RFEvent.cs" t="Include" />
+              <e p="RFFlash.cs" t="Include" />
+              <e p="RFMesh.cs" t="Include" />
+              <e p="RFParticles.cs" t="Include" />
+              <e p="RFRecord.cs" t="Include" />
+              <e p="RFShard.cs" t="Include" />
+              <e p="RFSnapshot.cs" t="Include" />
+              <e p="RFSound.cs" t="Include" />
+              <e p="RFTypes.cs" t="Include" />
+              <e p="Rigid" t="Include">
+                <e p="RFActivation.cs" t="Include" />
+                <e p="RFBackupCluster.cs" t="Include" />
+                <e p="RFCollapse.cs" t="Include" />
+                <e p="RFDamage.cs" t="Include" />
+                <e p="RFDemolitionCluster.cs" t="Include" />
+                <e p="RFDemolitionMesh.cs" t="Include" />
+                <e p="RFFade.cs" t="Include" />
+                <e p="RFFragmentProperties.cs" t="Include" />
+                <e p="RFLimitations.cs" t="Include" />
+                <e p="RFPhysic.cs" t="Include" />
+                <e p="RFReferenceDemolition.cs" t="Include" />
+                <e p="RFReset.cs" t="Include" />
+                <e p="RFRuntimeCaching.cs" t="Include" />
+              </e>
+              <e p="Shatter" t="Include">
+                <e p="RFCustom.cs" t="Include" />
+                <e p="RFFragment.cs" t="Include" />
+                <e p="RFShatterAdvanced.cs" t="Include" />
+                <e p="RFSurface.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Components" t="Include">
+              <e p="RayfireActivator.cs" t="Include" />
+              <e p="RayfireBlade.cs" t="Include" />
+              <e p="RayfireBomb.cs" t="Include" />
+              <e p="RayfireCluster.cs" t="Include" />
+              <e p="RayfireCombine.cs" t="Include" />
+              <e p="RayfireConnectivity.cs" t="Include" />
+              <e p="RayfireDebris.cs" t="Include" />
+              <e p="RayfireDust.cs" t="Include" />
+              <e p="RayfireGun.cs" t="Include" />
+              <e p="RayfireMan.cs" t="Include" />
+              <e p="RayfireRecorder.cs" t="Include" />
+              <e p="RayfireRestriction.cs" t="Include" />
+              <e p="RayfireRigid.cs" t="Include" />
+              <e p="RayfireShatter.cs" t="Include" />
+              <e p="RayfireSnapshot.cs" t="Include" />
+              <e p="RayfireSound.cs" t="Include" />
+              <e p="RayfireUnyielding.cs" t="Include" />
+              <e p="RayfireVortex.cs" t="Include" />
+              <e p="RayfireWind.cs" t="Include" />
+            </e>
+            <e p="Editor" t="Include">
+              <e p="RayfireActivatorEditor.cs" t="Include" />
+              <e p="RayfireBladeEditor.cs" t="Include" />
+              <e p="RayfireBombEditor.cs" t="Include" />
+              <e p="RayfireClusterEditor.cs" t="Include" />
+              <e p="RayfireCombineEditor.cs" t="Include" />
+              <e p="RayfireConnectivityEditor.cs" t="Include" />
+              <e p="RayfireDebrisEditor.cs" t="Include" />
+              <e p="RayfireDustEditor.cs" t="Include" />
+              <e p="RayfireGunEditor.cs" t="Include" />
+              <e p="RayfireManEditor.cs" t="Include" />
+              <e p="RayfireRecorderEditor.cs" t="Include" />
+              <e p="RayfireRigidEditor.cs" t="Include" />
+              <e p="RayfireShatterEditor.cs" t="Include" />
+              <e p="RayfireSnapshotEditor.cs" t="Include" />
+              <e p="RayfireSoundEditor.cs" t="Include" />
+              <e p="RayfireUnyieldingEditor.cs" t="Include" />
+              <e p="RayfireVortexEditor.cs" t="Include" />
+              <e p="RayfireWindEditor.cs" t="Include" />
+              <e p="RFMeshAsset.cs" t="Include" />
+              <e p="RFOrder.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Tutorial" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="ActivationEventScript.cs" t="Include" />
+              <e p="AddRigidComponent.cs" t="Include" />
+              <e p="ApplyDamageScript.cs" t="Include" />
+              <e p="DemolitionEventScript.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="Scripts" t="Include">
           <e p="Audio" t="Include">
             <e p="AudioManager.cs" t="Include" />
@@ -512,8 +615,6 @@
             <e p="TutorialCanvasController.cs" t="Include" />
           </e>
           <e p="CarController.cs" t="Include" />
-          <e p="ClimberController.cs" t="Include" />
-          <e p="ClimberLimbController.cs" t="Include" />
           <e p="EnemyPatroller.cs" t="Include" />
           <e p="EnemyWeaponController.cs" t="Include" />
           <e p="EventManagers" t="Include">
@@ -540,6 +641,7 @@
           </e>
           <e p="HealthController.cs" t="Include" />
           <e p="HostageController.cs" t="Include" />
+          <e p="JumperEnemyController.cs" t="Include" />
           <e p="LevelFlowController.cs" t="Include" />
           <e p="MainMenuScript.cs" t="Include" />
           <e p="PlayerController.cs" t="Include" />
@@ -551,6 +653,10 @@
           <e p="PropController.cs" t="Include" />
           <e p="RagdollController.cs" t="Include" />
           <e p="RagdollLimbController.cs" t="Include" />
+          <e p="Shatterable.cs" t="Include" />
+          <e p="ShatterableParent.cs" t="Include" />
+          <e p="ShatterEnemyController.cs" t="Include" />
+          <e p="ShatterEnemyLimbController.cs" t="Include" />
           <e p="StateMachine" t="Include">
             <e p="AimingState.cs" t="Include" />
             <e p="IdleState.cs" t="Include" />

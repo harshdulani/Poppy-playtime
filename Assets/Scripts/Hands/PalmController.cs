@@ -10,6 +10,8 @@ public class PalmController : MonoBehaviour
 	private static bool _canBeAdopted = true;
 	private static int _punchIndex;
 
+	public static string guitext; 
+	
 	private void OnEnable()
 	{
 		if(myHand.isLeftHand)
@@ -42,6 +44,14 @@ public class PalmController : MonoBehaviour
 		_canBeAdopted = true;
 	}
 
+	private void OnGUI()
+	{
+		if (!myHand.isLeftHand) return;
+		GUI.contentColor = Color.black;
+		GUI.skin.label.fontSize = 36;
+		GUI.Label(new Rect(20, 20, 500, 400), guitext);
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if(!_canBeAdopted) return;
@@ -53,6 +63,7 @@ public class PalmController : MonoBehaviour
 		if(HasTargetTransform()) return;
 		
 		SetCurrentTransform(other.transform);
+		guitext = GetCurrentTransform().ToString();
 		myHand.HandReachTarget(other.transform);
 		_canBeAdopted = false;
 	}
@@ -66,7 +77,11 @@ public class PalmController : MonoBehaviour
 	{
 		myHand.HandReachTarget(GetCurrentTransform());
 		
+		//this is for climber level
+		ShatterableParent.AddToPossibleShatterers(GetCurrentTransform().root);
+
 		SetCurrentTransform(null);
+		guitext = GetCurrentTransform() ? GetCurrentTransform().ToString() : "null";
 		Invoke(nameof(EnablePunching), punchWaitTime);
 		Invoke(nameof(ResetAdoptability), 0.5f);
 		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex ++ % HandController.Sounds.punch.Length], 1f);
@@ -77,6 +92,7 @@ public class PalmController : MonoBehaviour
 		if(target != GetCurrentTransform()) return;
 		
 		SetCurrentTransform(null);
+		guitext = GetCurrentTransform().ToString();
 		myHand.OnPropDestroyed();
 		Invoke(nameof(ResetAdoptability), 0.5f);
 	}

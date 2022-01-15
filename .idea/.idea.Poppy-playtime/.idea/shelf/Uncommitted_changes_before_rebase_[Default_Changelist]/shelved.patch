@@ -1,0 +1,433 @@
+Index: Assets/RayFire/Plugins/Windows/x86_x64/RFLib_CNative_2018.dll.meta
+===================================================================
+--- Assets/RayFire/Plugins/Windows/x86_x64/RFLib_CNative_2018.dll.meta	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
++++ Assets/RayFire/Plugins/Windows/x86_x64/RFLib_CNative_2018.dll.meta	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
+@@ -1,121 +0,0 @@
+-fileFormatVersion: 2
+-guid: 6347eb16b77b29d4fa284889fae0468f
+-PluginImporter:
+-  externalObjects: {}
+-  serializedVersion: 2
+-  iconMap: {}
+-  executionOrder: {}
+-<<<<<<< HEAD
+-  defineConstraints: []
+-  isPreloaded: 0
+-  isOverridable: 0
+-  isExplicitlyReferenced: 0
+-  validateReferences: 1
+-  platformData:
+-  - first:
+-      Any: 
+-    second:
+-      enabled: 1
+-=======
+-  isPreloaded: 0
+-  isOverridable: 0
+-  platformData:
+-  - first:
+-      '': Any
+-    second:
+-      enabled: 0
+-      settings:
+-        Exclude Android: 1
+-        Exclude Editor: 0
+-        Exclude Linux: 0
+-        Exclude Linux64: 0
+-        Exclude LinuxUniversal: 0
+-        Exclude OSXUniversal: 0
+-        Exclude Win: 1
+-        Exclude Win64: 0
+-        Exclude iOS: 1
+-  - first:
+-      Android: Android
+-    second:
+-      enabled: 0
+-      settings:
+-        CPU: ARMv7
+-  - first:
+-      Any: 
+-    second:
+-      enabled: 0
+->>>>>>> e586bb6 (tower level complete. added rayfire, and serialised assets for tower level.)
+-      settings: {}
+-  - first:
+-      Editor: Editor
+-    second:
+-<<<<<<< HEAD
+-      enabled: 0
+-      settings:
+-        DefaultValueInitialized: true
+-=======
+-      enabled: 1
+-      settings:
+-        CPU: x86_64
+-        DefaultValueInitialized: true
+-        OS: Windows
+-  - first:
+-      Facebook: Win
+-    second:
+-      enabled: 0
+-      settings:
+-        CPU: None
+-  - first:
+-      Facebook: Win64
+-    second:
+-      enabled: 0
+-      settings:
+-        CPU: AnyCPU
+-  - first:
+-      Standalone: Linux
+-    second:
+-      enabled: 1
+-      settings:
+-        CPU: x86
+-  - first:
+-      Standalone: Linux64
+-    second:
+-      enabled: 1
+-      settings:
+-        CPU: x86_64
+-  - first:
+-      Standalone: LinuxUniversal
+-    second:
+-      enabled: 1
+-      settings:
+-        CPU: AnyCPU
+-  - first:
+-      Standalone: OSXUniversal
+-    second:
+-      enabled: 1
+-      settings:
+-        CPU: AnyCPU
+-  - first:
+-      Standalone: Win
+-    second:
+-      enabled: 0
+-      settings:
+-        CPU: None
+-  - first:
+-      Standalone: Win64
+-    second:
+-      enabled: 1
+-      settings:
+-        CPU: AnyCPU
+-  - first:
+-      iPhone: iOS
+-    second:
+-      enabled: 0
+-      settings:
+-        AddToEmbeddedBinaries: false
+-        CompileFlags: 
+-        FrameworkDependencies: 
+->>>>>>> e586bb6 (tower level complete. added rayfire, and serialised assets for tower level.)
+-  userData: 
+-  assetBundleName: 
+-  assetBundleVariant: 
+Index: Assets/RayFire/Plugins/Ios/libRF_CNative_ios.a.meta
+===================================================================
+--- Assets/RayFire/Plugins/Ios/libRF_CNative_ios.a.meta	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
++++ Assets/RayFire/Plugins/Ios/libRF_CNative_ios.a.meta	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
+@@ -1,27 +0,0 @@
+-fileFormatVersion: 2
+-guid: ba89caf6a14d75f48ae9ded8fe4641a3
+-PluginImporter:
+-  externalObjects: {}
+-  serializedVersion: 2
+-  iconMap: {}
+-  executionOrder: {}
+-  defineConstraints: []
+-  isPreloaded: 0
+-  isOverridable: 0
+-  isExplicitlyReferenced: 0
+-  validateReferences: 1
+-  platformData:
+-  - first:
+-      Any: 
+-    second:
+-      enabled: 1
+-      settings: {}
+-  - first:
+-      Editor: Editor
+-    second:
+-      enabled: 0
+-      settings:
+-        DefaultValueInitialized: true
+-  userData: 
+-  assetBundleName: 
+-  assetBundleVariant: 
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>###\r\n# Unity folders and files\r\n###\r\n[Aa]ssets/AssetStoreTools*\r\n[Bb]uild/\r\n[Ll]ibrary/\r\n[Ll]ogs/\r\n[Ll]ocal[Cc]ache/\r\n[Oo]bj/\r\n[Rr]ecordings/\r\n[Ss]S/\r\n[Tt]emp/\r\n[Uu]nityGenerated/\r\n# file on crash reports\r\nsysinfo.txt\r\n# Unity3D generated meta files\r\n*.pidb.meta\r\n\r\n# Visual Studio cache/options directory\r\n.vs/\r\n\r\n# Rayfire iOS library (200mb)\r\nAssets/RayFire/Plugins/Ios/libRF_CNative_ios.a\r\n\r\n###\r\n# VS/MD solution and project files\r\n###\r\n[Ee]xportedObj/\r\n*.booproj\r\n*.csproj\r\n*.sln\r\n*.suo\r\n*.svd\r\n*.unityproj\r\n*.user\r\n*.userprefs\r\n*.pidb\r\n.DS_Store\r\n\r\n###\r\n# OS generated\r\n###\r\n.DS_Store\r\n.DS_Store?\r\n._*\r\n.Spotlight-V100\r\n.Trashes\r\nIcon?\r\nehthumbs.db\r\nThumbs.db
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .gitignore	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
++++ .gitignore	(date 1642401499278)
+@@ -20,7 +20,7 @@
+ .vs/
+ 
+ # Rayfire iOS library (200mb)
+-Assets/RayFire/Plugins/Ios/libRF_CNative_ios.a
++[Aa]ssets/RayFire/
+ 
+ ###
+ # VS/MD solution and project files
+Index: .idea/.idea.Poppy-playtime/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"BranchesTreeState\">\r\n    <expand>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"LOCAL_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"REMOTE_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n      <path>\r\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"REMOTE_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n        <item name=\"GROUP_NODE:origin\" type=\"e8cecc67:BranchNodeDescriptor\" />\r\n      </path>\r\n    </expand>\r\n    <select />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"1a039662-286b-494a-ae6e-2265b2454106\" name=\"Default Changelist\" comment=\"added icon and fixed a bug ( maybe)\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Assets/Prefabs/Hands.prefab\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Assets/Prefabs/Hands.prefab\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/UserSettings/EditorUserSettings.asset\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/UserSettings/EditorUserSettings.asset\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"hiddenUrls\">\r\n      <set>\r\n        <option value=\"https://github.com/harshdulani/Poppy-playtime\" />\r\n      </set>\r\n    </option>\r\n  </component>\r\n  <component name=\"HighlightingSettingsPerFile\">\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/ShatterEnemyController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Canvas/CanvasLookAtCam.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/TCP2_GradientManager.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 20 - earth crack.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/LinearAlgebraUtility.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/TransformUtility.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/AsyncJobSystem.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/ArrayUtility.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineEditor/SplineEditor.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/TS_Mesh.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Shatterable.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/BossPropController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/AimCanvas.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/RayFire/Tutorial/Scripts/AddRigidComponent.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/RagdollController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Packages/packages-lock.json\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/AppsFlyer/AppsFlyerAndroid.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/boot.config\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/HostageController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony/CartoonyPunchLight.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 5/NavMesh.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony/CartoonyPunchLight.prefab.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/AudioClips/014 Female Voice Nice 2.wav.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Misc/Explosions/explosion_spritesheet_3x3_AB.mat.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/AudioClips/013 Female Voice Nice 1.wav.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/CameraController.cs.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Components/SplineRenderer.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 1.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/CameraController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Meshes/Guna stickman/Giant/Big Hit To Head.fbx.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/CarTrail.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Animation/Clips.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/BOXOPHOBIC/Utils/Scripts/StyledInspector/StyledInteractive.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Hands.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Components/TubeGenerator.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Components/WaveformGenerator.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Materials/HandSkins.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/BossProps.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/CylinderGeneration.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/RopeController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toon Vehicles/Prefabs/Cars/Car_1A.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Components/SplineComputer.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/UserSettings/EditorUserSettings.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 4.unity.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 5.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Components/ObjectBender.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/GiantLimbController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 4.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 6.unity.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineComputerEditor.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 6.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 19 - tower.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/EventManagers.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Props/Crate.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/GiantController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineDrawer.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toon Vehicles/Animations.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/JumperEnemyController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Meshes/Poppy/upright walk.fbx.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineEditor/Point Modules/MainPointModule.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Basics/glow1_ADD.mat.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/CarController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Misc/Explosions.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/BOXOPHOBIC/Utils/Editor/StyledMaterial/StyledDiffusionMaterialDrawer.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 16 - city 2 stage.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Core/Primitives/Star.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Basics.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/PlayerSoundController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Core/SplineTrigger.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/RayFire/Scripts/Components/RayfireVortex.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Epic Toon FX/Textures/explosion_spritesheet_3x3.png.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Meshes/hand_animation.fbx.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/WristController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/AudioClips/zipline_leave.mp3.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Characters/Giant Variant.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 16 - city 2 stage.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Core/Spline.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Shaders/Hybrid/TCP2 Hybrid URP Support.cginc\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/EditorSettings.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Shaders/Hybrid/TCP2 Hybrid Shader Outline.shader\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/CarLane.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Meshes/StickmanHeadgear/2.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/TagManager.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/BOXOPHOBIC/Polyverse Skies/Core/Runtime/PolyverseSkies.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Shader Generator/CodeInjection.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/PluginsScripts/GAScript.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Shader Generator/ReorderableLayoutList.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/ExternalDependencyManager/Editor/1.2.168.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 9 - ghosht rider spidey.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Inspectors/TCP2_MaterialInspector.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Inspectors/MaterialInspector_SG2.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/RayFire/Tutorial/Scenes/5 Blade/1 Blade. Basics.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Weapons/Revolver_3.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Weapons/Revolver_3.prefab.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scenes/Level 18 - city boss.unity\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Sprites/crosshair doomish.png.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/TimeController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/PropController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/HealthController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_GUI.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Audio/AudioManager.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_Utils.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_ExpressionParser.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Audio/Sound.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUnityVersion.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/AudioClips/50_Aaaa.wav.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUtils.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/SplineTriggerController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs.meta\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Extensions/HarshExtensions.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModuleUI.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModulePhysics.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Modules/DOTweenModulePhysics2D.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Extensions/InputExtensions.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs\" root0=\"FORCE_HIGHLIGHTING\" />\r\n    <setting file=\"file://$PROJECT_DIR$/Assets/Prefabs/Props/barrel.prefab\" root0=\"FORCE_HIGHLIGHTING\" />\r\n  </component>\r\n  <component name=\"IdeDocumentHistory\">\r\n    <option name=\"CHANGED_PATHS\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/PluginsScripts/GAScript.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/HostageController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/PlayerSoundController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/CameraController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/CarLaneController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/ProjectSettings/TagManager.asset\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/GiantConroller.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/GiantCarGrabber.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Canvas/CanvasLookAtCam.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/HealthController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/RopeController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/PlayerController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/CarController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/BossBarrelController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/TimeController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/BLABLA.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/BossPropController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/GiantController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/PropController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/GiantLimbController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/RayfireRigidShatterer.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/RayFireShatterable.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/BridgeController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/ClimberLimbController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/ClimberController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/JumperEnemyController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Shatterable.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/RagdollController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/ShatterEnemyController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs\" />\r\n        <option value=\"$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"225GuTwuIeAFa5uWR6BGyUdrYcj\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"Discover.Launch.Via.Unity\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"full.screen.before.presentation.mode\" value=\"false\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/Assets/Scripts\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.lookFeel\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Attach to Unity Editor.Attach to Unity Editor\">\r\n    <configuration name=\"Attach to Unity Editor &amp; Play\" type=\"UNITY_DEBUG_RUN_CONFIGURATION\" factoryName=\"UNITY_ATTACH_AND_PLAY\" show_console_on_std_err=\"false\" show_console_on_std_out=\"false\" port=\"50000\" address=\"localhost\">\r\n      <option name=\"allowRunningInParallel\" value=\"false\" />\r\n      <option name=\"listenPortForConnections\" value=\"false\" />\r\n      <option name=\"pid\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Attach to Unity Editor\" type=\"UNITY_DEBUG_RUN_CONFIGURATION\" factoryName=\"Unity Debug\" show_console_on_std_err=\"false\" show_console_on_std_out=\"false\" port=\"50000\" address=\"localhost\">\r\n      <option name=\"allowRunningInParallel\" value=\"false\" />\r\n      <option name=\"listenPortForConnections\" value=\"false\" />\r\n      <option name=\"pid\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"UnityProjectConfiguration\" hasMinimizedUI=\"true\" />\r\n  <component name=\"UnityUnitTestConfiguration\" currentTestLauncher=\"EditMode\" />\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CLEAR_INITIAL_COMMIT_MESSAGE\" value=\"true\" />\r\n    <MESSAGE value=\"Minor tweaks, new level added 17\" />\r\n    <MESSAGE value=\"Added cars and lanes to drive cars, giant mechanism established\" />\r\n    <MESSAGE value=\"Added health hits and fixed disable input when following spline\" />\r\n    <MESSAGE value=\"Added enemy attack and grab vehicle code\" />\r\n    <MESSAGE value=\"Giant now fights and kills player, baaki sab kal\" />\r\n    <MESSAGE value=\"Added health hearts\" />\r\n    <MESSAGE value=\"fixed bug where if giant steals car from you, you can still aim again\" />\r\n    <MESSAGE value=\"added more provisions to fix bugs where if you're holding a prop and it gets destroyed by collisions/snatched by giant. added explosions on car collision w giant\" />\r\n    <MESSAGE value=\"Added car trails\" />\r\n    <MESSAGE value=\"FIXED THE ANNOYING BUG about the boss turning off random colliders that he wasnt supposed to\" />\r\n    <MESSAGE value=\"Cars increased, fixed health canvas bugs,\" />\r\n    <MESSAGE value=\"fixed rope bug, fixed characters replaced poppy with guna stickmen\" />\r\n    <MESSAGE value=\"Added new characters and replaced MCU chars w them\" />\r\n    <MESSAGE value=\"Added boss battle in blue levels, prop spawning controller added\" />\r\n    <MESSAGE value=\"added boss tutorial\" />\r\n    <MESSAGE value=\"Everything works as it should in punch atleast\" />\r\n    <MESSAGE value=\"&quot;your child is smart, but makes a lot of silly mistakes&quot;\" />\r\n    <MESSAGE value=\"everything works, swaahaa\" />\r\n    <MESSAGE value=\"Added shield, shoe, heel to main\" />\r\n    <MESSAGE value=\"fixed major bugs, ready for release\" />\r\n    <MESSAGE value=\"increased car count and attempted fix at giant ghost explosion\" />\r\n    <MESSAGE value=\"Made lose case for tower level\" />\r\n    <MESSAGE value=\"tower level complete. added rayfire, and serialised assets for tower level.\" />\r\n    <MESSAGE value=\"Added new levels type for earth crack and bridge break\" />\r\n    <MESSAGE value=\"fixed bugs, changed level order, added new levels to build\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"fixed bugs, changed level order, added new levels to build\" />\r\n  </component>\r\n  <component name=\"WindowStateProjectService\">\r\n    <state x=\"539\" y=\"304\" width=\"635\" height=\"293\" key=\"#C#\" timestamp=\"1639991631933\">\r\n      <screen x=\"0\" y=\"0\" width=\"1366\" height=\"728\" />\r\n    </state>\r\n    <state x=\"539\" y=\"304\" width=\"635\" height=\"293\" key=\"#C#/0.0.1366.728@0.0.1366.728\" timestamp=\"1639991631933\" />\r\n    <state x=\"219\" y=\"62\" width=\"2048\" height=\"1148\" key=\"DiffContextDialog\" timestamp=\"1642155258490\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"219\" y=\"62\" width=\"2048\" height=\"1148\" key=\"DiffContextDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642155258490\" />\r\n    <state x=\"1059\" y=\"454\" key=\"FileChooserDialogImpl\" timestamp=\"1639731294939\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"1059\" y=\"454\" key=\"FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1639731294939\" />\r\n    <state x=\"315\" y=\"20\" key=\"MergeDialog\" timestamp=\"1642158721977\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"315\" y=\"20\" key=\"MergeDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642158721977\" />\r\n    <state x=\"1168\" y=\"418\" width=\"833\" height=\"414\" key=\"MultipleFileMergeDialog\" timestamp=\"1642322196518\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"1168\" y=\"418\" width=\"833\" height=\"414\" key=\"MultipleFileMergeDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642322196518\" />\r\n    <state x=\"1080\" y=\"208\" key=\"RollbackChangesDialog\" timestamp=\"1641552893394\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"594\" y=\"148\" key=\"RollbackChangesDialog/0.0.1366.728@0.0.1366.728\" timestamp=\"1639984298550\" />\r\n    <state x=\"1080\" y=\"208\" key=\"RollbackChangesDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1641552893394\" />\r\n    <state x=\"345\" y=\"15\" key=\"SettingsEditor\" timestamp=\"1641809442597\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"184\" y=\"8\" key=\"SettingsEditor/0.0.1366.728@0.0.1366.728\" timestamp=\"1640001540319\" />\r\n    <state x=\"345\" y=\"15\" key=\"SettingsEditor/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1641809442597\" />\r\n    <state x=\"92\" y=\"92\" width=\"2376\" height=\"1216\" key=\"VCS.FileHistoryDialog\" timestamp=\"1642068325030\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"92\" y=\"92\" width=\"2376\" height=\"1216\" key=\"VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642068325030\" />\r\n    <state x=\"872\" y=\"419\" key=\"Vcs.Push.Dialog.v2\" timestamp=\"1642341413971\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"465\" y=\"167\" key=\"Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728\" timestamp=\"1639995761930\" />\r\n    <state x=\"872\" y=\"419\" key=\"Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642341413971\" />\r\n    <state x=\"92\" y=\"92\" width=\"2376\" height=\"1216\" key=\"com.intellij.history.integration.ui.views.FileHistoryDialog\" timestamp=\"1642142945145\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"92\" y=\"92\" width=\"2376\" height=\"1216\" key=\"com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642142945145\" />\r\n    <state x=\"927\" y=\"302\" key=\"com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser\" timestamp=\"1642345974798\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"495\" y=\"0\" key=\"com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.728@0.0.1366.728\" timestamp=\"1640002404407\" />\r\n    <state x=\"927\" y=\"302\" key=\"com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642345974798\" />\r\n    <state x=\"826\" y=\"434\" width=\"604\" height=\"531\" key=\"com.intellij.openapi.vcs.changes.SpecificFilesViewDialog\" timestamp=\"1641556925724\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"826\" y=\"434\" width=\"604\" height=\"531\" key=\"com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1641556925724\" />\r\n    <state x=\"1089\" y=\"613\" key=\"com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2\" timestamp=\"1642158151250\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"1089\" y=\"613\" key=\"com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642158151250\" />\r\n    <state x=\"916\" y=\"112\" width=\"727\" height=\"855\" key=\"find.popup\" timestamp=\"1642347598995\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"489\" y=\"198\" width=\"727\" height=\"530\" key=\"find.popup/0.0.1366.728@0.0.1366.728\" timestamp=\"1640001687723\" />\r\n    <state x=\"916\" y=\"112\" width=\"727\" height=\"855\" key=\"find.popup/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642347598995\" />\r\n    <state x=\"988\" y=\"488\" key=\"git4idea.merge.GitPullDialog\" timestamp=\"1642158159716\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"988\" y=\"488\" key=\"git4idea.merge.GitPullDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642158159716\" />\r\n    <state x=\"617\" y=\"244\" width=\"611\" height=\"681\" key=\"org.intellij.images.editor.actions.BackgroundImageDialog\" timestamp=\"1641809440684\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"617\" y=\"244\" width=\"611\" height=\"681\" key=\"org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1641809440684\" />\r\n    <state x=\"943\" y=\"315\" width=\"672\" height=\"335\" key=\"search.everywhere.popup\" timestamp=\"1642347612707\">\r\n      <screen x=\"0\" y=\"0\" width=\"2560\" height=\"1400\" />\r\n    </state>\r\n    <state x=\"503\" y=\"164\" width=\"672\" height=\"160\" key=\"search.everywhere.popup/0.0.1366.728@0.0.1366.728\" timestamp=\"1640002538323\" />\r\n    <state x=\"943\" y=\"315\" width=\"672\" height=\"335\" key=\"search.everywhere.popup/0.0.2560.1400@0.0.2560.1400\" timestamp=\"1642347612707\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.idea.Poppy-playtime/.idea/workspace.xml	(revision bc7ce561737d0da560cba89f7fb9adda6b8ebc86)
++++ .idea/.idea.Poppy-playtime/.idea/workspace.xml	(date 1642401379534)
+@@ -20,13 +20,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
+-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Assets/RayFire/Plugins/Windows/x86_x64/RFLib_CNative_2018.dll" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -34,33 +28,26 @@
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="644b9cfa2675ca9e6b51da8910a2c0e0b0378add" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GithubPullRequestsUISettings">
+-    <option name="hiddenUrls">
+-      <set>
+-        <option value="https://github.com/harshdulani/Poppy-playtime" />
+-      </set>
+-    </option>
+-  </component>
+   <component name="HighlightingSettingsPerFile">
+-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShatterEnemyController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/CanvasLookAtCam.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/TCP2_GradientManager.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 20 - earth crack.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/LinearAlgebraUtility.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/TransformUtility.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/AsyncJobSystem.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/ArrayUtility.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineEditor/SplineEditor.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/TS_Mesh.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/BossPropController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/AimCanvas.prefab" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/RayFire/Tutorial/Scripts/AddRigidComponent.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs" root0="FORCE_HIGHLIGHTING" />
+@@ -118,7 +105,6 @@
+     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Toon Vehicles/Animations.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/JumperEnemyController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Meshes/Poppy/upright walk.fbx.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/SplineEditor/Point Modules/MainPointModule.cs" root0="FORCE_HIGHLIGHTING" />
+@@ -135,7 +121,6 @@
+     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Basics.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/PlayerSoundController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Core/SplineTrigger.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/RayFire/Scripts/Components/RayfireVortex.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Textures/explosion_spritesheet_3x3.png.meta" root0="FORCE_HIGHLIGHTING" />
+@@ -155,6 +140,8 @@
+     <setting file="file://$PROJECT_DIR$/Assets/Meshes/StickmanHeadgear/2.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/ProjectSettings/TagManager.asset" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ClimberLimbController.cs" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ClimberController.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/BOXOPHOBIC/Polyverse Skies/Core/Runtime/PolyverseSkies.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab" root0="FORCE_HIGHLIGHTING" />
+@@ -166,7 +153,6 @@
+     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 9 - ghosht rider spidey.unity" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Inspectors/TCP2_MaterialInspector.cs" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Inspectors/MaterialInspector_SG2.cs" root0="FORCE_HIGHLIGHTING" />
+-    <setting file="file://$PROJECT_DIR$/Assets/RayFire/Tutorial/Scenes/5 Blade/1 Blade. Basics.unity" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Weapons/Revolver_3.prefab" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Weapons/Revolver_3.prefab.meta" root0="FORCE_HIGHLIGHTING" />
+     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 18 - city boss.unity" root0="FORCE_HIGHLIGHTING" />
+@@ -198,15 +184,24 @@
+   <component name="IdeDocumentHistory">
+     <option name="CHANGED_PATHS">
+       <list>
++        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/OnTargetState.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/MovementController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/WristController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Extensions/InputExtensions.cs" />
++        <option value="$PROJECT_DIR$/Assets/PunchAnimationController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/BarrelController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/SplineTriggerController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/GAScript.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/HostageController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PlayerSoundController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputStateBase.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/CameraController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/CarLaneController.cs" />
+         <option value="$PROJECT_DIR$/ProjectSettings/TagManager.asset" />
+@@ -218,37 +213,28 @@
+         <option value="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/RopeController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/CarController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/BossBarrelController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
+         <option value="$PROJECT_DIR$/Assets/BLABLA.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/BossPropController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/GiantController.cs" />
++        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/GiantLimbController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/RayfireRigidShatterer.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/RayFireShatterable.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyPatroller.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/BridgeController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/ClimberLimbController.cs" />
+         <option value="$PROJECT_DIR$/Assets/Scripts/ClimberController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/JumperEnemyController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/ShatterEnemyController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/EnemyWeaponController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
+-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
+       </list>
+     </option>
+   </component>
+@@ -296,6 +282,8 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
++    <MESSAGE value="Added 2 new characters and a city environment" />
++    <MESSAGE value="level 16 complete, added fade to grey after death option on enemy" />
+     <MESSAGE value="Minor tweaks, new level added 17" />
+     <MESSAGE value="Added cars and lanes to drive cars, giant mechanism established" />
+     <MESSAGE value="Added health hits and fixed disable input when following spline" />
+@@ -317,11 +305,9 @@
+     <MESSAGE value="Added shield, shoe, heel to main" />
+     <MESSAGE value="fixed major bugs, ready for release" />
+     <MESSAGE value="increased car count and attempted fix at giant ghost explosion" />
++    <MESSAGE value="debugging build in the bg" />
+     <MESSAGE value="Made lose case for tower level" />
+-    <MESSAGE value="tower level complete. added rayfire, and serialised assets for tower level." />
+-    <MESSAGE value="Added new levels type for earth crack and bridge break" />
+-    <MESSAGE value="fixed bugs, changed level order, added new levels to build" />
+-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs, changed level order, added new levels to build" />
++    <option name="LAST_COMMIT_MESSAGE" value="Made lose case for tower level" />
+   </component>
+   <component name="WindowStateProjectService">
+     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
+@@ -340,10 +326,10 @@
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="315" y="20" key="MergeDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1642158721977" />
+-    <state x="1168" y="418" width="833" height="414" key="MultipleFileMergeDialog" timestamp="1642322196518">
++    <state x="1168" y="567" width="833" height="265" key="MultipleFileMergeDialog" timestamp="1642158727532">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+-    <state x="1168" y="418" width="833" height="414" key="MultipleFileMergeDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1642322196518" />
++    <state x="1168" y="567" width="833" height="265" key="MultipleFileMergeDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1642158727532" />
+     <state x="1080" y="208" key="RollbackChangesDialog" timestamp="1641552893394">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+@@ -358,20 +344,20 @@
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1642068325030" />
+-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1642341413971">
++    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1642219594660">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="465" y="167" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1639995761930" />
+-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1642341413971" />
++    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1642219594660" />
+     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1642142945145">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1642142945145" />
+-    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1642345974798">
++    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1642079683598">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="495" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.728@0.0.1366.728" timestamp="1640002404407" />
+-    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1642345974798" />
++    <state x="927" y="302" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1642079683598" />
+     <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1641556925724">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+@@ -380,11 +366,11 @@
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="1089" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400" timestamp="1642158151250" />
+-    <state x="916" y="112" width="727" height="855" key="find.popup" timestamp="1642347598995">
++    <state x="916" y="112" width="727" height="855" key="find.popup" timestamp="1642222701354">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="489" y="198" width="727" height="530" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1640001687723" />
+-    <state x="916" y="112" width="727" height="855" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1642347598995" />
++    <state x="916" y="112" width="727" height="855" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1642222701354" />
+     <state x="988" y="488" key="git4idea.merge.GitPullDialog" timestamp="1642158159716">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+@@ -393,10 +379,10 @@
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="617" y="244" width="611" height="681" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1641809440684" />
+-    <state x="943" y="315" width="672" height="335" key="search.everywhere.popup" timestamp="1642347612707">
++    <state x="943" y="315" width="672" height="335" key="search.everywhere.popup" timestamp="1642222115765">
+       <screen x="0" y="0" width="2560" height="1400" />
+     </state>
+     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
+-    <state x="943" y="315" width="672" height="335" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1642347612707" />
++    <state x="943" y="315" width="672" height="335" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1642222115765" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git .idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml .idea/.idea.Poppy-playtime/.idea/shelf/Uncommitted_changes_before_Update_at_16-01-2022_02_05_PM__Default_Changelist_.xml
