@@ -1,22 +1,10 @@
 using System;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 
 public enum CarriedObjectType
 {
 	Ragdoll, Prop, Car
-}
-
-public enum TypesOfAttacks
-{
-	Punch,
-	Hammer,
-	Gun,
-	Boot,
-	Heel,
-	Sneaker,
-	Shield
 }
 
 public class HandController : MonoBehaviour
@@ -35,7 +23,7 @@ public class HandController : MonoBehaviour
 
 	public static CarriedObjectType CurrentObjectCarriedType;
 
-	[SerializeField] private TypesOfAttacks currentAttackType;
+	[SerializeField] private WeaponType currentAttackType;
 	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker,  shield;
 	[SerializeField] private ParticleSystem fireExplosion;
 	private AudioSource _gunshot; 
@@ -95,39 +83,41 @@ public class HandController : MonoBehaviour
 		if (isLeftHand) return;
 
 		_gunshot = fireExplosion.GetComponent<AudioSource>();
+
+		currentAttackType = SkinLoader.GetCurrentSkin();
 		
 		switch (currentAttackType)
 		{
-			case TypesOfAttacks.Punch:
+			case WeaponType.Punch:
 				_myAnimator.SetBool(IsHoldingHammerHash, false);
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
-			case TypesOfAttacks.Hammer:
+			case WeaponType.Hammer:
 				hammer.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 				break;
-			case TypesOfAttacks.Gun:
+			case WeaponType.Gun:
 				gun.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
 				break;
-			case TypesOfAttacks.Boot:
+			case WeaponType.Boot:
 				boot.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
-			case TypesOfAttacks.Heel:
+			case WeaponType.Heel:
 				heel.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
-			case TypesOfAttacks.Sneaker:
+			case WeaponType.Sneaker:
 				sneaker.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
-			case TypesOfAttacks.Shield:
+			case WeaponType.Shield:
 				shield.SetActive(true);
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingShieldHash);
@@ -303,7 +293,7 @@ public class HandController : MonoBehaviour
 		
 		_canGivePunch = false;
 		_rootAnimator.SetTrigger(Punch);
-		if(currentAttackType == TypesOfAttacks.Gun)
+		if(currentAttackType == WeaponType.Gun)
 		{
 			fireExplosion.Play();
 			_gunshot.Play();

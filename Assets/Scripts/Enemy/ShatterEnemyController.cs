@@ -6,8 +6,6 @@ public class ShatterEnemyController : MonoBehaviour
 	[SerializeField] private bool controlAnimator;
 	private RagdollController _ragdollController;
 	
-	private bool _hasReached;
-	
 	private Animator _anim;
 	private static readonly int Reached = Animator.StringToHash("reached");
 
@@ -35,7 +33,6 @@ public class ShatterEnemyController : MonoBehaviour
 	{
 		if(controlAnimator)
 			_anim.SetTrigger(Reached);
-		_hasReached = true;
 	}
 
 	private void OnShatteredTower(Transform shattered)
