@@ -107,7 +107,6 @@ public class PropController : MonoBehaviour
 		_rb.isKinematic = false;
 		_rb.AddForce(direction * punchForce, ForceMode.Impulse);
 	}
-
 	
 	public void AddTrail(GameObject trailPrefab)
 	{

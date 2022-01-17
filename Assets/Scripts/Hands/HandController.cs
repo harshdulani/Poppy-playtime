@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public enum CarriedObjectType
@@ -208,15 +209,19 @@ public class HandController : MonoBehaviour
 			{
 				other.GetComponent<RagdollLimbController>().GetPunched((
 					(LevelFlowController.only.IsInGiantFight()
-						? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center
-						: _targetInitPos) - transform.position).normalized, punchForce);
+						? LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - transform.position).normalized, punchForce);
 			}
 			else
 			{
 				_targetInitPos.y = other.position.y;
-				other.root.GetComponent<PropController>()
-					.GetPunched(((LevelFlowController.only.IsInGiantFight() ? GameObject.FindGameObjectWithTag("Giant").GetComponentInChildren<Renderer>().bounds.center : _targetInitPos) - other.root.position).normalized, 
-						(CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce));
+				
+				if(!other.root.TryGetComponent(out PropController prop))
+					prop = other.GetComponent<PropController>();
+				
+				prop.GetPunched(
+						((LevelFlowController.only.IsInGiantFight() ? 
+							LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position).normalized, 
+						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 			}
 		}
 

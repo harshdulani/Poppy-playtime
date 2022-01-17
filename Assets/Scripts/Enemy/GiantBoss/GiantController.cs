@@ -247,4 +247,6 @@ public class GiantController : MonoBehaviour
 			rend.enabled = true;
 		_anim.SetTrigger(Jump);
 	}
+
+	public Vector3 GetBoundsCenter() => rends[0].bounds.center;
 }

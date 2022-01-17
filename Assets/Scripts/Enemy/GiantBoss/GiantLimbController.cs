@@ -41,7 +41,7 @@ public class GiantLimbController : MonoBehaviour
 		//i just turn put all these flags on this so it doesn't get to DO anything
 		//but every frame/physics step, Collision other ka value change hota hai
 		
-		victim.DOScale(Vector3.zero, 0.2f).OnComplete(() =>
+		victim.DOScale(Vector3.zero, 1f).OnComplete(() =>
 		{
 			victim.gameObject.SetActive(false);
 		});
