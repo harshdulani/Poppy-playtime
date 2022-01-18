@@ -72,9 +72,18 @@ public class SkinLoader : MonoBehaviour
 
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 	}
-	
-	public Sprite GetSkinSprite(int index = -1) => coloredWeaponSprites[(index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index)];
-	
+
+	public Sprite GetSkinSprite(int index = -1)
+	{
+		if (index == -1)
+			return coloredWeaponSprites[PlayerPrefs.GetInt("currentSkinInUse", 0)];
+		
+		if (index >= coloredWeaponSprites.Length)
+			return coloredWeaponSprites[^1];
+
+		return coloredWeaponSprites[index];
+	}
+
 	public WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
 
 	public void UpdateSkinInUse(int currentSkin)

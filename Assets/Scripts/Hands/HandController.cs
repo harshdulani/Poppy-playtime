@@ -45,6 +45,7 @@ public class HandController : MonoBehaviour
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
 	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
 	private static readonly int Punch = Animator.StringToHash("Punch");
+	private static readonly int ChangeWeapon = Animator.StringToHash("changeWeapon");
 
 	private void OnEnable()
 	{
@@ -101,7 +102,7 @@ public class HandController : MonoBehaviour
 			if (_isCarryingBody)
 			{
 				palm.localPosition =
-					Vector3.MoveTowards(palm.localPosition, Vector3.zero, returnSpeed * Time.deltaTime);
+					Vector3.MoveTowards(palm.localPosition, Vector3.zero, _appliedReturnSpeed * Time.deltaTime);
 
 				return;
 			}
@@ -112,7 +113,7 @@ public class HandController : MonoBehaviour
 				returnSpeed * Time.deltaTime);
 
 			palm.localRotation =
-				Quaternion.Lerp(palm.localRotation, _palmInitLocalRot, returnSpeed * Time.deltaTime);
+				Quaternion.Lerp(palm.localRotation, _palmInitLocalRot, _appliedReturnSpeed * Time.deltaTime);
 		}
 		else
 		{
@@ -131,10 +132,10 @@ public class HandController : MonoBehaviour
 			palm.position =
 				Vector3.MoveTowards(palm.position,
 				_lastTarget.position + _lastOffset,
-				 moveSpeed * Time.deltaTime);
+				 _appliedMoveSpeed * Time.deltaTime);
 
 			palm.rotation = 
-				Quaternion.Lerp(palm.rotation, _lastNormal, moveSpeed * 1.5f * Time.deltaTime);
+				Quaternion.Lerp(palm.rotation, _lastNormal, _appliedMoveSpeed * 1.5f * Time.deltaTime);
 		}
 	}
 	
@@ -220,11 +221,14 @@ public class HandController : MonoBehaviour
 		_appliedReturnSpeed = returnSpeed * (1f + level / 10f);
 	}
 
-	public void UpdateEquippedSkin()
+	public void UpdateEquippedSkin(bool initialising = true)
 	{
 		currentAttackType = SkinLoader.only.GetSkinName();
 		for (var i = 1; i < hammer.transform.parent.childCount; i++)
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
+
+		if(!initialising)
+			_rootAnimator.SetTrigger(ChangeWeapon);
 		
 		switch (currentAttackType)
 		{

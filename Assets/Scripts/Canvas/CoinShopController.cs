@@ -7,8 +7,10 @@ public class CoinShopController : MonoBehaviour
 {
 	[SerializeField] private int[] speedLevelCosts, powerLevelCosts, skinCosts;
 	[SerializeField] private Button speedButton, powerButton, skinButton;
+	[SerializeField] private GameObject speedHand, powerHand, skinHand;
 	[SerializeField] private Image currentSkinImage;
 	[SerializeField] private TextMeshProUGUI speedMultiplier, speedCostText, powerMultiplier, powerCostText, skinName, skinCostText;
+	[SerializeField] private Animation speedButtonPressAnimation, powerButtonPressAnimation, skinButtonPressAnimation;
 
 	[Header("Coin Particle Effect"), SerializeField] private TextMeshProUGUI coinText;
 	[SerializeField] private RectTransform coinHolder;
@@ -49,6 +51,16 @@ public class CoinShopController : MonoBehaviour
 		UpdateButtons();
 	}
 
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.O))
+		{
+			CoinCount += 500;
+			UpdateCoinAmount();
+			UpdateButtons();
+		}
+	}
+
 	private void Initialise()
 	{
 		CoinCount = PlayerPrefs.GetInt("coinCount", 0);
@@ -60,10 +72,9 @@ public class CoinShopController : MonoBehaviour
 	private void UpdateButtons()
 	{
 		//update texts and icons
-		speedMultiplier.text = "Speed: x" + (_currentSpeedLevel + 1);
 		if(_currentSpeedLevel < speedLevelCosts.Length - 1)
 		{
-			//disabling buttons here if insufficient funds
+			speedMultiplier.text = "Speed: x" + (_currentSpeedLevel + 1);
 			speedCostText.text = speedLevelCosts[_currentSpeedLevel + 1].ToString();
 			speedButton.interactable = CoinCount >= speedLevelCosts[_currentSpeedLevel + 1];
 		}
@@ -73,13 +84,12 @@ public class CoinShopController : MonoBehaviour
 			speedMultiplier.text = "MAX";
 			speedButton.interactable = false;
 		}
+		speedHand.SetActive(speedButton.interactable);
 		
-		
-		powerMultiplier.text = "Power: x" + (_currentPowerLevel + 1);
 		if(_currentPowerLevel < powerLevelCosts.Length - 1)
 		{
-			//disabling buttons here if insufficient funds
-			powerCostText.text = powerLevelCosts[_currentSpeedLevel + 1].ToString();
+			powerMultiplier.text = "Power: x" + (_currentPowerLevel + 1);
+			powerCostText.text = powerLevelCosts[_currentPowerLevel + 1].ToString();
 			powerButton.interactable = CoinCount >= powerLevelCosts[_currentPowerLevel + 1];
 		}
 		else
@@ -88,24 +98,28 @@ public class CoinShopController : MonoBehaviour
 			powerMultiplier.text = "MAX";
 			powerButton.interactable = false;
 		}
+		powerHand.SetActive(powerButton.interactable);
 		
-		skinName.text = SkinLoader.only.GetSkinName(_currentSkin + 1).ToString();
 		if(_currentSkin < skinCosts.Length - 1)
 		{
-			//disabling buttons here if insufficient funds
+			skinName.text = SkinLoader.only.GetSkinName(_currentSkin + 1).ToString();
 			skinCostText.text = skinCosts[_currentSkin + 1].ToString();
 			skinButton.interactable = CoinCount >= skinCosts[_currentSkin + 1];
 		}
 		else
 		{
+			skinName.text = "MAX";
 			skinCostText.text = "MAX";
 			skinButton.interactable = false;
 		}
+		skinHand.SetActive(skinButton.interactable);
+		
 		currentSkinImage.sprite = transform.parent.GetComponentInChildren<SkinLoader>().GetSkinSprite(_currentSkin + 1); //might be error prone
 	}
 
 	public void BuySpeed()
 	{
+		speedButtonPressAnimation.Play();
 		CoinCount -= speedLevelCosts[++_currentSpeedLevel];
 		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
 		PlayerPrefs.SetInt("currentSpeedLevel", _currentSpeedLevel);
@@ -118,6 +132,7 @@ public class CoinShopController : MonoBehaviour
 
 	public void BuyPower()
 	{
+		powerButtonPressAnimation.Play();
 		CoinCount -= powerLevelCosts[++_currentPowerLevel];
 		//ABSOLUTELY NO change in power script
 		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
@@ -130,9 +145,10 @@ public class CoinShopController : MonoBehaviour
 
 	public void BuyNewSkin()
 	{
+		skinButtonPressAnimation.Play();
 		CoinCount -= skinCosts[++_currentSkin];
 		SkinLoader.only.UpdateSkinInUse(_currentSkin);
-		InputHandler.Only.GetRightHand().UpdateEquippedSkin();
+		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
 		UpdateCoinAmount();
 		
 		UpdateButtons();
