@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4177216125322667224}
   - component: {fileID: 7280656740192339059}
   - component: {fileID: 8118487926602105320}
-  - component: {fileID: 5179419744872185347}
+  - component: {fileID: 5196302408886531233}
   m_Layer: 5
   m_Name: Prop Selection Text
   m_TagString: Untagged
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!111 &5179419744872185347
+--- !u!111 &5196302408886531233
 Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 7830302006084146435}
   - component: {fileID: 7830302006084146445}
   - component: {fileID: 7830302006084146444}
-  - component: {fileID: 1512202530}
+  - component: {fileID: 282041804}
   m_Layer: 5
   m_Name: ComboText
   m_TagString: Untagged
@@ -288,22 +288,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!111 &1512202530
-Animation:
+--- !u!95 &282041804
+Animator:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7830302006084146434}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 2356cc021be5b644d95bcf31c76711ff, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 2356cc021be5b644d95bcf31c76711ff, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2bb8eb0aafd7dcc4ea3d3000f14bf448, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7830302007743197889
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,12 +435,12 @@ MonoBehaviour:
   - Bazuka!!
   - Head Shot!!
   - Amazing!!
-  comboAnimation: {fileID: 1512202530}
-  exclamationAnimation: {fileID: 1456982000}
-  barrelHitAnimation: {fileID: 5179419744872185347}
+  barrelHitAnimation: {fileID: 5196302408886531233}
   startTimer: 0
   countDownTime: 3
   startChainReactionTimer: 0
+  comboAnimator: {fileID: 282041804}
+  exclamationAnimator: {fileID: 8942275386508257875}
 --- !u!1 &9049665908506786684
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +452,7 @@ GameObject:
   - component: {fileID: 6196406413329463455}
   - component: {fileID: 4994572442267456353}
   - component: {fileID: 2874261398924183904}
-  - component: {fileID: 1456982000}
+  - component: {fileID: 8942275386508257875}
   m_Layer: 5
   m_Name: ExclamationText
   m_TagString: Untagged
@@ -573,19 +577,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!111 &1456982000
-Animation:
+--- !u!95 &8942275386508257875
+Animator:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9049665908506786684}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 129e75cb71aa1ea428ee49e96a544004, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 129e75cb71aa1ea428ee49e96a544004, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2bb8eb0aafd7dcc4ea3d3000f14bf448, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

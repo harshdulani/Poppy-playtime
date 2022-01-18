@@ -1,27 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
-using Dreamteck;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class ComboCanvasManager : MonoBehaviour
 {
 	[SerializeField] private int count = 0,enemyCount = 0;
 	[SerializeField] private TMP_Text comboText;
 	[SerializeField] private TMP_Text exclamationText;
-	[SerializeField] private TMP_Text propDestoryedText;
+	[SerializeField] private TMP_Text propDestroyedText;
 	[SerializeField] private List<string> exclamations;
-
-	[SerializeField] private Animation comboAnimation;
-	[SerializeField] private Animation exclamationAnimation;
+	
+	[SerializeField] private Animator comboAnimator,exclamationAnimator;
 	[SerializeField] private Animation barrelHitAnimation;
+	
 	[SerializeField] private bool startTimer;
 	[SerializeField] private float countDownTime;
-
 	[SerializeField] private bool startChainReactionTimer;
-
+	
+	private static readonly int ComboAnimationStart = Animator.StringToHash("toFadeIn");
+	private static readonly int ComboAnimationEnd = Animator.StringToHash("toFadeOut");
+	
 	private float _timeLeft;
 	private float _chainReactionTimeLeft;
 	
@@ -29,14 +28,14 @@ public class ComboCanvasManager : MonoBehaviour
 	{
 		GameEvents.only.punchHit += OnPunchHit;
 		GameEvents.only.enemyKilled += OnEnemyKilled;
-		GameEvents.only.propDestroyed += OnPropDestroyed;
+		GameEvents.only.propHitsEnemy += OnPropHitsEnemy;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.punchHit -= OnPunchHit;
 		GameEvents.only.punchHit -= OnEnemyKilled;
-		GameEvents.only.propDestroyed -= OnPropDestroyed;
+		GameEvents.only.propHitsEnemy -= OnPropHitsEnemy;
 
 	}
 
@@ -44,7 +43,7 @@ public class ComboCanvasManager : MonoBehaviour
     {
         comboText.gameObject.SetActive(false);
 		exclamationText.gameObject.SetActive(false);
-		propDestoryedText.gameObject.SetActive(false);
+		propDestroyedText.gameObject.SetActive(false);
 		_timeLeft = countDownTime;
 	}
 
@@ -72,38 +71,41 @@ public class ComboCanvasManager : MonoBehaviour
 		enemyCount += 1;
 	}
 
-	private void OnPropDestroyed(Transform propDestroyed)
+	private void OnPropHitsEnemy()
 	{
-		if (propDestroyed.TryGetComponent(out PropController prop))
-		{
-			StartCoroutine(PropHitRoutine());
-		}
+		StartCoroutine(PropHitRoutine());
 	}
-	
-	IEnumerator ComboPopUp()
+
+	private IEnumerator ComboPopUp()
 	{
 		if (count == 0)
 		{
 			_timeLeft = countDownTime;
 			startTimer = true;
+			
 			comboText.text = "Nice!";
 			comboText.gameObject.SetActive(true);
-			comboAnimation.Play();
+			StartCoroutine(PlayComboAnimation(comboAnimator));
+			
 			count += 1;
 		}
 		else
 		{
 			_timeLeft = countDownTime;
+			
 			comboText.gameObject.SetActive(true);
-			comboAnimation.Play();
+			StartCoroutine(PlayComboAnimation(comboAnimator));
+			
 			count += 1;
 			comboText.text = "Combo " + "x" + count;
+			
 			exclamationText.gameObject.SetActive(true);
-			exclamationAnimation.Play();
+			comboAnimator.SetTrigger(ComboAnimationStart);
+			StartCoroutine(PlayComboAnimation(exclamationAnimator));
 			exclamationText.text = exclamations[Random.Range(0, exclamations.Count - 1)];
 		}
 		
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(2f);
 		
 		comboText.gameObject.SetActive(false);
 		exclamationText.gameObject.SetActive(false);
@@ -111,33 +113,32 @@ public class ComboCanvasManager : MonoBehaviour
 
 	private IEnumerator ChainReaction()
 	{
-		if (startTimer)
-		{
-			count++;
-			
-			if (enemyCount > 1)
-			{
-				startChainReactionTimer = true;
+		if (!startTimer) yield break;
+		
+		count++;
+		if (enemyCount <= 1) yield break;
+		
+		startChainReactionTimer = true;
 				
-				exclamationText.gameObject.SetActive(true);
-				exclamationAnimation.Play();
-				exclamationText.text = exclamations[Random.Range(0, exclamations.Count - 1)];
+		exclamationText.gameObject.SetActive(true);
+		StartCoroutine(PlayComboAnimation(exclamationAnimator));
+		exclamationText.text = exclamations[Random.Range(0, exclamations.Count - 1)];
 				
-				yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.5f);
 				
-				exclamationText.gameObject.SetActive(false);
-				comboText.gameObject.SetActive(true);
-				comboText.text = "Chain Reaction x" + enemyCount;
-				comboAnimation.Play();
-			}
-		}
+		exclamationText.gameObject.SetActive(false);
+		comboText.gameObject.SetActive(true);
+		comboText.text = "Chain Reaction x" + enemyCount;
+		StartCoroutine(PlayComboAnimation(comboAnimator));
 	}
 
 	private IEnumerator PropHitRoutine()
 	{
-		propDestoryedText.gameObject.SetActive(true);
+		propDestroyedText.gameObject.SetActive(true);
 		barrelHitAnimation.Play();
+		
 		yield return new WaitForSeconds(1f);
+		propDestroyedText.gameObject.SetActive(false);
 	}
 
 	private void ComboTimer()
@@ -158,5 +159,12 @@ public class ComboCanvasManager : MonoBehaviour
 
 		if (_chainReactionTimeLeft < 0)
 			startChainReactionTimer = false;
+	}
+
+	private IEnumerator PlayComboAnimation(Animator animator)
+	{
+		animator.SetTrigger(ComboAnimationStart);
+		yield return new WaitForSeconds(1f);
+		animator.SetTrigger(ComboAnimationEnd);
 	}
 }
