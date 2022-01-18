@@ -330,6 +330,27 @@
           </e>
         </e>
         <e p="Epic Toon FX" t="Include">
+          <e p="CoinCollect Particle" t="Include">
+            <e p="_Controlled Particles" t="Include">
+              <e p="ControlledParticles.cs" t="Include" />
+              <e p="ParticleControl.cs" t="Include" />
+              <e p="ParticleControlScript.cs" t="Include" />
+            </e>
+            <e p="_UI Particles" t="Include">
+              <e p="UIParticleSystem.cs" t="Include" />
+              <e p="uishader" t="Include">
+                <e p="UI Particle Add.shader" t="Include" />
+                <e p="UI Particle AddMultiply.shader" t="Include" />
+                <e p="UI Particle AddSmooth.shader" t="Include" />
+                <e p="UI Particle Alpha Blend.shader" t="Include" />
+                <e p="UI Particle Blend.shader" t="Include" />
+                <e p="UI Particle Multiply.shader" t="Include" />
+                <e p="UI Particle MultiplyDouble.shader" t="Include" />
+                <e p="UI Particle Premultiply Blend.shader" t="Include" />
+                <e p="UI Particle VertexLit Blended.shader" t="Include" />
+              </e>
+            </e>
+          </e>
           <e p="Scripts" t="Include">
             <e p="ETFXRotation.cs" t="Include" />
           </e>
@@ -506,6 +527,7 @@
           <e p="CameraController.cs" t="Include" />
           <e p="Canvas" t="Include">
             <e p="CanvasLookAtCam.cs" t="Include" />
+            <e p="CoinShopController.cs" t="Include" />
             <e p="HealthCanvasController.cs" t="Include" />
             <e p="MainCanvasController.cs" t="Include" />
             <e p="TutorialCanvasController.cs" t="Include" />

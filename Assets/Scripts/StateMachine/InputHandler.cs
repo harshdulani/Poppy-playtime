@@ -69,7 +69,6 @@ public class InputHandler : MonoBehaviour
 	{ 
 		if(!_tappedToPlay) return;
 		
-		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -143,6 +142,9 @@ public class InputHandler : MonoBehaviour
 	{
 		_leftHand.StopCarryingBody();
 	}
+
+	public HandController GetLeftHand() => _leftHand;
+	public HandController GetRightHand() => _rightHand;
 
 	public void AssignIdleState()
 	{

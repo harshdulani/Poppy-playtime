@@ -40,6 +40,5 @@ public class ShatterEnemyController : MonoBehaviour
 		if(shattered != climbing) return;
 		
 		_ragdollController.GoRagdoll(-transform.forward + transform.up * 2f);
-		GameEvents.only.InvokeEnemyKill();
 	}
 }

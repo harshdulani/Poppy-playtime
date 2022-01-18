@@ -17,17 +17,19 @@ public enum WeaponType
 
 public class SkinLoader : MonoBehaviour
 {
+	public static SkinLoader only;
+	
 	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
-	[SerializeField] private Button okayButton, skipButton, claimButton;
+	[SerializeField] private Button  skipButton, claimButton;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText;
 
-	[SerializeField] private GameObject loaderPanel, lockedButtonsHolder, unlockedButtonsHolder; 
+	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder; 
 	
 	[SerializeField] private int levelsPerUnlock = 5;
-	[SerializeField] private float tweenDuration;
+	[SerializeField] private float tweenDuration, panelOpenWait;
 
-	private static int _currentSkinInUse = 0;
+	private int _currentSkinInUse;
 	private int  _currentSkinBeingUnlocked = 1;
 	private float _currentSkinPercentageUnlocked;
 
@@ -41,17 +43,19 @@ public class SkinLoader : MonoBehaviour
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
+	private void Awake()
+	{
+		if (!only) only = this;
+		else Destroy(gameObject);
+	}
+
 	private void Start()
 	{
 		Initialise();
 		
 		loaderPanel.SetActive(false);
-	}
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.A))
-			OnGameEnd();
+		skipButton.interactable = false;
+		claimButton.interactable = false;
 	}
 
 	private void Initialise()
@@ -69,25 +73,30 @@ public class SkinLoader : MonoBehaviour
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 	}
 	
-	public static WeaponType GetCurrentSkin() => (WeaponType)PlayerPrefs.GetInt("currentSkinInUse", 0);
-
-	public void Okay()
-	{
-		loaderPanel.SetActive(false);
-		//play exit animatn
-	}
+	public Sprite GetSkinSprite(int index = -1) => coloredWeaponSprites[(index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index)];
 	
+	public WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
+
+	public void UpdateSkinInUse(int currentSkin)
+	{
+		_currentSkinInUse = currentSkin;
+		_currentSkinBeingUnlocked = _currentSkinInUse + 1;
+		
+		PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
+		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+		ResetLoader();
+	}
+
 	public void Skip()
 	{
 		loaderPanel.SetActive(false);
 		_currentSkinBeingUnlocked++;
-		_currentSkinPercentageUnlocked = 0f;
 		//play animatn
+		ResetLoader();
 		
-		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
-		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
 	}
-	
+
 	public void Claim()
 	{
 		_currentSkinInUse++;
@@ -100,20 +109,23 @@ public class SkinLoader : MonoBehaviour
 		PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
 		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
 		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-	}
-	
-	private void OnGameEnd()
-	{
-		if(_currentSkinBeingUnlocked >= Enum.GetNames(typeof(WeaponType)).Length) return;
 		
-		Invoke(nameof(ShowPanel), 1f);
+		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
 	}
 
+	private void ResetLoader()
+	{
+		_currentSkinPercentageUnlocked = 0f;
+		
+		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+	}
+	
 	private void ShowPanel()
 	{
 		InputHandler.Only.AssignDisabledState();
 		loaderPanel.SetActive(true);
-
+		
 		var oldValue = _currentSkinPercentageUnlocked;
 		_currentSkinPercentageUnlocked += 1 / (float)levelsPerUnlock;
 		
@@ -131,19 +143,25 @@ public class SkinLoader : MonoBehaviour
 		
 		seq.AppendCallback(() =>
 		{
-			okayButton.interactable = true;
 			skipButton.interactable = true;
 			claimButton.interactable = true;
 		});
 
 		if (_currentSkinPercentageUnlocked < 0.99f)
 		{
-			lockedButtonsHolder.SetActive(true);
 			unlockedButtonsHolder.SetActive(false);
 			return;
 		}
-		lockedButtonsHolder.SetActive(false);
 		unlockedButtonsHolder.SetActive(true);
 		//confetti particle fx for complete loader
+	}
+
+	public bool ShouldShowNextLevel() => _currentSkinPercentageUnlocked < 0.99f;
+	
+	private void OnGameEnd()
+	{
+		if(_currentSkinBeingUnlocked >= Enum.GetNames(typeof(WeaponType)).Length) return;
+		
+		Invoke(nameof(ShowPanel), panelOpenWait);
 	}
 }

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -38,12 +39,13 @@ public class MainCanvasController : MonoBehaviour
 		
 		if(_hasTapped) return;
 
+		if(EventSystem.current.IsPointerOverGameObject()) return;
+		
 		if (InputExtensions.GetFingerHeld() || InputExtensions.GetFingerDown()) TapToPlay();
 	}
 
-	public void TapToPlay()
+	private void TapToPlay()
 	{
-		//AudioManager.instance.Play("button");
 		_hasTapped = true;
 		holdToAim.SetActive(false);
 		
@@ -97,7 +99,7 @@ public class MainCanvasController : MonoBehaviour
 	private void EnableVictoryObjects()
 	{
 		victory.SetActive(true);
-		nextLevel.SetActive(true);
+		nextLevel.SetActive(SkinLoader.only.ShouldShowNextLevel());
 		constantRetryButton.SetActive(false);
 		
 		AudioManager.instance.Play("Win");
@@ -118,6 +120,5 @@ public class MainCanvasController : MonoBehaviour
 		_hasLost = true;
 		
 		AudioManager.instance.Play("Lose");
-		//AudioManager.instance.Play("LoseBG");
 	}
 }

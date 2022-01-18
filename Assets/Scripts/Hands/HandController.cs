@@ -15,21 +15,22 @@ public class HandController : MonoBehaviour
 	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight, propWfpHeight;
 
 	[SerializeField] private ParticleSystem windLines;
-
-	private Animator _myAnimator;
-	private static Animator _rootAnimator;
-	private static RopeController _rope;
-	public static PlayerSoundController Sounds;
-
+	
 	public static CarriedObjectType CurrentObjectCarriedType;
-
 	[SerializeField] private WeaponType currentAttackType;
 	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker,  shield;
 	[SerializeField] private ParticleSystem fireExplosion;
-	private AudioSource _gunshot; 
+	
+	public static PlayerSoundController Sounds;
+	
+	private Animator _myAnimator;
+	private static Animator _rootAnimator;
+	private static RopeController _rope;
+	private Transform _lastTarget;
+	private float _appliedMoveSpeed, _appliedReturnSpeed;
 	private static bool _isCarryingBody;
 
-	private Transform _lastTarget;
+	private AudioSource _gunshot;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving, _canGivePunch;
@@ -80,49 +81,17 @@ public class HandController : MonoBehaviour
 		_palmInitLocalPos = palm.localPosition;
 		_palmInitLocalRot = palm.localRotation;
 
+		if(isLeftHand)
+		{
+			_appliedMoveSpeed = moveSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
+			_appliedReturnSpeed = returnSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
+		}
+		
 		if (isLeftHand) return;
 
 		_gunshot = fireExplosion.GetComponent<AudioSource>();
 
-		currentAttackType = SkinLoader.GetCurrentSkin();
-		
-		switch (currentAttackType)
-		{
-			case WeaponType.Punch:
-				_myAnimator.SetBool(IsHoldingHammerHash, false);
-				_rootAnimator.SetTrigger(IsUsingHandsHash);
-				break;
-			case WeaponType.Hammer:
-				hammer.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingHammerHash);
-				break;
-			case WeaponType.Gun:
-				gun.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingGunHash);
-				break;
-			case WeaponType.Boot:
-				boot.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				break;
-			case WeaponType.Heel:
-				heel.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				break;
-			case WeaponType.Sneaker:
-				sneaker.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
-				break;
-			case WeaponType.Shield:
-				shield.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
-				_rootAnimator.SetTrigger(IsHoldingShieldHash);
-				break;
-		}
+		UpdateEquippedSkin();
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -243,6 +212,57 @@ public class HandController : MonoBehaviour
 	public void StopCarryingBody()
 	{
 		ResetPalmParent();
+	}
+
+	public void UpdatePullingSpeed(int level)
+	{
+		_appliedMoveSpeed = moveSpeed * (1f + level / 10f);
+		_appliedReturnSpeed = returnSpeed * (1f + level / 10f);
+	}
+
+	public void UpdateEquippedSkin()
+	{
+		currentAttackType = SkinLoader.only.GetSkinName();
+		for (var i = 1; i < hammer.transform.parent.childCount; i++)
+			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
+		
+		switch (currentAttackType)
+		{
+			case WeaponType.Punch:
+				_myAnimator.SetBool(IsHoldingHammerHash, false);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
+				break;
+			case WeaponType.Hammer:
+				hammer.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingHammerHash);
+				break;
+			case WeaponType.Gun:
+				gun.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingGunHash);
+				break;
+			case WeaponType.Boot:
+				boot.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				break;
+			case WeaponType.Heel:
+				heel.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				break;
+			case WeaponType.Sneaker:
+				sneaker.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				break;
+			case WeaponType.Shield:
+				shield.SetActive(true);
+				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_rootAnimator.SetTrigger(IsHoldingShieldHash);
+				break;
+		}
 	}
 
 	public void WaitForPunch(Transform other)
