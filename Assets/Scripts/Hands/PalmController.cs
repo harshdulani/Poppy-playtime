@@ -92,7 +92,6 @@ public class PalmController : MonoBehaviour
 		if(target != GetCurrentTransform()) return;
 		
 		SetCurrentTransform(null);
-		guitext = GetCurrentTransform().ToString();
 		myHand.OnPropDestroyed();
 		Invoke(nameof(ResetAdoptability), 0.5f);
 	}

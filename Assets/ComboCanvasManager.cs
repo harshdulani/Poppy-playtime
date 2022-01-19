@@ -84,31 +84,24 @@ public class ComboCanvasManager : MonoBehaviour
 			startTimer = true;
 			
 			comboText.text = "Nice!";
-			comboText.gameObject.SetActive(true);
-			StartCoroutine(PlayComboAnimation(comboAnimator));
+			
+			StartCoroutine(PlayComboAnimation(comboAnimator,comboText));
 			
 			count += 1;
 		}
 		else
 		{
 			_timeLeft = countDownTime;
-			
-			comboText.gameObject.SetActive(true);
-			StartCoroutine(PlayComboAnimation(comboAnimator));
-			
+			print("Here");
 			count += 1;
 			comboText.text = "Combo " + "x" + count;
-			
-			exclamationText.gameObject.SetActive(true);
-			comboAnimator.SetTrigger(ComboAnimationStart);
-			StartCoroutine(PlayComboAnimation(exclamationAnimator));
+			StartCoroutine(PlayComboAnimation(comboAnimator,comboText));
+
 			exclamationText.text = exclamations[Random.Range(0, exclamations.Count - 1)];
+			StartCoroutine(PlayComboAnimation(exclamationAnimator,exclamationText));
 		}
 		
-		yield return new WaitForSeconds(2f);
-		
-		comboText.gameObject.SetActive(false);
-		exclamationText.gameObject.SetActive(false);
+		yield return null;
 	}
 
 	private IEnumerator ChainReaction()
@@ -119,17 +112,14 @@ public class ComboCanvasManager : MonoBehaviour
 		if (enemyCount <= 1) yield break;
 		
 		startChainReactionTimer = true;
-				
-		exclamationText.gameObject.SetActive(true);
-		StartCoroutine(PlayComboAnimation(exclamationAnimator));
+		
 		exclamationText.text = exclamations[Random.Range(0, exclamations.Count - 1)];
+		StartCoroutine(PlayComboAnimation(exclamationAnimator,exclamationText));
 				
 		yield return new WaitForSeconds(0.5f);
-				
-		exclamationText.gameObject.SetActive(false);
-		comboText.gameObject.SetActive(true);
+		
 		comboText.text = "Chain Reaction x" + enemyCount;
-		StartCoroutine(PlayComboAnimation(comboAnimator));
+		StartCoroutine(PlayComboAnimation(comboAnimator,comboText));
 	}
 
 	private IEnumerator PropHitRoutine()
@@ -161,10 +151,14 @@ public class ComboCanvasManager : MonoBehaviour
 			startChainReactionTimer = false;
 	}
 
-	private IEnumerator PlayComboAnimation(Animator animator)
+	private IEnumerator PlayComboAnimation(Animator animator,Component displayText)
 	{
+		displayText.gameObject.SetActive(true);
 		animator.SetTrigger(ComboAnimationStart);
-		yield return new WaitForSeconds(1f);
+		
+		yield return new WaitForSeconds(0.8f);
+		
 		animator.SetTrigger(ComboAnimationEnd);
+		displayText.gameObject.SetActive(false);
 	}
 }

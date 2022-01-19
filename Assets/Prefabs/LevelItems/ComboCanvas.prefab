@@ -76,8 +76,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 255
+  m_fontColor: {r: 1, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -228,8 +228,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -428,19 +428,19 @@ MonoBehaviour:
   enemyCount: 0
   comboText: {fileID: 7830302006084146444}
   exclamationText: {fileID: 2874261398924183904}
-  propDestoryedText: {fileID: 8118487926602105320}
+  propDestroyedText: {fileID: 8118487926602105320}
   exclamations:
   - Great!
   - Wonderful!
   - Bazuka!!
   - Head Shot!!
   - Amazing!!
+  comboAnimator: {fileID: 282041804}
+  exclamationAnimator: {fileID: 8942275386508257875}
   barrelHitAnimation: {fileID: 5196302408886531233}
   startTimer: 0
   countDownTime: 3
   startChainReactionTimer: 0
-  comboAnimator: {fileID: 282041804}
-  exclamationAnimator: {fileID: 8942275386508257875}
 --- !u!1 &9049665908506786684
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,8 +517,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
