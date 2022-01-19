@@ -4,9 +4,11 @@ public class ShatterEnemyController : MonoBehaviour
 {
 	[SerializeField] private Transform climbing;
 	[SerializeField] private bool controlAnimator;
-	private RagdollController _ragdollController;
+	[SerializeField] private int myArea;
 	
+	private RagdollController _ragdollController;
 	private Animator _anim;
+	
 	private static readonly int Reached = Animator.StringToHash("reached");
 
 	private void OnEnable()
@@ -41,4 +43,6 @@ public class ShatterEnemyController : MonoBehaviour
 		
 		_ragdollController.GoRagdoll(-transform.forward + transform.up * 2f);
 	}
+	
+	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
 }

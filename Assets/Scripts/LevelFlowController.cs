@@ -47,9 +47,6 @@ public class LevelFlowController : MonoBehaviour
 		foreach (var area in enemiesInArea)
 			_totalEnemiesRemaining += area;
 
-		if (isGiantLevel)
-			_giant = GameObject.FindGameObjectWithTag("Giant").GetComponent<GiantController>();
-		
 		DOTween.KillAll();
 		Vibration.Init();
 	}
@@ -94,5 +91,13 @@ public class LevelFlowController : MonoBehaviour
 		return IsThisLastEnemy() && isGiantLevel;
 	}
 
-	public GiantController GetGiant() => _giant;
+	public void SetGiant(GiantController giant)
+	{
+		_giant = giant;
+	}
+	
+	public GiantController GetGiant()
+	{
+		return _giant;
+	}
 }

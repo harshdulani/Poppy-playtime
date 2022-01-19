@@ -104,6 +104,8 @@ public class EnemyPatroller : MonoBehaviour
 		SetNextWaypoint();
 	}
 
+	public bool IsInCurrentPatrolArea() => LevelFlowController.only.currentArea == myPatrolArea;
+	
 	private void OnEnemyReachPlayer()
 	{
 		ToggleAI(false);

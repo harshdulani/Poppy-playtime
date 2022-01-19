@@ -38,6 +38,25 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget();
 			return;
 		}
+
+		if (_hit.collider.TryGetComponent(out EnemyPatroller patrol))
+		{
+			if (!patrol.IsInCurrentPatrolArea())
+			{
+				_aimer.LoseTarget();
+				return;
+			}
+		}
+
+		if (_hit.collider.TryGetComponent(out ShatterEnemyController shat))
+		{
+			if (!shat.IsInCurrentArea())
+			{
+				_aimer.LoseTarget();
+				return;
+			}
+		}
+		
 		_aimer.FindTarget();
 	}
 

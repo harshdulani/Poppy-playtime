@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+//using TMPro;
 using UnityEngine;
 
 public enum CarriedObjectType
@@ -37,6 +38,9 @@ public class HandController : MonoBehaviour
 
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
+
+	//private TextMeshProUGUI _text;
+	//private string _testString;
 	
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
@@ -93,6 +97,8 @@ public class HandController : MonoBehaviour
 		_gunshot = fireExplosion.GetComponent<AudioSource>();
 
 		UpdateEquippedSkin();
+
+		//_text = GameObject.FindGameObjectWithTag("AimCanvas").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -177,10 +183,11 @@ public class HandController : MonoBehaviour
 				
 				if(!other.root.TryGetComponent(out PropController prop))
 					prop = other.GetComponent<PropController>();
-				
-				prop.GetPunched(
-						((LevelFlowController.only.IsInGiantFight() ? 
-							LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position).normalized, 
+
+				var direction = (LevelFlowController.only.IsInGiantFight() ? 
+					LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position;
+
+				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 			}
 		}

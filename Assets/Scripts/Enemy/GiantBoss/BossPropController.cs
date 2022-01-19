@@ -8,6 +8,8 @@ public class BossPropController : MonoBehaviour
 	[FormerlySerializedAs("barrelSpawnWaitTime")] [SerializeField] private float propSpawnWaitTime;
 	private Coroutine _cycle;
 
+	private bool _isSpawning;
+
 	private void OnEnable()
 	{
 		GameEvents.only.reachNextArea += OnReachNextArea;
@@ -27,11 +29,15 @@ public class BossPropController : MonoBehaviour
 		if(!LevelFlowController.only.IsInGiantFight()) return;
 
 		_cycle = StartCoroutine(ThrowingCycle());
+		_isSpawning = true;
 	}
 	
 	private void StopSpawning()
 	{
+		if(!_isSpawning) return;
+		
 		StopCoroutine(_cycle);
+		_isSpawning = false;
 	}
 
 	private IEnumerator ThrowingCycle()
