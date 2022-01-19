@@ -15,7 +15,7 @@ public class InTransitState : InputStateBase
 	
 	public override void OnEnter()
 	{
-		IsPersistent = false;
+		IsPersistent = InputHandler.Only.isUsingTapAndPunch;
 		if (GoHome)
 			PlayerSoundController.only.ZiplineCome();
 		else

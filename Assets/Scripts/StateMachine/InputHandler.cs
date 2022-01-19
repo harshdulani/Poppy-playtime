@@ -5,6 +5,7 @@ public class InputHandler : MonoBehaviour
 	public static InputHandler Only;
 
 	public bool testingUsingTouch;
+	public bool isUsingTapAndPunch;
 
 	private HandController _leftHand, _rightHand;
 
@@ -12,6 +13,7 @@ public class InputHandler : MonoBehaviour
 	public static readonly IdleState IdleState = new IdleState();
 	private static readonly DisabledState DisabledState = new DisabledState();
 	private static AimingState _aimingState;
+	private static TapState _tapState;
 
 	//current state holder	
 	private static InputStateBase _leftHandState;
@@ -62,6 +64,7 @@ public class InputHandler : MonoBehaviour
 		var cam = Camera.main;
 		_ = new InputStateBase(_leftHand, cam);
 		_aimingState = new AimingState(_leftHand.GetAimController());
+		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
 	}
 
@@ -107,6 +110,13 @@ public class InputHandler : MonoBehaviour
 
 	private InputStateBase HandleInput()
 	{
+		if (isUsingTapAndPunch)
+		{
+			if (!InputExtensions.GetFingerDown()) return _leftHandState;
+			
+			return _tapState;
+		}
+
 		if (!InputExtensions.GetFingerHeld()) return _leftHandState;
 
 		return _aimingState;

@@ -38,7 +38,6 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget();
 			return;
 		}
-
 		if (_hit.collider.TryGetComponent(out EnemyPatroller patrol))
 		{
 			if (!patrol.IsInCurrentPatrolArea())

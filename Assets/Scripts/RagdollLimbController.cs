@@ -31,6 +31,8 @@ public class RagdollLimbController : MonoBehaviour
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
+
+	public void PopScale() => _parent.PopScale();
 	
 	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;
 

@@ -67,7 +67,7 @@ public class AimController : MonoBehaviour
 	public void FindTarget()
     {
 	    _reticle.color = findTargetColor;
-		Vibration.Vibrate(15);
+		Vibration.Vibrate(10);
 
 		if(!_canPlayLockOnSound) return;
 		_soundController.PlaySound(_soundController.findTarget, .6f);

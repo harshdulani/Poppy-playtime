@@ -135,6 +135,8 @@ public class RagdollController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = false;
 	}
+	
+	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);
 
 	public void WalkOnAnimation()
 	{
