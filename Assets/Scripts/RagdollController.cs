@@ -72,7 +72,8 @@ public class RagdollController : MonoBehaviour
 		isWaitingForPunch = true;
 		_anim.SetBool(IsFlying, true);
 		_anim.applyRootMotion = false;
-		_patroller?.ToggleAI(false);
+		if(_patroller)
+			_patroller.ToggleAI(false);
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
 	}
