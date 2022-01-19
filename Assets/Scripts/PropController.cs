@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using GameAnalyticsSDK.Setup;
 using UnityEngine;
 
 public class PropController : MonoBehaviour
@@ -164,7 +165,10 @@ public class PropController : MonoBehaviour
 		
 		if (!other.transform.root.CompareTag("Target")) return;
 
-		if(other.transform.root.TryGetComponent(out RagdollController raghu))
+		if (other.transform.root.TryGetComponent(out RagdollController raghu))
+		{
 			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
+			GameEvents.only.InvokePropHitsEnemy();
+		}
 	}
 }

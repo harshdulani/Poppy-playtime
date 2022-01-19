@@ -506,6 +506,7 @@ GameObject:
   - component: {fileID: 6878837065719345904}
   - component: {fileID: 7511023581964154292}
   - component: {fileID: 4265180119539284295}
+  - component: {fileID: 7035806007630138605}
   m_Layer: 0
   m_Name: Venom T-Pose
   m_TagString: Target
@@ -585,6 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPoppy: 0
+  isGiant: 0
   chest: {fileID: 1216720818255056263}
   rigidbodies:
   - {fileID: 1216720817147314571}
@@ -600,8 +602,13 @@ MonoBehaviour:
   - {fileID: 1216720817842772106}
   isRagdoll: 0
   isWaitingForPunch: 0
+  shouldTurnToGrey: 0
+  skin: {fileID: 0}
+  toChangeMatIndex: 0
+  deadColor: {r: 0, g: 0, b: 0, a: 0}
   punch1: {fileID: 8300000, guid: 717bbbc0d4f18cc4696041fa6c4b1bcd, type: 3}
   punch2: {fileID: 8300000, guid: 61b40c6e692ffdf4a89aba7ad5b71aca, type: 3}
+  giantStompForce: 0
 --- !u!114 &7511023581964154292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,9 +621,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09a7d1df444cda4e87497add58480d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasWeapon: 0
+  enterPatrolAreaRunning: 0
   myPatrolArea: 0
   waypoints:
   - {fileID: 0}
+  waypointChangeDistance: 0.5
   shouldPatrol: 1
 --- !u!82 &4265180119539284295
 AudioSource:
@@ -714,6 +724,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7035806007630138605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027676406610228295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b0a19ecd449334a869c06a5f30da41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbing: {fileID: 0}
+  controlAnimator: 0
+  myPatrolArea: 0
+  shouldPatrol: 0
 --- !u!1 &2201354059427111011
 GameObject:
   m_ObjectHideFlags: 0
