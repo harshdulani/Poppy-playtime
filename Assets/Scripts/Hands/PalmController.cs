@@ -42,21 +42,6 @@ public class PalmController : MonoBehaviour
 		_canBeAdopted = true;
 	}
 
-	private void OnTriggerEnter(Collider other)
-	{
-		if(!_canBeAdopted) return;
-		if(!other.CompareTag("Target")) return;
-		
-		//AudioManager play sound
-		if (!myHand.isLeftHand) return;
-	
-		if(HasTargetTransform()) return;
-		
-		SetCurrentTransform(other.transform);
-		myHand.HandReachTarget(other.transform);
-		_canBeAdopted = false;
-	}
-
 	private void EnablePunching()
 	{
 		myHand.StopPunching();
@@ -64,6 +49,10 @@ public class PalmController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
+		if (!GetCurrentTransform())
+		{
+			InputHandler.Only.AssignIdleState();
+		}
 		
 		myHand.HandReachTarget(GetCurrentTransform());
 
@@ -73,7 +62,7 @@ public class PalmController : MonoBehaviour
 		
 		Invoke(nameof(EnablePunching), punchWaitTime);
 		Invoke(nameof(ResetAdoptability), 0.5f);
-		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex ++ % HandController.Sounds.punch.Length], 1f);
+		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
 		
 		//this is for climber level
 		ShatterableParent.AddToPossibleShatterers(trans.root);
@@ -92,7 +81,22 @@ public class PalmController : MonoBehaviour
 	{
 		_canBeAdopted = true;
 	}
-
+	
+	private void OnTriggerEnter(Collider other)
+	{
+		if(!_canBeAdopted) return;
+		if(!other.CompareTag("Target")) return;
+		
+		//AudioManager play sound
+		if (!myHand.isLeftHand) return;
+	
+		if(HasTargetTransform()) return;
+		
+		SetCurrentTransform(other.transform);
+		myHand.HandReachTarget(other.transform);
+		_canBeAdopted = false;
+	}
+	
 	private static bool HasTargetTransform() => _lastPickedTarget;
 	private static Transform GetCurrentTransform() => _lastPickedTarget;
 	private static void SetCurrentTransform(Transform newT) => _lastPickedTarget = newT;

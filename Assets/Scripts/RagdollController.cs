@@ -95,6 +95,7 @@ public class RagdollController : MonoBehaviour
 		Invoke(nameof(GoKinematic), 4f);
 		
 		GameEvents.only.InvokeEnemyKill();
+		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
 
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";

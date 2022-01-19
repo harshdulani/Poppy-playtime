@@ -51,7 +51,8 @@ public class TapState : InputStateBase
 			if (!shat.IsInCurrentArea())
 				return;
 
-		raghu.PopScale();
+		if(raghu)
+			raghu.PopScale();
 		InputHandler.AssignNewState(new InTransitState(false, hit), false);
 	}
 

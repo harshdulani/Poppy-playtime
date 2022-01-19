@@ -92,7 +92,6 @@ public class ComboCanvasManager : MonoBehaviour
 		else
 		{
 			_timeLeft = countDownTime;
-			print("Here");
 			count += 1;
 			comboText.text = "Combo " + "x" + count;
 			StartCoroutine(PlayComboAnimation(comboAnimator,comboText));

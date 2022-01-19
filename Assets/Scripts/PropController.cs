@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using GameAnalyticsSDK.Setup;
 using UnityEngine;
 
 public class PropController : MonoBehaviour
@@ -145,12 +144,15 @@ public class PropController : MonoBehaviour
 
 			GameEvents.only.InvokeEnemyHitPlayer(transform);
 
-			var exploder = Instantiate(explosion, other.contacts[0].point,
-				Quaternion.LookRotation(other.contacts[0].normal));
+			if(explosion)
+			{
+				var exploder = Instantiate(explosion, other.contacts[0].point,
+					Quaternion.LookRotation(other.contacts[0].normal));
 
-			exploder.transform.localScale *= explosionScale;
-			
-			Destroy(exploder, 3f);
+				exploder.transform.localScale *= explosionScale;
+
+				Destroy(exploder, 3f);
+			}
 			transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));
 			return;
 		}

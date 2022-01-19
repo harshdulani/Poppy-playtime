@@ -32,6 +32,7 @@ public class HandController : MonoBehaviour
 	private static bool _isCarryingBody;
 
 	private AudioSource _gunshot;
+	private RagdollController _lastRaghu;
 	private Quaternion _palmInitLocalRot, _lastNormal;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving, _canGivePunch;
@@ -129,12 +130,12 @@ public class HandController : MonoBehaviour
 				_lastTarget = hit.transform;
 				_lastOffset = hit.point - hit.transform.position;
 				_lastNormal = Quaternion.LookRotation(-hit.normal);
-
+				_lastTarget.root.TryGetComponent(out _lastRaghu);
 				_initPosSet = true;
 				
 				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
 			}
-			
+
 			palm.position =
 				Vector3.MoveTowards(palm.position,
 				_lastTarget.position + _lastOffset,
@@ -362,9 +363,7 @@ public class HandController : MonoBehaviour
 		if (_lastTarget != car) return;
 		
 		_isCarryingBody = false;
-		ResetPalmParent();
-		ClearInitTargetPos();
-		InputHandler.Only.AssignReturnTransitState();
+		ClearStateInfo();
 	}
 	
 	private void OnEnterHitBox(Transform target)
@@ -377,13 +376,24 @@ public class HandController : MonoBehaviour
 	public void OnPropDestroyed()
 	{
 		_isCarryingBody = false;
-		ResetPalmParent();
-		ClearInitTargetPos();
-		InputHandler.Only.AssignReturnTransitState();
+		ClearStateInfo();
 	}
 	
 	private void OnPunchHit()
 	{
 		windLines.Stop();
+	}
+
+	public void InformAboutRagdollDeath(RagdollController ragdollController)
+	{
+		if (_lastRaghu != ragdollController) return;
+		ClearStateInfo();
+	}
+
+	private void ClearStateInfo()
+	{
+		ClearInitTargetPos();
+		ResetPalmParent();
+		InputHandler.Only.AssignReturnTransitState();
 	}
 }

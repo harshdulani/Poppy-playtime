@@ -3,11 +3,14 @@ using UnityEngine;
 public class HitBoxController : MonoBehaviour
 {
 	[SerializeField] private float attackDistance;
-	private bool _inHitBox, _inTransit;
-	
+	private Transform _inHitBox;
+	private bool _inTransit;
+
 	private void OnEnable()
 	{
 		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.only.propDestroyed += OnPropDestroyed;
+		
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
@@ -15,6 +18,8 @@ public class HitBoxController : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.punchHit -= OnPunchHit;
+		GameEvents.only.propDestroyed -= OnPropDestroyed;
+		
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
@@ -34,19 +39,24 @@ public class HitBoxController : MonoBehaviour
 		
 		GameEvents.only.InvokeEnterHitBox(other.transform);
 		InputHandler.Only.WaitForPunch(other.transform);
-		_inHitBox = true;
+		_inHitBox = other.transform;
 	}
 
 	private void ResetInHitBox()
 	{
-		_inHitBox = false;
+		_inHitBox = null;
 	}
 	
 	private void OnPunchHit()
 	{
 		Invoke(nameof(ResetInHitBox), 1f);
 	}
-	
+
+	private void OnPropDestroyed(Transform destroyed)
+	{
+		if(destroyed == _inHitBox)
+			ResetInHitBox();
+	}
 	
 	private void OnMoveToNextArea()
 	{
