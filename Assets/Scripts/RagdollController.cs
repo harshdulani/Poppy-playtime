@@ -8,7 +8,7 @@ public class RagdollController : MonoBehaviour
 	[SerializeField] private Rigidbody[] rigidbodies;
 	[HideInInspector] public bool isRagdoll, isWaitingForPunch;
 
-	[SerializeField] private bool shouldTurnToGrey;
+	[SerializeField] private bool shouldTurnToGrey, shouldMirror = true;
 	[SerializeField] private Renderer skin;
 	[SerializeField] private int toChangeMatIndex;
 	private Material _material;
@@ -56,7 +56,8 @@ public class RagdollController : MonoBehaviour
 		_audioSource = GetComponent<AudioSource>();
 		TryGetComponent(out _patroller);
 		
-		_anim.SetBool(IsMirrored, Random.value > 0.5f);
+		if(shouldMirror)
+			_anim.SetBool(IsMirrored, Random.value > 0.5f);
 
 		if (shouldTurnToGrey)
 			_material = skin.materials[toChangeMatIndex];

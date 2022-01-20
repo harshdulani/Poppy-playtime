@@ -18,8 +18,8 @@ public class HandController : MonoBehaviour
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[SerializeField] private WeaponType currentAttackType;
-	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker,  shield;
-	[SerializeField] private ParticleSystem fireExplosion;
+	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry;
+	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
 	
 	public static PlayerSoundController Sounds;
 	
@@ -29,7 +29,7 @@ public class HandController : MonoBehaviour
 	private float _appliedMoveSpeed, _appliedReturnSpeed;
 	private static bool _isCarryingBody;
 
-	private AudioSource _gunshot;
+	private AudioSource _gunshot, _splashAudioClip;
 	private Transform _lastTarget, _lastTargetRoot;
 	private static RagdollController _lastRaghu;
 	private Vector3 _palmInitLocalPos, _lastOffset;
@@ -43,6 +43,7 @@ public class HandController : MonoBehaviour
 	
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
+	private static readonly int IsHoldingPastryHash = Animator.StringToHash("isHoldingPastry");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
@@ -295,6 +296,11 @@ public class HandController : MonoBehaviour
 				_myAnimator.SetBool(IsHoldingHammerHash, true);
 				_rootAnimator.SetTrigger(IsHoldingShieldHash);
 				break;
+			case WeaponType.Pastry:
+				pastry.SetActive(true);
+				_myAnimator.SetTrigger(IsHoldingPastryHash);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
+				break;
 		}
 	}
 
@@ -334,6 +340,19 @@ public class HandController : MonoBehaviour
 		_isCarryingBody = false;
 	}
 	
+	public void InformAboutRagdollDeath(RagdollController ragdollController)
+	{
+		if (_lastRaghu != ragdollController) return;
+		ClearStateInfo();
+	}
+
+	private void ClearStateInfo()
+	{
+		ClearInitTargetPos();
+		ResetPalmParent();
+		InputHandler.Only.AssignReturnTransitState();
+	}
+	
 	public AimController GetAimController() => transform.root.GetComponent<AimController>();
 
 	private void OnGiantPickupCar(Transform car)
@@ -360,18 +379,10 @@ public class HandController : MonoBehaviour
 	private void OnPunchHit()
 	{
 		windLines.Stop();
-	}
-
-	public void InformAboutRagdollDeath(RagdollController ragdollController)
-	{
-		if (_lastRaghu != ragdollController) return;
-		ClearStateInfo();
-	}
-
-	private void ClearStateInfo()
-	{
-		ClearInitTargetPos();
-		ResetPalmParent();
-		InputHandler.Only.AssignReturnTransitState();
+		
+		if (currentAttackType != WeaponType.Pastry) return;
+		
+		pastrySplash.Play();
+		_splashAudioClip.Play();
 	}
 }

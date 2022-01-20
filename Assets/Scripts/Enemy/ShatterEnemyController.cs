@@ -5,7 +5,7 @@ public class ShatterEnemyController : MonoBehaviour
 	[SerializeField] private Transform climbing;
 	[SerializeField] private bool controlAnimator;
 	[SerializeField] private int myArea;
-	public bool shouldPatrol;
+	public bool shouldPatrol, hasClimbingTransform;
 
 	private RagdollController _ragdollController;
 	private Animator _anim;
@@ -46,6 +46,21 @@ public class ShatterEnemyController : MonoBehaviour
 			_anim.SetTrigger(Reached);
 	}
 
+	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
+
+	public void SetClimbingTransform(Transform newGuy)
+	{
+		if (!newGuy)
+		{
+			climbing = null;
+			hasClimbingTransform = false;
+			return;
+		}
+
+		climbing = newGuy;
+		hasClimbingTransform = true;
+	}
+	
 	private void OnShatteredTower(Transform shattered)
 	{
 		if(shattered != climbing) return;
@@ -73,6 +88,4 @@ public class ShatterEnemyController : MonoBehaviour
 		_anim.SetTrigger(StartClimbing);
 		_anim.applyRootMotion = true;
 	}
-	
-	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
 }
