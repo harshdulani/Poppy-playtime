@@ -59,6 +59,7 @@ public class ShatterEnemyController : MonoBehaviour
 		if(myArea > 0) return;
 
 		if (!controlAnimator) return;
+		
 		_anim.SetTrigger(StartClimbing);
 		_anim.applyRootMotion = true;
 	}
@@ -70,6 +71,7 @@ public class ShatterEnemyController : MonoBehaviour
 		
 		if (!controlAnimator) return;
 		_anim.SetTrigger(StartClimbing);
+		_anim.applyRootMotion = true;
 	}
 	
 	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;

@@ -26,8 +26,10 @@ public class TapState : InputStateBase
 		_aimer.SetReticleStatus(false);
 		
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetInputPosition());
-
-		if (!Physics.Raycast(ray, out var hit))
+		
+		//Debug.DrawRay(ray.origin, ray.direction * 50f, Color.black, 2f);
+		
+		if (!Physics.Raycast(ray, out var hit, 50f))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;

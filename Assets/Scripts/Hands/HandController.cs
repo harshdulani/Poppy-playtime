@@ -12,8 +12,8 @@ public class HandController : MonoBehaviour
 {
 	public bool isLeftHand;
 	public Transform palm;
+	[SerializeField] private Transform ragdollHoldingLocation, propHoldingLocation;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
-	[SerializeField] private float ragdollWfpDistance, propWfpDistance, carWfpDistance, enemyWfpHeight = -0.5f, carWfpHeight, propWfpHeight;
 
 	[SerializeField] private ParticleSystem windLines;
 	
@@ -27,13 +27,12 @@ public class HandController : MonoBehaviour
 	private Animator _myAnimator;
 	private static Animator _rootAnimator;
 	private static RopeController _rope;
-	private Transform _lastTarget;
 	private float _appliedMoveSpeed, _appliedReturnSpeed;
 	private static bool _isCarryingBody;
 
 	private AudioSource _gunshot;
-	private RagdollController _lastRaghu;
-	private Quaternion _palmInitLocalRot, _lastNormal;
+	private Transform _lastTarget, _lastTargetRoot;
+	private static RagdollController _lastRaghu;
 	private Vector3 _palmInitLocalPos, _lastOffset;
 	private bool _isHandMoving, _canGivePunch;
 
@@ -85,7 +84,6 @@ public class HandController : MonoBehaviour
 
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
-		_palmInitLocalRot = palm.localRotation;
 
 		if(isLeftHand)
 		{
@@ -118,19 +116,16 @@ public class HandController : MonoBehaviour
 				Vector3.MoveTowards(palm.localPosition,
 				Vector3.zero, 
 				returnSpeed * Time.deltaTime);
-
-			palm.localRotation =
-				Quaternion.Lerp(palm.localRotation, _palmInitLocalRot, _appliedReturnSpeed * Time.deltaTime);
 		}
 		else
 		{
 			if (!_initPosSet)
 			{
-				_targetInitPos = hit.transform.position;
 				_lastTarget = hit.transform;
-				_lastOffset = hit.point - hit.transform.position;
-				_lastNormal = Quaternion.LookRotation(-hit.normal);
-				_lastTarget.root.TryGetComponent(out _lastRaghu);
+				_lastTargetRoot = _lastTarget.root;
+				_lastTargetRoot.TryGetComponent(out _lastRaghu);
+				_targetInitPos = hit.transform.position;
+				_lastOffset = (hit.point - _lastTarget.position).normalized;
 				_initPosSet = true;
 				
 				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
@@ -138,11 +133,8 @@ public class HandController : MonoBehaviour
 
 			palm.position =
 				Vector3.MoveTowards(palm.position,
-				_lastTarget.position + _lastOffset,
+					_lastTarget.position + _lastOffset,
 				 _appliedMoveSpeed * Time.deltaTime);
-
-			palm.rotation = 
-				Quaternion.Lerp(palm.rotation, _lastNormal, _appliedMoveSpeed * 1.5f * Time.deltaTime);
 		}
 	}
 	
@@ -151,7 +143,6 @@ public class HandController : MonoBehaviour
 	public void HandReachTarget(Transform other)
 	{
 		if (_isCarryingBody) return;
-		
 		if(isLeftHand)
 		{
 			if (!InputHandler.Only.CanSwitchToTargetState()) return;
@@ -172,11 +163,13 @@ public class HandController : MonoBehaviour
 		else
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+			_targetInitPos.y = other.position.y;
 			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 			{
 				other.GetComponent<RagdollLimbController>().GetPunched((
 					(LevelFlowController.only.IsInGiantFight()
 						? LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - transform.position).normalized, punchForce);
+				
 			}
 			else
 			{
@@ -184,7 +177,8 @@ public class HandController : MonoBehaviour
 				
 				if(!other.root.TryGetComponent(out PropController prop))
 					prop = other.GetComponent<PropController>();
-
+				
+				
 				var direction = (LevelFlowController.only.IsInGiantFight() ? 
 					LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position;
 
@@ -194,6 +188,34 @@ public class HandController : MonoBehaviour
 		}
 
 		Vibration.Vibrate(15);
+	}
+	
+	public void WaitForPunch(Transform other)
+	{
+		if (!other) return;
+		
+		InputHandler.Only.StopCarryingBody();
+		
+		var root = other.root;
+
+		Vector3 difference;
+		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+		{
+			difference = ragdollHoldingLocation.position;
+			difference -= _lastRaghu.chest.transform.position;
+		}
+		else
+		{
+			difference = propHoldingLocation.position;
+			difference -= other.transform.position;
+		}
+		
+		root.transform.DOMove(root.position + difference, 0.2f);
+
+		_myAnimator.SetBool(IsPunching, true);
+		_canGivePunch = true;
+		_rope.ReturnHome();
+		windLines.Play();
 	}
 
 	public void HandReachHome()
@@ -277,48 +299,6 @@ public class HandController : MonoBehaviour
 		}
 	}
 
-	public void WaitForPunch(Transform other)
-	{
-		if (!other) return;
-		
-		InputHandler.Only.StopCarryingBody();
-		
-		var root = other.root;
-
-		var direction = (root.position - transform.root.position).normalized;
-
-		float distance, height;
-
-		switch (CurrentObjectCarriedType)
-		{
-			case CarriedObjectType.Ragdoll:
-				distance = ragdollWfpDistance;
-				height = enemyWfpHeight;
-				break;
-			case CarriedObjectType.Prop:
-				distance = propWfpDistance;
-				height = propWfpHeight;
-				break;
-			case CarriedObjectType.Car:
-				distance = carWfpDistance;
-				height = carWfpHeight;
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-		
-		var endValue = transform.root.position + direction * distance + transform.root.up * height;
-		
-		root.DOMove(endValue, 0.2f);
-		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
-			root.DORotateQuaternion(Quaternion.LookRotation(-direction), 0.2f);
-
-		_myAnimator.SetBool(IsPunching, true);
-		_canGivePunch = true;
-		_rope.ReturnHome();
-		windLines.Play();
-	}
-
 	public void GivePunch()
 	{
 		if (!_canGivePunch) return;
@@ -352,7 +332,6 @@ public class HandController : MonoBehaviour
 			palm.GetChild(2).parent = null;
 		
 		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
-		palm.DOLocalRotateQuaternion(_palmInitLocalRot, 0.2f).OnComplete(() => palm.localRotation =_palmInitLocalRot);
 		_isCarryingBody = false;
 	}
 	

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -51,6 +52,29 @@ public class LevelFlowController : MonoBehaviour
 		Vibration.Init();
 	}
 
+	private IEnumerator WaitBeforeMovingToNextArea()
+	{
+		//were waiting so that the wrist ctrler can return to arm
+
+		const float timer = 1f;
+		var elapsed = 0f;
+		const float intervals = 0.2f;
+		while (!InputHandler.Only.IsInIdleState())
+		{
+			elapsed += intervals;
+			yield return GameExtensions.GetWaiter(intervals);
+			if(timer < elapsed) break;
+		}
+
+		if (currentArea == enemiesInArea.Count - 1)
+			GameEvents.only.InvokeGameEnd();
+		else
+		{
+			GameEvents.only.InvokeMoveToNextArea();
+			InputHandler.Only.AssignDisabledState();
+		}
+	}
+
 	private void OnEnemyKilled()
 	{
 		enemiesKilledInCurrentArea++;
@@ -61,13 +85,7 @@ public class LevelFlowController : MonoBehaviour
 
 	private void MoveToNextArea()
 	{
-		if (currentArea == enemiesInArea.Count - 1)
-			GameEvents.only.InvokeGameEnd();
-		else
-		{
-			GameEvents.only.InvokeMoveToNextArea();
-			InputHandler.Only.AssignDisabledState();
-		}
+		StartCoroutine(WaitBeforeMovingToNextArea());
 	}
 
 	private void OnReachNextArea()

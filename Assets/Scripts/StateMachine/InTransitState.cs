@@ -28,8 +28,6 @@ public class InTransitState : InputStateBase
 		
 		if(GoHome)
 			LeftHand.MoveRopeEndTowards(EmptyHit, true);
-		else if(!_hit.collider) //if empty hit
-			InputHandler.Only.AssignReturnTransitState();
 		else
 			LeftHand.MoveRopeEndTowards(_hit);
 

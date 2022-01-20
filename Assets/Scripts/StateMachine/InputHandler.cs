@@ -72,6 +72,7 @@ public class InputHandler : MonoBehaviour
 	{ 
 		if(!_tappedToPlay) return;
 		
+		//print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -142,6 +143,7 @@ public class InputHandler : MonoBehaviour
 	}
 
 	public bool IsInDisabledState() => _leftHandState is DisabledState;
+	public bool IsInIdleState() => _leftHandState is IdleState;
 
 	public void WaitForPunch(Transform other)
 	{

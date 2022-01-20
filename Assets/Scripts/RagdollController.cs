@@ -104,7 +104,8 @@ public class RagdollController : MonoBehaviour
 		if (x)
 			x.OnDeath();
 
-		_material.DOColor(deadColor, 1f);
+		if(shouldTurnToGrey)
+			_material.DOColor(deadColor, 1f);
 		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
