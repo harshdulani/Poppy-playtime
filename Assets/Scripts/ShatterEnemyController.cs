@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class ShatterEnemyController : MonoBehaviour
 {
@@ -8,12 +7,11 @@ public class ShatterEnemyController : MonoBehaviour
 	private RagdollController _ragdollController;
 	
 	[SerializeField] private int myPatrolArea;
-	public bool shouldPatrol;
+	public bool shouldPatrol, hasClimbingTransform;
 	
 	private Animator _anim;
 	private static readonly int Reached = Animator.StringToHash("reached");
 
-	
 	private int _currentWayPoint;
 	private static readonly int StartClimbing = Animator.StringToHash("startClimbing");
 
@@ -76,5 +74,18 @@ public class ShatterEnemyController : MonoBehaviour
 		
 		if (!controlAnimator) return;
 		_anim.SetTrigger(StartClimbing);
+	}
+
+	public void SetClimbingTransform(Transform newGuy)
+	{
+		if (!newGuy)
+		{
+			climbing = null;
+			hasClimbingTransform = false;
+			return;
+		}
+
+		climbing = newGuy;
+		hasClimbingTransform = true;
 	}
 }

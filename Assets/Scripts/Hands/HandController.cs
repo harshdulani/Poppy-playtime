@@ -15,7 +15,8 @@ public enum TypesOfAttacks
 	Boot,
 	Heel,
 	Sneaker,
-	Shield
+	Shield,
+	Pastry
 }
 
 public class HandController : MonoBehaviour
@@ -35,9 +36,9 @@ public class HandController : MonoBehaviour
 	public static CarriedObjectType CurrentObjectCarriedType;
 
 	[SerializeField] private TypesOfAttacks currentAttackType;
-	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker,  shield;
-	[SerializeField] private ParticleSystem fireExplosion;
-	private AudioSource _gunshot; 
+	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry;
+	[SerializeField] private ParticleSystem fireExplosion,pastrySplash;
+	private AudioSource _gunshot,_splash; 
 	private static bool _isCarryingBody;
 
 	private Transform _lastTarget;
@@ -50,6 +51,7 @@ public class HandController : MonoBehaviour
 	
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
+	private static readonly int IsHoldingPastryHash = Animator.StringToHash("isHoldingPastry");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
@@ -94,42 +96,48 @@ public class HandController : MonoBehaviour
 		if (isLeftHand) return;
 
 		_gunshot = fireExplosion.GetComponent<AudioSource>();
+		_splash = fireExplosion.GetComponent<AudioSource>();
 		
 		switch (currentAttackType)
 		{
 			case TypesOfAttacks.Punch:
-				_myAnimator.SetBool(IsHoldingHammerHash, false);
+				_myAnimator.SetTrigger(IsUsingHandsHash);
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 			case TypesOfAttacks.Hammer:
 				hammer.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 				break;
 			case TypesOfAttacks.Gun:
 				gun.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
 				break;
 			case TypesOfAttacks.Boot:
 				boot.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case TypesOfAttacks.Heel:
 				heel.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case TypesOfAttacks.Sneaker:
 				sneaker.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case TypesOfAttacks.Shield:
 				shield.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(IsHoldingHammerHash);
 				_rootAnimator.SetTrigger(IsHoldingShieldHash);
+				break;
+			case TypesOfAttacks.Pastry:
+				pastry.SetActive(true);
+				_myAnimator.SetTrigger(IsHoldingPastryHash);
+				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 		}
 	}
@@ -359,5 +367,10 @@ public class HandController : MonoBehaviour
 	private void OnPunchHit()
 	{
 		windLines.Stop();
+		
+		if (currentAttackType != TypesOfAttacks.Pastry) return;
+		
+		pastrySplash.Play();
+		_splash.Play();
 	}
 }

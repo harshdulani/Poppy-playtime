@@ -41,4 +41,6 @@ public class Shatterable : MonoBehaviour
 		
 		_rb.AddExplosionForce(explosionForce, point, explosionRadius, 1f, ForceMode.Impulse);
 	}
+
+	public ShatterableParent GetShatterableParent() => _parent;
 }
