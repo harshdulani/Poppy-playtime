@@ -12,7 +12,8 @@ public enum WeaponType
 	Heel,
 	Gun,
 	Shield,
-	Sneaker
+	Sneaker,
+	Pastry
 }
 
 public class SkinLoader : MonoBehaviour
