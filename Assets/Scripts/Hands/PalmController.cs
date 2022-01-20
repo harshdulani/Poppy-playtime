@@ -15,7 +15,7 @@ public class PalmController : MonoBehaviour
 		if(myHand.isLeftHand)
 		{
 			GameEvents.only.propDestroyed += OnPropDestroyed;
-			GameEvents.only.giantPickupCar += OnPropDestroyed;
+			GameEvents.only.giantPickupProp += OnPropDestroyed;
 		}
 		else
 		{
@@ -28,7 +28,7 @@ public class PalmController : MonoBehaviour
 		if(myHand.isLeftHand)
 		{
 			GameEvents.only.propDestroyed -= OnPropDestroyed;
-			GameEvents.only.giantPickupCar -= OnPropDestroyed;
+			GameEvents.only.giantPickupProp -= OnPropDestroyed;
 		}
 		else
 		{

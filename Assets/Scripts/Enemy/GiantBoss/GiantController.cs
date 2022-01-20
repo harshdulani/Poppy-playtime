@@ -146,12 +146,18 @@ public class GiantController : MonoBehaviour
 				if(!item.CompareTag("Target")) continue;
 				
 				_grabbedTargetTransform = item.transform;
-				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetCarController);
 				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetPropController);
-				
+				if(_grabbedTargetPropController.hasBeenInteractedWith)
+				{
+					_grabbedTargetTransform = null;
+					_grabbedTargetPropController = null;
+					continue;
+				}
+					
+				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetCarController);				
 				_grabbedTargetTransform.tag = "EnemyAttack";
 
-				GameEvents.only.InvokeGiantPickupCar(_grabbedTargetTransform);
+				GameEvents.only.InvokeGiantPickupProp(_grabbedTargetTransform);
 				break;
 			}
 

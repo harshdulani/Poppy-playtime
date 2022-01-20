@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 //using TMPro;
 using UnityEngine;
@@ -56,7 +55,7 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) //only for right/punching hand
 			GameEvents.only.enterHitBox += OnEnterHitBox;
 		
-		GameEvents.only.giantPickupCar += OnGiantPickupCar;
+		GameEvents.only.giantPickupProp += OnGiantPickupCar;
 		GameEvents.only.punchHit += OnPunchHit;
 	}
 	
@@ -66,7 +65,7 @@ public class HandController : MonoBehaviour
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		
 		
-		GameEvents.only.giantPickupCar -= OnGiantPickupCar;
+		GameEvents.only.giantPickupProp -= OnGiantPickupCar;
 		GameEvents.only.punchHit -= OnPunchHit;
 	}
 	

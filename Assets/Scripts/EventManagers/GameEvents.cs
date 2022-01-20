@@ -21,7 +21,8 @@ public class GameEvents : MonoBehaviour
 	public Action punchHit;
 	
 	public Action propHitsEnemy;
-	public Action<Transform> propDestroyed, giantLanding, giantPickupCar;
+	public Action<Transform> propDestroyed, giantLanding;
+	public Action<Transform> giantPickupProp;
 	
 	public Action<Transform> rayfireShattered;
 	
@@ -45,7 +46,7 @@ public class GameEvents : MonoBehaviour
 
 	public void InvokeGiantLanding(Transform giant) => giantLanding?.Invoke(giant);
 	
-	public void InvokeGiantPickupCar(Transform car) => giantPickupCar?.Invoke(car);
+	public void InvokeGiantPickupProp(Transform car) => giantPickupProp?.Invoke(car);
 
 	public void InvokeRayfireShattered(Transform shattered) => rayfireShattered?.Invoke(shattered);
 	
