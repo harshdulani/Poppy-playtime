@@ -5,9 +5,9 @@ public class ShatterEnemyController : MonoBehaviour
 	[SerializeField] private Transform climbing;
 	[SerializeField] private bool controlAnimator;
 	[SerializeField] private int myArea;
-	public bool shouldPatrol, hasClimbingTransform;
+	public bool shouldPatrol;
 
-	private RagdollController _ragdollController;
+	private EnemyPatroller _patroller;
 	private Animator _anim;
 	
 	private static readonly int Reached = Animator.StringToHash("reached");
@@ -34,10 +34,7 @@ public class ShatterEnemyController : MonoBehaviour
 			_anim = GetComponent<Animator>();
 			_anim.applyRootMotion = false;
 		}
-		_ragdollController = GetComponent<RagdollController>();
-
-		if(!climbing)
-			Debug.LogWarning("climber not assigned to " + gameObject);
+		_patroller = GetComponent<EnemyPatroller>();
 	}
 	
 	public void ReachEnd()
@@ -48,24 +45,11 @@ public class ShatterEnemyController : MonoBehaviour
 
 	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
 
-	public void SetClimbingTransform(Transform newGuy)
-	{
-		if (!newGuy)
-		{
-			climbing = null;
-			hasClimbingTransform = false;
-			return;
-		}
-
-		climbing = newGuy;
-		hasClimbingTransform = true;
-	}
-	
 	private void OnShatteredTower(Transform shattered)
 	{
 		if(shattered != climbing) return;
 		
-		_ragdollController.GoRagdoll(-transform.forward + transform.up * 2f);
+		_patroller.ToggleAI(false);
 	}
 	
 	private void OnTapToPlay()

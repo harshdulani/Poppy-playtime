@@ -128,7 +128,7 @@ public class ParticleControlScript : MonoBehaviour
                         }
 
                         reached[i] = true;
-                        Vibration.Vibrate(10);
+                        //Vibration.Vibrate(10);
                     }
 
 

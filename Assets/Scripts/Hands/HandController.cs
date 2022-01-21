@@ -15,6 +15,7 @@ public class HandController : MonoBehaviour
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
 
 	[SerializeField] private ParticleSystem windLines;
+	[SerializeField] private AudioClip splashAudioClip;
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[SerializeField] private WeaponType currentAttackType;
@@ -29,7 +30,7 @@ public class HandController : MonoBehaviour
 	private float _appliedMoveSpeed, _appliedReturnSpeed;
 	private static bool _isCarryingBody;
 
-	private AudioSource _gunshot, _splashAudioClip;
+	private AudioSource _gunshot;
 	private Transform _lastTarget, _lastTargetRoot;
 	private static RagdollController _lastRaghu;
 	private Vector3 _palmInitLocalPos, _lastOffset;
@@ -151,9 +152,7 @@ public class HandController : MonoBehaviour
 			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
 				raghu.TellParent();
 			else if (CurrentObjectCarriedType == CarriedObjectType.Car)
-			{
 				other.GetComponent<CarController>().StopMoving();
-			}
 			if (other.TryGetComponent(out PropController prop))
 				prop.hasBeenInteractedWith = true;
 			
@@ -177,10 +176,9 @@ public class HandController : MonoBehaviour
 				
 				if(!other.root.TryGetComponent(out PropController prop))
 					prop = other.GetComponent<PropController>();
-				
-				
+
 				var direction = (LevelFlowController.only.IsInGiantFight() ? 
-					LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position;
+									LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position;
 
 				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
@@ -201,13 +199,12 @@ public class HandController : MonoBehaviour
 		Vector3 difference;
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 		{
-			difference = ragdollHoldingLocation.position;
-			difference -= _lastRaghu.chest.transform.position;
+			difference = ragdollHoldingLocation.position - _lastRaghu.chest.transform.position;
+			root.transform.DORotateQuaternion(Quaternion.LookRotation(transform.root.position - root.position) * Quaternion.Euler(Vector3.left * 20f), 0.2f);
 		}
 		else
 		{
-			difference = propHoldingLocation.position;
-			difference -= other.transform.position;
+			difference = propHoldingLocation.position - other.transform.position;
 		}
 		
 		root.transform.DOMove(root.position + difference, 0.2f);
@@ -383,6 +380,6 @@ public class HandController : MonoBehaviour
 		if (currentAttackType != WeaponType.Pastry) return;
 		
 		pastrySplash.Play();
-		_splashAudioClip.Play();
+		_gunshot.PlayOneShot(splashAudioClip);
 	}
 }

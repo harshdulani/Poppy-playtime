@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputHandler : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class InputHandler : MonoBehaviour
 
 	private void Start()
 	{
+		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
+		
 		if (testingUsingTouch) InputExtensions.IsUsingTouch = true;
 		else
 			InputExtensions.IsUsingTouch = Application.platform != RuntimePlatform.WindowsEditor &&
@@ -131,6 +134,12 @@ public class InputHandler : MonoBehaviour
 		_leftHandState?.OnEnter();
 	}
 
+	public void ShouldUseTapAndPunch(bool status)
+	{
+		isUsingTapAndPunch = status;
+		PlayerPrefs.SetInt("controlMechanic", status ? 1 : 0);
+	}
+	
 	private static void ChangeStateToDisabled()
 	{
 		AssignNewState(DisabledState);

@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,8 @@ public class AimController : MonoBehaviour
 	private bool _canPlayLockOnSound = true;
 	
 	private Tweener _punchHit;
-	
+	private bool _hasTarget;
+
 	private void OnEnable()
 	{
 		GameEvents.only.punchHit += OnPunchHit;
@@ -67,8 +69,12 @@ public class AimController : MonoBehaviour
 	public void FindTarget()
     {
 	    _reticle.color = findTargetColor;
-		Vibration.Vibrate(10);
-
+		if(!_hasTarget)
+		{
+			Vibration.Vibrate(10);
+			_hasTarget = true;
+		}
+		
 		if(!_canPlayLockOnSound) return;
 		_soundController.PlaySound(_soundController.findTarget, .6f);
 		_canPlayLockOnSound = false;
@@ -78,7 +84,13 @@ public class AimController : MonoBehaviour
     public void LoseTarget()
     {
 	    _reticle.color = missingTargetColor;
-    }
+		_hasTarget = false;
+	}
+
+	private IEnumerator TryVibrate()
+	{
+		yield break;
+	}
 
 	private void ResetLockOnSound()
 	{

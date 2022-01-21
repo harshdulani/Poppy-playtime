@@ -10,7 +10,8 @@ public class MainCanvasController : MonoBehaviour
 	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton;
 	[SerializeField] private TextMeshProUGUI levelText;
 	[SerializeField] private Image red;
-
+	[SerializeField] private Toggle abToggle;
+	
 	private bool _hasTapped, _hasLost;
 	
 	private void OnEnable()
@@ -27,10 +28,11 @@ public class MainCanvasController : MonoBehaviour
 
 	private void Start()
 	{
-		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo");
+		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo", 1);
+		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
 		
 		if(GAScript.Instance)
-			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo").ToString());
+			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
 	}
 
 	private void Update()
@@ -62,9 +64,9 @@ public class MainCanvasController : MonoBehaviour
 	public void NextLevel()
 	{
 		//AudioManager.instance.Play("button");
-		if (PlayerPrefs.GetInt("levelNo") < SceneManager.sceneCountInBuildSettings - 1)
+		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
 		{
-			var x = PlayerPrefs.GetInt("levelNo") + 1;
+			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
 			SceneManager.LoadScene(x);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 		}
@@ -74,10 +76,15 @@ public class MainCanvasController : MonoBehaviour
 			SceneManager.LoadScene(x);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 		}
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo") + 1);
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
+	}
+
+	public void ABToggle(bool status)
+	{
+		InputHandler.Only.ShouldUseTapAndPunch(status);
 	}
 
 	private void OnEnemyReachPlayer()
