@@ -1,7 +1,11 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class MainMenuScript : MonoBehaviour
 {
+	public TextMeshProUGUI text;
+	
     private void Start()
     {
         if (!PlayerPrefs.HasKey("lastBuildIndex"))
@@ -11,7 +15,13 @@ public class MainMenuScript : MonoBehaviour
         }
 
         int x = PlayerPrefs.GetInt("lastBuildIndex", 1);
+		text.text = x.ToString();
+		StartCoroutine(pol(x));
+	}
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(x);
-    }
+	IEnumerator pol(int x)
+	{
+		yield return GameExtensions.GetWaiter(5f);
+		UnityEngine.SceneManagement.SceneManager.LoadScene(x);
+	}
 }
