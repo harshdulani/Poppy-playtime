@@ -5,7 +5,7 @@ public class RagdollLimbController : MonoBehaviour
 {
 	private RagdollController _parent;
 	private HostageController _hostage;
-
+	
 	private Rigidbody _rb;
 	
 	private void Start()
@@ -20,6 +20,8 @@ public class RagdollLimbController : MonoBehaviour
 	{
 		_parent.HoldInAir();
 	}
+
+	public void DisableRagdolling() => _parent.isAttackerSoCantRagdoll = true;
 	
 	public void GetPunched(Vector3 direction, float punchForce)
 	{
@@ -58,6 +60,7 @@ public class RagdollLimbController : MonoBehaviour
 		var direction = other.transform.position - transform.position;
 		if (_rb.velocity.sqrMagnitude < 4f)
 		{
+			if(_parent.isAttackerSoCantRagdoll) return;
 			GetPunched(-direction, direction.magnitude);
 			return;
 		}

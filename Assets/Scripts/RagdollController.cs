@@ -6,7 +6,7 @@ public class RagdollController : MonoBehaviour
 	public bool isPoppy, isGiant;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
-	[HideInInspector] public bool isRagdoll, isWaitingForPunch;
+	[HideInInspector] public bool isRagdoll, isWaitingForPunch, isAttackerSoCantRagdoll;
 
 	[SerializeField] private bool shouldTurnToGrey, shouldMirror = true;
 	[SerializeField] private Renderer skin;
@@ -82,6 +82,7 @@ public class RagdollController : MonoBehaviour
 	public void GoRagdoll(Vector3 direction)
 	{
 		if(isRagdoll) return;
+		if(isAttackerSoCantRagdoll) return;
 		
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;

@@ -15,9 +15,6 @@ public class MainCanvasController : MonoBehaviour
 	
 	private bool _hasTapped, _hasLost;
 	
-	private TextMeshProUGUI _text;
-	private string _testString;
-	
 	private void OnEnable()
 	{
 		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
@@ -34,20 +31,9 @@ public class MainCanvasController : MonoBehaviour
 	{
 		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo", 1);
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
-	
-		_text = GameObject.FindGameObjectWithTag("AimCanvas").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-
-		StartCoroutine(Looper());
 
 		/*if(GAScript.Instance)
 			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());*/
-	}
-
-	private IEnumerator Looper()
-	{
-		yield return new WaitForSeconds(3f);
-		_text.text = "change scene " + Random.Range(0,1f);
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 
 	private void Update()
@@ -78,13 +64,6 @@ public class MainCanvasController : MonoBehaviour
 	
 	public void NextLevel()
 	{
-		//AudioManager.instance.Play("button");
-		_testString += $"level {PlayerPrefs.GetInt("levelNo", 1)}";
-		_text.text = _testString;
-		
-		_testString += $"\ncount {SceneManager.sceneCountInBuildSettings}";
-		_text.text = _testString;
-		
 		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
@@ -99,14 +78,8 @@ public class MainCanvasController : MonoBehaviour
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
-		_testString += $"\n khatam";
-		_text.text = _testString;
-		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
-		
-		_testString += $"\n finish";
-		_text.text = _testString;
 	}
 
 	public void ABToggle(bool status)

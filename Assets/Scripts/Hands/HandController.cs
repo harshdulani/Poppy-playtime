@@ -51,6 +51,10 @@ public class HandController : MonoBehaviour
 	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
 	private static readonly int Punch = Animator.StringToHash("Punch");
 	private static readonly int ChangeWeapon = Animator.StringToHash("changeWeapon");
+	
+	private static readonly int OpenFingers = Animator.StringToHash("openFingers");
+	private static readonly int CloseFingers = Animator.StringToHash("closeFingers");
+	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
 
 	private void OnEnable()
 	{
@@ -260,42 +264,42 @@ public class HandController : MonoBehaviour
 		switch (currentAttackType)
 		{
 			case WeaponType.Punch:
-				_myAnimator.SetBool(IsHoldingHammerHash, false);
+				_myAnimator.SetTrigger(OpenAndCloseFingers);
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 			case WeaponType.Hammer:
 				hammer.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingHammerHash);
 				break;
 			case WeaponType.Gun:
 				gun.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
 				break;
 			case WeaponType.Boot:
 				boot.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case WeaponType.Heel:
 				heel.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case WeaponType.Sneaker:
 				sneaker.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
 			case WeaponType.Shield:
 				shield.SetActive(true);
-				_myAnimator.SetBool(IsHoldingHammerHash, true);
+				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingShieldHash);
 				break;
 			case WeaponType.Pastry:
 				pastry.SetActive(true);
-				_myAnimator.SetTrigger(IsHoldingPastryHash);
+				_myAnimator.SetTrigger(OpenFingers);
 				_rootAnimator.SetTrigger(IsUsingHandsHash);
 				break;
 		}
