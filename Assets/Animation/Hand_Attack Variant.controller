@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Punch
+    m_ConditionEvent: attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8121269325823517657}
@@ -158,7 +158,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Punch
+    m_ConditionEvent: attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3443424539325414983}
@@ -200,22 +200,22 @@ AnimatorStateMachine:
     m_Position: {x: 720, y: -260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1342868218445783730}
-    m_Position: {x: 1010, y: -60, z: 0}
+    m_Position: {x: 1020, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6633733177716532536}
-    m_Position: {x: 710, y: -60, z: 0}
+    m_Position: {x: 720, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8121269325823517657}
-    m_Position: {x: 1010, y: 30, z: 0}
+    m_Position: {x: 1020, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1026760814400683414}
-    m_Position: {x: 710, y: 30, z: 0}
+    m_Position: {x: 720, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 256197059187141203}
-    m_Position: {x: 1010, y: 110, z: 0}
+    m_Position: {x: 1020, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5627170503008245356}
-    m_Position: {x: 710, y: 110, z: 0}
+    m_Position: {x: 720, y: 70, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -459,7 +459,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Punch
+    m_ConditionEvent: attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 256197059187141203}
@@ -558,48 +558,48 @@ AnimatorController:
   m_Name: Hand_Attack Variant
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Punch
+  - m_Name: attack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isHoldingHammer
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isUsingHands
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isHoldingGun
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isHoldingFootwear
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: isHoldingShield
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: changeWeapon
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -649,7 +649,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Punch
+    m_ConditionEvent: attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1342868218445783730}
@@ -917,7 +917,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Punch
+    m_ConditionEvent: attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -391158793009540445}

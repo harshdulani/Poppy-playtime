@@ -52,6 +52,10 @@ public class PalmController : MonoBehaviour
 		if (!GetCurrentTransform())
 		{
 			InputHandler.Only.AssignIdleState();
+			
+			Invoke(nameof(EnablePunching), punchWaitTime);
+			Invoke(nameof(ResetAdoptability), 0.5f);
+			return;
 		}
 		
 		myHand.HandReachTarget(GetCurrentTransform());

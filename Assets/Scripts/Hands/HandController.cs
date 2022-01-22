@@ -15,7 +15,7 @@ public class HandController : MonoBehaviour
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
 
 	[SerializeField] private ParticleSystem windLines;
-	[SerializeField] private AudioClip splashAudioClip;
+	[SerializeField] private AudioClip splashAudioClip, gunshotAudioClip;
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[SerializeField] private WeaponType currentAttackType;
@@ -23,17 +23,17 @@ public class HandController : MonoBehaviour
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
 	
 	public static PlayerSoundController Sounds;
-	
+
 	private Animator _myAnimator;
 	private static Animator _rootAnimator;
 	private static RopeController _rope;
 	private float _appliedMoveSpeed, _appliedReturnSpeed;
 	private static bool _isCarryingBody;
 
-	private AudioSource _gunshot;
+	private AudioSource _audio;
 	private Transform _lastTarget, _lastTargetRoot;
 	private static RagdollController _lastRaghu;
-	private Vector3 _palmInitLocalPos, _lastOffset;
+	private Vector3 _palmInitLocalPos;
 	private bool _isHandMoving, _canGivePunch;
 
 	private static Vector3 _targetInitPos;
@@ -42,19 +42,18 @@ public class HandController : MonoBehaviour
 	//private TextMeshProUGUI _text;
 	//private string _testString;
 	
-	private static readonly int IsPunching = Animator.StringToHash("isPunching");
+	private static readonly int Attack = Animator.StringToHash("attack");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
-	private static readonly int IsHoldingPastryHash = Animator.StringToHash("isHoldingPastry");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
 	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
-	private static readonly int Punch = Animator.StringToHash("Punch");
 	private static readonly int ChangeWeapon = Animator.StringToHash("changeWeapon");
 	
 	private static readonly int OpenFingers = Animator.StringToHash("openFingers");
 	private static readonly int CloseFingers = Animator.StringToHash("closeFingers");
 	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
+	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 
 	private void OnEnable()
 	{
@@ -86,7 +85,7 @@ public class HandController : MonoBehaviour
 			_rootAnimator = transform.root.GetComponent<Animator>();
 		
 		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
-
+		
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 
@@ -98,7 +97,7 @@ public class HandController : MonoBehaviour
 		
 		if (isLeftHand) return;
 
-		_gunshot = fireExplosion.GetComponent<AudioSource>();
+		_audio = GetComponent<AudioSource>();
 
 		UpdateEquippedSkin();
 
@@ -130,7 +129,6 @@ public class HandController : MonoBehaviour
 				_lastTargetRoot = _lastTarget.root;
 				_lastTargetRoot.TryGetComponent(out _lastRaghu);
 				_targetInitPos = hit.transform.position;
-				_lastOffset = (hit.point - _lastTarget.position).normalized;
 				_initPosSet = true;
 				
 				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
@@ -138,7 +136,7 @@ public class HandController : MonoBehaviour
 
 			palm.position =
 				Vector3.MoveTowards(palm.position,
-					_lastTarget.position + _lastOffset,
+					_lastTarget.position,
 				 _appliedMoveSpeed * Time.deltaTime);
 		}
 	}
@@ -181,8 +179,12 @@ public class HandController : MonoBehaviour
 				if(!other.root.TryGetComponent(out PropController prop))
 					prop = other.GetComponent<PropController>();
 
-				var direction = (LevelFlowController.only.IsInGiantFight() ? 
-									LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - other.root.position;
+				var direction =
+					(prop
+						? _targetInitPos
+						: LevelFlowController.only.IsInGiantFight()
+							? LevelFlowController.only.GetGiant().GetBoundsCenter()
+							: _targetInitPos) - other.root.position;
 
 				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
@@ -197,7 +199,7 @@ public class HandController : MonoBehaviour
 		if (!other) return;
 		
 		InputHandler.Only.StopCarryingBody();
-		
+
 		var root = other.root;
 
 		Vector3 difference;
@@ -310,11 +312,11 @@ public class HandController : MonoBehaviour
 		if (!_canGivePunch) return;
 		
 		_canGivePunch = false;
-		_rootAnimator.SetTrigger(Punch);
+		_rootAnimator.SetTrigger(Attack);
 		if(currentAttackType == WeaponType.Gun)
 		{
 			fireExplosion.Play();
-			_gunshot.Play();
+			_audio.PlayOneShot(gunshotAudioClip);
 		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 	}
@@ -384,6 +386,6 @@ public class HandController : MonoBehaviour
 		if (currentAttackType != WeaponType.Pastry) return;
 		
 		pastrySplash.Play();
-		_gunshot.PlayOneShot(splashAudioClip);
+		_audio.PlayOneShot(splashAudioClip);
 	}
 }

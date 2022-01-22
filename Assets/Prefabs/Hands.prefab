@@ -1460,6 +1460,7 @@ MonoBehaviour:
   carPunchForce: 0
   windLines: {fileID: 4561808305841353675}
   splashAudioClip: {fileID: 0}
+  gunshotAudioClip: {fileID: 0}
   currentAttackType: 0
   hammer: {fileID: 0}
   gun: {fileID: 0}
@@ -1601,6 +1602,7 @@ GameObject:
   - component: {fileID: 3317249784432058751}
   - component: {fileID: 8332434888978194876}
   - component: {fileID: 2128689352}
+  - component: {fileID: 8643994066430194829}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Hand
@@ -1667,6 +1669,7 @@ MonoBehaviour:
   carPunchForce: 0
   windLines: {fileID: 4561808305841353675}
   splashAudioClip: {fileID: 8300000, guid: 82654767ef0f1f949ba78c6d7d67b24f, type: 3}
+  gunshotAudioClip: {fileID: 8300000, guid: 64fb9477894fa2e4a997518fbb1c2f15, type: 3}
   currentAttackType: 1
   hammer: {fileID: 106136970503531546}
   gun: {fileID: 4502882612041721255}
@@ -1690,6 +1693,102 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: -0.1381947, y: 0.08650849, z: 0.08748537}
   m_Center: {x: -7.8674967e-10, y: 0.06593235, z: -0.037763413}
+--- !u!82 &8643994066430194829
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8332434888978194879}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1995744372498255035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2035,6 +2134,22 @@ PrefabInstance:
     - target: {fileID: 1775148699927193152, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
       propertyPath: m_PlayOnAwake
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775148699949274286, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775148699949274286, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775148699949329682, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775148699949329682, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8584241499430699383, guid: 6ace65c25c861ab4a9c2caa119c98b39, type: 3}
       propertyPath: m_RootOrder

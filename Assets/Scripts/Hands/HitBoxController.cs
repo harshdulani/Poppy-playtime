@@ -3,8 +3,8 @@ using UnityEngine;
 public class HitBoxController : MonoBehaviour
 {
 	[SerializeField] private float attackDistance;
-	private RagdollLimbController _waitingForPunch;
-	private Transform _prop;
+	[SerializeField] private RagdollLimbController _waitingForPunch;
+	[SerializeField] private Transform _prop;
 	private bool _inTransit;
 
 	private void OnEnable()
@@ -28,29 +28,33 @@ public class HitBoxController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if(_inTransit) return;
+		if(_prop) return;
 		if(!other.CompareTag("Target")) return;
 
-		//if its an enemy who isnt waiting to be punched, punch me and kill me
+		//if its another enemy who isnt waiting to be punched, punch me and kill me
 		if(other.transform.TryGetComponent(out RagdollLimbController raghu) && !raghu.IsRaghuWaitingForPunch())
 		{
 			raghu.DisableRagdolling();
 
 			raghu.Attack(transform.position + transform.root.forward.normalized * attackDistance);
+			
 			//if youre going to attack, knock out the guy whos waiting for punch/explode the prop
 			if (_waitingForPunch)
 				_waitingForPunch.GetPunched(Vector3.down, 5f);
-			else if(_prop)
-				if(_prop.TryGetComponent(out PropController prop))
-					prop.Explode();
+
+			if (!_prop) return;
+			if (!_prop.TryGetComponent(out PropController prop)) return;
 			
+			prop.Explode();
+
 			return;
 		}
-		
-		//if there is already
 
-		GameEvents.only.InvokeEnterHitBox(other.transform);
-		InputHandler.Only.WaitForPunch(other.transform);
-		other.transform.TryGetComponent(out _waitingForPunch);
+		_prop = other.transform;
+		_prop.TryGetComponent(out _waitingForPunch);
+		
+		GameEvents.only.InvokeEnterHitBox(_prop);
+		InputHandler.Only.WaitForPunch(_prop);
 	}
 
 	private void ResetInHitBox()

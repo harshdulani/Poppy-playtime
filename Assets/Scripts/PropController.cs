@@ -132,7 +132,7 @@ public class PropController : MonoBehaviour
 	{
 		if(!_inHitBox) return;
 
-		_inHitBox = true;
+		_inHitBox = false;
 	}
 	
 	private void OnCollisionEnter(Collision other)

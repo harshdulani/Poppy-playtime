@@ -55,6 +55,8 @@ public class TapState : InputStateBase
 
 		if(raghu)
 			raghu.PopScale();
+		
+		Print(hit.collider.gameObject);
 		InputHandler.AssignNewState(new InTransitState(false, hit), false);
 	}
 
