@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
+	private Collider _collider;
 	private SplineFollower _spline;
 
 	private bool _isSubscribed;
@@ -24,6 +25,7 @@ public class MovementController : MonoBehaviour
 	private void Start()
 	{
 		_spline = GetComponent<SplineFollower>();
+		_collider = GetComponent<Collider>();
 		
 		if(_spline.spline) return;
 		
@@ -38,12 +40,14 @@ public class MovementController : MonoBehaviour
 	private void StartFollowing()
 	{
 		_spline.follow = true;
+		_collider.enabled = false;
 		PlayerSoundController.only.PlayFootSteps();
 	}
 
 	public void StopFollowing()
 	{
 		_spline.follow = false;
+		_collider.enabled = true;
 		InputHandler.Only.AssignIdleState();
 	}
 }

@@ -59,6 +59,11 @@ public class SkinLoader : MonoBehaviour
 		claimButton.interactable = false;
 	}
 
+	private void Update()
+	{
+		if (Input.GetKey(KeyCode.A)) ShowPanel();
+	}
+
 	private void Initialise()
 	{
 		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlocked", 1);
@@ -85,7 +90,7 @@ public class SkinLoader : MonoBehaviour
 		return coloredWeaponSprites[index];
 	}
 
-	public WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
+	public static WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
 
 	public void UpdateSkinInUse(int currentSkin)
 	{
@@ -100,7 +105,10 @@ public class SkinLoader : MonoBehaviour
 	public void Skip()
 	{
 		loaderPanel.SetActive(false);
-		_currentSkinBeingUnlocked++;
+		
+		//this value is being set in resetloader
+		if(_currentSkinBeingUnlocked < coloredWeaponSprites.Length - 1)
+			_currentSkinBeingUnlocked++;
 		//play animatn
 		ResetLoader();
 		
@@ -109,17 +117,24 @@ public class SkinLoader : MonoBehaviour
 
 	public void Claim()
 	{
-		_currentSkinInUse++;
-		_currentSkinBeingUnlocked++;
+		if(_currentSkinInUse <= coloredWeaponSprites.Length - 1)
+		{
+			_currentSkinInUse++;
+			PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
+		}
+		
+		if(_currentSkinBeingUnlocked < coloredWeaponSprites.Length - 1)
+		{
+			_currentSkinBeingUnlocked++;
+			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+		}
+		
 		_currentSkinPercentageUnlocked = 0f;
+		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
 		//confetti
 		
 		loaderPanel.SetActive(false);
-		
-		PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
-		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
-		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-		
+
 		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
 	}
 
@@ -166,8 +181,13 @@ public class SkinLoader : MonoBehaviour
 		//confetti particle fx for complete loader
 	}
 
-	public bool ShouldShowNextLevel() => _currentSkinPercentageUnlocked < 0.99f;
-	
+	public bool ShouldShowNextLevel()
+	{
+		//we return this value becuase this is called before show panel is called and hence its value isnt updated 
+		//so 0.8f is the value when the bar is about to reach 100 %
+		return _currentSkinPercentageUnlocked < 0.79f;
+	}
+
 	private void OnGameEnd()
 	{
 		if(_currentSkinBeingUnlocked >= Enum.GetNames(typeof(WeaponType)).Length) return;

@@ -24,6 +24,7 @@ public class GiantController : MonoBehaviour
 	
 	[SerializeField] private GameObject trailPrefab;
 	[SerializeField] private GameObject smokeEffectOnLand;
+	[SerializeField] private AudioClip landing, roar, propPull;
 	
 	private Transform _player, _grabbedTargetTransform;
 	private CarController _grabbedTargetCarController;
@@ -118,6 +119,7 @@ public class GiantController : MonoBehaviour
 		while (!isDead)
 		{
 			_anim.SetTrigger(Grab);
+			_audioSource.PlayOneShot(roar);
 			_isAttacking = true;
 
 			//grab animation calls get car on animation -> grab vehicle -> attack anim -> throws car
@@ -158,6 +160,7 @@ public class GiantController : MonoBehaviour
 				_grabbedTargetTransform.tag = "EnemyAttack";
 
 				GameEvents.only.InvokeGiantPickupProp(_grabbedTargetTransform);
+				_audioSource.PlayOneShot(propPull);
 				break;
 			}
 
@@ -212,13 +215,13 @@ public class GiantController : MonoBehaviour
 
 	public void ScreenShakeOnAnimation()
 	{
-		Vibration.Vibrate(20);
 		CameraController.only.ScreenShake(2f);
-
+		_audioSource.PlayOneShot(landing);
 		smokeEffectOnLand.SetActive(true);
 		
 		GameEvents.only.InvokeGiantLanding(transform);
 		StartCoroutine(AttackCycle());
+		Vibration.Vibrate(20);
 	}
 
 	public void GetHit(Transform hitter)

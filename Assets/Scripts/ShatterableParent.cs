@@ -32,7 +32,7 @@ public class ShatterableParent : MonoBehaviour
 	public void ShatterTheShatterables()
 	{
 		if(shouldOnlyBeShatteredByLastEnemy)
-			if(!LevelFlowController.only.IsThisLastEnemyOfThisArea()) return;
+			if(!LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 		
 		GameEvents.only.InvokeRayfireShattered(transform);
 

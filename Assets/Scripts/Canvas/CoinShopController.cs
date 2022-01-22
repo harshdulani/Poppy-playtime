@@ -14,7 +14,7 @@ public class CoinShopController : MonoBehaviour
 
 	[Header("Coin Particle Effect"), SerializeField] private TextMeshProUGUI coinText;
 	[SerializeField] private RectTransform coinHolder;
-	[SerializeField] private ParticleControlScript coinParticles; 
+	[SerializeField] private ParticleControlScript coinParticles;
 	[SerializeField] private int coinIncreaseCount;
 
 	private Animation _anim;
@@ -102,7 +102,7 @@ public class CoinShopController : MonoBehaviour
 		
 		if(_currentSkin < skinCosts.Length - 1)
 		{
-			skinName.text = SkinLoader.only.GetSkinName(_currentSkin + 1).ToString();
+			skinName.text = SkinLoader.GetSkinName(_currentSkin + 1).ToString();
 			skinCostText.text = skinCosts[_currentSkin + 1].ToString();
 			skinButton.interactable = CoinCount >= skinCosts[_currentSkin + 1];
 		}
@@ -177,6 +177,10 @@ public class CoinShopController : MonoBehaviour
 		seq.Insert(1.5f, DOTween.To(() => _coinCount, value => _coinCount = value, _coinCount + coinIncreaseCount, 3f).SetEase(Ease.OutQuart).OnUpdate(UpdateCoinText));
 		seq.InsertCallback(1.5f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
-		seq.AppendCallback(() => _coinCount += coinIncreaseCount);
+		seq.AppendCallback(() =>
+		{
+			AudioManager.instance.Play("CoinCollect");
+			_coinCount += coinIncreaseCount;
+		});
 	}
 }

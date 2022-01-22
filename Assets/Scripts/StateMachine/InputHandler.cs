@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InputHandler : MonoBehaviour
 {
@@ -69,7 +68,6 @@ public class InputHandler : MonoBehaviour
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
-		
 		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
 	}
 

@@ -1,11 +1,7 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class MainMenuScript : MonoBehaviour
 {
-	public TextMeshProUGUI text;
-	
     private void Start()
     {
         if (!PlayerPrefs.HasKey("lastBuildIndex"))
@@ -14,9 +10,6 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("levelNo", 1);
         }
 
-        int x = PlayerPrefs.GetInt("lastBuildIndex", 1);
-		text.text = x.ToString();
-		UnityEngine.SceneManagement.SceneManager.LoadScene(x);
+		UnityEngine.SceneManagement.SceneManager.LoadScene(PlayerPrefs.GetInt("lastBuildIndex", 1));
 	}
-
 }

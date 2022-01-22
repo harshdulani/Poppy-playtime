@@ -254,7 +254,7 @@ public class HandController : MonoBehaviour
 
 	public void UpdateEquippedSkin(bool initialising = true)
 	{
-		currentAttackType = SkinLoader.only.GetSkinName();
+		currentAttackType = SkinLoader.GetSkinName();
 		for (var i = 1; i < hammer.transform.parent.childCount; i++)
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
 
