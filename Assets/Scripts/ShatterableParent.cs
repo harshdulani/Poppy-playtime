@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class ShatterableParent : MonoBehaviour
 {
-	public bool isShattered, shouldUnparent;
+	public bool isShattered, shouldUnparent, shouldOnlyBeShatteredByLastEnemy;
 	[SerializeField] private Shatterable[] theShatterables;
 	[SerializeField] private MeshRenderer overlapCube;
 
 	private static List<Transform> _possibleShatterers = new List<Transform>();
 	
-	[SerializeField] private float explosionRadius, explosionForce;
 	[SerializeField] private bool showOverlapBoxDebug;
 
 	private void OnEnable()
@@ -30,16 +29,19 @@ public class ShatterableParent : MonoBehaviour
 		Gizmos.DrawCube(overlapCube.bounds.center, overlapCube.bounds.extents * 2);
 	}
 	
-	public void ShatterTheShatterables(Vector3 point)
+	public void ShatterTheShatterables()
 	{
+		if(shouldOnlyBeShatteredByLastEnemy)
+			if(!LevelFlowController.only.IsThisLastEnemyOfThisArea()) return;
+		
 		GameEvents.only.InvokeRayfireShattered(transform);
 
 		foreach (var shatterable in theShatterables)
-			shatterable.Shatter(point, explosionForce, explosionRadius);
+			shatterable.Shatter();
 		
-		foreach (var collider in Physics.OverlapBox(overlapCube.bounds.center, overlapCube.bounds.extents * 2, overlapCube.transform.rotation))
+		foreach (var collider in Physics.OverlapBox(overlapCube.bounds.center, overlapCube.bounds.extents, overlapCube.transform.rotation))
 			if (collider.transform.root.TryGetComponent(out RagdollController raghu))
-				raghu.GoRagdoll(collider.transform.position - point);
+				raghu.GoRagdoll(Vector3.up);
 	}
 
 	private void OnPunchHit()

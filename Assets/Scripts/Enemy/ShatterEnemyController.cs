@@ -53,7 +53,8 @@ public class ShatterEnemyController : MonoBehaviour
 		if(shattered != climbing) return;
 		
 		if(!_hasCrossed)
-			_patroller.ToggleAI(false);
+			if(_patroller)
+				_patroller.ToggleAI(false);
 	}
 	
 	private void OnTapToPlay()

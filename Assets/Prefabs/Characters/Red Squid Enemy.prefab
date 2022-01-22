@@ -125,7 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &110872861548003177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 1
 --- !u!114 &1692230335920858794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,7 +493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &5888398133820382085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,7 +1020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &359875096349169882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1162,7 +1158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &8588503504243654218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,7 +1339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &379721898176282250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1800,7 +1794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &6249873665230031276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,6 +1894,7 @@ MonoBehaviour:
   - {fileID: 8588503504243654215}
   isRagdoll: 0
   isWaitingForPunch: 0
+  isAttackerSoCantRagdoll: 0
   shouldTurnToGrey: 0
   shouldMirror: 1
   skin: {fileID: 0}
@@ -1923,8 +1917,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbing: {fileID: 0}
   controlAnimator: 0
-  myPatrolArea: 0
   shouldPatrol: 0
+  myArea: 0
 --- !u!82 &5992490082060135434
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2172,7 +2166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &6604001204524504555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2310,7 +2303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &7092691513659219625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2786,7 +2778,6 @@ GameObject:
   - component: {fileID: 9150938131615910383}
   - component: {fileID: 9150938131615910387}
   - component: {fileID: 9150938131615910386}
-  - component: {fileID: 4328545557852555461}
   m_Layer: 0
   m_Name: mixamorig:LeftLeg
   m_TagString: Target
@@ -2898,7 +2889,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 1
 --- !u!114 &9150938131615910386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2909,18 +2899,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 358cd2083517e7d4587c70aaa6a8f1d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4328545557852555461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9150938131615910382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d7a7344e21acdb4283b0a66ad363434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9162053892518937027
@@ -3048,7 +3026,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446cadbcd94e86144a2f6576caac57ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldCheckForFloor: 0
 --- !u!114 &8585910852069602801
 MonoBehaviour:
   m_ObjectHideFlags: 0

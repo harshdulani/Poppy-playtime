@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2259501477586638716}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1176,6 +1176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isShattered: 0
   shouldUnparent: 1
+  shouldOnlyBeShatteredByLastEnemy: 0
   theShatterables:
   - {fileID: 8737829913597490690}
   - {fileID: 8737829912540868634}
@@ -1192,8 +1193,6 @@ MonoBehaviour:
   - {fileID: 8737829912168429866}
   - {fileID: 8737829911978562918}
   overlapCube: {fileID: 8737829912852408546}
-  explosionRadius: 5
-  explosionForce: 20
   showOverlapBoxDebug: 0
 --- !u!1 &8737829912540868609
 GameObject:
@@ -1601,14 +1600,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8737829912852408557}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0971, y: 8.696, z: 0}
-  m_LocalScale: {x: 21.67335, y: 20.337662, z: 1.0632883}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -1.0971, y: 8.696, z: -0}
+  m_LocalScale: {x: 1.2505523, y: 20.337662, z: 22.009644}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8737829912377937619}
   m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &8737829912852408544
 MeshFilter:
   m_ObjectHideFlags: 0

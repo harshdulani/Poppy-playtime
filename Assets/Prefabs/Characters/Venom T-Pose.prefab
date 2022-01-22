@@ -602,7 +602,9 @@ MonoBehaviour:
   - {fileID: 1216720817842772106}
   isRagdoll: 0
   isWaitingForPunch: 0
+  isAttackerSoCantRagdoll: 0
   shouldTurnToGrey: 0
+  shouldMirror: 1
   skin: {fileID: 0}
   toChangeMatIndex: 0
   deadColor: {r: 0, g: 0, b: 0, a: 0}
@@ -738,8 +740,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbing: {fileID: 0}
   controlAnimator: 0
-  myPatrolArea: 0
   shouldPatrol: 0
+  myArea: 0
 --- !u!1 &2201354059427111011
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +959,7 @@ GameObject:
   - component: {fileID: 1216720817245855911}
   - component: {fileID: 1216720817245855905}
   - component: {fileID: 1216720817245855906}
+  - component: {fileID: 8680949263438504087}
   m_Layer: 0
   m_Name: mixamorig:LeftForeArm
   m_TagString: Target
@@ -1068,6 +1071,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358cd2083517e7d4587c70aaa6a8f1d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8680949263438504087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2751634496807378013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f9ae4c810016341b3d4f4322e8f285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
 --- !u!1 &2811886311351811182
 GameObject:
   m_ObjectHideFlags: 0

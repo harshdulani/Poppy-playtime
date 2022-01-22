@@ -111,8 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 0.25
-  _waitingForPunch: {fileID: 0}
-  _prop: {fileID: 0}
 --- !u!1 &335397018752601505
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ddc1a2536715a24095c464a2c394d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 1
+  updateMethod: 0
   _spline: {fileID: 0}
   _autoUpdate: 0
   _rotationModifier:
@@ -445,8 +443,8 @@ MonoBehaviour:
   useTriggers: 1
   triggerGroup: 0
   _direction: 1
-  _dontLerpDirection: 1
-  _physicsMode: 1
+  _dontLerpDirection: 0
+  _physicsMode: 0
   _motion:
     _hasOffset: 0
     _hasRotationOffset: 0

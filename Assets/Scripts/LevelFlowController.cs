@@ -99,6 +99,11 @@ public class LevelFlowController : MonoBehaviour
 		return _totalEnemiesRemaining == 1;
 	}
 
+	public bool IsThisLastEnemyOfThisArea()
+	{
+		return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 1;
+	}
+
 	public bool DidKillLastEnemyOfArea()
 	{
 		return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 0;
