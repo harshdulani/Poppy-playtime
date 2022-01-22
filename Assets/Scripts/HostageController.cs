@@ -48,14 +48,16 @@ public class HostageController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
 		
-		helpCanvas.SetActive(false);
+		if(helpCanvas)
+			helpCanvas.SetActive(false);
 		_audioSource.PlayOneShot(die);
 	}
 	
 	private void OnTapToPlay()
 	{
 		_anim.SetTrigger(NeedsHelp);
-		helpCanvas.SetActive(true);
+		if(helpCanvas)
+			helpCanvas.SetActive(true);
 	}
 	
 	private void OnGameEnd()
@@ -63,7 +65,8 @@ public class HostageController : MonoBehaviour
 		if(isRagdoll) return;
 		
 		_anim.SetTrigger(Saved);
-		helpCanvas.SetActive(false);
+		if(helpCanvas)
+			helpCanvas.SetActive(false);
 		_audioSource.PlayOneShot(Random.Range(0f, 1f) > 0.5f ? nice1 : nice2);
 	}
 }

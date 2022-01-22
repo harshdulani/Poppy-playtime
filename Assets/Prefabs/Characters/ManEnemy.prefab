@@ -1,11 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1464600140214627254
+--- !u!1001 &1269763167433401376
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 455054307042862680}
+    m_TransformParent: {fileID: 5033165550705200211}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_RootOrder
@@ -25,43 +25,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.032
+      value: 0.006
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.196
+      value: 0.192
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.019
+      value: 0.031
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6831852
+      value: -0.067843445
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.18236637
+      value: 0.7038442
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.014847416
+      value: -0.6949424
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.7069513
+      value: -0.13059734
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 15.675
+      value: -16.082
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -14.285
+      value: -174.653
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -93.935
+      value: -91.485
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
       propertyPath: m_Name
@@ -73,18 +73,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a03a46d3551050841b7f68a75ae7fa96, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
---- !u!1 &8800161983209416325 stripped
+--- !u!1 &9217778254668949779 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1264602596050285261, guid: 63ebfc2f36faa234a83289cba148bd8b, type: 3}
-  m_PrefabInstance: {fileID: 1464600140214627254}
+  m_PrefabInstance: {fileID: 1269763167433401376}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &2217164515091349333
+--- !u!54 &7856083898753584403
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800161983209416325}
+  m_GameObject: {fileID: 9217778254668949779}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -94,13 +94,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &6606552068351250229
+--- !u!136 &6340841731535048718
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800161983209416325}
+  m_GameObject: {fileID: 9217778254668949779}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -108,13 +108,13 @@ CapsuleCollider:
   m_Height: 1.3284371
   m_Direction: 1
   m_Center: {x: -0.00000013040932, y: 0.48103917, z: -0.000000057344188}
---- !u!114 &8812732733256220662
+--- !u!114 &8616455470487855213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800161983209416325}
+  m_GameObject: {fileID: 9217778254668949779}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80f9ae4c810016341b3d4f4322e8f285, type: 3}
@@ -398,11 +398,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
---- !u!4 &455054307042862680 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6502182839619065283, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
-  m_PrefabInstance: {fileID: 6659919691708871579}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &668238554138183440 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3086436065929644917, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
@@ -959,6 +954,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358cd2083517e7d4587c70aaa6a8f1d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &5033165550705200211 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
+  m_PrefabInstance: {fileID: 6659919691708871579}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5813479154429103818 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
@@ -1130,7 +1130,9 @@ MonoBehaviour:
   - {fileID: 8675978479551663115}
   isRagdoll: 0
   isWaitingForPunch: 0
+  isAttackerSoCantRagdoll: 0
   shouldTurnToGrey: 0
+  shouldMirror: 1
   skin: {fileID: 0}
   toChangeMatIndex: 0
   deadColor: {r: 0, g: 0, b: 0, a: 0}

@@ -126,7 +126,7 @@ public class CoinShopController : MonoBehaviour
 		UpdateCoinAmount();
 
 		UpdateButtons();
-		AudioManager.instance.Play("button");
+		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
 
@@ -139,7 +139,7 @@ public class CoinShopController : MonoBehaviour
 		UpdateCoinAmount();
 		
 		UpdateButtons();
-		AudioManager.instance.Play("button");
+		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
 
@@ -152,7 +152,7 @@ public class CoinShopController : MonoBehaviour
 		UpdateCoinAmount();
 		
 		UpdateButtons();
-		AudioManager.instance.Play("button");
+		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
 	

@@ -3,8 +3,8 @@ using UnityEngine;
 public class HitBoxController : MonoBehaviour
 {
 	[SerializeField] private float attackDistance;
-	[SerializeField] private RagdollLimbController _waitingForPunch;
-	[SerializeField] private Transform _prop;
+	private RagdollLimbController _waitingForPunch;
+	private Transform _prop;
 	private bool _inTransit;
 
 	private void OnEnable()

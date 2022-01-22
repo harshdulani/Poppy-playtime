@@ -69,6 +69,8 @@ public class InputHandler : MonoBehaviour
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
+		
+		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
 	}
 
 	private void Update()
@@ -154,10 +156,7 @@ public class InputHandler : MonoBehaviour
 	public bool IsInDisabledState() => _leftHandState is DisabledState;
 	public bool IsInIdleState() => _leftHandState is IdleState;
 
-	public void WaitForPunch(Transform other)
-	{
-		_rightHand.WaitForPunch(other.transform);
-	}
+	public void WaitForPunch(Transform other) => _rightHand.WaitForPunch(other.transform);
 
 	public void StopCarryingBody()
 	{

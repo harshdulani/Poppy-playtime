@@ -13,6 +13,5 @@ public class PunchAnimationController : MonoBehaviour
 	{
 		GameEvents.only.InvokePunchHit();
 		punchFx.Play();
-		print("invoking");
 	}
 }

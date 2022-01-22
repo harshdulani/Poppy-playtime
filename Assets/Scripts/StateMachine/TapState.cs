@@ -28,12 +28,13 @@ public class TapState : InputStateBase
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetInputPosition());
 		
 		//Debug.DrawRay(ray.origin, ray.direction * 50f, Color.black, 2f);
-		
+
 		if (!Physics.Raycast(ray, out var hit, 50f))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
+		//Print(hit.transform.root.gameObject);
 		if (!hit.collider.CompareTag("Target"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
@@ -56,7 +57,6 @@ public class TapState : InputStateBase
 		if(raghu)
 			raghu.PopScale();
 		
-		Print(hit.collider.gameObject);
 		InputHandler.AssignNewState(new InTransitState(false, hit), false);
 	}
 

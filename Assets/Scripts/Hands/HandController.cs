@@ -180,11 +180,9 @@ public class HandController : MonoBehaviour
 					prop = other.GetComponent<PropController>();
 
 				var direction =
-					(prop
-						? _targetInitPos
-						: LevelFlowController.only.IsInGiantFight()
+						LevelFlowController.only.IsInGiantFight()
 							? LevelFlowController.only.GetGiant().GetBoundsCenter()
-							: _targetInitPos) - other.root.position;
+							: _targetInitPos - other.root.position;
 
 				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);

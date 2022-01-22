@@ -72,7 +72,6 @@ public class EnemyPatroller : MonoBehaviour
 			SetNextWaypoint();
 		else
 		{
-			shouldPatrol = false;
 			ToggleAI(false);
 		}
 	}

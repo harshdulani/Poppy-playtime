@@ -3,9 +3,10 @@ using UnityEngine;
 public class ShatterEnemyController : MonoBehaviour
 {
 	[SerializeField] private Transform climbing;
-	[SerializeField] private bool controlAnimator;
+	[SerializeField] private bool controlAnimator, shouldPatrol;
 	[SerializeField] private int myArea;
-	public bool shouldPatrol;
+	
+	private bool _hasCrossed;
 
 	private EnemyPatroller _patroller;
 	private Animator _anim;
@@ -41,6 +42,8 @@ public class ShatterEnemyController : MonoBehaviour
 	{
 		if(controlAnimator)
 			_anim.SetTrigger(Reached);
+
+		_hasCrossed = true;
 	}
 
 	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
@@ -49,7 +52,8 @@ public class ShatterEnemyController : MonoBehaviour
 	{
 		if(shattered != climbing) return;
 		
-		_patroller.ToggleAI(false);
+		if(!_hasCrossed)
+			_patroller.ToggleAI(false);
 	}
 	
 	private void OnTapToPlay()
