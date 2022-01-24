@@ -337,6 +337,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 1
   toDisable: {fileID: 700791716}
+  aimingClip: {fileID: 0}
+  tappingClip: {fileID: 0}
+  animation: {fileID: 0}
 --- !u!1001 &644245436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -615,6 +618,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myType: 0
   toDisable: {fileID: 1990621928}
+  aimingClip: {fileID: 7400000, guid: 7173f48a183af874aadb29d75fcde16c, type: 2}
+  tappingClip: {fileID: 7400000, guid: 865f976cc913f22428e12e854b6d282c, type: 2}
+  animation: {fileID: 1990621929}
 --- !u!114 &1570441065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,11 +871,12 @@ Animation:
   m_GameObject: {fileID: 1990621928}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 7173f48a183af874aadb29d75fcde16c, type: 2}
+  m_Animation: {fileID: 0}
   m_Animations:
   - {fileID: 7400000, guid: 7173f48a183af874aadb29d75fcde16c, type: 2}
+  - {fileID: 7400000, guid: 865f976cc913f22428e12e854b6d282c, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!114 &1990621930

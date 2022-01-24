@@ -21,9 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 14 - thanos spidey.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 14 - thanos spidey.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 14 - thanos spidey/NavMesh.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 14 - thanos spidey/NavMesh.asset.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 19 - tower.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 19 - tower.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 6 boss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 6 boss.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -191,6 +194,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainCanvas.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/SkinLoaderCanvas.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/StateMachine/IdleState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 1_poppy.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/GameManager.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Core/SplineTrigger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/AudioManager.prefab" root0="FORCE_HIGHLIGHTING" />
@@ -251,7 +255,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/CarController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BossBarrelController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/BLABLA.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BossPropController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GiantController.cs" />
@@ -281,7 +284,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyPatroller.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
         <option value="$PROJECT_DIR$/Assets/Epic Toon FX/CoinCollect Particle/_UI Particles/UIParticleSystem.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/GiantController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
@@ -295,6 +297,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/CoinShopController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
       </list>
     </option>
   </component>
@@ -352,7 +356,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added shield, shoe, heel to main" />
     <MESSAGE value="fixed major bugs, ready for release" />
     <MESSAGE value="increased car count and attempted fix at giant ghost explosion" />
     <MESSAGE value="debugging build in the bg" />
@@ -377,7 +380,8 @@
     <MESSAGE value="fixed levels for fitting in for tap mechanic, skin loader header color changed, added option that the tower/shatterable be shattered only by last enemy of stage," />
     <MESSAGE value="Added giant sounds, coin collection sounds, fixed shop bug where it will cause levels to not load properly and be stuck," />
     <MESSAGE value="build 49 done, lots of changes, bug fixes to coin shop, skinloader, added hip replacement during gameplay" />
-    <option name="LAST_COMMIT_MESSAGE" value="build 49 done, lots of changes, bug fixes to coin shop, skinloader, added hip replacement during gameplay" />
+    <MESSAGE value="build 49 done, lots of changes, bug fixes to coin shop, skinloader, added hip replacement during gameplay, lightmaps, bigger colliders, instructions change as per control mechanic" />
+    <option name="LAST_COMMIT_MESSAGE" value="build 49 done, lots of changes, bug fixes to coin shop, skinloader, added hip replacement during gameplay, lightmaps, bigger colliders, instructions change as per control mechanic" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">

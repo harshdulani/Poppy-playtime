@@ -10,6 +10,8 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("levelNo", 1);
         }
 
+		PlayerPrefs.SetInt("controlMechanic", 1);
+
 		UnityEngine.SceneManagement.SceneManager.LoadScene(PlayerPrefs.GetInt("lastBuildIndex", 1));
 	}
 }

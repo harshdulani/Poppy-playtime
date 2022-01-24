@@ -13,8 +13,11 @@ public class TutorialCanvasController : MonoBehaviour
 	[SerializeField] private TutorialType myType;
 	[SerializeField] private GameObject toDisable;
 
-	private bool _bossTutorialAnimationOn; 
-	
+	[SerializeField] private AnimationClip aimingClip, tappingClip; 
+
+	private bool _bossTutorialAnimationOn;
+	[SerializeField] private Animation animation;
+
 	private void OnEnable()
 	{
 		if (myType == TutorialType.Boss)
@@ -49,6 +52,9 @@ public class TutorialCanvasController : MonoBehaviour
 
 	private void Start()
 	{
+		if (myType == TutorialType.Aiming)
+			animation.Play((PlayerPrefs.GetInt("controlMechanic", 0) == 1 ? tappingClip.name : aimingClip.name));
+		
 		if (myType == TutorialType.Boss)
 			toDisable.SetActive(false);
 	}
