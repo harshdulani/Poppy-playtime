@@ -46,8 +46,6 @@ public class InputHandler : MonoBehaviour
 
 	private void Start()
 	{
-		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
-		
 		if (testingUsingTouch) InputExtensions.IsUsingTouch = true;
 		else
 			InputExtensions.IsUsingTouch = Application.platform != RuntimePlatform.WindowsEditor &&

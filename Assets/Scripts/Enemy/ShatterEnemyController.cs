@@ -3,6 +3,7 @@ using UnityEngine;
 public class ShatterEnemyController : MonoBehaviour
 {
 	[SerializeField] private Transform climbing;
+	[SerializeField] private BoxCollider hipReplacementCollider, hipCollider;
 	[SerializeField] private bool controlAnimator, shouldPatrol;
 	[SerializeField] private int myArea;
 	
@@ -46,6 +47,14 @@ public class ShatterEnemyController : MonoBehaviour
 		_hasCrossed = true;
 	}
 
+	public void HoldInAir()
+	{
+		if (!hipReplacementCollider) return;
+
+		hipCollider.enabled = false;
+		hipReplacementCollider.enabled = true;
+	}
+	
 	public bool IsInCurrentArea() => LevelFlowController.only.currentArea == myArea;
 
 	private void OnShatteredTower(Transform shattered)

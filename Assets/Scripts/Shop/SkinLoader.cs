@@ -58,12 +58,7 @@ public class SkinLoader : MonoBehaviour
 		skipButton.interactable = false;
 		claimButton.interactable = false;
 	}
-
-	private void Update()
-	{
-		if (Input.GetKey(KeyCode.A)) ShowPanel();
-	}
-
+	
 	private void Initialise()
 	{
 		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlocked", 1);
@@ -92,6 +87,8 @@ public class SkinLoader : MonoBehaviour
 
 	public static WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
 
+	public int GetSkinCount() => coloredWeaponSprites.Length;
+
 	public void UpdateSkinInUse(int currentSkin)
 	{
 		_currentSkinInUse = currentSkin;
@@ -111,7 +108,7 @@ public class SkinLoader : MonoBehaviour
 			_currentSkinBeingUnlocked++;
 		//play animatn
 		ResetLoader();
-		
+
 		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
 	}
 
@@ -141,6 +138,7 @@ public class SkinLoader : MonoBehaviour
 	private void ResetLoader()
 	{
 		_currentSkinPercentageUnlocked = 0f;
+		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 		
 		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
 		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
@@ -183,6 +181,9 @@ public class SkinLoader : MonoBehaviour
 
 	public bool ShouldShowNextLevel()
 	{
+		if (_currentSkinBeingUnlocked == _currentSkinInUse)
+			return true;
+		
 		//we return this value becuase this is called before show panel is called and hence its value isnt updated 
 		//so 0.8f is the value when the bar is about to reach 100 %
 		return _currentSkinPercentageUnlocked < 0.79f;
@@ -190,7 +191,7 @@ public class SkinLoader : MonoBehaviour
 
 	private void OnGameEnd()
 	{
-		if(_currentSkinBeingUnlocked >= Enum.GetNames(typeof(WeaponType)).Length) return;
+		if(_currentSkinBeingUnlocked >= coloredWeaponSprites.Length - 1) return;
 		
 		Invoke(nameof(ShowPanel), panelOpenWait);
 	}

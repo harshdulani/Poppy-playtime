@@ -8,12 +8,13 @@ using UnityEngine.UI;
 public class MainCanvasController : MonoBehaviour
 {
 	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton;
-	[SerializeField] private TextMeshProUGUI levelText;
+	[SerializeField] private TextMeshProUGUI levelText, instructionText;
 	[SerializeField] private Image red;
 	[SerializeField] private Toggle abToggle;
-	
+	[SerializeField] private string tapInstruction, swipeInstruction;
+
 	private bool _hasTapped, _hasLost;
-	
+
 	private void OnEnable()
 	{
 		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
@@ -30,6 +31,7 @@ public class MainCanvasController : MonoBehaviour
 	{
 		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo", 1);
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
+		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
 
 		/*if(GAScript.Instance)
 			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());*/
@@ -40,10 +42,11 @@ public class MainCanvasController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		
 		if(_hasTapped) return;
-
-		if(EventSystem.current.IsPointerOverGameObject()) return;
 		
-		if (InputExtensions.GetFingerHeld() || InputExtensions.GetFingerDown()) TapToPlay();
+		if (!InputExtensions.GetFingerDown()) return;
+		
+		if(!EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1))
+			TapToPlay();
 	}
 
 	private void TapToPlay()

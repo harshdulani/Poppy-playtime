@@ -101,7 +101,7 @@ public class LevelFlowController : MonoBehaviour
 
 	public bool DidKillLastEnemyOfArea()
 	{
-		return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 0;
+		return enemiesInArea[currentArea] == enemiesKilledInCurrentArea;
 	}
 
 	public bool IsInGiantFight()

@@ -88,7 +88,11 @@ public class HandController : MonoBehaviour
 		
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
-
+		_lastRaghu = null;
+		ResetPalmParent();
+		ClearInitTargetPos();
+		StopPunching();
+		
 		if(isLeftHand)
 		{
 			_appliedMoveSpeed = moveSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
@@ -98,9 +102,9 @@ public class HandController : MonoBehaviour
 		if (isLeftHand) return;
 
 		_audio = GetComponent<AudioSource>();
-
+		
 		UpdateEquippedSkin();
-
+		
 		//_text = GameObject.FindGameObjectWithTag("AimCanvas").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
 	}
 
@@ -254,6 +258,7 @@ public class HandController : MonoBehaviour
 
 	public void UpdateEquippedSkin(bool initialising = true)
 	{
+		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
 		currentAttackType = SkinLoader.GetSkinName();
 		for (var i = 1; i < hammer.transform.parent.childCount; i++)
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);

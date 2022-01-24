@@ -158,7 +158,7 @@ public class CoinShopController : MonoBehaviour
 	
 	private void UpdateCoinText() => coinText.text = CoinCount.ToString();
 
-	private void UpdateCoinAmount() => PlayerPrefs.SetInt("coinCount", _coinCount + coinIncreaseCount);
+	private void UpdateCoinAmount() => PlayerPrefs.SetInt("coinCount", CoinCount);
 
 	private void OnTapToPlay()
 	{
@@ -171,6 +171,7 @@ public class CoinShopController : MonoBehaviour
 		seq.AppendInterval(1.25f);
 		
 		var initSize = coinText.fontSize;
+		CoinCount += coinIncreaseCount;
 		UpdateCoinAmount();
 		
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));

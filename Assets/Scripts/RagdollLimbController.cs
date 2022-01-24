@@ -4,6 +4,7 @@ using UnityEngine;
 public class RagdollLimbController : MonoBehaviour
 {
 	private RagdollController _parent;
+	private ShatterEnemyController _shatterParent;
 	private HostageController _hostage;
 	
 	private Rigidbody _rb;
@@ -12,13 +13,16 @@ public class RagdollLimbController : MonoBehaviour
 	{
 		if (!transform.root.TryGetComponent(out _parent))
 			_hostage = transform.root.GetComponent<HostageController>();
-		
+
+		transform.root.TryGetComponent(out _shatterParent);
 		_rb = GetComponent<Rigidbody>();
 	}
 
 	public void TellParent()
 	{
 		_parent.HoldInAir();
+		if (_shatterParent)
+			_shatterParent.HoldInAir();
 	}
 
 	public void DisableRagdolling() => _parent.isAttackerSoCantRagdoll = true;
@@ -33,8 +37,6 @@ public class RagdollLimbController : MonoBehaviour
 	}
 
 	public Rigidbody AskParentForHook() => _parent.chest;
-
-	public void PopScale() => _parent.PopScale();
 	
 	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;
 
