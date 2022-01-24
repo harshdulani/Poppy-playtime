@@ -94,7 +94,13 @@ public class PalmController : MonoBehaviour
 		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
 	
-		if(HasTargetTransform()) return;
+		if(HasTargetTransform())
+		{
+			InputHandler.Only.AssignReturnTransitState();
+			Invoke(nameof(EnablePunching), punchWaitTime);
+			Invoke(nameof(ResetAdoptability), 0.5f);
+			return;
+		}
 		
 		SetCurrentTransform(other.transform);
 		myHand.HandReachTarget(other.transform);

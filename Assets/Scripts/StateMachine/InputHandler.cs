@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -6,6 +7,8 @@ public class InputHandler : MonoBehaviour
 
 	public bool testingUsingTouch;
 	public bool isUsingTapAndPunch;
+	
+	[SerializeField] private float tapCooldownWaitTime;
 
 	private HandController _leftHand, _rightHand;
 
@@ -18,7 +21,7 @@ public class InputHandler : MonoBehaviour
 	//current state holder	
 	private static InputStateBase _leftHandState;
 
-	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled;
+	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled, _inTapCooldown;
 
 	private void OnEnable()
 	{
@@ -66,7 +69,7 @@ public class InputHandler : MonoBehaviour
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
-		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
+		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 	}
 
 	private void Update()
@@ -124,6 +127,21 @@ public class InputHandler : MonoBehaviour
 		return _aimingState;
 	}
 
+	private void PutInTapCoolDown()
+	{
+		_inTapCooldown = true;
+		AssignDisabledState();
+		StartCoroutine(TapCoolDown());
+	}
+
+	private IEnumerator TapCoolDown()
+	{
+		yield return GameExtensions.GetWaiter(tapCooldownWaitTime);
+		
+		AssignIdleState();
+		_inTapCooldown = false;
+	}
+
 	public static void AssignNewState(InputStateBase newState, bool callOnExit = true)
 	{
 		if(callOnExit)
@@ -135,7 +153,7 @@ public class InputHandler : MonoBehaviour
 	public void ShouldUseTapAndPunch(bool status)
 	{
 		isUsingTapAndPunch = status;
-		PlayerPrefs.SetInt("controlMechanic", status ? 1 : 0);
+		PlayerPrefs.SetInt("controlMechanic", status ? 0 : 1);
 	}
 	
 	private static void ChangeStateToDisabled()

@@ -53,7 +53,7 @@ public class TutorialCanvasController : MonoBehaviour
 	private void Start()
 	{
 		if (myType == TutorialType.Aiming)
-			animation.Play((PlayerPrefs.GetInt("controlMechanic", 0) == 1 ? tappingClip.name : aimingClip.name));
+			animation.Play((PlayerPrefs.GetInt("controlMechanic", 0) == 0 ? tappingClip.name : aimingClip.name));
 		
 		if (myType == TutorialType.Boss)
 			toDisable.SetActive(false);

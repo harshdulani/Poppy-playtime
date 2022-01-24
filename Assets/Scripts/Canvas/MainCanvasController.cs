@@ -30,7 +30,7 @@ public class MainCanvasController : MonoBehaviour
 	private void Start()
 	{
 		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo", 1);
-		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 1;
+		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
 
 		/*if(GAScript.Instance)
