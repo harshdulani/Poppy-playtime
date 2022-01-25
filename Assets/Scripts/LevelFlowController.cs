@@ -9,7 +9,8 @@ public class LevelFlowController : MonoBehaviour
 
 	public bool isGiantLevel;
 	[SerializeField] private List<int> enemiesInArea;
-
+	[SerializeField] private List<Transform> throwTargetsInArea;
+	
 	public int enemiesInCurrentArea, enemiesKilledInCurrentArea;
 	public int currentArea;
 
@@ -109,6 +110,11 @@ public class LevelFlowController : MonoBehaviour
 		return IsThisLastEnemy() && isGiantLevel;
 	}
 
+	public Transform GetThrowTargetInArea()
+	{
+		return throwTargetsInArea[currentArea];
+	}
+	
 	public void SetGiant(GiantController giant)
 	{
 		_giant = giant;

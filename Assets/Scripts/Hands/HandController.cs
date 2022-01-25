@@ -159,6 +159,7 @@ public class HandController : MonoBehaviour
 				raghu.TellParent();
 			else if (CurrentObjectCarriedType == CarriedObjectType.Car)
 				other.GetComponent<CarController>().StopMoving();
+			
 			if (other.TryGetComponent(out PropController prop))
 				prop.hasBeenInteractedWith = true;
 			
@@ -174,7 +175,6 @@ public class HandController : MonoBehaviour
 				other.GetComponent<RagdollLimbController>().GetPunched((
 					(LevelFlowController.only.IsInGiantFight()
 						? LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - transform.position).normalized, punchForce);
-				
 			}
 			else
 			{
@@ -204,18 +204,15 @@ public class HandController : MonoBehaviour
 
 		var root = other.root;
 
-		Vector3 difference;
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 		{
-			difference = ragdollHoldingLocation.position - _lastRaghu.chest.transform.position;
+			root.transform.DOMove(ragdollHoldingLocation.position, 0.2f);
 			root.transform.DORotateQuaternion(Quaternion.LookRotation(transform.root.position - root.position) * Quaternion.Euler(Vector3.left * 20f), 0.2f);
 		}
 		else
 		{
-			difference = propHoldingLocation.position - other.transform.position;
+			root.transform.DOMove(propHoldingLocation.position, 0.2f);
 		}
-		
-		root.transform.DOMove(root.position + difference, 0.2f);
 
 		_myAnimator.SetBool(IsPunching, true);
 		_canGivePunch = true;
