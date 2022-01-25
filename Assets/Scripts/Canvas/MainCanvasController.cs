@@ -33,8 +33,8 @@ public class MainCanvasController : MonoBehaviour
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
 
-		/*if(GAScript.Instance)
-			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());*/
+		if(GAScript.Instance)
+			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
 	}
 
 	private void Update()
@@ -91,16 +91,16 @@ public class MainCanvasController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
-		/*if(GAScript.Instance)
-			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());*/
+		if(GAScript.Instance)
+			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
 		
 		Invoke(nameof(EnableLossObjects), 1.5f);
 	}
 	
 	private void OnGameEnd()
 	{
-		/*if(GAScript.Instance)
-			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());*/
+		if(GAScript.Instance)
+			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
 		
 		Invoke(nameof(EnableVictoryObjects), 1f);
 	}

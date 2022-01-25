@@ -1,4 +1,5 @@
-﻿/*
+﻿
+using System.Collections;
 using UnityEngine;
 using GameAnalyticsSDK;
 
@@ -25,7 +26,15 @@ public class GAScript : MonoBehaviour
     private void Start()
     {
         GameObject.Find("EventSystem").SetActive(false);
-    }
+		StartCoroutine(SetControlMechanic());
+	}
+
+	private IEnumerator SetControlMechanic()
+	{
+		yield return new WaitUntil(GameAnalytics.IsRemoteConfigsReady);
+		
+		PlayerPrefs.SetInt("controlMechanic", int.Parse(GameAnalytics.GetRemoteConfigsValueAsString("Input", "0")));
+	}
 
     public void LevelStart(string levelname)
     {
@@ -51,4 +60,3 @@ public class GAScript : MonoBehaviour
 
 	}
 }
-*/
