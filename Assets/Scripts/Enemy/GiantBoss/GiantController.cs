@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -14,7 +15,7 @@ public class GiantController : MonoBehaviour
 	
 	[SerializeField] private bool isRagdoll;
 	[SerializeField] private Rigidbody[] rigidbodies;
-	[SerializeField] private GameObject[] headgear;
+	[SerializeField] private List<GameObject> headgear;
 
 	[SerializeField] private bool showOverlapBoxDebug;
 	[SerializeField] private BoxBounds overlapBoxBounds;
@@ -25,7 +26,7 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private GameObject trailPrefab;
 	[SerializeField] private GameObject smokeEffectOnLand;
 	[SerializeField] private AudioClip landing, roar, propPull;
-	
+
 	private Transform _player, _grabbedTargetTransform;
 	private CarController _grabbedTargetCarController;
 	private PropController _grabbedTargetPropController;
@@ -230,10 +231,25 @@ public class GiantController : MonoBehaviour
 		_anim.SetTrigger(Hit);
 		Vibration.Vibrate(20);
 
+		if (headgear.Count > 0)
+		{
+			ThrowHeadgear(headgear[0]);
+			headgear.RemoveAt(0);
+		}
+
 		if (!_health.IsDead()) return;
 		
 		GoRagdoll(-transform.forward);
 		ReleaseVehicle();
+	}
+
+	private static void ThrowHeadgear(GameObject obj)
+	{
+		obj.transform.parent = null;
+		var rb = obj.GetComponent<Rigidbody>();
+		rb.isKinematic = false;
+		rb.useGravity = true;
+		rb.AddForce(rb.transform.up * 12f);
 	}
 
 	private void ReleaseVehicle()

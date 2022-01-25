@@ -183,5 +183,7 @@ public class CoinShopController : MonoBehaviour
 			AudioManager.instance.Play("CoinCollect");
 			_coinCount += coinIncreaseCount;
 		});
+		seq.AppendCallback(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>()
+			.EnableNextLevel);
 	}
 }

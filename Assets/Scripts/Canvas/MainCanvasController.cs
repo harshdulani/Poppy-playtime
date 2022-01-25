@@ -14,6 +14,7 @@ public class MainCanvasController : MonoBehaviour
 	[SerializeField] private string tapInstruction, swipeInstruction;
 
 	private bool _hasTapped, _hasLost;
+	[SerializeField] private Button nextLevelButton;
 
 	private void OnEnable()
 	{
@@ -108,7 +109,8 @@ public class MainCanvasController : MonoBehaviour
 	private void EnableVictoryObjects()
 	{
 		victory.SetActive(true);
-		nextLevel.SetActive(SkinLoader.only.ShouldShowNextLevel());
+		nextLevel.SetActive(true);
+		nextLevelButton.interactable = false;
 		constantRetryButton.SetActive(false);
 		
 		AudioManager.instance.Play("Win");
@@ -129,5 +131,10 @@ public class MainCanvasController : MonoBehaviour
 		_hasLost = true;
 		
 		AudioManager.instance.Play("Lose");
+	}
+
+	public void EnableNextLevel()
+	{
+		nextLevelButton.interactable = true;
 	}
 }
