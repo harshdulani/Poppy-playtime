@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class HelicopterController : MonoBehaviour
 {
-	[SerializeField] private int myArea;
+	[SerializeField] private AnimationCurve easeCurve;
 	[SerializeField] private Transform startTransform;
+	[SerializeField] private int myArea;
 	
 	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude, recenterLerp;
 	private Vector3 _previousSine, _previousSineRot;
 
-	[Header("Damage"), SerializeField] private List<Transform> passengers;
+	[Header("Damage"), SerializeField] private List<HelicopterSoldierController> passengers;
 	[SerializeField] private GameObject explosionPrefab;
 	[SerializeField] private float deathExplosionForce, explosionScale;
 	private HealthController _health;
@@ -43,14 +44,8 @@ public class HelicopterController : MonoBehaviour
 		if(_isDead) return;
 		
 		SineWave();
-		//Recenter();
 	}
 
-	private void Recenter()
-	{
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.back), Time.deltaTime * recenterLerp);
-	}
-	
 	private void SineWave()
 	{
 		var sineY = Mathf.Sin(Time.time);
@@ -74,7 +69,7 @@ public class HelicopterController : MonoBehaviour
 		_rb.constraints = RigidbodyConstraints.None;
 
 		_rb.AddForce(Vector3.left * deathExplosionForce + Vector3.down * deathExplosionForce, ForceMode.Impulse);
-		_rb.AddTorque(Vector3.up * 360f, ForceMode.Acceleration);
+		_rb.AddTorque(Vector3.up * 720f, ForceMode.Acceleration);
 	}
 
 	private void GetHit(Transform hitter)
@@ -89,24 +84,25 @@ public class HelicopterController : MonoBehaviour
 			passengers.RemoveAt(0);
 		}
 
-		if (!_health.IsDead()) return;
+		if (!_health.IsDead())
+		{
+			transform.DOShakeRotation(1.5f, 15f, 5);
+			return;
+		}
 		
 		HeliDeath();
 	}
 
-	private static void ThrowPassenger(Transform passenger)
+	private void ThrowPassenger(HelicopterSoldierController passenger)
 	{
 		passenger.transform.parent = null;
-		var rb = passenger.GetComponent<Rigidbody>();
-		rb.isKinematic = false;
-		rb.useGravity = true;
-		rb.AddForce(rb.transform.up * 12f);
+		passenger.GoRagdoll(passenger.transform.position - transform.position);
 	}
 	
 	private void GoToStartPoint()
 	{
-		transform.DOMove(startTransform.position, 1.5f);
-		transform.DORotateQuaternion(startTransform.rotation, 1.5f);
+		transform.DOMove(startTransform.position, 3.5f).SetEase(easeCurve);
+		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(Ease.InSine);
 	}
 	
 	private void TakeCareOfThis(Transform victim)

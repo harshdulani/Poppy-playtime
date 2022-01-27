@@ -33,7 +33,7 @@ public class UIParticleSystem : MaskableGraphic {
 		}
 	}
 
-	protected bool Initialize() {
+	private bool Initialize() {
 		// initialize members
 		if (_transform == null) {
 			_transform = transform;

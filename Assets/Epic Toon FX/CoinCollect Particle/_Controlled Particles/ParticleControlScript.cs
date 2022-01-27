@@ -13,17 +13,13 @@ public class ParticleControlScript : MonoBehaviour
     public float particleSpeed = 3000;
     public float speedIncrement;
     public int coinsCount;
-    float speed;
     public AudioSource releaseCoinsSound;
     public AudioSource coinSound;
     bool fountainSoundPlayed;
     float timer;
     public float pTime;
-    float t = 0;
     bool isLvlComplete;
     bool moreCoins;
-    bool sliderLerped;
-    bool rewardVideoCoins;
 
     //UiManager ui;
     int combineCoins;
@@ -39,10 +35,7 @@ public class ParticleControlScript : MonoBehaviour
     {
         isLvlComplete = lvlComplete;
         moreCoins = isMoreCoins;
-        rewardVideoCoins = isRewardVideo;
-        sliderLerped = false;
-
-        speed = particleSpeed * Screen.width / 1080f;
+		
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
         transform.position = pos;
@@ -101,14 +94,10 @@ public class ParticleControlScript : MonoBehaviour
 
 
                 Vector2 dir = targetPos - particles[i].position;
-                t += Time.deltaTime / 2f;
 
                 float smooth = Vector2.Distance(targetPos, distances[i]) / pTime;
 
                 particles[i].position = Vector2.MoveTowards(particles[i].position, targetPos, smooth * Time.deltaTime);
-
-
-                speed += speedIncrement;
 
                 if (dir.magnitude < 0.05f)
                 {

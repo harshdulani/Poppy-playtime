@@ -188,8 +188,6 @@ public class HandController : MonoBehaviour
 						? target.position
 						: _targetInitPos) - other.root.position;
 
-				print(target + " found");
-				
 				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 			}
