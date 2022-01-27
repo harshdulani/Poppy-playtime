@@ -1,22 +1,41 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class HelicopterController : MonoBehaviour
 {
-	[Header("Sine wave Noise"), SerializeField] private float magnitude;
+	[SerializeField] private int myArea;
+	[SerializeField] private Transform startTransform;
+	
+	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude, recenterLerp;
 	private Vector3 _previousSine, _previousSineRot;
 
 	[Header("Damage"), SerializeField] private List<Transform> passengers;
-	[SerializeField] private float deathExplosionForce;
+	[SerializeField] private GameObject explosionPrefab;
+	[SerializeField] private float deathExplosionForce, explosionScale;
 	private HealthController _health;
+	
 	private Rigidbody _rb;
 	private bool _isDead;
+
+	private void OnEnable()
+	{
+		GameEvents.only.reachNextArea += OnReachNextArea;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.reachNextArea -= OnReachNextArea;
+	}
 
 	private void Start()
 	{
 		_health = GetComponent<HealthController>();
+		_rb = GetComponent<Rigidbody>();
 		_health.VisibilityToggle(false);
+		
+		OnReachNextArea();
 	}
 
 	private void Update()
@@ -24,7 +43,7 @@ public class HelicopterController : MonoBehaviour
 		if(_isDead) return;
 		
 		SineWave();
-		Recenter();
+		//Recenter();
 	}
 
 	private void Recenter()
@@ -54,8 +73,8 @@ public class HelicopterController : MonoBehaviour
 		_rb.isKinematic = false;
 		_rb.constraints = RigidbodyConstraints.None;
 
-		_rb.AddForce(Vector3.left * 5f * deathExplosionForce + Vector3.down * deathExplosionForce + Vector3.back * 40f * deathExplosionForce, ForceMode.Impulse);
-		_rb.AddTorque(Vector3.up * 180f, ForceMode.Acceleration);
+		_rb.AddForce(Vector3.left * deathExplosionForce + Vector3.down * deathExplosionForce, ForceMode.Impulse);
+		_rb.AddTorque(Vector3.up * 360f, ForceMode.Acceleration);
 	}
 
 	private void GetHit(Transform hitter)
@@ -83,12 +102,39 @@ public class HelicopterController : MonoBehaviour
 		rb.useGravity = true;
 		rb.AddForce(rb.transform.up * 12f);
 	}
+	
+	private void GoToStartPoint()
+	{
+		transform.DOMove(startTransform.position, 1.5f);
+		transform.DORotateQuaternion(startTransform.rotation, 1.5f);
+	}
+	
+	private void TakeCareOfThis(Transform victim)
+	{
+		victim.DOScale(Vector3.zero, 1f).OnComplete(() => victim.gameObject.SetActive(false));
+		GetHit(victim);
+	}
 
 	private void OnCollisionEnter(Collision other)
 	{
 		if(_isDead) return;
 		if(!other.collider.CompareTag("Target")) return;
 		
-		GetHit(other.transform);
+		var exploder = Instantiate(explosionPrefab, other.contacts[0].point,
+			Quaternion.LookRotation(other.contacts[0].normal));
+
+		if(other.collider.CompareTag("Giant")) return;
+		
+		exploder.transform.localScale *= explosionScale;
+		Destroy(exploder, 3f);
+		TakeCareOfThis(other.transform);
+	}
+
+	private void OnReachNextArea()
+	{
+		if(LevelFlowController.only.currentArea != myArea) return;
+		
+		_health.VisibilityToggle(false);
+		GoToStartPoint();
 	}
 }

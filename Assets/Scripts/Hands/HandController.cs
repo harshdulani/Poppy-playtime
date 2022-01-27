@@ -173,8 +173,8 @@ public class HandController : MonoBehaviour
 			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 			{
 				other.GetComponent<RagdollLimbController>().GetPunched((
-					(LevelFlowController.only.IsInGiantFight()
-						? LevelFlowController.only.GetGiant().GetBoundsCenter() : _targetInitPos) - transform.position).normalized, punchForce);
+					(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+						? target.position : _targetInitPos) - transform.position).normalized, punchForce);
 			}
 			else
 			{
@@ -184,10 +184,12 @@ public class HandController : MonoBehaviour
 					prop = other.GetComponent<PropController>();
 
 				var direction =
-					(LevelFlowController.only.IsInGiantFight()
-						? LevelFlowController.only.GetGiant().GetBoundsCenter()
+					(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+						? target.position
 						: _targetInitPos) - other.root.position;
 
+				print(target + " found");
+				
 				prop.GetPunched(direction.normalized, 
 						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 			}

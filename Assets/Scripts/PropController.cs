@@ -91,7 +91,7 @@ public class PropController : MonoBehaviour
 			colliders[i].enabled = true;
 			rigidbodies[i].transform.parent = parent;
 			rigidbodies[i].isKinematic = false;
-			rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 5f);
+			rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 10f);
 
 			_pieces.Add(rigidbodies[i].transform);
 		}
@@ -160,16 +160,16 @@ public class PropController : MonoBehaviour
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
 		
 		if(shouldExplode)
-			Invoke(nameof(Explode), .2f);
+			Invoke(nameof(Explode), LevelFlowController.only.IsThisLastEnemyOfArea() ? 0f : 0.2f);
 
 		if(!hasBeenInteractedWith) return;
 		
 		if (!other.transform.root.CompareTag("Target")) return;
 
 		if (other.transform.root.TryGetComponent(out RagdollController raghu))
-		{
 			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
+
+		if (raghu || other.transform.TryGetComponent(out HelicopterController heli))
 			GameEvents.only.InvokePropHitsEnemy();
-		}
 	}
 }

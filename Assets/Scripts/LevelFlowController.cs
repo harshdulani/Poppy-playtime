@@ -14,7 +14,6 @@ public class LevelFlowController : MonoBehaviour
 	public int enemiesInCurrentArea, enemiesKilledInCurrentArea;
 	public int currentArea;
 
-	private GiantController _giant;
 	private int _totalEnemiesRemaining;
 
 	private void OnEnable()
@@ -100,6 +99,11 @@ public class LevelFlowController : MonoBehaviour
 		return _totalEnemiesRemaining == 1;
 	}
 
+	public bool IsThisLastEnemyOfArea()
+	{
+		return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 1;
+	}
+
 	public bool DidKillLastEnemyOfArea()
 	{
 		return enemiesInArea[currentArea] == enemiesKilledInCurrentArea;
@@ -110,18 +114,10 @@ public class LevelFlowController : MonoBehaviour
 		return IsThisLastEnemy() && isGiantLevel;
 	}
 
-	public Transform GetThrowTargetInArea()
+	public bool TryGetCurrentThrowTarget(out Transform target)
 	{
-		return throwTargetsInArea[currentArea];
-	}
-	
-	public void SetGiant(GiantController giant)
-	{
-		_giant = giant;
-	}
-	
-	public GiantController GetGiant()
-	{
-		return _giant;
+		target = throwTargetsInArea[currentArea] ? throwTargetsInArea[currentArea] : null;
+		
+		return target;
 	}
 }

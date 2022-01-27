@@ -67,8 +67,6 @@ public class GiantController : MonoBehaviour
 		
 		foreach (var item in headgear)
 			item.SetActive(false);
-
-		LevelFlowController.only.SetGiant(this);
 	}
 
 	private void OnDrawGizmos()
