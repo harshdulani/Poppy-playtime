@@ -22,11 +22,13 @@ public class HelicopterController : MonoBehaviour
 
 	private void OnEnable()
 	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
 
@@ -35,8 +37,6 @@ public class HelicopterController : MonoBehaviour
 		_health = GetComponent<HealthController>();
 		_rb = GetComponent<Rigidbody>();
 		_health.VisibilityToggle(false);
-		
-		OnReachNextArea();
 	}
 
 	private void Update()
@@ -82,6 +82,8 @@ public class HelicopterController : MonoBehaviour
 		{
 			ThrowPassenger(passengers[0]);
 			passengers.RemoveAt(0);
+			for(var i = 1; i < passengers.Count - 1; i++)
+				passengers[i].GetHit();
 		}
 
 		if (!_health.IsDead())
@@ -124,6 +126,13 @@ public class HelicopterController : MonoBehaviour
 		exploder.transform.localScale *= explosionScale;
 		Destroy(exploder, 3f);
 		TakeCareOfThis(other.transform);
+	}
+
+	private void OnTapToPlay()
+	{
+		if(0 != myArea) return;
+		 
+		GoToStartPoint();
 	}
 
 	private void OnReachNextArea()

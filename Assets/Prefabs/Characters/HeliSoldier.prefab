@@ -472,7 +472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95376d557792d240a39c2b0b88f1e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 7952531313123778162, guid: b417be3d07a54a0449c3f3d7c619785c, type: 3}
+  bulletMuzzle: {fileID: 180702, guid: a7c694f0877ea874fa57e033221095c3, type: 3}
   bulletHole: {fileID: 8937258168944942405}
   rigidbodies:
   - {fileID: 172940884}
@@ -486,6 +487,8 @@ MonoBehaviour:
   - {fileID: 1983691521}
   - {fileID: 1437588095}
   - {fileID: 1893252203}
+  shootInterval: 4
+  bulletForce: 200
 --- !u!1 &2523826419809554372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: c97573588aaeed449a63648e3c3e43c1, type: 3}
