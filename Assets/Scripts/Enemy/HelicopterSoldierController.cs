@@ -1,13 +1,19 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HelicopterSoldierController : MonoBehaviour
 {
-	[SerializeField] private GameObject bulletPrefab, bulletMuzzle;
-	[SerializeField] private Transform bulletHole;
 	[SerializeField] private Rigidbody[] rigidbodies;
-	[SerializeField] private float shootInterval, bulletForce, shootIntervalVariation;
+	
+	[Header("Bullets"), SerializeField] private Transform bulletHole;
+	[SerializeField] private GameObject bulletMuzzle;
+	[SerializeField] private float shootInterval, shootIntervalVariation, muzzleScale;
 
+	[Header("Canvas"), SerializeField] private TextMeshProUGUI seconds;
+	[SerializeField] private GuiProgressBarUI progressBarUi;
+	
 	private Animator _anim;
 	private AudioSource _audioSource;
 
@@ -30,14 +36,18 @@ public class HelicopterSoldierController : MonoBehaviour
 	{
 		_mySeq = DOTween.Sequence();
 		
-		_mySeq.AppendInterval(Random.Range(0, 2 * shootIntervalVariation));
-		_mySeq.AppendCallback(() => _myShootElapsed = 0);
+		_mySeq.AppendCallback(() =>
+		{
+			progressBarUi.Value = 0f;
+			_myShootElapsed = _myShootInterval;
+		});
+		_mySeq.Append(DOTween.To(() => progressBarUi.Value, value => progressBarUi.Value = value, 1f, _myShootInterval));
+		_mySeq.Join(DOTween.To(() => _myShootElapsed, value => _myShootElapsed = value, 0f, _myShootInterval).OnUpdate(() => seconds.text = _myShootElapsed.ToString("0.00")));
 
-		_mySeq.Append(DOTween.To(() => _myShootElapsed, value => _myShootElapsed = value, _myShootInterval,
-			_myShootInterval));
-		//_mySeq.Join()
-		
 		_mySeq.AppendCallback(Shoot);
+		
+		_mySeq.AppendInterval(Random.Range(0, shootIntervalVariation));
+		
 		_mySeq.SetLoops(-1);
 	}
 	
@@ -52,17 +62,15 @@ public class HelicopterSoldierController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 		{
 			rb.isKinematic = false;
-			rb.AddForce(direction * 10f, ForceMode.Impulse);
+			rb.AddForce(direction * 5f, ForceMode.Impulse);
+			rb.tag = "Untagged";
 		}
 
 		Invoke(nameof(GoKinematic), 4f);
 		
 		GameEvents.only.InvokeEnemyKill();
 
-		foreach (var rb in rigidbodies)
-			rb.tag = "Untagged";
-		
-		
+		_mySeq.Kill();
 		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
@@ -78,13 +86,22 @@ public class HelicopterSoldierController : MonoBehaviour
 
 	private void Shoot()
 	{
+		print("shoot start");
+		var muzzle = Instantiate(bulletMuzzle).transform;
+
+		muzzle.localScale = Vector3.one * muzzleScale;
+		muzzle.parent = bulletHole;
+	
+		muzzle.localPosition = Vector3.zero;
+		muzzle.localRotation = Quaternion.identity;
+
 		_anim.SetTrigger(Fire);
-		var bullet = Instantiate(bulletPrefab, bulletHole.position, bulletHole.rotation);
+		GameEvents.only.InvokeEnemyHitPlayer(transform);
+		//invoke enemy hit player
 		
-		bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletForce);
+		print("shoot end");
 		
-		Destroy(bullet, 3f);
-		Destroy(Instantiate(bulletMuzzle, bulletHole.position, bulletHole.rotation), 3f);
+		Destroy(muzzle.gameObject, 3f);
 		Vibration.Vibrate(15);
 	}
 }

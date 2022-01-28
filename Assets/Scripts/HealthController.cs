@@ -19,6 +19,8 @@ public class HealthController : MonoBehaviour
 		//might need to add a bool for if this is not a car and non giant enemy, you can allow them to hit you twice
 		if(_hitters.Contains(hitter)) return false;
 		
+		healthCanvas.enabled = true;
+
 		_hitters.Add(hitter);
 		hitsReceived++;
 		

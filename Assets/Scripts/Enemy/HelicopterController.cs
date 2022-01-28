@@ -98,13 +98,17 @@ public class HelicopterController : MonoBehaviour
 	private void ThrowPassenger(HelicopterSoldierController passenger)
 	{
 		passenger.transform.parent = null;
-		passenger.GoRagdoll(passenger.transform.position - transform.position);
+		passenger.GoRagdoll((passenger.transform.position - transform.position).normalized);
 	}
 	
 	private void GoToStartPoint()
 	{
 		transform.DOMove(startTransform.position, 3.5f).SetEase(easeCurve);
-		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(Ease.InSine);
+		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(easeCurve).OnComplete(() =>
+		{
+			foreach (var passenger in passengers)
+				passenger.StartShooting();
+		});
 	}
 	
 	private void TakeCareOfThis(Transform victim)
