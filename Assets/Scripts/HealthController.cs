@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class HealthController : MonoBehaviour
@@ -6,31 +6,28 @@ public class HealthController : MonoBehaviour
 	public int hitsRequiredToKill, hitsReceived;
 
 	[SerializeField] private HealthCanvasController healthCanvas;
-	
-	private readonly List<Transform> _hitters = new List<Transform>();
+
+	private const float HitCooldown = 1f;
+	private bool _isInHitCooldown;
 	
 	public bool IsDead()
 	{
 		return hitsReceived >= hitsRequiredToKill;
 	}
 
-	public bool AddHit(Transform hitter)
+	public bool AddHit()
 	{
-		//might need to add a bool for if this is not a car and non giant enemy, you can allow them to hit you twice
-		if(_hitters.Contains(hitter)) return false;
-		
-		healthCanvas.enabled = true;
+		//changing stuff here, if you have boss fight bugs, its probably because i broke them adding heli compatibility
+		if(_isInHitCooldown) return false;
 
-		_hitters.Add(hitter);
+		VisibilityToggle(true);
+
+		_isInHitCooldown = true;
+		DOVirtual.DelayedCall(HitCooldown, () => _isInHitCooldown = false);
 		hitsReceived++;
 		
 		if(healthCanvas) healthCanvas.ReduceHealth();
 		return true;
-	}
-
-	public void AddGrabbedCar(Transform car)
-	{
-		_hitters.Add(car);
 	}
 
 	public void VisibilityToggle(bool status)

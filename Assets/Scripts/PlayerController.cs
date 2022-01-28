@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnEnemyHitPlayer(Transform hitter)
 	{
-		if(!_health.AddHit(hitter)) return;
+		if(!_health.AddHit()) return;
 
 		CameraController.only.ScreenShake(3f);
 		//show cracked screen

@@ -45,6 +45,6 @@ public class GiantLimbController : MonoBehaviour
 		{
 			victim.gameObject.SetActive(false);
 		});
-		_parent.GetHit(victim);
+		_parent.GetHit();
 	}
 }

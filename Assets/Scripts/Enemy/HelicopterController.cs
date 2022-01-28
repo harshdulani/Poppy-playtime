@@ -16,7 +16,17 @@ public class HelicopterController : MonoBehaviour
 	[SerializeField] private GameObject explosionPrefab;
 	[SerializeField] private float deathExplosionForce, explosionScale;
 	private HealthController _health;
-	
+
+	[Header("Attack"), SerializeField] private GuiProgressBarUI progressBarUi;
+	[SerializeField] private float shootInterval;
+	public float ProgressBarValue
+	{
+		get => progressBarUi.Value;
+		set => progressBarUi.Value = value;
+	}
+	private Sequence _mySeq;
+	private int _currentSoldierFire;
+
 	private Rigidbody _rb;
 	private bool _isDead;
 
@@ -37,6 +47,8 @@ public class HelicopterController : MonoBehaviour
 		_health = GetComponent<HealthController>();
 		_rb = GetComponent<Rigidbody>();
 		_health.VisibilityToggle(false);
+
+		_currentSoldierFire = 0;
 	}
 
 	private void Update()
@@ -70,13 +82,13 @@ public class HelicopterController : MonoBehaviour
 
 		_rb.AddForce(Vector3.left * deathExplosionForce + Vector3.down * deathExplosionForce, ForceMode.Impulse);
 		_rb.AddTorque(Vector3.up * 720f, ForceMode.Acceleration);
+
+		EndShooterSequence();
 	}
 
-	private void GetHit(Transform hitter)
+	private void GetHit()
 	{
-		if(!_health.AddHit(hitter)) return;
-		
-		Vibration.Vibrate(20);
+		if(!_health.AddHit()) return;
 
 		if (passengers.Count > 0)
 		{
@@ -93,6 +105,7 @@ public class HelicopterController : MonoBehaviour
 		}
 		
 		HeliDeath();
+		Vibration.Vibrate(20);
 	}
 
 	private void ThrowPassenger(HelicopterSoldierController passenger)
@@ -100,21 +113,39 @@ public class HelicopterController : MonoBehaviour
 		passenger.transform.parent = null;
 		passenger.GoRagdoll((passenger.transform.position - transform.position).normalized);
 	}
-	
+
+	private void StartSoldierShooterSequence()
+	{
+		_mySeq = DOTween.Sequence();
+
+		foreach (var soldier in passengers)
+		{
+			_mySeq.AppendCallback(ResetProgressValue);
+			_mySeq.Append(DOTween.To(() => ProgressBarValue, value => ProgressBarValue = value, 1f, shootInterval));
+			_mySeq.AppendCallback(soldier.Shoot);
+		}
+
+		_mySeq.AppendCallback(StartSoldierShooterSequence);
+	}
+
+	private void EndShooterSequence()
+	{
+		_mySeq.Kill();
+		progressBarUi.transform.parent.gameObject.SetActive(false);
+	}
+
+	private void ResetProgressValue() => ProgressBarValue = 0f;
+
 	private void GoToStartPoint()
 	{
 		transform.DOMove(startTransform.position, 3.5f).SetEase(easeCurve);
-		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(easeCurve).OnComplete(() =>
-		{
-			foreach (var passenger in passengers)
-				passenger.StartShooting();
-		});
+		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(easeCurve).OnComplete(StartSoldierShooterSequence);
 	}
 	
 	private void TakeCareOfThis(Transform victim)
 	{
 		victim.DOScale(Vector3.zero, 1f).OnComplete(() => victim.gameObject.SetActive(false));
-		GetHit(victim);
+		GetHit();
 	}
 
 	private void OnCollisionEnter(Collision other)

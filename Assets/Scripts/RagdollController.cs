@@ -92,6 +92,7 @@ public class RagdollController : MonoBehaviour
 		{
 			rb.isKinematic = false;
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
+			rb.tag = "Untagged";
 		}
 
 		Invoke(nameof(GoKinematic), 4f);
@@ -99,9 +100,6 @@ public class RagdollController : MonoBehaviour
 		GameEvents.only.InvokeEnemyKill();
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
 
-		foreach (var rb in rigidbodies)
-			rb.tag = "Untagged";
-		
 		var x = GetComponentInChildren<EnemyWeaponController>();
 		if (x)
 			x.OnDeath();

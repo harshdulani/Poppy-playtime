@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
 	[Header("ScreenShake"), SerializeField]
 	private float shakeDuration;
 	[SerializeField] private float shakeStrength;
-
+	
 	private Vector3 _initialLocalPos;
 	private float _normalFov;
 	private Camera _me;

@@ -1,5 +1,4 @@
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,16 +8,12 @@ public class HelicopterSoldierController : MonoBehaviour
 	
 	[Header("Bullets"), SerializeField] private Transform bulletHole;
 	[SerializeField] private GameObject bulletMuzzle;
-	[SerializeField] private float shootInterval, shootIntervalVariation, muzzleScale;
+	[SerializeField] private float muzzleScale;
 
-	[Header("Canvas"), SerializeField] private TextMeshProUGUI seconds;
-	[SerializeField] private GuiProgressBarUI progressBarUi;
-	
 	private Animator _anim;
 	private AudioSource _audioSource;
 
 	private Sequence _mySeq;
-	private float _myShootInterval, _myShootElapsed;
 	private bool _isRagdoll;
 	
 	private static readonly int Fire = Animator.StringToHash("Fire");
@@ -28,27 +23,6 @@ public class HelicopterSoldierController : MonoBehaviour
 	{
 		_anim = GetComponent<Animator>();
 		_audioSource = GetComponent<AudioSource>();
-		
-		_myShootInterval = shootInterval + Random.Range(-shootIntervalVariation, shootIntervalVariation);
-	}
-
-	public void StartShooting()
-	{
-		_mySeq = DOTween.Sequence();
-		
-		_mySeq.AppendCallback(() =>
-		{
-			progressBarUi.Value = 0f;
-			_myShootElapsed = _myShootInterval;
-		});
-		_mySeq.Append(DOTween.To(() => progressBarUi.Value, value => progressBarUi.Value = value, 1f, _myShootInterval));
-		_mySeq.Join(DOTween.To(() => _myShootElapsed, value => _myShootElapsed = value, 0f, _myShootInterval).OnUpdate(() => seconds.text = _myShootElapsed.ToString("0.00")));
-
-		_mySeq.AppendCallback(Shoot);
-		
-		_mySeq.AppendInterval(Random.Range(0, shootIntervalVariation));
-		
-		_mySeq.SetLoops(-1);
 	}
 	
 	public void GoRagdoll(Vector3 direction)
@@ -70,8 +44,6 @@ public class HelicopterSoldierController : MonoBehaviour
 		
 		GameEvents.only.InvokeEnemyKill();
 
-		_mySeq.Kill();
-		
 		_audioSource.Play();
 		Vibration.Vibrate(25);
 	}
@@ -84,9 +56,8 @@ public class HelicopterSoldierController : MonoBehaviour
 			rb.isKinematic = false;
 	}
 
-	private void Shoot()
+	public void Shoot()
 	{
-		print("shoot start");
 		var muzzle = Instantiate(bulletMuzzle).transform;
 
 		muzzle.localScale = Vector3.one * muzzleScale;
@@ -97,10 +68,7 @@ public class HelicopterSoldierController : MonoBehaviour
 
 		_anim.SetTrigger(Fire);
 		GameEvents.only.InvokeEnemyHitPlayer(transform);
-		//invoke enemy hit player
-		
-		print("shoot end");
-		
+
 		Destroy(muzzle.gameObject, 3f);
 		Vibration.Vibrate(15);
 	}

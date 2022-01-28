@@ -166,8 +166,6 @@ public class GiantController : MonoBehaviour
 			yield return GameExtensions.GetWaiter(0.2f);
 		} while (!_grabbedTargetTransform);
 
-		_health.AddGrabbedCar(_grabbedTargetTransform);
-
 		if (_grabbedTargetCarController)
 		{
 			_grabbedTargetCarController.StopMoving();
@@ -223,9 +221,9 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 	}
 
-	public void GetHit(Transform hitter)
+	public void GetHit()
 	{
-		if(!_health.AddHit(hitter)) return;
+		if(!_health.AddHit()) return;
 		_anim.SetTrigger(Hit);
 		Vibration.Vibrate(20);
 
