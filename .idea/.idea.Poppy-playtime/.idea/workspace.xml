@@ -20,15 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Cake base.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Cake base.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Helicopter/Helicopter_06_StarWave.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Helicopter/Helicopter_06_StarWave.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/AudioManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/AudioManager.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 22 - heli.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 22 - heli.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 8.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 8.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +56,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Meshes/hand_animation.fbx.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Materials/Misc/Explosions/explosion_spritesheet_3x3_AB.mat.meta" root0="FORCE_HIGHLIGHTING" />
@@ -249,6 +249,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/SplineTriggerController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/RopeController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Helicopter/Helicopter_06_StarWave.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 5/NavMesh.asset" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Helicopter/1 Passenger.prefab" root0="FORCE_HIGHLIGHTING" />
@@ -321,8 +322,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/GiantLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BoxingGloveController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Audio/HeliAudioController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" />
       </list>
     </option>
@@ -381,7 +382,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added second control mechanic for A/B testing, punch scale on enemy select" />
     <MESSAGE value="fixed bugs that car boss level doesnt have explosions so wont properly exec, fixed bug that player stays in wfp mode even after whatever" />
     <MESSAGE value="fixed bugs that car boss level doesnt have explosions so wont" />
     <MESSAGE value="Redid the enemy pulling mechanic, it is much more stable now. MUCH MORE.  Removed rayfire shatter behaviour from enemy patroller. fixed climbing levels for climbing on next areas." />
@@ -406,7 +406,8 @@
     <MESSAGE value="Added bullet firing and player hit, loader" />
     <MESSAGE value="Somewhat buggy helicopter level implemented, giant levels remain unrefactored for even more changes" />
     <MESSAGE value="Helicopter mechanic completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Helicopter mechanic completed" />
+    <MESSAGE value="Refactored giant levels to work with new punching mechanic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored giant levels to work with new punching mechanic" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -486,10 +487,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="617" y="244" width="611" height="681" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1641809440684" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1643613023980">
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1643618143001">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1643613023980" />
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1643618143001" />
   </component>
 </project>

@@ -23,7 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146982328229387975}
-  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0.49999934, y: -0.5000005, z: -0.4999999, w: 0.5000003}
   m_LocalPosition: {x: -0.033274, y: 0.00002, z: 0.00588}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -858,7 +858,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c5e6b0bd7d1b6934998894ab81c98a2e, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -969,11 +969,8 @@ MonoBehaviour:
   - {fileID: 1893252203}
   bulletHole: {fileID: 8937258168944942405}
   bulletMuzzle: {fileID: 180702, guid: a7c694f0877ea874fa57e033221095c3, type: 3}
-  shootInterval: 4
-  shootIntervalVariation: 1
+  bulletPrefab: {fileID: 5809482206838772813, guid: f139745c70e014544b03508cd6edf65e, type: 3}
   muzzleScale: 0.2
-  seconds: {fileID: 3689424268834586784}
-  progressBarUi: {fileID: 9141280863786791162}
 --- !u!1 &2523826419809554372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: c97573588aaeed449a63648e3c3e43c1, type: 3}
@@ -1596,11 +1593,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e7bcdf5e1a5bf9846a8bdf795556ac0b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 53.154015
+      value: 53.154
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e7bcdf5e1a5bf9846a8bdf795556ac0b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 53.154022
+      value: 53.154
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e7bcdf5e1a5bf9846a8bdf795556ac0b, type: 3}
       propertyPath: m_LocalScale.z

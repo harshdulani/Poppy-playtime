@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class HelicopterController : MonoBehaviour
 {
+	public Transform startTransform;
 	[SerializeField] private AnimationCurve easeCurve;
-	[SerializeField] private Transform startTransform;
-	[SerializeField] private int myArea;
+	[SerializeField] public int myArea;
 	
 	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
@@ -29,6 +29,7 @@ public class HelicopterController : MonoBehaviour
 	}
 	private Sequence _shooterSeq, _moveToStartSeq;
 
+	private HeliAudioController _audio;
 	private Rigidbody _rb;
 	private bool _isDead;
 
@@ -36,18 +37,22 @@ public class HelicopterController : MonoBehaviour
 	{
 		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.only.enemyKillPlayer += OnEnemyKillPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.only.enemyKillPlayer -= OnEnemyKillPlayer;
 	}
 
 	private void Start()
 	{
 		_health = GetComponent<HealthController>();
+		_audio = GetComponent<HeliAudioController>();
 		_rb = GetComponent<Rigidbody>();
+		
 		_health.VisibilityToggle(false);
 		exclaim.enabled = false;
 	}
@@ -84,6 +89,9 @@ public class HelicopterController : MonoBehaviour
 		_rb.AddForce(Vector3.left * deathExplosionForce + Vector3.down * deathExplosionForce, ForceMode.Impulse);
 		_rb.AddTorque(Vector3.up * 720f, ForceMode.Acceleration);
 
+		GameEvents.only.InvokeEnemyKill();
+		
+		_audio.OnHeliDeath();
 		EndShooterSequence();
 		_moveToStartSeq.Kill();
 	}
@@ -113,7 +121,8 @@ public class HelicopterController : MonoBehaviour
 	private void ThrowPassenger(HelicopterSoldierController passenger)
 	{
 		passenger.transform.parent = null;
-		passenger.GoRagdoll((passenger.transform.position - transform.position).normalized);
+		
+		passenger.GoRagdoll((GameObject.FindGameObjectWithTag("Player").transform.position - transform.position).normalized);
 	}
 
 	private void StartSoldierShooterSequence()
