@@ -33,7 +33,7 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;
 		}
-		if (!_hit.collider.CompareTag("Target"))
+		if (!_hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("Button"))
 		{
 			_aimer.LoseTarget();
 			return;

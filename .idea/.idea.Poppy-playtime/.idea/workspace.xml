@@ -20,15 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Cake base.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Cake base.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Helicopter/Helicopter_06_StarWave.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Helicopter/Helicopter_06_StarWave.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/AudioManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/AudioManager.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level 22 - heli.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level 22 - heli.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/TapState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/TapState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +52,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony/CartoonyPunchLight.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat/Brawling/Cartoony/CartoonyPunchLight.prefab.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Materials/Snow White Trail Particle.mat.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Meshes/hand_animation.fbx.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Characters/HeliSoldier.prefab" root0="FORCE_HIGHLIGHTING" />
@@ -92,6 +91,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/BossPropController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 4.unity.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/JumperEnemyController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Audio/HeliAudioController.cs.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/ShatterEnemyController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyWeaponController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Audio/HeliAudioController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -99,6 +99,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EventManagers.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyPatroller.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PropController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AudioClips/Helicopter Sound Effect - Flying 5 minutes.mp3.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CarController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Characters/Climbers/Venom T-Pose Variant.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Textures/explosion_spritesheet_3x3.png.meta" root0="FORCE_HIGHLIGHTING" />
@@ -116,6 +117,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraController.cs.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/helicopter/AnimationClip.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 23 - boxing glove.unity" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 23 - boxing glove.unity.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Shaders/Hybrid/TCP2 Hybrid URP Support.cginc" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs.meta" root0="FORCE_HIGHLIGHTING" />
@@ -142,10 +145,12 @@
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Legacy/TCP2_MaterialInspector_PBS_SG.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 16 - city 2 stage.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Legacy/TCP2_ShaderGeneratorUtils.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ButtonController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_GUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sprites/crosshair doomish.png.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/Level 19 - tower.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Helicopter/3 Passenger Variant.prefab" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/AudioClips/rifle_shot_single_5.wav.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_Utils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Toony Colors Pro 2.6/Editor/Utils/TCP2_ExpressionParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://E:/Extracted_Harsh/Push Em All/Shader/Shader #80.shader" root0="FORCE_HIGHLIGHTING" />
@@ -274,7 +279,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/ClimberLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ClimberController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/BossPropController.cs" />
         <option value="$PROJECT_DIR$/Assets/ComboCanvasManager.cs" />
@@ -284,18 +288,15 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InTransitState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PunchAnimationController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/TapState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/ShatterEnemyLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HostageController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyPatroller.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HitBoxController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/ShatterEnemyController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FaceBookScript.cs" />
@@ -309,7 +310,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Epic Toon FX/CoinCollect Particle/_UI Particles/UIParticleSystem.cs" />
         <option value="$PROJECT_DIR$/Assets/Epic Toon FX/CoinCollect Particle/_Controlled Particles/ParticleControlScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Sprites/radial loader/ProgressBars/ProgressBars/Scripters/GuiProgressBarUI.cs" />
@@ -321,10 +321,15 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/GiantController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/GiantBoss/GiantLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/BoxingGloveController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Audio/HeliAudioController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/BoxingGloveController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ButtonController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/AimingState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/TapState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
       </list>
     </option>
   </component>
@@ -382,7 +387,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fixed bugs that car boss level doesnt have explosions so wont properly exec, fixed bug that player stays in wfp mode even after whatever" />
     <MESSAGE value="fixed bugs that car boss level doesnt have explosions so wont" />
     <MESSAGE value="Redid the enemy pulling mechanic, it is much more stable now. MUCH MORE.  Removed rayfire shatter behaviour from enemy patroller. fixed climbing levels for climbing on next areas." />
     <MESSAGE value="hopefully fixed both prop related bugs about player trying to punch stolen prop by avoiding boss trying to steal taken prop" />
@@ -407,7 +411,8 @@
     <MESSAGE value="Somewhat buggy helicopter level implemented, giant levels remain unrefactored for even more changes" />
     <MESSAGE value="Helicopter mechanic completed" />
     <MESSAGE value="Refactored giant levels to work with new punching mechanic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored giant levels to work with new punching mechanic" />
+    <MESSAGE value="Made helicopter bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made helicopter bug fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -487,10 +492,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="617" y="244" width="611" height="681" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1641809440684" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1643618143001">
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1643633411478">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1643618143001" />
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1643633411478" />
   </component>
 </project>

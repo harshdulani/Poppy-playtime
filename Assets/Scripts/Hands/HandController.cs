@@ -154,14 +154,18 @@ public class HandController : MonoBehaviour
 		{
 			if (!InputHandler.Only.CanSwitchToTargetState()) return;
 			
-			StartCarryingBody(other.transform);
-			if(other.transform.TryGetComponent(out RagdollLimbController raghu))
-				raghu.TellParent();
-			else if (CurrentObjectCarriedType == CarriedObjectType.Car)
-				other.GetComponent<CarController>().StopMoving();
-			
-			if (other.TryGetComponent(out PropController prop))
-				prop.hasBeenInteractedWith = true;
+			if(!other.CompareTag("Button"))
+			{
+				StartCarryingBody(other.transform);
+				if (other.transform.TryGetComponent(out RagdollLimbController raghu))
+					raghu.TellParent();
+				else if (CurrentObjectCarriedType == CarriedObjectType.Car)
+					other.GetComponent<CarController>().StopMoving();
+				if (other.TryGetComponent(out PropController prop))
+					prop.hasBeenInteractedWith = true;
+			}
+			else
+				other.GetComponent<ButtonController>().PressButton();
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));
