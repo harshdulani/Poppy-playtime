@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class HelicopterController : MonoBehaviour
@@ -9,7 +10,7 @@ public class HelicopterController : MonoBehaviour
 	[SerializeField] private int myArea;
 	
 	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
-	[SerializeField] private float rotationMagnitude, recenterLerp;
+	[SerializeField] private float rotationMagnitude;
 	private Vector3 _previousSine, _previousSineRot;
 
 	[Header("Damage"), SerializeField] private List<HelicopterSoldierController> passengers;
@@ -18,14 +19,15 @@ public class HelicopterController : MonoBehaviour
 	private HealthController _health;
 
 	[Header("Attack"), SerializeField] private GuiProgressBarUI progressBarUi;
+	[SerializeField] private TextMeshProUGUI exclaim;
 	[SerializeField] private float shootInterval;
-	public float ProgressBarValue
+
+	private float ProgressBarValue
 	{
 		get => progressBarUi.Value;
 		set => progressBarUi.Value = value;
 	}
-	private Sequence _mySeq;
-	private int _currentSoldierFire;
+	private Sequence _shooterSeq, _moveToStartSeq;
 
 	private Rigidbody _rb;
 	private bool _isDead;
@@ -47,8 +49,7 @@ public class HelicopterController : MonoBehaviour
 		_health = GetComponent<HealthController>();
 		_rb = GetComponent<Rigidbody>();
 		_health.VisibilityToggle(false);
-
-		_currentSoldierFire = 0;
+		exclaim.enabled = false;
 	}
 
 	private void Update()
@@ -84,6 +85,7 @@ public class HelicopterController : MonoBehaviour
 		_rb.AddTorque(Vector3.up * 720f, ForceMode.Acceleration);
 
 		EndShooterSequence();
+		_moveToStartSeq.Kill();
 	}
 
 	private void GetHit()
@@ -116,21 +118,23 @@ public class HelicopterController : MonoBehaviour
 
 	private void StartSoldierShooterSequence()
 	{
-		_mySeq = DOTween.Sequence();
+		_shooterSeq = DOTween.Sequence();
 
 		foreach (var soldier in passengers)
 		{
-			_mySeq.AppendCallback(ResetProgressValue);
-			_mySeq.Append(DOTween.To(() => ProgressBarValue, value => ProgressBarValue = value, 1f, shootInterval));
-			_mySeq.AppendCallback(soldier.Shoot);
+			_shooterSeq.AppendCallback(ResetProgressValue);
+			_shooterSeq.AppendCallback(() => exclaim.enabled = false);
+			_shooterSeq.Append(DOTween.To(() => ProgressBarValue, value => ProgressBarValue = value, 1f, shootInterval)
+				.OnUpdate(() => exclaim.enabled = ProgressBarValue > 0.8f));
+			_shooterSeq.AppendCallback(soldier.Shoot);
 		}
 
-		_mySeq.AppendCallback(StartSoldierShooterSequence);
+		_shooterSeq.AppendCallback(StartSoldierShooterSequence);
 	}
 
 	private void EndShooterSequence()
 	{
-		_mySeq.Kill();
+		_shooterSeq.Kill();
 		progressBarUi.transform.parent.gameObject.SetActive(false);
 	}
 
@@ -138,8 +142,10 @@ public class HelicopterController : MonoBehaviour
 
 	private void GoToStartPoint()
 	{
-		transform.DOMove(startTransform.position, 3.5f).SetEase(easeCurve);
-		transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(easeCurve).OnComplete(StartSoldierShooterSequence);
+		_moveToStartSeq = DOTween.Sequence();
+		
+		_moveToStartSeq.Append(transform.DOMove(startTransform.position, 3.5f).SetEase(easeCurve));
+		_moveToStartSeq.Join(transform.DORotateQuaternion(startTransform.rotation, 3.5f).SetEase(easeCurve).OnComplete(StartSoldierShooterSequence));
 	}
 	
 	private void TakeCareOfThis(Transform victim)
@@ -176,5 +182,10 @@ public class HelicopterController : MonoBehaviour
 		
 		_health.VisibilityToggle(false);
 		GoToStartPoint();
+	}
+
+	private void OnEnemyKillPlayer()
+	{
+		EndShooterSequence();
 	}
 }
