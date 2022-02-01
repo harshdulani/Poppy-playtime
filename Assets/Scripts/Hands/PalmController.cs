@@ -97,6 +97,9 @@ public class PalmController : MonoBehaviour
 		if(other.CompareTag("Button"))
 		{
 			myHand.HandReachTarget(other.transform);
+			
+			Invoke(nameof(EnablePunching), punchWaitTime);
+			Invoke(nameof(ResetAdoptability), 0.5f);
 			return;
 		}
 		

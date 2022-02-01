@@ -154,7 +154,9 @@ public class HandController : MonoBehaviour
 		{
 			if (!InputHandler.Only.CanSwitchToTargetState()) return;
 			
-			if(!other.CompareTag("Button"))
+			if(other.CompareTag("Button"))
+				other.GetComponent<ButtonController>().PressButton();
+			else
 			{
 				StartCarryingBody(other.transform);
 				if (other.transform.TryGetComponent(out RagdollLimbController raghu))
@@ -164,8 +166,6 @@ public class HandController : MonoBehaviour
 				if (other.TryGetComponent(out PropController prop))
 					prop.hasBeenInteractedWith = true;
 			}
-			else
-				other.GetComponent<ButtonController>().PressButton();
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));

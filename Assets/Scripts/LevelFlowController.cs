@@ -42,6 +42,9 @@ public class LevelFlowController : MonoBehaviour
 			Debug.Break();
 		}
 
+		if (throwTargetsInArea == null || throwTargetsInArea.Count == 0)
+			throwTargetsInArea = new List<Transform>(enemiesInArea.Count);
+
 		enemiesInCurrentArea = enemiesInArea[currentArea];
 		enemiesKilledInCurrentArea = 0;
 
