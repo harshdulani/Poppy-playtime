@@ -81,6 +81,8 @@ public class MainCanvasController : MonoBehaviour
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
+		MainShopController.shop.SaveCurrentShopState();
+		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
 	}

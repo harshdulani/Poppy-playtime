@@ -283,12 +283,12 @@ public class HandController : MonoBehaviour
 				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingGunHash);
 				break;
-			case WeaponType.Boot:
+			case WeaponType.Boots:
 				boot.SetActive(true);
 				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
 				break;
-			case WeaponType.Heel:
+			case WeaponType.Heels:
 				heel.SetActive(true);
 				_myAnimator.SetTrigger(CloseFingers);
 				_rootAnimator.SetTrigger(IsHoldingFootWearHash);

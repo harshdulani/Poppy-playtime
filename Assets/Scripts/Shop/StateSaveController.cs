@@ -4,26 +4,54 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
+[Serializable]
+public class ShopState
+{
+	public Dictionary<WeaponType, ShopItemState> weaponStates;
+	public int coinCount;
+	
+	public ShopState(Dictionary<WeaponType, ShopItemState> currentState, int newCoinCount)
+	{
+		weaponStates = currentState;
+		coinCount = newCoinCount;
+	}
+}
+
 public class StateSaveController : MonoBehaviour
 {
 	public static StateSaveController only;
 	
-	private string _savePath;
+	private string _savePath = "";
 
 	private void Awake()
 	{
 		if (!only) only = this;
 		else Destroy(gameObject);
-	}
-
-	void Start () 
-	{
+		
 		_savePath = Application.persistentDataPath + "/shopState.save";
 	}
-	
-	public void SaveCurrentState(Dictionary<WeaponType, ShopItemState> currentState)
+
+	private void Update()
 	{
-		var save = new ShopState(currentState);
+		if (Input.GetKeyDown(KeyCode.D)) DeleteSavedState();
+	}
+
+	public void SaveCurrentState(Dictionary<WeaponType, ShopItemState> currentShopState, int newCoinCount)
+	{
+		var save = new ShopState(currentShopState, newCoinCount);
+
+		var binaryFormatter = new BinaryFormatter();
+		using (var fileStream = File.Create(_savePath))
+		{
+			binaryFormatter.Serialize(fileStream, save);
+		}
+
+		Debug.Log("Data Saved");
+	}
+	
+	public void SaveCurrentState(ShopState currentShopState)
+	{
+		var save = new ShopState(currentShopState.weaponStates, currentShopState.coinCount);
 
 		var binaryFormatter = new BinaryFormatter();
 		using (var fileStream = File.Create(_savePath))
@@ -38,6 +66,7 @@ public class StateSaveController : MonoBehaviour
 	{
 		if (!File.Exists(_savePath))
 		{
+			print(_savePath);
 			Debug.LogWarning("Save file doesn't exist. Initialising a blank one.");
 			return InitialiseEmptyState();
 		}
@@ -60,21 +89,13 @@ public class StateSaveController : MonoBehaviour
 		File.Delete(_savePath);
 	}
 	
-	private ShopState InitialiseEmptyState()
+	private static ShopState InitialiseEmptyState()
 	{
 		var blank = new Dictionary<WeaponType, ShopItemState> {{WeaponType.Punch, ShopItemState.Selected}};
 
 		for(var i = 1; i < Enum.GetNames(typeof(WeaponType)).Length; i++)
 			blank.Add((WeaponType) i, ShopItemState.Locked);
 		
-		return new ShopState(blank);
+		return new ShopState(blank, 0);
 	}
-}
-
-[Serializable]
-public class ShopState
-{
-	public Dictionary<WeaponType, ShopItemState> weaponStates;
-
-	public ShopState(Dictionary<WeaponType, ShopItemState> currentState) => weaponStates = currentState;
 }

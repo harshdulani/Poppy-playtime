@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +7,8 @@ public enum WeaponType
 {
 	Punch,
 	Hammer,
-	Boot,
-	Heel,
+	Boots,
+	Heels,
 	Gun,
 	Shield,
 	Sneaker,
@@ -65,7 +64,7 @@ public class SkinLoader : MonoBehaviour
 		_currentSkinPercentageUnlocked = PlayerPrefs.GetFloat("currentSkinPercentageUnlocked", 0f);
 		_currentSkinInUse = PlayerPrefs.GetInt("currentSkinInUse", 0);
 
-		if(_currentSkinBeingUnlocked >= Enum.GetNames(typeof(WeaponType)).Length) return;
+		if(_currentSkinBeingUnlocked >= MainShopController.GetSkinCount()) return;
 		
 		coloredWeaponImage.sprite = coloredWeaponSprites[_currentSkinBeingUnlocked];
 		blackWeaponImage.sprite = blackWeaponSprites[_currentSkinBeingUnlocked];
@@ -89,8 +88,6 @@ public class SkinLoader : MonoBehaviour
 
 	public static WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
 
-	public int GetSkinCount() => coloredWeaponSprites.Length;
-
 	public void UpdateSkinInUse(int currentSkin)
 	{
 		_currentSkinInUse = currentSkin;
@@ -106,7 +103,7 @@ public class SkinLoader : MonoBehaviour
 		loaderPanel.SetActive(false);
 		
 		//this value is being set in resetloader
-		if(_currentSkinBeingUnlocked < coloredWeaponSprites.Length - 1)
+		if(_currentSkinBeingUnlocked < MainShopController.GetSkinCount() - 1)
 			_currentSkinBeingUnlocked++;
 		//play animatn
 		ResetLoader();
@@ -116,13 +113,13 @@ public class SkinLoader : MonoBehaviour
 
 	public void Claim()
 	{
-		if(_currentSkinInUse <= coloredWeaponSprites.Length - 1)
+		if(_currentSkinInUse <= MainShopController.GetSkinCount() - 1)
 		{
 			_currentSkinInUse++;
 			PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
 		}
 		
-		if(_currentSkinBeingUnlocked < coloredWeaponSprites.Length - 1)
+		if(_currentSkinBeingUnlocked < MainShopController.GetSkinCount() - 1)
 		{
 			_currentSkinBeingUnlocked++;
 			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
@@ -193,7 +190,7 @@ public class SkinLoader : MonoBehaviour
 
 	private void OnGameEnd()
 	{
-		if(_currentSkinBeingUnlocked >= coloredWeaponSprites.Length - 1) return;
+		if(_currentSkinBeingUnlocked >= MainShopController.GetSkinCount() - 1) return;
 		
 		Invoke(nameof(ShowPanel), panelOpenWait);
 	}

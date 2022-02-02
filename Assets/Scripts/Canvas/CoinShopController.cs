@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CoinShopController : MonoBehaviour
 {
-	[SerializeField] private int[] speedLevelCosts, powerLevelCosts, skinCosts;
+	[SerializeField] private int[] speedLevelCosts, powerLevelCosts;
 	[SerializeField] private Button speedButton, powerButton, skinButton;
 	[SerializeField] private GameObject speedHand, powerHand, skinHand;
 	[SerializeField] private Image currentSkinImage;
@@ -19,8 +19,7 @@ public class CoinShopController : MonoBehaviour
 
 	private Animation _anim;
 	private int _currentSpeedLevel, _currentPowerLevel, _currentSkin;
-	private int _coinCount = 0;
-
+	
 	private void OnEnable()
 	{
 		GameEvents.only.tapToPlay += OnTapToPlay;
@@ -32,14 +31,21 @@ public class CoinShopController : MonoBehaviour
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
-	
-	public int CoinCount
+
+	private void AlterCoinCount(int change)
 	{
-		get => _coinCount;
-		private set { _coinCount = value;
-			UpdateCoinText();
-		}
+		MainShopController.shop.currentState.coinCount += change;
+		MainShopController.shop.SaveCurrentShopState();
+		UpdateCoinText();
 	}
+	
+	private void AlterWeaponState(int relevantSkinIndex, ShopItemState newState)
+	{
+		MainShopController.shop.currentState.weaponStates[(WeaponType) relevantSkinIndex] = newState;
+		MainShopController.shop.ChangeSelectedWeapon(relevantSkinIndex);
+	}
+
+	private static int GetCoinCount() => MainShopController.shop.currentState.coinCount;
 
 	private void Start()
 	{
@@ -53,17 +59,14 @@ public class CoinShopController : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.O))
-		{
-			CoinCount += 500;
-			UpdateCoinAmount();
-			UpdateButtons();
-		}
+		if (!Input.GetKeyDown(KeyCode.O)) return;
+
+		AlterCoinCount(500);
+		UpdateButtons();
 	}
 
 	private void Initialise()
 	{
-		CoinCount = PlayerPrefs.GetInt("coinCount", 0);
 		_currentSkin = PlayerPrefs.GetInt("currentSkinInUse", 0);
 		_currentPowerLevel = PlayerPrefs.GetInt("currentPowerLevel", 0);
 		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
@@ -76,7 +79,7 @@ public class CoinShopController : MonoBehaviour
 		{
 			speedMultiplier.text = "Speed: x" + (_currentSpeedLevel + 1);
 			speedCostText.text = speedLevelCosts[_currentSpeedLevel + 1].ToString();
-			speedButton.interactable = CoinCount >= speedLevelCosts[_currentSpeedLevel + 1];
+			speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
 		}
 		else
 		{
@@ -90,7 +93,7 @@ public class CoinShopController : MonoBehaviour
 		{
 			powerMultiplier.text = "Power: x" + (_currentPowerLevel + 1);
 			powerCostText.text = powerLevelCosts[_currentPowerLevel + 1].ToString();
-			powerButton.interactable = CoinCount >= powerLevelCosts[_currentPowerLevel + 1];
+			powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
 		}
 		else
 		{
@@ -100,11 +103,11 @@ public class CoinShopController : MonoBehaviour
 		}
 		powerHand.SetActive(powerButton.interactable);
 		
-		if(_currentSkin < skinCosts.Length - 1)
+		if(_currentSkin < MainShopController.GetSkinCount() - 1)
 		{
 			skinName.text = SkinLoader.GetSkinName(_currentSkin + 1).ToString();
-			skinCostText.text = skinCosts[_currentSkin + 1].ToString();
-			skinButton.interactable = CoinCount >= skinCosts[_currentSkin + 1];
+			skinCostText.text = MainShopController.shop.weaponSkinCosts[_currentSkin + 1].ToString();
+			skinButton.interactable = GetCoinCount() >= MainShopController.shop.weaponSkinCosts[_currentSkin + 1];
 		}
 		else
 		{
@@ -114,16 +117,15 @@ public class CoinShopController : MonoBehaviour
 		}
 		skinHand.SetActive(skinButton.interactable);
 		
-		currentSkinImage.sprite = transform.parent.GetComponentInChildren<SkinLoader>().GetSkinSprite(_currentSkin + 1); //might be error prone
+		currentSkinImage.sprite = SkinLoader.only.GetSkinSprite(_currentSkin + 1); //might be error prone
 	}
 
 	public void BuySpeed()
 	{
 		speedButtonPressAnimation.Play();
-		CoinCount -= speedLevelCosts[++_currentSpeedLevel];
+		AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
 		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
 		PlayerPrefs.SetInt("currentSpeedLevel", _currentSpeedLevel);
-		UpdateCoinAmount();
 
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
@@ -133,11 +135,10 @@ public class CoinShopController : MonoBehaviour
 	public void BuyPower()
 	{
 		powerButtonPressAnimation.Play();
-		CoinCount -= powerLevelCosts[++_currentPowerLevel];
+		AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
 		//ABSOLUTELY NO change in power script
 		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
-		UpdateCoinAmount();
-		
+
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
@@ -146,19 +147,17 @@ public class CoinShopController : MonoBehaviour
 	public void BuyNewSkin()
 	{
 		skinButtonPressAnimation.Play();
-		CoinCount -= skinCosts[++_currentSkin];
+		AlterCoinCount(-MainShopController.shop.weaponSkinCosts[++_currentSkin]);
+		AlterWeaponState(_currentSkin, ShopItemState.Selected);
 		SkinLoader.only.UpdateSkinInUse(_currentSkin);
 		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
-		UpdateCoinAmount();
 		
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
-	
-	private void UpdateCoinText() => coinText.text = CoinCount.ToString();
 
-	private void UpdateCoinAmount() => PlayerPrefs.SetInt("coinCount", CoinCount);
+	private void UpdateCoinText() => coinText.text = GetCoinCount().ToString();
 
 	private void OnTapToPlay()
 	{
@@ -171,17 +170,15 @@ public class CoinShopController : MonoBehaviour
 		seq.AppendInterval(1.25f);
 		
 		var initSize = coinText.fontSize;
-		CoinCount += coinIncreaseCount;
-		UpdateCoinAmount();
 		
+		AudioManager.instance.Play("CoinCollect");
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
-		seq.Insert(1.5f, DOTween.To(() => _coinCount, value => _coinCount = value, _coinCount + coinIncreaseCount, 3f).SetEase(Ease.OutQuart).OnUpdate(UpdateCoinText));
+		seq.Insert(1.5f, DOTween.To(GetCoinCount, AlterCoinCount, GetCoinCount() + coinIncreaseCount, 3f).SetEase(Ease.OutQuart));
 		seq.InsertCallback(1.5f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{
-			AudioManager.instance.Play("CoinCollect");
-			_coinCount += coinIncreaseCount;
+			AlterCoinCount(coinIncreaseCount);
 		});
 		seq.AppendCallback(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>()
 			.EnableNextLevel);

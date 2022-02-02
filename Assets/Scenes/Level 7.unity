@@ -1172,8 +1172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c745d2982002141bad04262924fa94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponSkinCosts: 000000002c010000f401000058020000bc0200002003000084030000e8030000
   itemsHolder: {fileID: 723360274}
   shopItemPrefab: {fileID: 6699753426406203921, guid: 306480aababeb2b4fb875045f2d34287, type: 3}
+  currentState:
+    coinCount: 0
 --- !u!1001 &441795349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1730,7 +1733,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 200}
+  m_CellSize: {x: 200, y: 300}
   m_Spacing: {x: 25, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 4
