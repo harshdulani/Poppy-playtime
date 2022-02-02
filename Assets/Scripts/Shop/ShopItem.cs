@@ -9,8 +9,6 @@ public enum ShopItemState
 }
 public class ShopItem : MonoBehaviour
 {
-	//Working here, add interactable = false is unavailable
-	//Skinloader has a get item count, make it so that it is fool proof and hence more attractively callable
 	[SerializeField] private ShopItemState myState;
 	private bool _isAvailable;
 	
@@ -30,14 +28,17 @@ public class ShopItem : MonoBehaviour
 			case ShopItemState.Locked:
 				unlocked.enabled = false;
 				selected.enabled = false;
+				costText.transform.parent.gameObject.SetActive(true);
 				break;
 			case ShopItemState.Unlocked:
 				unlocked.enabled = true;
 				selected.enabled = false;
+				costText.transform.parent.gameObject.SetActive(false);
 				break;
 			case ShopItemState.Selected:
 				unlocked.enabled = false;
 				selected.enabled = true;
+				costText.transform.parent.gameObject.SetActive(false);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();

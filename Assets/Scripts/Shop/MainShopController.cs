@@ -11,6 +11,13 @@ public class MainShopController : MonoBehaviour
 	[SerializeField] private GameObject shopItemPrefab;
 
 	public ShopState currentState;
+	
+	private Animator _anim;
+
+	private bool _viewingWeaponsSkins = true;
+	
+	private static readonly int Close = Animator.StringToHash("Close");
+	private static readonly int Open = Animator.StringToHash("Open");
 
 	private void Awake()
 	{
@@ -20,11 +27,16 @@ public class MainShopController : MonoBehaviour
 		ReadStoredStateValues(true);
 	}
 
+	private void Start()
+	{
+		_anim = GetComponent<Animator>();
+	}
+
 	public static int GetSkinCount() => Enum.GetNames(typeof(WeaponType)).Length;
 	
 	private int GetSkinPrice(int index) => weaponSkinCosts[index];
-	
-	public void ReadStoredStateValues(bool initialising = false)
+
+	private void ReadStoredStateValues(bool initialising = false)
 	{
 		currentState = initialising
 			? StateSaveController.only.LoadSavedState()
@@ -46,9 +58,6 @@ public class MainShopController : MonoBehaviour
 	}
 	
 	// make sure all instances of coinShop._currentSkin are tied over here
-	// make sure whenever currentskin is updated, state is saved
-	// when you buy a skin, its state goes to unlocked
-	// when you click on a unlocked button, state updates to selected
 	// all this should be reflected upon in shop item as well as coinshop
 
 	public void SaveCurrentShopState()
@@ -68,5 +77,25 @@ public class MainShopController : MonoBehaviour
 		}
 	
 		SaveCurrentShopState();
+	}
+
+	public void OpenShop()
+	{
+		_anim.SetTrigger(Open);
+	}
+
+	public void CloseShop()
+	{
+		_anim.SetTrigger(Close);
+	}
+
+	public void ClickArms()
+	{
+		
+	}
+
+	public void ClickWeapons()
+	{
+		
 	}
 }
