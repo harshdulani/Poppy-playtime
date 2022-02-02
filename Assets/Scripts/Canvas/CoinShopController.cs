@@ -72,7 +72,7 @@ public class CoinShopController : MonoBehaviour
 		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
 	}
 
-	private void UpdateButtons()
+	public void UpdateButtons()
 	{
 		//update texts and icons
 		if(_currentSpeedLevel < speedLevelCosts.Length - 1)

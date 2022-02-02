@@ -37,7 +37,7 @@ public class MainShopController : MonoBehaviour
 				: itemsHolder.GetChild(i).GetComponent<ShopItem>();
 
 			var itemState = currentState.weaponStates[(WeaponType) i];
-			item.SetWeaponType((WeaponType) i);
+			item.SetWeaponType(i);
 			item.SetState(itemState);
 			item.SetIconSprite(SkinLoader.only.GetSkinSprite(i, itemState == ShopItemState.Locked));
 			

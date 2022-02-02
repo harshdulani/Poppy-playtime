@@ -18,7 +18,7 @@ public class ShopItem : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI costText;
 	[SerializeField] private Color cantBuyColor;
 
-	private WeaponType _myType;
+	private int _myWeaponTypeIndex;
 
 	public void SetIconSprite(Sprite image) => icon.sprite = image;
 
@@ -45,7 +45,7 @@ public class ShopItem : MonoBehaviour
 		unavailable.gameObject.SetActive(false);
 	}
 
-	public void SetWeaponType(WeaponType type) => _myType = type;
+	public void SetWeaponType(int idx) => _myWeaponTypeIndex = idx;
 
 	public void SetPriceAndAvailability(int price)
 	{
@@ -68,11 +68,34 @@ public class ShopItem : MonoBehaviour
 
 	public void ClickOnLocked()
 	{
-		print("should be unlocked now");
+		//Decrease coin count
+		MainShopController.shop.currentState.coinCount -= MainShopController.shop.weaponSkinCosts[_myWeaponTypeIndex];
+		//Change state of weapon to selected
+		MainShopController.shop.currentState.weaponStates[(WeaponType) _myWeaponTypeIndex] = ShopItemState.Selected;
+		//make sure nobody else is selected
+		MainShopController.shop.ChangeSelectedWeapon(_myWeaponTypeIndex);
+		
+		//Reflect changes to come in skin loader & coin shop UI and also in hand
+		SkinLoader.only.UpdateSkinInUse(_myWeaponTypeIndex);
+		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
+		transform.root.GetComponentInChildren<CoinShopController>().UpdateButtons();
+		
+		AudioManager.instance.Play("Button");
+		//confetti and/or power up vfx
 	}
 
 	public void ClickOnUnlocked()
 	{
-		print("should be selected now");
+		//Change state of weapon to selected
+		MainShopController.shop.currentState.weaponStates[(WeaponType) _myWeaponTypeIndex] = ShopItemState.Selected;
+		//make sure nobody else is selected
+		MainShopController.shop.ChangeSelectedWeapon(_myWeaponTypeIndex);
+		
+		//Reflect changes to come in skin loader & coin shop UI and also in hand
+		SkinLoader.only.UpdateSkinInUse(_myWeaponTypeIndex);
+		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
+		transform.root.GetComponentInChildren<CoinShopController>().UpdateButtons();
+		
+		AudioManager.instance.Play("Button");
 	}
 }
