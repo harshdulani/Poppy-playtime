@@ -81,7 +81,7 @@ public class MainCanvasController : MonoBehaviour
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
-		MainShopController.shop.SaveCurrentShopState();
+		ShopReferences.refs.mainShop.SaveCurrentShopState();
 		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
@@ -111,7 +111,7 @@ public class MainCanvasController : MonoBehaviour
 	private void EnableVictoryObjects()
 	{
 		victory.SetActive(true);
-		nextLevel.SetActive(true);
+		nextLevel.SetActive(GameObject.FindGameObjectWithTag("GameController").GetComponentInChildren<SkinLoader>().ShouldShowNextLevel());
 		nextLevelButton.interactable = false;
 		constantRetryButton.SetActive(false);
 		

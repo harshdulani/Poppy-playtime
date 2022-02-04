@@ -17,7 +17,7 @@ public class CoinShopController : MonoBehaviour
 	[SerializeField] private int coinIncreaseCount;
 
 	private Animation _anim;
-	private int _currentSpeedLevel, _currentPowerLevel, _currentSkin;
+	private int _currentSpeedLevel, _currentPowerLevel, _currentSkin, _currentSkinBeingUnlocked;
 	
 	private void OnEnable()
 	{
@@ -33,25 +33,25 @@ public class CoinShopController : MonoBehaviour
 
 	private void AlterCoinCount(int change)
 	{
-		MainShopController.shop.currentState.coinCount += change;
-		MainShopController.shop.SaveCurrentShopState();
-		MainShopController.shop.UpdateCoinText();
+		ShopReferences.refs.mainShop.currentState.coinCount += change;
+		ShopReferences.refs.mainShop.SaveCurrentShopState();
+		ShopReferences.refs.mainShop.UpdateCoinText();
 	}
 	
 	private void AlterWeaponState(int relevantSkinIndex, ShopItemState newState)
 	{
-		MainShopController.shop.currentState.weaponStates[(WeaponType) relevantSkinIndex] = newState;
-		MainShopController.shop.ChangeSelectedWeapon(relevantSkinIndex);
+		ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) relevantSkinIndex] = newState;
+		ShopReferences.refs.mainShop.ChangeSelectedWeapon(relevantSkinIndex);
 	}
 
-	private static int GetCoinCount() => MainShopController.shop.currentState.coinCount;
+	private static int GetCoinCount() => ShopReferences.refs.mainShop.currentState.coinCount;
 
 	private void Start()
 	{
 		_anim = GetComponent<Animation>();
 		
 		Initialise();
-		MainShopController.shop.UpdateCoinText();
+		ShopReferences.refs.mainShop.UpdateCoinText();
 		
 		UpdateButtons();
 	}
@@ -67,6 +67,7 @@ public class CoinShopController : MonoBehaviour
 	private void Initialise()
 	{
 		_currentSkin = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
+		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlockedFromSideBar", 1);
 		_currentPowerLevel = PlayerPrefs.GetInt("currentPowerLevel", 0);
 		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
 	}
@@ -104,9 +105,14 @@ public class CoinShopController : MonoBehaviour
 		
 		if(_currentSkin < MainShopController.GetWeaponSkinCount() - 1)
 		{
-			skinName.text = SkinLoader.GetWeaponSkinName(_currentSkin + 1).ToString();
-			skinCostText.text = MainShopController.shop.weaponSkinCosts[_currentSkin + 1].ToString();
-			skinButton.interactable = GetCoinCount() >= MainShopController.shop.weaponSkinCosts[_currentSkin + 1];
+			while (ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+				   ShopItemState.Locked)
+			{
+				_currentSkinBeingUnlocked++;
+			}
+			skinName.text = SkinLoader.GetWeaponSkinName(_currentSkinBeingUnlocked).ToString();
+			skinCostText.text = ShopReferences.refs.mainShop.weaponSkinCosts[_currentSkinBeingUnlocked].ToString();
+			skinButton.interactable = GetCoinCount() >= ShopReferences.refs.mainShop.weaponSkinCosts[_currentSkinBeingUnlocked];
 		}
 		else
 		{
@@ -116,7 +122,7 @@ public class CoinShopController : MonoBehaviour
 		}
 		skinHand.SetActive(skinButton.interactable);
 		
-		currentSkinImage.sprite = SkinLoader.only.GetWeaponSkinSprite(_currentSkin + 1); //might be error prone
+		currentSkinImage.sprite = ShopReferences.refs.skinLoader.GetWeaponSkinSprite(_currentSkin + 1); //might be error prone
 	}
 
 	public void BuySpeed()
@@ -146,9 +152,12 @@ public class CoinShopController : MonoBehaviour
 	public void BuyNewSkin()
 	{
 		skinButtonPressAnimation.Play();
-		AlterCoinCount(-MainShopController.shop.weaponSkinCosts[++_currentSkin]);
+		AlterCoinCount(-ShopReferences.refs.mainShop.weaponSkinCosts[++_currentSkin]);
+		_currentSkinBeingUnlocked++;
+		PlayerPrefs.SetInt("currentSkinBeingUnlockedFromSideBar", _currentSkinBeingUnlocked);
+
 		AlterWeaponState(_currentSkin, ShopItemState.Selected);
-		SkinLoader.only.UpdateWeaponSkinInUse(_currentSkin);
+		ShopReferences.refs.skinLoader.UpdateWeaponSkinInUse(_currentSkin);
 		InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false);
 		
 		UpdateButtons();
@@ -163,21 +172,23 @@ public class CoinShopController : MonoBehaviour
 	
 	private void OnGameEnd()
 	{
+		print("increasing");
 		var seq = DOTween.Sequence();
 		seq.AppendInterval(1.25f);
 
-		var coinText = MainShopController.shop.GetCoinText();
-		var initSize = MainShopController.shop.GetCoinText().fontSize;
+		var coinText = ShopReferences.refs.mainShop.GetCoinText();
+		var initSize = ShopReferences.refs.mainShop.GetCoinText().fontSize;
 		
 		AudioManager.instance.Play("CoinCollect");
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
-		seq.InsertCallback(1.5f, () => AlterCoinCount(GetCoinCount() + coinIncreaseCount));
+		seq.InsertCallback(1.5f, () => AlterCoinCount(coinIncreaseCount));
 		seq.InsertCallback(1.5f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{
 			AlterCoinCount(coinIncreaseCount);
 		});
+		seq.AppendInterval(1.5f);
 		seq.AppendCallback(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>()
 			.EnableNextLevel);
 	}

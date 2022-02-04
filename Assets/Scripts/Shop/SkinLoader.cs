@@ -5,8 +5,6 @@ using TMPro;
 
 public class SkinLoader : MonoBehaviour
 {
-	public static SkinLoader only;
-	
 	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
 	[SerializeField] private Sprite[] coloredArmSprites, blackArmSprites;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
@@ -31,12 +29,6 @@ public class SkinLoader : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.gameEnd -= OnGameEnd;
-	}
-
-	private void Awake()
-	{
-		if (!only) only = this;
-		else Destroy(gameObject);
 	}
 
 	private void Start()
@@ -191,7 +183,7 @@ public class SkinLoader : MonoBehaviour
 	public bool ShouldShowNextLevel()
 	{
 		if (_currentSkinBeingUnlocked == _currentWeaponSkinInUse)
-			return true;
+			return false;
 		
 		//we return this value becuase this is called before show panel is called and hence its value isnt updated 
 		//so 0.8f is the value when the bar is about to reach 100 %

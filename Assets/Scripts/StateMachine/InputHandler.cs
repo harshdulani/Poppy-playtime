@@ -1,4 +1,4 @@
-using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -75,14 +75,17 @@ public class InputHandler : MonoBehaviour
 	private void Update()
 	{ 
 		if(!_tappedToPlay) return;
-		
+
+		if (_inTapCooldown) return;
+
 		//print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
 			if(!InputExtensions.GetFingerDown()) return;
-			
+
 			_rightHand.GivePunch();
+			PutInTapCoolDown();
 			return;
 		}
 
@@ -101,8 +104,7 @@ public class InputHandler : MonoBehaviour
 		{
 			if (_leftHandState is AimingState)
 				_leftHandState.OnExit();
-			else if (_leftHandState is InTransitState)
-				AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
+			//here lies "cancel hand going to a enemy". go dig the git grave if you want it back
 		}
 
 		_leftHandState?.Execute();
@@ -131,14 +133,14 @@ public class InputHandler : MonoBehaviour
 	{
 		_inTapCooldown = true;
 		AssignDisabledState();
-		StartCoroutine(TapCoolDown());
+		print("start cd");
+		DOVirtual.DelayedCall(tapCooldownWaitTime, TapCoolDown);
 	}
 
-	private IEnumerator TapCoolDown()
+	private void TapCoolDown()
 	{
-		yield return GameExtensions.GetWaiter(tapCooldownWaitTime);
-		
 		AssignIdleState();
+		print("end cd");
 		_inTapCooldown = false;
 	}
 

@@ -354,6 +354,13 @@ public class HandController : MonoBehaviour
 	{
 		_myAnimator.SetBool(IsPunching, false);
 		ClearInitTargetPos();
+		
+		
+		_lastRaghu = null;
+		_lastTarget = null;
+		_lastTargetRoot = null;
+		ResetPalmParent();
+		ClearInitTargetPos();
 	}
 
 	private void ResetPalmParent()

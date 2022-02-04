@@ -1,43 +1,52 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainShopController : MonoBehaviour
 {
-	public static MainShopController shop;
-	
 	public int[] weaponSkinCosts, armsSkinCosts;
 	[SerializeField] private TextMeshProUGUI coinText;
 
 	[SerializeField] private Transform weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
-
+	
 	[Header("Arms and Weapons Panels"), SerializeField] private Button weaponsButton;
 	[SerializeField] private Button armsButton;
 	[SerializeField] private TextMeshProUGUI weaponsText, armsText;
 	[SerializeField] private Color black, grey;
-
+	
 	public ShopState currentState;
 	
+	private const float HitCooldown = 1f;
 	private Animator _anim;
-
-	private bool _viewingWeaponsSkins = true;
 	
 	private static readonly int Close = Animator.StringToHash("Close");
 	private static readonly int Open = Animator.StringToHash("Open");
+	private static readonly int ShowShopButton = Animator.StringToHash("showShopButton");
+	private static readonly int HideShopButton = Animator.StringToHash("hideShopButton");
+	private bool _canClick = true;
+
+	private void OnEnable()
+	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
+	}
 
 	private void Awake()
 	{
-		if (!shop) shop = this;
-		else Destroy(gameObject);
-		
 		ReadStoredStateValues(true);
 	}
 
 	private void Start()
 	{
 		_anim = GetComponent<Animator>();
+		_anim.SetTrigger(ShowShopButton);
 		ClickWeapons();
 	}
 	
@@ -66,7 +75,7 @@ public class MainShopController : MonoBehaviour
 			var itemState = currentState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(SkinLoader.only.GetWeaponSkinSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(ShopReferences.refs.skinLoader.GetWeaponSkinSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(true);
 			
 			item.SetPriceAndAvailability(GetWeaponSkinPrice(i));
@@ -81,7 +90,7 @@ public class MainShopController : MonoBehaviour
 			var itemState = currentState.armStates[(ArmsType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(SkinLoader.only.GetArmsSkinType(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(ShopReferences.refs.skinLoader.GetArmsSkinType(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(false);
 			
 			item.SetPriceAndAvailability(GetArmsSkinPrice(i));
@@ -123,14 +132,26 @@ public class MainShopController : MonoBehaviour
 		SaveCurrentShopState();
 	}
 
+	private void ClickCooldown() => _canClick = true;
+	
 	public void OpenShop()
 	{
+		if(!_canClick) return;
+		
 		_anim.SetTrigger(Open);
+		_anim.SetTrigger(HideShopButton);
+		_canClick = false;
+		DOVirtual.DelayedCall(HitCooldown, ClickCooldown);
 	}
 
 	public void CloseShop()
-	{
+	{		
+		if(!_canClick) return;
+
 		_anim.SetTrigger(Close);
+		_anim.SetTrigger(ShowShopButton);
+		_canClick = false;
+		DOVirtual.DelayedCall(HitCooldown, ClickCooldown);
 	}
 
 	public void ClickArms()
@@ -157,6 +178,12 @@ public class MainShopController : MonoBehaviour
 		//switch to weapons panel
 		weaponsHolder.parent.parent.gameObject.SetActive(true);
 		armsHolder.parent.parent.gameObject.SetActive(false);
+	}
+
+	private void OnTapToPlay()
+	{
+		_anim.SetTrigger(HideShopButton);
+		_canClick = false;
 	}
 }
 
