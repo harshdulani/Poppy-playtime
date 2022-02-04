@@ -74,7 +74,6 @@ public class HelicopterSoldierController : MonoBehaviour
 		muzzle.localRotation = Quaternion.identity;
 
 		AudioManager.instance.Play("Rifle");
-		print("called");
 		StartCoroutine(ShootBullet());
 		
 		_anim.SetTrigger(Fire);

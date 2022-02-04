@@ -8,11 +8,13 @@ using UnityEngine;
 public class ShopState
 {
 	public Dictionary<WeaponType, ShopItemState> weaponStates;
+	public Dictionary<ArmsType, ShopItemState> armStates;
 	public int coinCount;
 	
-	public ShopState(Dictionary<WeaponType, ShopItemState> currentState, int newCoinCount)
+	public ShopState(Dictionary<WeaponType, ShopItemState> newWeaponState, Dictionary<ArmsType, ShopItemState> newArmStates, int newCoinCount)
 	{
-		weaponStates = currentState;
+		weaponStates = newWeaponState;
+		armStates = newArmStates;
 		coinCount = newCoinCount;
 	}
 }
@@ -35,23 +37,10 @@ public class StateSaveController : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.D)) DeleteSavedState();
 	}
-
-	public void SaveCurrentState(Dictionary<WeaponType, ShopItemState> currentShopState, int newCoinCount)
-	{
-		var save = new ShopState(currentShopState, newCoinCount);
-
-		var binaryFormatter = new BinaryFormatter();
-		using (var fileStream = File.Create(_savePath))
-		{
-			binaryFormatter.Serialize(fileStream, save);
-		}
-
-		Debug.Log("Data Saved");
-	}
 	
 	public void SaveCurrentState(ShopState currentShopState)
 	{
-		var save = new ShopState(currentShopState.weaponStates, currentShopState.coinCount);
+		var save = new ShopState(currentShopState.weaponStates, currentShopState.armStates, currentShopState.coinCount);
 
 		var binaryFormatter = new BinaryFormatter();
 		using (var fileStream = File.Create(_savePath))
@@ -91,11 +80,16 @@ public class StateSaveController : MonoBehaviour
 	
 	private static ShopState InitialiseEmptyState()
 	{
-		var blank = new Dictionary<WeaponType, ShopItemState> {{WeaponType.Punch, ShopItemState.Selected}};
+		var blankWeapon = new Dictionary<WeaponType, ShopItemState> {{WeaponType.Punch, ShopItemState.Selected}};
 
-		for(var i = 1; i < Enum.GetNames(typeof(WeaponType)).Length; i++)
-			blank.Add((WeaponType) i, ShopItemState.Locked);
+		for(var i = 1; i < MainShopController.GetWeaponSkinCount(); i++)
+			blankWeapon.Add((WeaponType) i, ShopItemState.Locked);
 		
-		return new ShopState(blank, 0);
+		var blankArms = new Dictionary<ArmsType, ShopItemState> {{ArmsType.Poppy, ShopItemState.Selected}};
+
+		for(var i = 1; i < MainShopController.GetArmsSkinCount(); i++)
+			blankArms.Add((ArmsType) i, ShopItemState.Locked);
+		
+		return new ShopState(blankWeapon, blankArms, 0);
 	}
 }

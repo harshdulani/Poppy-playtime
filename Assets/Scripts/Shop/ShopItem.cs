@@ -10,15 +10,28 @@ public enum ShopItemState
 public class ShopItem : MonoBehaviour
 {
 	[SerializeField] private ShopItemState myState;
-	private bool _isAvailable;
-	
 	[SerializeField] private Image unlocked, selected, icon, unavailable;
-	[SerializeField] private TextMeshProUGUI costText;
+	[SerializeField] private TextMeshProUGUI costText, questionMark;
 	[SerializeField] private Color cantBuyColor;
 
-	private int _myWeaponTypeIndex;
+	[SerializeField] private Mask iconMask;
+	[SerializeField] private bool shouldUseMask;
+	
+	private bool _isWeaponItem;
+	private bool _isAvailable;
+	private int _mySkinIndex;
 
-	public void SetIconSprite(Sprite image) => icon.sprite = image;
+	public void SetIconSprite(Sprite image)
+	{
+		iconMask.graphic.enabled = shouldUseMask;
+		if(image)
+			icon.sprite = image;
+		else
+		{
+			icon.enabled = false;
+			questionMark.enabled = true;
+		}
+	}
 
 	public void SetState(ShopItemState state)
 	{
@@ -46,8 +59,10 @@ public class ShopItem : MonoBehaviour
 		unavailable.gameObject.SetActive(false);
 	}
 
-	public void SetWeaponType(int idx) => _myWeaponTypeIndex = idx;
+	public void SetSkinIndex(int idx) => _mySkinIndex = idx;
 
+	public void SetIsWeaponItem(bool status) => _isWeaponItem = status;
+	
 	public void SetPriceAndAvailability(int price)
 	{
 		if (myState == ShopItemState.Selected || myState == ShopItemState.Unlocked)
@@ -69,17 +84,16 @@ public class ShopItem : MonoBehaviour
 
 	public void ClickOnLocked()
 	{
-		//Decrease coin count
-		MainShopController.shop.currentState.coinCount -= MainShopController.shop.weaponSkinCosts[_myWeaponTypeIndex];
-		//Change state of weapon to selected
-		MainShopController.shop.currentState.weaponStates[(WeaponType) _myWeaponTypeIndex] = ShopItemState.Selected;
-		//make sure nobody else is selected
-		MainShopController.shop.ChangeSelectedWeapon(_myWeaponTypeIndex);
+		if(myState != ShopItemState.Locked) return;
 		
-		//Reflect changes to come in skin loader & coin shop UI and also in hand
-		SkinLoader.only.UpdateSkinInUse(_myWeaponTypeIndex);
-		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
-		transform.root.GetComponentInChildren<CoinShopController>().UpdateButtons();
+		//Decrease coin count
+		MainShopController.shop.currentState.coinCount -= _isWeaponItem
+			? MainShopController.shop.weaponSkinCosts[_mySkinIndex]
+			: MainShopController.shop.armsSkinCosts[_mySkinIndex];
+		
+		MainShopController.shop.UpdateCoinText();
+		
+		ChangeSelected();
 		
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
@@ -87,16 +101,39 @@ public class ShopItem : MonoBehaviour
 
 	public void ClickOnUnlocked()
 	{
-		//Change state of weapon to selected
-		MainShopController.shop.currentState.weaponStates[(WeaponType) _myWeaponTypeIndex] = ShopItemState.Selected;
-		//make sure nobody else is selected
-		MainShopController.shop.ChangeSelectedWeapon(_myWeaponTypeIndex);
-		
-		//Reflect changes to come in skin loader & coin shop UI and also in hand
-		SkinLoader.only.UpdateSkinInUse(_myWeaponTypeIndex);
-		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
-		transform.root.GetComponentInChildren<CoinShopController>().UpdateButtons();
-		
+		ChangeSelected();
+
 		AudioManager.instance.Play("Button");
+	}
+
+	private void ChangeSelected()
+	{
+		if(_isWeaponItem)
+		{
+			//Change state of item to selected
+			MainShopController.shop.currentState.weaponStates[(WeaponType) _mySkinIndex] = ShopItemState.Selected;
+					
+			//make sure nobody else is selected
+			MainShopController.shop.ChangeSelectedWeapon(_mySkinIndex);
+			
+			//Reflect changes to come in skin loader & coin shop UI and also in hand
+			SkinLoader.only.UpdateWeaponSkinInUse(_mySkinIndex);
+			InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false);
+			
+			transform.root.GetComponentInChildren<CoinShopController>().UpdateButtons();
+		}
+		else
+		{
+			//Change state of item to selected
+			MainShopController.shop.currentState.armStates[(ArmsType) _mySkinIndex] = ShopItemState.Selected;
+			
+			//make sure nobody else is selected
+			MainShopController.shop.ChangeSelectedArmsSkin(_mySkinIndex);
+			
+			//Reflect changes to come in skin loader & coin shop UI and also in hand
+			SkinLoader.only.UpdateArmsSkinInUse(_mySkinIndex);
+			InputHandler.Only.GetLeftHand().UpdateEquippedArmsSkin();
+			InputHandler.Only.GetRightHand().UpdateEquippedArmsSkin();
+		}
 	}
 }

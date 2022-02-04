@@ -12,8 +12,7 @@ public class CoinShopController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI speedMultiplier, speedCostText, powerMultiplier, powerCostText, skinName, skinCostText;
 	[SerializeField] private Animation speedButtonPressAnimation, powerButtonPressAnimation, skinButtonPressAnimation;
 
-	[Header("Coin Particle Effect"), SerializeField] private TextMeshProUGUI coinText;
-	[SerializeField] private RectTransform coinHolder;
+	[Header("Coin Particle Effect"), SerializeField] private RectTransform coinHolder;
 	[SerializeField] private ParticleControlScript coinParticles;
 	[SerializeField] private int coinIncreaseCount;
 
@@ -36,7 +35,7 @@ public class CoinShopController : MonoBehaviour
 	{
 		MainShopController.shop.currentState.coinCount += change;
 		MainShopController.shop.SaveCurrentShopState();
-		UpdateCoinText();
+		MainShopController.shop.UpdateCoinText();
 	}
 	
 	private void AlterWeaponState(int relevantSkinIndex, ShopItemState newState)
@@ -52,7 +51,7 @@ public class CoinShopController : MonoBehaviour
 		_anim = GetComponent<Animation>();
 		
 		Initialise();
-		UpdateCoinText();
+		MainShopController.shop.UpdateCoinText();
 		
 		UpdateButtons();
 	}
@@ -67,7 +66,7 @@ public class CoinShopController : MonoBehaviour
 
 	private void Initialise()
 	{
-		_currentSkin = PlayerPrefs.GetInt("currentSkinInUse", 0);
+		_currentSkin = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
 		_currentPowerLevel = PlayerPrefs.GetInt("currentPowerLevel", 0);
 		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
 	}
@@ -103,9 +102,9 @@ public class CoinShopController : MonoBehaviour
 		}
 		powerHand.SetActive(powerButton.interactable);
 		
-		if(_currentSkin < MainShopController.GetSkinCount() - 1)
+		if(_currentSkin < MainShopController.GetWeaponSkinCount() - 1)
 		{
-			skinName.text = SkinLoader.GetSkinName(_currentSkin + 1).ToString();
+			skinName.text = SkinLoader.GetWeaponSkinName(_currentSkin + 1).ToString();
 			skinCostText.text = MainShopController.shop.weaponSkinCosts[_currentSkin + 1].ToString();
 			skinButton.interactable = GetCoinCount() >= MainShopController.shop.weaponSkinCosts[_currentSkin + 1];
 		}
@@ -117,7 +116,7 @@ public class CoinShopController : MonoBehaviour
 		}
 		skinHand.SetActive(skinButton.interactable);
 		
-		currentSkinImage.sprite = SkinLoader.only.GetSkinSprite(_currentSkin + 1); //might be error prone
+		currentSkinImage.sprite = SkinLoader.only.GetWeaponSkinSprite(_currentSkin + 1); //might be error prone
 	}
 
 	public void BuySpeed()
@@ -149,15 +148,13 @@ public class CoinShopController : MonoBehaviour
 		skinButtonPressAnimation.Play();
 		AlterCoinCount(-MainShopController.shop.weaponSkinCosts[++_currentSkin]);
 		AlterWeaponState(_currentSkin, ShopItemState.Selected);
-		SkinLoader.only.UpdateSkinInUse(_currentSkin);
-		InputHandler.Only.GetRightHand().UpdateEquippedSkin(false);
+		SkinLoader.only.UpdateWeaponSkinInUse(_currentSkin);
+		InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false);
 		
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
-
-	private void UpdateCoinText() => coinText.text = GetCoinCount().ToString();
 
 	private void OnTapToPlay()
 	{
@@ -168,12 +165,13 @@ public class CoinShopController : MonoBehaviour
 	{
 		var seq = DOTween.Sequence();
 		seq.AppendInterval(1.25f);
-		
-		var initSize = coinText.fontSize;
+
+		var coinText = MainShopController.shop.GetCoinText();
+		var initSize = MainShopController.shop.GetCoinText().fontSize;
 		
 		AudioManager.instance.Play("CoinCollect");
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
-		seq.Insert(1.5f, DOTween.To(GetCoinCount, AlterCoinCount, GetCoinCount() + coinIncreaseCount, 3f).SetEase(Ease.OutQuart));
+		seq.InsertCallback(1.5f, () => AlterCoinCount(GetCoinCount() + coinIncreaseCount));
 		seq.InsertCallback(1.5f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>

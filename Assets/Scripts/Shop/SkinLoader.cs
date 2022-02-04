@@ -3,25 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum WeaponType
-{
-	Punch,
-	Hammer,
-	Boots,
-	Heels,
-	Gun,
-	Shield,
-	Sneaker,
-	Pastry
-}
-
 public class SkinLoader : MonoBehaviour
 {
 	public static SkinLoader only;
 	
 	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
-	[SerializeField] private Button  skipButton, claimButton;
+	[SerializeField] private Sprite[] coloredArmSprites, blackArmSprites;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
+	
+	[SerializeField] private Button  skipButton, claimButton;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText;
 
 	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder; 
@@ -29,7 +19,7 @@ public class SkinLoader : MonoBehaviour
 	[SerializeField] private int levelsPerUnlock = 5;
 	[SerializeField] private float tweenDuration, panelOpenWait;
 
-	private int _currentSkinInUse;
+	private int _currentWeaponSkinInUse;
 	private int  _currentSkinBeingUnlocked = 1;
 	private float _currentSkinPercentageUnlocked;
 
@@ -62,9 +52,9 @@ public class SkinLoader : MonoBehaviour
 	{
 		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlocked", 1);
 		_currentSkinPercentageUnlocked = PlayerPrefs.GetFloat("currentSkinPercentageUnlocked", 0f);
-		_currentSkinInUse = PlayerPrefs.GetInt("currentSkinInUse", 0);
+		_currentWeaponSkinInUse = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
 
-		if(_currentSkinBeingUnlocked >= MainShopController.GetSkinCount()) return;
+		if(_currentSkinBeingUnlocked >= MainShopController.GetWeaponSkinCount()) return;
 		
 		coloredWeaponImage.sprite = coloredWeaponSprites[_currentSkinBeingUnlocked];
 		blackWeaponImage.sprite = blackWeaponSprites[_currentSkinBeingUnlocked];
@@ -73,12 +63,12 @@ public class SkinLoader : MonoBehaviour
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 	}
 
-	public Sprite GetSkinSprite(int index = -1, bool wantsBlackSprite = false)
+	public Sprite GetWeaponSkinSprite(int index = -1, bool wantsBlackSprite = false)
 	{
 		var currentList = wantsBlackSprite ? blackWeaponSprites : coloredWeaponSprites;
 		
 		if (index == -1)
-			return currentList[PlayerPrefs.GetInt("currentSkinInUse", 0)];
+			return currentList[PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)];
 		
 		if (index >= currentList.Length)
 			return currentList[^1];
@@ -86,16 +76,36 @@ public class SkinLoader : MonoBehaviour
 		return currentList[index];
 	}
 
-	public static WeaponType GetSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentSkinInUse", 0) : index);
-
-	public void UpdateSkinInUse(int currentSkin)
+	public Sprite GetArmsSkinType(int index = -1, bool wantsBlackSprite = false)
 	{
-		_currentSkinInUse = currentSkin;
-		_currentSkinBeingUnlocked = _currentSkinInUse + 1;
+		var currentList = wantsBlackSprite ? blackArmSprites : coloredArmSprites;
 		
-		PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
+		if (index == -1)
+			return currentList[PlayerPrefs.GetInt("currentArmsSkinInUse", 0)];
+		
+		if (index >= currentList.Length)
+			return currentList[^1];
+
+		return currentList[index];
+	}
+
+	public static WeaponType GetWeaponSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentWeaponSkinInUse", 0) : index);
+	
+	public static ArmsType GetArmsSkinName(int index = -1) => (ArmsType) (index == -1 ? PlayerPrefs.GetInt("currentArmsSkinInUse", 0) : index);
+
+	public void UpdateWeaponSkinInUse(int currentSkin)
+	{
+		_currentWeaponSkinInUse = currentSkin;
+		_currentSkinBeingUnlocked = _currentWeaponSkinInUse + 1;
+		
+		PlayerPrefs.SetInt("currentWeaponSkinInUse", _currentWeaponSkinInUse);
 		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
 		ResetLoader();
+	}
+	
+	public void UpdateArmsSkinInUse(int currentSkin)
+	{
+		PlayerPrefs.SetInt("currentArmsSkinInUse", currentSkin);
 	}
 
 	public void Skip()
@@ -103,7 +113,7 @@ public class SkinLoader : MonoBehaviour
 		loaderPanel.SetActive(false);
 		
 		//this value is being set in resetloader
-		if(_currentSkinBeingUnlocked < MainShopController.GetSkinCount() - 1)
+		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
 			_currentSkinBeingUnlocked++;
 		//play animatn
 		ResetLoader();
@@ -113,13 +123,13 @@ public class SkinLoader : MonoBehaviour
 
 	public void Claim()
 	{
-		if(_currentSkinInUse <= MainShopController.GetSkinCount() - 1)
+		if(_currentWeaponSkinInUse <= MainShopController.GetWeaponSkinCount() - 1)
 		{
-			_currentSkinInUse++;
-			PlayerPrefs.SetInt("currentSkinInUse", _currentSkinInUse);
+			_currentWeaponSkinInUse++;
+			PlayerPrefs.SetInt("currentWeaponSkinInUse", _currentWeaponSkinInUse);
 		}
 		
-		if(_currentSkinBeingUnlocked < MainShopController.GetSkinCount() - 1)
+		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
 		{
 			_currentSkinBeingUnlocked++;
 			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
@@ -180,7 +190,7 @@ public class SkinLoader : MonoBehaviour
 
 	public bool ShouldShowNextLevel()
 	{
-		if (_currentSkinBeingUnlocked == _currentSkinInUse)
+		if (_currentSkinBeingUnlocked == _currentWeaponSkinInUse)
 			return true;
 		
 		//we return this value becuase this is called before show panel is called and hence its value isnt updated 
@@ -190,7 +200,7 @@ public class SkinLoader : MonoBehaviour
 
 	private void OnGameEnd()
 	{
-		if(_currentSkinBeingUnlocked >= MainShopController.GetSkinCount() - 1) return;
+		if(_currentSkinBeingUnlocked >= MainShopController.GetWeaponSkinCount() - 1) return;
 		
 		Invoke(nameof(ShowPanel), panelOpenWait);
 	}

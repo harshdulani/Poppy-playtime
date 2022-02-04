@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 //using TMPro;
 using UnityEngine;
@@ -18,9 +19,12 @@ public class HandController : MonoBehaviour
 	[SerializeField] private AudioClip splashAudioClip, gunshotAudioClip;
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
-	[SerializeField] private WeaponType currentAttackType;
+	[Header("Weapon Skins"), SerializeField] private WeaponType currentWeaponsSkin;
 	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry;
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
+	
+	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
+	[SerializeField] private Material poppy, batman, hulk, spidey, circuits, captain;
 	
 	public static PlayerSoundController Sounds;
 
@@ -99,12 +103,14 @@ public class HandController : MonoBehaviour
 			_appliedReturnSpeed = returnSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
 		}
 		
+		UpdateEquippedArmsSkin();
+		
 		if (isLeftHand) return;
 
 		_audio = GetComponent<AudioSource>();
 		
-		UpdateEquippedSkin();
-		
+		UpdateEquippedWeaponsSkin();
+
 		//_text = GameObject.FindGameObjectWithTag("AimCanvas").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
 	}
 
@@ -257,17 +263,17 @@ public class HandController : MonoBehaviour
 		_appliedReturnSpeed = returnSpeed * (1f + level / 10f);
 	}
 
-	public void UpdateEquippedSkin(bool initialising = true)
+	public void UpdateEquippedWeaponsSkin(bool initialising = true)
 	{
-		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
-		currentAttackType = SkinLoader.GetSkinName();
+		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
+		currentWeaponsSkin = SkinLoader.GetWeaponSkinName();
 		for (var i = 1; i < hammer.transform.parent.childCount; i++)
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
 
 		if(!initialising)
 			_rootAnimator.SetTrigger(ChangeWeapon);
 		
-		switch (currentAttackType)
+		switch (currentWeaponsSkin)
 		{
 			case WeaponType.Punch:
 				_myAnimator.SetTrigger(OpenAndCloseFingers);
@@ -311,13 +317,27 @@ public class HandController : MonoBehaviour
 		}
 	}
 
+	public void UpdateEquippedArmsSkin()
+	{
+		myArm.material = SkinLoader.GetArmsSkinName() switch
+		{
+			ArmsType.Poppy => poppy,
+			ArmsType.Batman => batman,
+			ArmsType.Hulk => hulk,
+			ArmsType.Spidey => spidey,
+			ArmsType.Circuits => circuits,
+			ArmsType.Captain => captain,
+			_ => throw new ArgumentOutOfRangeException()
+		};
+	}
+
 	public void GivePunch()
 	{
 		if (!_canGivePunch) return;
 		
 		_canGivePunch = false;
 		_rootAnimator.SetTrigger(Attack);
-		if(currentAttackType == WeaponType.Gun)
+		if(currentWeaponsSkin == WeaponType.Gun)
 		{
 			fireExplosion.Play();
 			_audio.PlayOneShot(gunshotAudioClip);
@@ -387,7 +407,7 @@ public class HandController : MonoBehaviour
 	{
 		windLines.Stop();
 		
-		if (currentAttackType != WeaponType.Pastry) return;
+		if (currentWeaponsSkin != WeaponType.Pastry) return;
 		
 		pastrySplash.Play();
 		_audio.PlayOneShot(splashAudioClip);
