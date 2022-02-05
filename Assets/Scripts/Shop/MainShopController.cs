@@ -9,7 +9,7 @@ public class MainShopController : MonoBehaviour
 	public int[] weaponSkinCosts, armsSkinCosts;
 	[SerializeField] private TextMeshProUGUI coinText;
 
-	[SerializeField] private Transform weaponsHolder, armsHolder;
+	[SerializeField] private GridLayoutGroup weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
 	
 	[Header("Arms and Weapons Panels"), SerializeField] private Button weaponsButton;
@@ -66,26 +66,36 @@ public class MainShopController : MonoBehaviour
 			? StateSaveController.only.LoadSavedState()
 			: currentState;
 
-		for (var i = 0; i < GetWeaponSkinCount(); i++)
+		var weaponCount = GetWeaponSkinCount();
+		var armsCount = GetArmsSkinCount();
+		
+		var weaponRect = weaponsHolder.GetComponent<RectTransform>();
+		weaponRect.sizeDelta = new Vector2(weaponRect.sizeDelta.x,
+			Mathf.CeilToInt(weaponCount / (float) weaponsHolder.constraintCount) * (weaponsHolder.cellSize.y + weaponsHolder.spacing.y));
+
+		var armsRect = armsHolder.GetComponent<RectTransform>();
+		armsRect.sizeDelta = new Vector2(armsRect.sizeDelta.x,
+			Mathf.CeilToInt(armsCount / (float) armsHolder.constraintCount) * (armsHolder.cellSize.y + 2 * armsHolder.spacing.y));
+		
+		for (var i = 0; i < weaponCount; i++)
 		{
 			var item = initialising 
-				? Instantiate(shopItemPrefab, weaponsHolder).GetComponent<ShopItem>() 
-				: weaponsHolder.GetChild(i).GetComponent<ShopItem>();
+				? Instantiate(shopItemPrefab, weaponsHolder.transform).GetComponent<ShopItem>() 
+				: weaponsHolder.transform.GetChild(i).GetComponent<ShopItem>();
 
 			var itemState = currentState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
 			item.SetIconSprite(ShopReferences.refs.skinLoader.GetWeaponSkinSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(true);
-			
 			item.SetPriceAndAvailability(GetWeaponSkinPrice(i));
 		}
 
-		for (var i = 0; i < GetArmsSkinCount(); i++)
+		for (var i = 0; i < armsCount; i++)
 		{
 			var item = initialising
-				? Instantiate(shopItemPrefab, armsHolder).GetComponent<ShopItem>()
-				: armsHolder.GetChild(i).GetComponent<ShopItem>();
+				? Instantiate(shopItemPrefab, armsHolder.transform).GetComponent<ShopItem>()
+				: armsHolder.transform.GetChild(i).GetComponent<ShopItem>();
 			
 			var itemState = currentState.armStates[(ArmsType) i];
 			item.SetSkinIndex(i);
@@ -163,8 +173,8 @@ public class MainShopController : MonoBehaviour
 		weaponsText.color = black;
 
 		//switch to arms panel
-		armsHolder.parent.parent.gameObject.SetActive(true);
-		weaponsHolder.parent.parent.gameObject.SetActive(false);
+		armsHolder.transform.parent.parent.gameObject.SetActive(true);
+		weaponsHolder.transform.parent.parent.gameObject.SetActive(false);
 	}
 
 	public void ClickWeapons()
@@ -176,8 +186,8 @@ public class MainShopController : MonoBehaviour
 		armsText.color = black;
 
 		//switch to weapons panel
-		weaponsHolder.parent.parent.gameObject.SetActive(true);
-		armsHolder.parent.parent.gameObject.SetActive(false);
+		weaponsHolder.transform.parent.parent.gameObject.SetActive(true);
+		armsHolder.transform.parent.parent.gameObject.SetActive(false);
 	}
 
 	private void OnTapToPlay()
@@ -196,7 +206,9 @@ public enum WeaponType
 	Gun,
 	Shield,
 	Sneaker,
-	Pastry
+	Pastry,
+	Burger,
+	Poop
 }
 
 public enum ArmsType

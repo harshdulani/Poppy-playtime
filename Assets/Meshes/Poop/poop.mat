@@ -20,11 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cake cream
+  m_Name: poop
   m_Shader: {fileID: 4800000, guid: 5abf659307ba5a849b7dc53ab126f322, type: 3}
-  m_ShaderKeywords: TCP2_DISABLE_WRAPPED_LIGHT TCP2_MOBILE TCP2_OUTLINE_LIGHTING_ALL
-    TCP2_OUTLINE_MIN_SIZE TCP2_OUTLINE_TEXTURED_FRAGMENT TCP2_REFLECTIONS_FRESNEL
-    TCP2_RIM_LIGHTING_LIGHTMASK TCP2_SPECULAR_STYLIZED TCP2_UV_NORMALS_FULL _GLOSSYREFLECTIONS_OFF
+  m_ShaderKeywords: TCP2_MOBILE TCP2_RIM_LIGHTING TCP2_RIM_LIGHTING_LIGHTMASK TCP2_SPECULAR_STYLIZED
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -35,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6f658524a45ea284eb4ef1988fdd0f7b, type: 3}
         m_Scale: {x: 0.4, y: 0.2}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -155,7 +153,7 @@ Material:
     - _FoamSpread: 2
     - _FoamStrength: 0.8
     - _FresnelMax: 1.5
-    - _FresnelMin: 0
+    - _FresnelMin: 0.705
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -189,16 +187,16 @@ Material:
     - _RampSmoothAdd: 0.75
     - _RampSmoothOtherLights: 0.5
     - _RampSmoothing: 0.612
-    - _RampThreshold: 0.709
+    - _RampThreshold: 0.7
     - _RampThresholdOtherLights: 0.5
     - _RampType: 0
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 1
     - _ReflectionMapType: 0
-    - _ReflectionSmoothness: 0.5
+    - _ReflectionSmoothness: 1
     - _RenderingMode: 0
     - _RimMax: 1.01
-    - _RimMin: 0.65
+    - _RimMin: 0.796
     - _RimStrength: 0.5
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
@@ -213,8 +211,8 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularMapType: 0
     - _SpecularRoughness: 0.453
-    - _SpecularToonSize: 0.15
-    - _SpecularToonSmoothness: 0.691
+    - _SpecularToonSize: 0.172
+    - _SpecularToonSmoothness: 0.823
     - _SpecularType: 1
     - _SrcBlend: 1
     - _SrcBlendOutline: 0
@@ -233,7 +231,7 @@ Material:
     - _UVWaveSpeed: 1
     - _UseAlphaTest: 0
     - _UseEmission: 0
-    - _UseFresnelReflections: 1
+    - _UseFresnelReflections: 0
     - _UseMatCap: 0
     - _UseMatCapMask: 0
     - _UseMobileMode: 1
@@ -241,7 +239,7 @@ Material:
     - _UseOcclusion: 0
     - _UseOutline: 0
     - _UseReflections: 0
-    - _UseRim: 0
+    - _UseRim: 1
     - _UseRimLightMask: 1
     - _UseShadowTexture: 0
     - _UseSpecular: 0
@@ -254,7 +252,7 @@ Material:
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.8892358, b: 0.759434, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}

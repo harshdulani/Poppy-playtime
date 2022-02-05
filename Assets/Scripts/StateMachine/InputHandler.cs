@@ -133,14 +133,12 @@ public class InputHandler : MonoBehaviour
 	{
 		_inTapCooldown = true;
 		AssignDisabledState();
-		print("start cd");
 		DOVirtual.DelayedCall(tapCooldownWaitTime, TapCoolDown);
 	}
 
 	private void TapCoolDown()
 	{
 		AssignIdleState();
-		print("end cd");
 		_inTapCooldown = false;
 	}
 

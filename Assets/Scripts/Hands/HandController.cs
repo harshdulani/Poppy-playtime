@@ -20,7 +20,7 @@ public class HandController : MonoBehaviour
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[Header("Weapon Skins"), SerializeField] private WeaponType currentWeaponsSkin;
-	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry;
+	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry, burger, poop;
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
 	
 	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
@@ -52,6 +52,7 @@ public class HandController : MonoBehaviour
 	private static readonly int IsHoldingGunHash = Animator.StringToHash("isHoldingGun");
 	private static readonly int IsHoldingFootWearHash = Animator.StringToHash("isHoldingFootwear");
 	private static readonly int IsHoldingShieldHash = Animator.StringToHash("isHoldingShield");
+	private static readonly int IsHoldingPastryHash = Animator.StringToHash("isHoldingPastry");
 	private static readonly int ChangeWeapon = Animator.StringToHash("changeWeapon");
 	
 	private static readonly int OpenFingers = Animator.StringToHash("openFingers");
@@ -312,8 +313,20 @@ public class HandController : MonoBehaviour
 			case WeaponType.Pastry:
 				pastry.SetActive(true);
 				_myAnimator.SetTrigger(OpenFingers);
-				_rootAnimator.SetTrigger(IsUsingHandsHash);
+				_rootAnimator.SetTrigger(IsHoldingPastryHash);
 				break;
+			case WeaponType.Burger:
+				burger.SetActive(true);
+				_myAnimator.SetTrigger(OpenFingers);
+				_rootAnimator.SetTrigger(IsHoldingPastryHash);
+				break;
+			case WeaponType.Poop:
+				poop.SetActive(true);
+				_myAnimator.SetTrigger(OpenFingers);
+				_rootAnimator.SetTrigger(IsHoldingPastryHash);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 
