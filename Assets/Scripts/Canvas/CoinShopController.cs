@@ -1,3 +1,4 @@
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using TMPro;
@@ -68,12 +69,21 @@ public class CoinShopController : MonoBehaviour
 	{
 		_currentSkin = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
 		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlockedFromSideBar", 1);
+
+		if (ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+			ShopItemState.Locked)
+		{
+			_currentSkinBeingUnlocked = (int) ShopReferences.refs.mainShop.currentState.weaponStates.First(state => state.Value == ShopItemState.Locked).Key;
+			PlayerPrefs.SetInt("currentSkinBeingUnlockedFromSideBar", _currentSkinBeingUnlocked);
+		}
+		
 		_currentPowerLevel = PlayerPrefs.GetInt("currentPowerLevel", 0);
 		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
 	}
 
 	public void UpdateButtons()
 	{
+		Initialise();
 		//update texts and icons
 		if(_currentSpeedLevel < speedLevelCosts.Length - 1)
 		{

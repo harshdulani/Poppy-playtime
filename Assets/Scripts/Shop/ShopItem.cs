@@ -96,10 +96,10 @@ public class ShopItem : MonoBehaviour
 			: ShopReferences.refs.mainShop.armsSkinCosts[_mySkinIndex];
 		
 		ShopReferences.refs.mainShop.UpdateCoinText();
-		ShopReferences.refs.sidebar.UpdateButtons();
 		
 		ChangeSelected();
-		
+		ShopReferences.refs.sidebar.UpdateButtons();
+
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
