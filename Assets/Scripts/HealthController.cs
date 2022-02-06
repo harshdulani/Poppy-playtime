@@ -12,7 +12,11 @@ public class HealthController : MonoBehaviour
 	
 	public bool IsDead()
 	{
-		return hitsReceived >= hitsRequiredToKill;
+		var result = hitsReceived >= hitsRequiredToKill;
+		if (result)
+			healthCanvas.enabled = false;
+		
+		return result;
 	}
 
 	public bool AddHit()

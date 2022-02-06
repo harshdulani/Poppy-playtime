@@ -6,12 +6,14 @@ using UnityEngine.Serialization;
 public class BossPropController : MonoBehaviour
 {
 	[FormerlySerializedAs("barrelSpawnWaitTime")] [SerializeField] private float propSpawnWaitTime;
+	[SerializeField] private int myArea, spawnAtATime;
 	private Coroutine _cycle;
 
 	private bool _isSpawning;
 
 	private void OnEnable()
 	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 		GameEvents.only.gameEnd += StopSpawning;
 		GameEvents.only.enemyKillPlayer += StopSpawning;
@@ -19,17 +21,10 @@ public class BossPropController : MonoBehaviour
 
 	private void OnDisable()
 	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 		GameEvents.only.gameEnd -= StopSpawning;
 		GameEvents.only.enemyKillPlayer -= StopSpawning;
-	}
-
-	private void OnReachNextArea()
-	{
-		if(!LevelFlowController.only.IsInGiantFight()) return;
-
-		_cycle = StartCoroutine(ThrowingCycle());
-		_isSpawning = true;
 	}
 	
 	private void StopSpawning()
@@ -46,8 +41,8 @@ public class BossPropController : MonoBehaviour
 
 		while (transform.childCount > 0)
 		{
-			SpawnProp();
-			SpawnProp();
+			for(var i = 0; i < spawnAtATime; i++)
+				SpawnProp();
 			
 			yield return GameExtensions.GetWaiter(propSpawnWaitTime);
 		}
@@ -63,5 +58,18 @@ public class BossPropController : MonoBehaviour
 		prop.transform.DOMoveY(oldPosY, 0.3f);
 			
 		prop.transform.parent = null;
+	}
+	
+	private void OnTapToPlay()
+	{
+		OnReachNextArea();
+	}
+
+	private void OnReachNextArea()
+	{
+		if(myArea != LevelFlowController.only.currentArea) return;
+
+		_cycle = StartCoroutine(ThrowingCycle());
+		_isSpawning = true;
 	}
 }

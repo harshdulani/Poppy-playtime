@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
+	[SerializeField] private bool followOnStart;
 	private Collider _collider;
 	private SplineFollower _spline;
 
@@ -10,12 +11,15 @@ public class MovementController : MonoBehaviour
 	
 	private void OnEnable()
 	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
+		
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		_isSubscribed = true;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
 		if(!_isSubscribed) return;
 		
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
@@ -32,6 +36,14 @@ public class MovementController : MonoBehaviour
 		OnDisable();
 	}
 
+	private void OnTapToPlay()
+	{
+		if (!followOnStart) return;
+		
+		StartFollowing();
+		LevelFlowController.only.currentArea--;
+	}
+	
 	private void OnMoveToNextArea()
 	{
 		Invoke(nameof(StartFollowing), 1.5f);

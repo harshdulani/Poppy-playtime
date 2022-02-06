@@ -90,6 +90,8 @@ public class ShopItem : MonoBehaviour
 	{
 		if(myState != ShopItemState.Locked) return;
 		
+		print(_isWeaponItem + " " + _mySkinIndex);
+		
 		//Decrease coin count
 		ShopReferences.refs.mainShop.currentState.coinCount -= _isWeaponItem
 			? ShopReferences.refs.mainShop.weaponSkinCosts[_mySkinIndex]

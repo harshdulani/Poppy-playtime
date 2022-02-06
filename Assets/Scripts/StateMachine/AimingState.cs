@@ -28,7 +28,7 @@ public class AimingState : InputStateBase
 		//the magic number percentage 0.5905f is the screen Y pos when you center the crosshair on anchorY as minY = 0.565, maxY = 0.615
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(_screenPercentageOnY));
 		
-		if (!Physics.Raycast(ray, out _hit, 50f)) 
+		if (!Physics.Raycast(ray, out _hit, RaycastDistance)) 
 		{
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;
@@ -65,12 +65,12 @@ public class AimingState : InputStateBase
 		_aimer.SetReticleStatus(false);
 		
 		var ray = Cam.ScreenPointToRay(InputExtensions.GetCenterOfScreen(_screenPercentageOnY));
-		if (!Physics.Raycast(ray, out var hit))
+		if (!Physics.Raycast(ray, out var hit, RaycastDistance))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
-		if (!hit.collider.CompareTag("Target"))
+		if (!hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("Button"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;

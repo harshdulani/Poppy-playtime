@@ -5,6 +5,7 @@ public class InputHandler : MonoBehaviour
 {
 	public static InputHandler Only;
 
+	[SerializeField] private float raycastDistance = 50f;
 	public bool testingUsingTouch;
 	public bool isUsingTapAndPunch;
 	
@@ -65,10 +66,11 @@ public class InputHandler : MonoBehaviour
 		}
 
 		var cam = Camera.main;
-		_ = new InputStateBase(_leftHand, cam);
+		_ = new InputStateBase(_leftHand, cam, raycastDistance);
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
+		
 		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 	}
 

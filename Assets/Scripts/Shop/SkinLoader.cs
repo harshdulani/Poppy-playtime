@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -88,10 +90,18 @@ public class SkinLoader : MonoBehaviour
 	public void UpdateWeaponSkinInUse(int currentSkin)
 	{
 		_currentWeaponSkinInUse = currentSkin;
-		_currentSkinBeingUnlocked = _currentWeaponSkinInUse + 1;
-		
 		PlayerPrefs.SetInt("currentWeaponSkinInUse", _currentWeaponSkinInUse);
-		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+		
+		for (var i = 0; i < MainShopController.GetWeaponSkinCount(); i++)
+		{
+			if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+			   ShopItemState.Locked)
+				continue;
+
+			_currentSkinBeingUnlocked = i;
+			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+		}
+		ShopReferences.refs.sidebar.UpdateButtons();
 		ResetLoader();
 	}
 	
@@ -106,9 +116,35 @@ public class SkinLoader : MonoBehaviour
 		
 		//this value is being set in resetloader
 		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
-			_currentSkinBeingUnlocked++;
+		{
+			var changed = false;
+
+			for (var i = _currentSkinBeingUnlocked + 1; i < MainShopController.GetWeaponSkinCount(); i++)
+			{
+				if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+					ShopItemState.Locked)
+					continue;
+
+				_currentSkinBeingUnlocked = i;
+				PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+				changed = true;
+			}
+			if(!changed)
+			{
+				for (var i = 0; i < _currentSkinBeingUnlocked; i++)
+				{
+					if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+					   ShopItemState.Locked)
+						continue;
+
+					_currentSkinBeingUnlocked = i;
+					PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+				}
+			}
+		}
 		//play animatn
 		ResetLoader();
+		ShopReferences.refs.sidebar.UpdateButtons();
 
 		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
 	}
@@ -123,8 +159,15 @@ public class SkinLoader : MonoBehaviour
 		
 		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
 		{
-			_currentSkinBeingUnlocked++;
-			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+			for (var i = 0; i < MainShopController.GetWeaponSkinCount(); i++)
+			{
+				if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+				   ShopItemState.Locked)
+					continue;
+
+				_currentSkinBeingUnlocked = i;
+				PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+			}
 		}
 		
 		_currentSkinPercentageUnlocked = 0f;

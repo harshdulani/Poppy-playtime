@@ -150,8 +150,7 @@ public class MainShopController : MonoBehaviour
 		
 		_anim.SetTrigger(Open);
 		_anim.SetTrigger(HideShopButton);
-		_canClick = false;
-		DOVirtual.DelayedCall(HitCooldown, ClickCooldown);
+		InputHandler.Only.AssignDisabledState();
 	}
 
 	public void CloseShop()
@@ -160,8 +159,7 @@ public class MainShopController : MonoBehaviour
 
 		_anim.SetTrigger(Close);
 		_anim.SetTrigger(ShowShopButton);
-		_canClick = false;
-		DOVirtual.DelayedCall(HitCooldown, ClickCooldown);
+		InputHandler.Only.AssignIdleState();
 	}
 
 	public void ClickArms()

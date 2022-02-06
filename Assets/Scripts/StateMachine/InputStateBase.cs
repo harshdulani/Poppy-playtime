@@ -5,16 +5,18 @@ public class InputStateBase
 	public static bool IsPersistent;
 	protected static HandController LeftHand;
 	protected static Camera Cam;
+	protected static float RaycastDistance;
 
 	public static RaycastHit EmptyHit = new RaycastHit();
 	private static float _decreaseMultiplier;
 
 	protected InputStateBase() { }
 
-	public InputStateBase(HandController leftHand, Camera cam)
+	public InputStateBase(HandController leftHand, Camera cam, float raycastDistance)
 	{
 		LeftHand = leftHand;
 		Cam = cam;
+		RaycastDistance = raycastDistance;
 		
 		EmptyHit.point = Vector3.negativeInfinity;
 	}

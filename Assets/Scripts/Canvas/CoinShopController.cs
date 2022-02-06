@@ -18,7 +18,7 @@ public class CoinShopController : MonoBehaviour
 	[SerializeField] private int coinIncreaseCount;
 
 	private Animation _anim;
-	private int _currentSpeedLevel, _currentPowerLevel, _currentSkin, _currentSkinBeingUnlocked;
+	private int _currentSpeedLevel, _currentPowerLevel, _currentSkinBeingUnlocked;
 	
 	private void OnEnable()
 	{
@@ -67,13 +67,13 @@ public class CoinShopController : MonoBehaviour
 
 	private void Initialise()
 	{
-		_currentSkin = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
-		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlockedFromSideBar", 1);
-
-		if (ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
-			ShopItemState.Locked)
+		for (var i = 0; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
-			_currentSkinBeingUnlocked = (int) ShopReferences.refs.mainShop.currentState.weaponStates.First(state => state.Value == ShopItemState.Locked).Key;
+			if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
+			   ShopItemState.Locked)
+				continue;
+
+			_currentSkinBeingUnlocked = i;
 			PlayerPrefs.SetInt("currentSkinBeingUnlockedFromSideBar", _currentSkinBeingUnlocked);
 		}
 		
@@ -113,7 +113,7 @@ public class CoinShopController : MonoBehaviour
 		}
 		powerHand.SetActive(powerButton.interactable);
 		
-		if(_currentSkin < MainShopController.GetWeaponSkinCount() - 1)
+		if(_currentSkinBeingUnlocked <= MainShopController.GetWeaponSkinCount() - 1)
 		{
 			while (ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
 				   ShopItemState.Locked)
@@ -132,7 +132,7 @@ public class CoinShopController : MonoBehaviour
 		}
 		skinHand.SetActive(skinButton.interactable);
 		
-		currentSkinImage.sprite = ShopReferences.refs.skinLoader.GetWeaponSkinSprite(_currentSkin + 1); //might be error prone
+		currentSkinImage.sprite = ShopReferences.refs.skinLoader.GetWeaponSkinSprite(_currentSkinBeingUnlocked); //might be error prone
 	}
 
 	public void BuySpeed()
@@ -162,12 +162,13 @@ public class CoinShopController : MonoBehaviour
 	public void BuyNewSkin()
 	{
 		skinButtonPressAnimation.Play();
-		AlterCoinCount(-ShopReferences.refs.mainShop.weaponSkinCosts[++_currentSkin]);
-		_currentSkinBeingUnlocked++;
+		
+		AlterWeaponState(_currentSkinBeingUnlocked, ShopItemState.Selected);
+		ShopReferences.refs.skinLoader.UpdateWeaponSkinInUse(_currentSkinBeingUnlocked);
+
+		AlterCoinCount(-ShopReferences.refs.mainShop.weaponSkinCosts[_currentSkinBeingUnlocked++]);
 		PlayerPrefs.SetInt("currentSkinBeingUnlockedFromSideBar", _currentSkinBeingUnlocked);
 
-		AlterWeaponState(_currentSkin, ShopItemState.Selected);
-		ShopReferences.refs.skinLoader.UpdateWeaponSkinInUse(_currentSkin);
 		InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false);
 		
 		UpdateButtons();
@@ -182,17 +183,19 @@ public class CoinShopController : MonoBehaviour
 	
 	private void OnGameEnd()
 	{
-		print("increasing");
 		var seq = DOTween.Sequence();
 		seq.AppendInterval(1.25f);
 
 		var coinText = ShopReferences.refs.mainShop.GetCoinText();
 		var initSize = ShopReferences.refs.mainShop.GetCoinText().fontSize;
-		
+
+		var dummyCoinCount = GetCoinCount();
+
 		AudioManager.instance.Play("CoinCollect");
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
-		seq.InsertCallback(1.5f, () => AlterCoinCount(coinIncreaseCount));
-		seq.InsertCallback(1.5f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
+		seq.Join(DOTween.To(() => dummyCoinCount, value => dummyCoinCount = value, dummyCoinCount + coinIncreaseCount,
+			.5f).OnUpdate(() => coinText.text = dummyCoinCount.ToString()));
+		seq.InsertCallback(.75f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{

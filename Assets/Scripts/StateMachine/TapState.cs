@@ -29,7 +29,7 @@ public class TapState : InputStateBase
 		
 		//Debug.DrawRay(ray.origin, ray.direction * 50f, Color.black, 2f);
 
-		if (!Physics.Raycast(ray, out var hit, 50f))
+		if (!Physics.Raycast(ray, out var hit, RaycastDistance))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;

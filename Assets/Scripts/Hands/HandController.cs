@@ -272,7 +272,10 @@ public class HandController : MonoBehaviour
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
 
 		if(!initialising)
+		{
 			_rootAnimator.SetTrigger(ChangeWeapon);
+			_myAnimator.SetTrigger(ChangeWeapon);
+		}
 		
 		switch (currentWeaponsSkin)
 		{
