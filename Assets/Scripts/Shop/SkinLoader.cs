@@ -17,7 +17,7 @@ public class SkinLoader : MonoBehaviour
 
 	private MainCanvasController _mainCanvas;
 	private float _currentSkinPercentageUnlocked;
-	
+
 	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
 
 	private void OnEnable()
@@ -62,12 +62,10 @@ public class SkinLoader : MonoBehaviour
 	{
 		var changed = false;
 		
-		var shopWeaponStates = ShopStateController.CurrentState.GetWeaponStates();
-		
 		//find a weapon from current index to last
-		for (var i = currentWeapon; i < MainShopController.GetWeaponSkinCount(); i++)
+		for (var i = currentWeapon + 1; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
-			if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
+			if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 				continue;
 
 			ShopStateController.CurrentState.SetNewLoaderWeapon(i);
@@ -80,7 +78,7 @@ public class SkinLoader : MonoBehaviour
 		{
 			for (var i = 1; i < currentWeapon; i++)
 			{
-				if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
+				if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 					continue;
 
 				ShopStateController.CurrentState.SetNewLoaderWeapon(i);
@@ -106,8 +104,8 @@ public class SkinLoader : MonoBehaviour
 
 	public void Claim()
 	{
-		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), ShopItemState.Locked);
-
+		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), false);
+		
 		_mainCanvas.NextLevel();
 	}
 
@@ -156,10 +154,12 @@ public class SkinLoader : MonoBehaviour
 
 	public bool ShouldShowNextLevel()
 	{
+		/*
 		//if all weapons are unlocked, then show it yet.
 			// because loader won't be called and after loader completes, next level won't be showed, so we show it on our own
 		//else
 			// if the loader is full, don't show it so that user only has choice between claim and skip
+		*/
 		if (ShopStateController.CurrentState.AreAllWeaponsUnlocked())
 			return true;
 		
@@ -168,7 +168,7 @@ public class SkinLoader : MonoBehaviour
 		return _currentSkinPercentageUnlocked < 0.79f;
 	}
 
-	private void OnWeaponPurchase(int index, ShopItemState previousState)
+	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
 		if (index != GetLoaderWeapon()) return;
 		

@@ -18,6 +18,7 @@ public class SidebarShopController : MonoBehaviour
 
 	private Animation _anim;
 	private int _currentSpeedLevel, _currentPowerLevel;
+	
 	private static int GetSidebarWeapon() => ShopStateController.CurrentState.GetState().SidebarWeapon;
 
 	private void OnEnable()
@@ -69,12 +70,11 @@ public class SidebarShopController : MonoBehaviour
 	private static void FindNewSideBarWeapon(int currentWeapon)
 	{
 		var changed = false;
-		var shopWeaponStates = ShopStateController.CurrentState.GetWeaponStates();
 		
 		//find a weapon from current index to last
-		for (var i = currentWeapon; i < MainShopController.GetWeaponSkinCount(); i++)
+		for (var i = currentWeapon + 1; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
-			if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
+			if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 				continue;
 
 			ShopStateController.CurrentState.SetNewSideBarWeapon(i);
@@ -87,7 +87,7 @@ public class SidebarShopController : MonoBehaviour
 		{
 			for (var i = 1; i < currentWeapon; i++)
 			{
-				if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
+				if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 					continue;
 
 				ShopStateController.CurrentState.SetNewSideBarWeapon(i);
@@ -101,7 +101,7 @@ public class SidebarShopController : MonoBehaviour
 			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
 	}
 
-	private void UpdateButtons()
+	public void UpdateButtons()
 	{
 		//update speed and power texts and icons
 		if(_currentSpeedLevel < speedLevelCosts.Length - 1)
@@ -175,23 +175,23 @@ public class SidebarShopController : MonoBehaviour
 		//confetti and/or power up vfx
 	}
 
-	public void BuyNewSkin()
+	public void BuyNewWeapon()
 	{
 		skinButtonPressAnimation.Play();
-		
-		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), ShopItemState.Locked);
+
+		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
 		
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
 
-	private void OnWeaponPurchase(int index, ShopItemState previousState)
+	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
 		if(index != GetSidebarWeapon()) return;
 		
 		FindNewSideBarWeapon(GetSidebarWeapon());
-		
-		UpdateButtons();
+
+		DOVirtual.DelayedCall(0.25f, UpdateButtons);
 	}
 	
 	private void OnTapToPlay()

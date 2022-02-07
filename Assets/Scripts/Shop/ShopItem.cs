@@ -91,9 +91,9 @@ public class ShopItem : MonoBehaviour
 		if(myState != ShopItemState.Locked) return;
 		
 		if(_isWeaponItem)
-			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, ShopItemState.Locked);
+			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, true);
 		else
-			GameEvents.only.InvokeSkinSelect(_mySkinIndex, ShopItemState.Locked);
+			GameEvents.only.InvokeSkinSelect(_mySkinIndex, true);
 		
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
@@ -102,9 +102,9 @@ public class ShopItem : MonoBehaviour
 	public void ClickOnUnlocked()
 	{
 		if(_isWeaponItem)
-			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, ShopItemState.Unlocked);
+			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, false);
 		else
-			GameEvents.only.InvokeSkinSelect(_mySkinIndex, ShopItemState.Unlocked);
+			GameEvents.only.InvokeSkinSelect(_mySkinIndex, false);
 		
 		AudioManager.instance.Play("Button");
 	}

@@ -226,9 +226,9 @@ public class MainShopController : MonoBehaviour
 		armsHolder.transform.parent.parent.gameObject.SetActive(false);
 	}
 	
-	private void OnWeaponPurchase(int index, ShopItemState previousState)
+	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
-		if(previousState == ShopItemState.Locked)
+		if(shouldDeductCoins)
 		{
 			//if was locked before this, Decrease coin count
 			ShopStateController.CurrentState.GetState().CoinCount -= weaponSkinCosts[index];
@@ -241,13 +241,14 @@ public class MainShopController : MonoBehaviour
 		//make sure nobody else is selected/ old one is now marked as unlocked
 		ChangeSelectedWeapon(index);
 		
+		
 		//Save the state and reflect it in Shop UI
 		SaveCurrentShopState();
 	}
 	
-	private void OnSkinPurchase(int index, ShopItemState previousState)
+	private void OnSkinPurchase(int index, bool shouldDeductCoins)
 	{
-		if(previousState == ShopItemState.Locked)
+		if(shouldDeductCoins)
 		{
 			//if was locked before this, Decrease coin count
 			ShopStateController.CurrentState.GetState().CoinCount -= armsSkinCosts[index];

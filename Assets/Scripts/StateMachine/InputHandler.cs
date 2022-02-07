@@ -71,6 +71,8 @@ public class InputHandler : MonoBehaviour
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
 		
+		//if "control mechanic" is zero, this variable is true
+		//so default is tap and punch
 		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 	}
 

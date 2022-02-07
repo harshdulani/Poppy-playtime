@@ -419,14 +419,14 @@ public class HandController : MonoBehaviour
 		InputHandler.Only.AssignReturnTransitState();
 	}
 
-	private void OnWeaponPurchased(int index, ShopItemState previousState)
+	private void OnWeaponPurchased(int index, bool shouldDeductCoins)
 	{
 		if (isLeftHand) return;
 		
 		UpdateEquippedWeaponsSkin(false, index);
 	}
 
-	private void OnSkinPurchased(int index, ShopItemState previousState)
+	private void OnSkinPurchased(int index, bool shouldDeductCoins)
 	{
 		UpdateEquippedArmsSkin();
 	}
