@@ -46,6 +46,7 @@ public class HandController : MonoBehaviour
 	//private TextMeshProUGUI _text;
 	//private string _testString;
 	
+	#region Animator Hashes
 	private static readonly int Attack = Animator.StringToHash("attack");
 	private static readonly int IsHoldingHammerHash = Animator.StringToHash("isHoldingHammer");
 	private static readonly int IsUsingHandsHash = Animator.StringToHash("isUsingHands");
@@ -59,11 +60,24 @@ public class HandController : MonoBehaviour
 	private static readonly int CloseFingers = Animator.StringToHash("closeFingers");
 	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
+	#endregion
+		
+	#region  Helpers and Getters
+	
+	public AimController GetAimController() => transform.root.GetComponent<AimController>();
+	public static void UpdateRope() => _rope.UpdateRope();
 
+#endregion
+	
 	private void OnEnable()
 	{
 		if(!isLeftHand) //only for right/punching hand
+		{
+			GameEvents.only.weaponSelect += OnWeaponPurchased;
+			GameEvents.only.skinSelect += OnSkinPurchased;
+
 			GameEvents.only.enterHitBox += OnEnterHitBox;
+		}
 		
 		GameEvents.only.giantPickupProp += OnGiantPickupCar;
 		GameEvents.only.punchHit += OnPunchHit;
@@ -72,8 +86,12 @@ public class HandController : MonoBehaviour
 	private void OnDisable()
 	{
 		if (!isLeftHand) //only for right/punching hand
+		{
+			GameEvents.only.weaponSelect -= OnWeaponPurchased;
+			GameEvents.only.skinSelect -= OnSkinPurchased;
+
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
-		
+		}
 		
 		GameEvents.only.giantPickupProp -= OnGiantPickupCar;
 		GameEvents.only.punchHit -= OnPunchHit;
@@ -151,8 +169,6 @@ public class HandController : MonoBehaviour
 				 _appliedMoveSpeed * Time.deltaTime);
 		}
 	}
-	
-	public static void UpdateRope() => _rope.UpdateRope();
 
 	public void HandReachTarget(Transform other)
 	{
@@ -264,10 +280,10 @@ public class HandController : MonoBehaviour
 		_appliedReturnSpeed = returnSpeed * (1f + level / 10f);
 	}
 
-	public void UpdateEquippedWeaponsSkin(bool initialising = true)
+	private void UpdateEquippedWeaponsSkin(bool initialising = true, int newWeapon = -1)
 	{
 		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
-		currentWeaponsSkin = SkinLoader.GetWeaponSkinName();
+		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
 		for (var i = 1; i < hammer.transform.parent.childCount; i++)
 			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
 
@@ -335,7 +351,7 @@ public class HandController : MonoBehaviour
 
 	public void UpdateEquippedArmsSkin()
 	{
-		myArm.material = SkinLoader.GetArmsSkinName() switch
+		myArm.material = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() switch
 		{
 			ArmsType.Poppy => poppy,
 			ArmsType.Batman => batman,
@@ -402,9 +418,19 @@ public class HandController : MonoBehaviour
 		ResetPalmParent();
 		InputHandler.Only.AssignReturnTransitState();
 	}
-	
-	public AimController GetAimController() => transform.root.GetComponent<AimController>();
 
+	private void OnWeaponPurchased(int index, ShopItemState previousState)
+	{
+		if (isLeftHand) return;
+		
+		UpdateEquippedWeaponsSkin(false, index);
+	}
+
+	private void OnSkinPurchased(int index, ShopItemState previousState)
+	{
+		UpdateEquippedArmsSkin();
+	}
+	
 	private void OnGiantPickupCar(Transform car)
 	{
 		if (_lastTarget != car) return;

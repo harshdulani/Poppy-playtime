@@ -1271,7 +1271,7 @@ RectTransform:
   m_AnchorMax: {x: 0.9, y: 0.8}
   m_AnchoredPosition: {x: 22.5, y: 0}
   m_SizeDelta: {x: -45, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1637971438024111684
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2242,9 +2242,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c745d2982002141bad04262924fa94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coloredWeaponSprites:
+  - {fileID: 21300000, guid: 9c7264d4e0f314b489d765ddd37ec27c, type: 3}
+  - {fileID: 21300000, guid: 577a29d79258fc74a9477a2150d9dd62, type: 3}
+  - {fileID: 21300000, guid: e81373045c629ea4cbbd47a08357e72b, type: 3}
+  - {fileID: 21300000, guid: 1142bc3c99a71bf4e9311ea35a08fb39, type: 3}
+  - {fileID: 21300000, guid: 0704106cdb91ef84688975580f07f05e, type: 3}
+  - {fileID: 21300000, guid: 17fa3417221b0d5448cd58ccde236561, type: 3}
+  - {fileID: 21300000, guid: 4b16a7d4d545c4847ac5551da4e5556d, type: 3}
+  - {fileID: 21300000, guid: fd3d8b1ae4d60b44cb2f4345ea674fdd, type: 3}
+  - {fileID: 21300000, guid: 5ad0542ad6d2bfd41a92e97ab0e4bce4, type: 3}
+  - {fileID: 21300000, guid: 969bf8f983bc01641b0bd5f70eeae3a5, type: 3}
+  blackWeaponSprites:
+  - {fileID: 21300000, guid: f097312e22067c841b1cf7044d511dba, type: 3}
+  - {fileID: 21300000, guid: f9df8b4ce6ee53c4889569425d37245d, type: 3}
+  - {fileID: 21300000, guid: 81fc8dd1bb4194245a0c34014543b978, type: 3}
+  - {fileID: 21300000, guid: 99519bc656e993645b35a18ed924f2dc, type: 3}
+  - {fileID: 21300000, guid: fa9b4f3026bc3af42af7a31cf781e865, type: 3}
+  - {fileID: 21300000, guid: ba5e100a886d1754a96f4cf0dd573e7c, type: 3}
+  - {fileID: 21300000, guid: e3a60f9be9fc9a44d933614c5497ffad, type: 3}
+  - {fileID: 21300000, guid: 1a45f900268b02c4d8c22b99406e2e31, type: 3}
+  - {fileID: 21300000, guid: 45dcfb83070fcb64688cc6fe318e313c, type: 3}
+  - {fileID: 21300000, guid: f4fd80123296d7c47bcb28d179330140, type: 3}
+  coloredArmSprites:
+  - {fileID: 21300000, guid: e7a4ede8e51079946bbd6361652b8887, type: 3}
+  - {fileID: 21300000, guid: 6a34698714bdd2243a3ae3b2dc08f6be, type: 3}
+  - {fileID: 21300000, guid: 5e9ba92b048423e41883a4812cd2e267, type: 3}
+  - {fileID: 21300000, guid: 73f672f972791ab4194c7a1fbcb1ba8e, type: 3}
+  - {fileID: 21300000, guid: 152a5840c4ed30e4080e4e34e88d7480, type: 3}
+  - {fileID: 21300000, guid: cbe762adec6d254429d46fcd4f1d536a, type: 3}
+  blackArmSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  coinText: {fileID: 1637971439041288866}
   weaponSkinCosts: 000000002c010000f401000058020000bc0200002003000084030000e8030000e8030000e8030000
   armsSkinCosts: 000000002c01000090010000f4010000f4010000f4010000
-  coinText: {fileID: 1637971439041288866}
   weaponsHolder: {fileID: 1637971438469226508}
   armsHolder: {fileID: 1637971439213799614}
   shopItemPrefab: {fileID: 4055670953801315928, guid: 0063640625692a6458692b475d229821, type: 3}
@@ -2254,8 +2290,6 @@ MonoBehaviour:
   armsText: {fileID: 1637971437883812811}
   black: {r: 0, g: 0, b: 0, a: 1}
   grey: {r: 0.25490198, g: 0.25490198, b: 0.25490198, a: 1}
-  currentState:
-    coinCount: 0
 --- !u!95 &1637971438814524394
 Animator:
   serializedVersion: 4
@@ -3513,7 +3547,7 @@ RectTransform:
   m_AnchorMax: {x: 0.9, y: 0.8}
   m_AnchoredPosition: {x: 22.5, y: 0}
   m_SizeDelta: {x: -45, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1637971439135256042
 CanvasRenderer:
   m_ObjectHideFlags: 0

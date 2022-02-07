@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameEvents : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class GameEvents : MonoBehaviour
 	public Action enemyKillPlayer;
 	public Action gameEnd;
 
+	public Action<int, ShopItemState> weaponSelect, skinSelect;
 
 	public void InvokeTapToPlay() => tapToPlay?.Invoke();
 	public void InvokeEnterHitBox(Transform target) => enterHitBox?.Invoke(target);
@@ -61,4 +63,7 @@ public class GameEvents : MonoBehaviour
 	public void InvokeReachNextArea() => reachNextArea?.Invoke();
 	
 	public void InvokeGameEnd() => gameEnd?.Invoke();
+
+	public void InvokeWeaponSelect(int index, ShopItemState previousState) => weaponSelect?.Invoke(index, previousState);
+	public void InvokeSkinSelect(int index, ShopItemState previousState) => skinSelect?.Invoke(index, previousState);
 }

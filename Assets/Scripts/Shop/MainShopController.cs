@@ -1,13 +1,17 @@
 using System;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainShopController : MonoBehaviour
 {
+	public static MainShopController Main;
+	
+	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
+	[SerializeField] private Sprite[] coloredArmSprites, blackArmSprites;
+	
+	[Header("Coins and costs"), SerializeField] private TextMeshProUGUI coinText;
 	public int[] weaponSkinCosts, armsSkinCosts;
-	[SerializeField] private TextMeshProUGUI coinText;
 
 	[SerializeField] private GridLayoutGroup weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
@@ -17,30 +21,69 @@ public class MainShopController : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI weaponsText, armsText;
 	[SerializeField] private Color black, grey;
 	
-	public ShopState currentState;
-	
-	private const float HitCooldown = 1f;
 	private Animator _anim;
-	
+	private bool _canClick = true;
+
+	#region Animator Hashes
 	private static readonly int Close = Animator.StringToHash("Close");
 	private static readonly int Open = Animator.StringToHash("Open");
 	private static readonly int ShowShopButton = Animator.StringToHash("showShopButton");
 	private static readonly int HideShopButton = Animator.StringToHash("hideShopButton");
-	private bool _canClick = true;
+	#endregion
+		
+	#region Helpers and Getters
+	public TextMeshProUGUI GetCoinText() => coinText;
+	public void UpdateCoinText() => coinText.text = ShopStateController.CurrentState.GetState().CoinCount.ToString();
+	
+	private int GetWeaponSkinPrice(int index) => weaponSkinCosts[index];
+	private int GetArmsSkinPrice(int index) => armsSkinCosts[index];
 
+	public static int GetWeaponSkinCount() => Enum.GetNames(typeof(WeaponType)).Length;
+	public static int GetArmsSkinCount() => Enum.GetNames(typeof(ArmsType)).Length;
+	
+	public Sprite GetWeaponSprite(int index, bool wantsBlackSprite = false)
+	{
+		var currentList = wantsBlackSprite ? blackWeaponSprites : coloredWeaponSprites;
+		
+		if (index >= currentList.Length)
+			return currentList[^1];
+
+		return currentList[index];
+	}
+
+	private Sprite GetArmsSkinType(int index, bool wantsBlackSprite = false)
+	{
+		var currentList = wantsBlackSprite ? blackArmSprites : coloredArmSprites;
+		
+		if (index >= currentList.Length)
+			return currentList[^1];
+
+		return currentList[index];
+	}
+	#endregion
+	
 	private void OnEnable()
 	{
+		GameEvents.only.weaponSelect += OnWeaponPurchase;
+		GameEvents.only.skinSelect += OnSkinPurchase;
+		
 		GameEvents.only.tapToPlay += OnTapToPlay;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.weaponSelect -= OnWeaponPurchase;
+		GameEvents.only.skinSelect -= OnSkinPurchase;
+		
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 	}
-
+	
 	private void Awake()
 	{
-		ReadStoredStateValues(true);
+		if (!Main) Main = this;
+		else Destroy(gameObject);
+		
+		ReadCurrentShopState(true);
 	}
 
 	private void Start()
@@ -48,23 +91,20 @@ public class MainShopController : MonoBehaviour
 		_anim = GetComponent<Animator>();
 		_anim.SetTrigger(ShowShopButton);
 		ClickWeapons();
+		
+		weaponsHolder.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+		armsHolder.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 	}
-	
-	public TextMeshProUGUI GetCoinText() => coinText;
-	public void UpdateCoinText() => coinText.text = currentState.coinCount.ToString();
-	
-	private int GetWeaponSkinPrice(int index) => weaponSkinCosts[index];
-	private int GetArmsSkinPrice(int index) => armsSkinCosts[index];
 
-	public static int GetWeaponSkinCount() => Enum.GetNames(typeof(WeaponType)).Length;
-	public static int GetArmsSkinCount() => Enum.GetNames(typeof(ArmsType)).Length;
-
-	
-	private void ReadStoredStateValues(bool initialising = false)
+	/// <summary>
+	/// This function not only reads the change of the values, but also sets all the ShopItems to the visual and behavioural representation they should be in.
+	/// </summary>
+	/// <param name="initialising"> Optional parameter. Only set to true when calling to initialise values/ generate scroll views.</param>
+	public void ReadCurrentShopState(bool initialising = false)
 	{
-		currentState = initialising
-			? StateSaveController.only.LoadSavedState()
-			: currentState;
+		var currentShopState = initialising
+			? ShopStateController.ShopStateSerializer.LoadSavedState()
+			: ShopStateController.CurrentState.GetState();
 
 		var weaponCount = GetWeaponSkinCount();
 		var armsCount = GetArmsSkinCount();
@@ -83,10 +123,10 @@ public class MainShopController : MonoBehaviour
 				? Instantiate(shopItemPrefab, weaponsHolder.transform).GetComponent<ShopItem>() 
 				: weaponsHolder.transform.GetChild(i).GetComponent<ShopItem>();
 
-			var itemState = currentState.weaponStates[(WeaponType) i];
+			var itemState = currentShopState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(ShopReferences.refs.skinLoader.GetWeaponSkinSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetWeaponSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(true);
 			item.SetPriceAndAvailability(GetWeaponSkinPrice(i));
 		}
@@ -97,53 +137,53 @@ public class MainShopController : MonoBehaviour
 				? Instantiate(shopItemPrefab, armsHolder.transform).GetComponent<ShopItem>()
 				: armsHolder.transform.GetChild(i).GetComponent<ShopItem>();
 			
-			var itemState = currentState.armStates[(ArmsType) i];
+			var itemState = currentShopState.armStates[(ArmsType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(ShopReferences.refs.skinLoader.GetArmsSkinType(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetArmsSkinType(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(false);
 			
 			item.SetPriceAndAvailability(GetArmsSkinPrice(i));
 		}
-	}
-	
-	// make sure all instances of coinShop._currentSkin are tied over here
-	// all this should be reflected upon in shop item as well as coinshop
-
-	public void SaveCurrentShopState()
-	{
-		StateSaveController.only.SaveCurrentState(currentState);
-		ReadStoredStateValues();
+		
+		UpdateCoinText();
 	}
 
-	public void ChangeSelectedWeapon(int index = -1)
+	private void SaveCurrentShopState()
 	{
+		//save the newest made change of state
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		
+		//make shop items represent their state acc to new change of state 
+		ReadCurrentShopState();
+	}
+
+	private void ChangeSelectedWeapon(int index = -1)
+	{
+		var weaponStates = ShopStateController.CurrentState.GetWeaponStates();
 		for (var i = 0; i < GetWeaponSkinCount(); i++)
 		{
 			if (i == index) continue;
 
-			if (currentState.weaponStates[(WeaponType) i] == ShopItemState.Selected)
-				currentState.weaponStates[(WeaponType) i] = ShopItemState.Unlocked;
+			if (weaponStates[(WeaponType) i] == ShopItemState.Selected)
+				weaponStates[(WeaponType) i] = ShopItemState.Unlocked;
 		}
-	
 		SaveCurrentShopState();
 	}
 
-	public void ChangeSelectedArmsSkin(int index = -1)
+	private void ChangeSelectedArmsSkin(int index = -1)
 	{
+		var armStates = ShopStateController.CurrentState.GetSkinStates();
 		for (var i = 0; i < GetArmsSkinCount(); i++)
 		{
 			if (i == index) continue;
 
-			if (currentState.armStates[(ArmsType) i] == ShopItemState.Selected)
-				currentState.armStates[(ArmsType) i] = ShopItemState.Unlocked;
+			if (armStates[(ArmsType) i] == ShopItemState.Selected)
+				armStates[(ArmsType) i] = ShopItemState.Unlocked;
 		}
-	
 		SaveCurrentShopState();
 	}
 
-	private void ClickCooldown() => _canClick = true;
-	
 	public void OpenShop()
 	{
 		if(!_canClick) return;
@@ -154,9 +194,7 @@ public class MainShopController : MonoBehaviour
 	}
 
 	public void CloseShop()
-	{		
-		if(!_canClick) return;
-
+	{
 		_anim.SetTrigger(Close);
 		_anim.SetTrigger(ShowShopButton);
 		InputHandler.Only.AssignIdleState();
@@ -187,7 +225,45 @@ public class MainShopController : MonoBehaviour
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(true);
 		armsHolder.transform.parent.parent.gameObject.SetActive(false);
 	}
+	
+	private void OnWeaponPurchase(int index, ShopItemState previousState)
+	{
+		if(previousState == ShopItemState.Locked)
+		{
+			//if was locked before this, Decrease coin count
+			ShopStateController.CurrentState.GetState().CoinCount -= weaponSkinCosts[index];
+			UpdateCoinText();
+		} 
 
+		//mark purchased weapon as selected
+		ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) index] = ShopItemState.Selected;
+		
+		//make sure nobody else is selected/ old one is now marked as unlocked
+		ChangeSelectedWeapon(index);
+		
+		//Save the state and reflect it in Shop UI
+		SaveCurrentShopState();
+	}
+	
+	private void OnSkinPurchase(int index, ShopItemState previousState)
+	{
+		if(previousState == ShopItemState.Locked)
+		{
+			//if was locked before this, Decrease coin count
+			ShopStateController.CurrentState.GetState().CoinCount -= armsSkinCosts[index];
+			UpdateCoinText();
+		}
+		
+		//mark purchased skin as selected
+		ShopStateController.CurrentState.GetState().armStates[(ArmsType) index] = ShopItemState.Selected;
+		
+		//make sure nobody else is selected/ old one is now marked as unlocked
+		ChangeSelectedArmsSkin(index);
+		
+		//Save the state and reflect it in Shop UI
+		SaveCurrentShopState();
+	}
+	
 	private void OnTapToPlay()
 	{
 		_anim.SetTrigger(HideShopButton);

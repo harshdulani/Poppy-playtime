@@ -84,61 +84,28 @@ public class ShopItem : MonoBehaviour
 		unavailable.gameObject.SetActive(!_isAvailable);
 	}
 
-	private bool CheckAvailability(int price) => price <= ShopReferences.refs.mainShop.currentState.coinCount;
+	private bool CheckAvailability(int price) => price <= ShopStateController.CurrentState.GetState().CoinCount;
 
 	public void ClickOnLocked()
 	{
 		if(myState != ShopItemState.Locked) return;
 		
-		print(_isWeaponItem + " " + _mySkinIndex);
+		if(_isWeaponItem)
+			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, ShopItemState.Locked);
+		else
+			GameEvents.only.InvokeSkinSelect(_mySkinIndex, ShopItemState.Locked);
 		
-		//Decrease coin count
-		ShopReferences.refs.mainShop.currentState.coinCount -= _isWeaponItem
-			? ShopReferences.refs.mainShop.weaponSkinCosts[_mySkinIndex]
-			: ShopReferences.refs.mainShop.armsSkinCosts[_mySkinIndex];
-		
-		ShopReferences.refs.mainShop.UpdateCoinText();
-		
-		ChangeSelected();
-		ShopReferences.refs.sidebar.UpdateButtons();
-
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 	}
 
 	public void ClickOnUnlocked()
 	{
-		ChangeSelected();
-
-		AudioManager.instance.Play("Button");
-	}
-
-	private void ChangeSelected()
-	{
 		if(_isWeaponItem)
-		{
-			//Change state of item to selected
-			ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _mySkinIndex] = ShopItemState.Selected;
-					
-			//make sure nobody else is selected
-			ShopReferences.refs.mainShop.ChangeSelectedWeapon(_mySkinIndex);
-			
-			//Reflect changes to come in skin loader & coin shop UI and also in hand
-			ShopReferences.refs.skinLoader.UpdateWeaponSkinInUse(_mySkinIndex);
-			InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false);
-		}
+			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, ShopItemState.Unlocked);
 		else
-		{
-			//Change state of item to selected
-			ShopReferences.refs.mainShop.currentState.armStates[(ArmsType) _mySkinIndex] = ShopItemState.Selected;
-			
-			//make sure nobody else is selected
-			ShopReferences.refs.mainShop.ChangeSelectedArmsSkin(_mySkinIndex);
-			
-			//Reflect changes to come in skin loader & coin shop UI and also in hand
-			ShopReferences.refs.skinLoader.UpdateArmsSkinInUse(_mySkinIndex);
-			InputHandler.Only.GetLeftHand().UpdateEquippedArmsSkin();
-			InputHandler.Only.GetRightHand().UpdateEquippedArmsSkin();
-		}
+			GameEvents.only.InvokeSkinSelect(_mySkinIndex, ShopItemState.Unlocked);
+		
+		AudioManager.instance.Play("Button");
 	}
 }

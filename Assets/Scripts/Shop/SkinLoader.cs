@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +5,6 @@ using TMPro;
 
 public class SkinLoader : MonoBehaviour
 {
-	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
-	[SerializeField] private Sprite[] coloredArmSprites, blackArmSprites;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	
 	[SerializeField] private Button  skipButton, claimButton;
@@ -19,22 +15,29 @@ public class SkinLoader : MonoBehaviour
 	[SerializeField] private int levelsPerUnlock = 5;
 	[SerializeField] private float tweenDuration, panelOpenWait;
 
-	private int _currentWeaponSkinInUse;
-	private int  _currentSkinBeingUnlocked = 1;
+	private MainCanvasController _mainCanvas;
 	private float _currentSkinPercentageUnlocked;
+	
+	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
 
 	private void OnEnable()
 	{
+		GameEvents.only.weaponSelect += OnWeaponPurchase;
+		
 		GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.only.weaponSelect -= OnWeaponPurchase;
+		
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
 	private void Start()
 	{
+		_mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>();
+		
 		Initialise();
 		
 		loaderPanel.SetActive(false);
@@ -44,139 +47,68 @@ public class SkinLoader : MonoBehaviour
 	
 	private void Initialise()
 	{
-		_currentSkinBeingUnlocked = PlayerPrefs.GetInt("currentSkinBeingUnlocked", 1);
 		_currentSkinPercentageUnlocked = PlayerPrefs.GetFloat("currentSkinPercentageUnlocked", 0f);
-		_currentWeaponSkinInUse = PlayerPrefs.GetInt("currentWeaponSkinInUse", 0);
 
-		if(_currentSkinBeingUnlocked >= MainShopController.GetWeaponSkinCount()) return;
-		
-		coloredWeaponImage.sprite = coloredWeaponSprites[_currentSkinBeingUnlocked];
-		blackWeaponImage.sprite = blackWeaponSprites[_currentSkinBeingUnlocked];
+		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
+
+		coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), false);
+		blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), true);
 		percentageUnlockedText.text = (int)(_currentSkinPercentageUnlocked * 100) + "%";
 
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 	}
 
-	public Sprite GetWeaponSkinSprite(int index = -1, bool wantsBlackSprite = false)
+	private void FindNewLoaderWeapon(int currentWeapon)
 	{
-		var currentList = wantsBlackSprite ? blackWeaponSprites : coloredWeaponSprites;
+		var changed = false;
 		
-		if (index == -1)
-			return currentList[PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)];
+		var shopWeaponStates = ShopStateController.CurrentState.GetWeaponStates();
 		
-		if (index >= currentList.Length)
-			return currentList[^1];
-
-		return currentList[index];
-	}
-
-	public Sprite GetArmsSkinType(int index = -1, bool wantsBlackSprite = false)
-	{
-		var currentList = wantsBlackSprite ? blackArmSprites : coloredArmSprites;
-		
-		if (index == -1)
-			return currentList[PlayerPrefs.GetInt("currentArmsSkinInUse", 0)];
-		
-		if (index >= currentList.Length)
-			return currentList[^1];
-
-		return currentList[index];
-	}
-
-	public static WeaponType GetWeaponSkinName(int index = -1) => (WeaponType) (index == -1 ? PlayerPrefs.GetInt("currentWeaponSkinInUse", 0) : index);
-	
-	public static ArmsType GetArmsSkinName(int index = -1) => (ArmsType) (index == -1 ? PlayerPrefs.GetInt("currentArmsSkinInUse", 0) : index);
-
-	public void UpdateWeaponSkinInUse(int currentSkin)
-	{
-		_currentWeaponSkinInUse = currentSkin;
-		PlayerPrefs.SetInt("currentWeaponSkinInUse", _currentWeaponSkinInUse);
-		
-		for (var i = 0; i < MainShopController.GetWeaponSkinCount(); i++)
+		//find a weapon from current index to last
+		for (var i = currentWeapon; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
-			if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
-			   ShopItemState.Locked)
+			if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
 				continue;
 
-			_currentSkinBeingUnlocked = i;
-			PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
+			ShopStateController.CurrentState.SetNewLoaderWeapon(i);
+			changed = true;
+			break;
 		}
-		ShopReferences.refs.sidebar.UpdateButtons();
+
+		//if all weapons after me are unlocked, try to find new before me
+		if (!changed)
+		{
+			for (var i = 1; i < currentWeapon; i++)
+			{
+				if (shopWeaponStates[(WeaponType) i] != ShopItemState.Locked)
+					continue;
+
+				ShopStateController.CurrentState.SetNewLoaderWeapon(i);
+				changed = true;
+				break;
+			}
+		}
+
+		//if still didn't find anything make sure loader isn't called anymore
+		if (!changed)
+			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
+		
 		ResetLoader();
 	}
 	
-	public void UpdateArmsSkinInUse(int currentSkin)
-	{
-		PlayerPrefs.SetInt("currentArmsSkinInUse", currentSkin);
-	}
-
 	public void Skip()
 	{
-		loaderPanel.SetActive(false);
-		
-		//this value is being set in resetloader
-		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
-		{
-			var changed = false;
-
-			for (var i = _currentSkinBeingUnlocked + 1; i < MainShopController.GetWeaponSkinCount(); i++)
-			{
-				if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
-					ShopItemState.Locked)
-					continue;
-
-				_currentSkinBeingUnlocked = i;
-				PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
-				changed = true;
-			}
-			if(!changed)
-			{
-				for (var i = 0; i < _currentSkinBeingUnlocked; i++)
-				{
-					if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
-					   ShopItemState.Locked)
-						continue;
-
-					_currentSkinBeingUnlocked = i;
-					PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
-				}
-			}
-		}
-		//play animatn
+		FindNewLoaderWeapon(GetLoaderWeapon());
 		ResetLoader();
-		ShopReferences.refs.sidebar.UpdateButtons();
 
-		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
+		_mainCanvas.NextLevel();
 	}
 
 	public void Claim()
 	{
-		if(_currentWeaponSkinInUse <= MainShopController.GetWeaponSkinCount() - 1)
-		{
-			_currentWeaponSkinInUse++;
-			PlayerPrefs.SetInt("currentWeaponSkinInUse", _currentWeaponSkinInUse);
-		}
-		
-		if(_currentSkinBeingUnlocked < MainShopController.GetWeaponSkinCount() - 1)
-		{
-			for (var i = 0; i < MainShopController.GetWeaponSkinCount(); i++)
-			{
-				if(ShopReferences.refs.mainShop.currentState.weaponStates[(WeaponType) _currentSkinBeingUnlocked] !=
-				   ShopItemState.Locked)
-					continue;
+		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), ShopItemState.Locked);
 
-				_currentSkinBeingUnlocked = i;
-				PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
-			}
-		}
-		
-		_currentSkinPercentageUnlocked = 0f;
-		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-		//confetti
-		
-		loaderPanel.SetActive(false);
-
-		GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().NextLevel();
+		_mainCanvas.NextLevel();
 	}
 
 	private void ResetLoader()
@@ -184,7 +116,6 @@ public class SkinLoader : MonoBehaviour
 		_currentSkinPercentageUnlocked = 0f;
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 		
-		PlayerPrefs.SetInt("currentSkinBeingUnlocked", _currentSkinBeingUnlocked);
 		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
 	}
 	
@@ -225,17 +156,32 @@ public class SkinLoader : MonoBehaviour
 
 	public bool ShouldShowNextLevel()
 	{
-		if (_currentSkinBeingUnlocked == _currentWeaponSkinInUse)
-			return false;
+		//if all weapons are unlocked, then show it yet.
+			// because loader won't be called and after loader completes, next level won't be showed, so we show it on our own
+		//else
+			// if the loader is full, don't show it so that user only has choice between claim and skip
+		if (ShopStateController.CurrentState.AreAllWeaponsUnlocked())
+			return true;
 		
-		//we return this value becuase this is called before show panel is called and hence its value isnt updated 
+		//we return this value because this is called before show panel is called and hence its value isn't updated 
 		//so 0.8f is the value when the bar is about to reach 100 %
 		return _currentSkinPercentageUnlocked < 0.79f;
 	}
 
+	private void OnWeaponPurchase(int index, ShopItemState previousState)
+	{
+		if (index != GetLoaderWeapon()) return;
+		
+		//find new skin to be unlocking
+		FindNewLoaderWeapon(GetLoaderWeapon());
+		
+		//Reset loader so that it doesn't look inconsistent with new weapon being loaded
+		ResetLoader();
+	}
+
 	private void OnGameEnd()
 	{
-		if(_currentSkinBeingUnlocked >= MainShopController.GetWeaponSkinCount() - 1) return;
+		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
 		
 		Invoke(nameof(ShowPanel), panelOpenWait);
 	}
