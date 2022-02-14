@@ -74,11 +74,11 @@ public class HandController : MonoBehaviour
 		if(!isLeftHand) //only for right/punching hand
 		{
 			GameEvents.only.weaponSelect += OnWeaponPurchased;
-			GameEvents.only.skinSelect += OnSkinPurchased;
 
 			GameEvents.only.enterHitBox += OnEnterHitBox;
 		}
 		
+		GameEvents.only.skinSelect += OnSkinPurchased;
 		GameEvents.only.giantPickupProp += OnGiantPickupCar;
 		GameEvents.only.punchHit += OnPunchHit;
 	}
@@ -88,11 +88,11 @@ public class HandController : MonoBehaviour
 		if (!isLeftHand) //only for right/punching hand
 		{
 			GameEvents.only.weaponSelect -= OnWeaponPurchased;
-			GameEvents.only.skinSelect -= OnSkinPurchased;
 
 			GameEvents.only.enterHitBox -= OnEnterHitBox;
 		}
 		
+		GameEvents.only.skinSelect -= OnSkinPurchased;
 		GameEvents.only.giantPickupProp -= OnGiantPickupCar;
 		GameEvents.only.punchHit -= OnPunchHit;
 	}

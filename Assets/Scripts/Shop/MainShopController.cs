@@ -174,8 +174,8 @@ public class MainShopController : MonoBehaviour
 	{
 		for (var i = 0; i < GetArmsSkinCount(); i++)
 		{
-			if (i != index) continue;
-
+			if (i == index) continue;
+			
 			if (ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] == ShopItemState.Selected)
 				ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] = ShopItemState.Unlocked;
 		}
