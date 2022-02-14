@@ -234,7 +234,6 @@ public class MainShopController : MonoBehaviour
 		if(shouldDeductCoins)
 		{
 			//if was locked before this, Decrease coin count
-			
 			ShopStateController.CurrentState.GetState().CoinCount -= weaponSkinCosts[index];
 			UpdateCoinText();
 		} 

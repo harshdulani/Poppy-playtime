@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ApplovinManager : MonoBehaviour
@@ -180,11 +178,11 @@ public class ApplovinManager : MonoBehaviour
 
         Invoke("LoadRewardedAd", (float)retryDelay);
 
-		SidebarShopController sidebarShopController = FindObjectOfType<SidebarShopController>();
+		var sidebarShopController = FindObjectOfType<SidebarShopController>();
 		sidebarShopController.skinAdsBtnClicked = false;
 		sidebarShopController.powerAdsBtnClicked = false;
 		sidebarShopController.speedAdsBtnClicked = false;
-		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
+		var skinLoader = FindObjectOfType<SkinLoader>();
 		skinLoader.claimAdsMulXCoins = false;
 		skinLoader.getItAdsWeaponLoader = false;
 		
@@ -250,20 +248,21 @@ public class ApplovinManager : MonoBehaviour
 			MainShopController.clickedOn150ExtraConis = false;
 			MainShopController.clickedOn300ExtraConis = false;
 		}
-	   SidebarShopController sidebarShopController = FindObjectOfType<SidebarShopController>();
-	   sidebarShopController.skinAdsBtnClicked = false;
-	   sidebarShopController.powerAdsBtnClicked = false;
-	   sidebarShopController.speedAdsBtnClicked = false;
-	   SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-	   skinLoader.claimAdsMulXCoins = false;
-	   skinLoader.getItAdsWeaponLoader = false;
+		
+		var sidebarShopController = FindObjectOfType<SidebarShopController>();
+		sidebarShopController.skinAdsBtnClicked = false;
+		sidebarShopController.powerAdsBtnClicked = false;
+		sidebarShopController.speedAdsBtnClicked = false;
+		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
+		skinLoader.claimAdsMulXCoins = false;
+		skinLoader.getItAdsWeaponLoader = false;
 	}
 
     private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
     {
 		print("ss");
 	
-		SidebarShopController sidebarShopController = FindObjectOfType<SidebarShopController>();
+		var sidebarShopController = FindObjectOfType<SidebarShopController>();
 		
         // The rewarded ad displayed and the user should receive the reward.
 		if (MainShopController.clickedOn150ExtraConis)
