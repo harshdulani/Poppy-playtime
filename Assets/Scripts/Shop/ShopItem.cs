@@ -88,6 +88,9 @@ public class ShopItem : MonoBehaviour
 
 	public void ClickOnLocked()
 	{
+		// if(ApplovinManager.instance)
+		// 	ApplovinManager.instance.ShowRewardedAds();
+		
 		if(myState != ShopItemState.Locked) return;
 		
 		if(_isWeaponItem)

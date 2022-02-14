@@ -349,7 +349,7 @@ public class HandController : MonoBehaviour
 		}
 	}
 
-	public void UpdateEquippedArmsSkin()
+	private void UpdateEquippedArmsSkin()
 	{
 		myArm.material = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() switch
 		{
@@ -428,7 +428,7 @@ public class HandController : MonoBehaviour
 
 	private void OnSkinPurchased(int index, bool shouldDeductCoins)
 	{
-		UpdateEquippedArmsSkin();
+		DOVirtual.DelayedCall(0.05f, UpdateEquippedArmsSkin);
 	}
 	
 	private void OnGiantPickupCar(Transform car)

@@ -491,9 +491,117 @@
           </e>
           <e p="readme.txt" t="Include" />
         </e>
+        <e p="MaxSdk" t="Include">
+          <e p="AppLovin" t="Include">
+            <e p="Editor" t="Include">
+              <e p="Dependencies.xml" t="Include" />
+            </e>
+          </e>
+          <e p="Mediation" t="Include">
+            <e p="ByteDance" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="Chartboost" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="Facebook" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="Fyber" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="Google" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+                <e p="MaxGoogleInitialize.cs" t="Include" />
+                <e p="MaxMediationGoogleUtils.cs" t="Include" />
+                <e p="PostProcessor.cs" t="Include" />
+                <e p="PreProcessor.cs" t="Include" />
+              </e>
+            </e>
+            <e p="InMobi" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="IronSource" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="MediationAdapters.txt" t="Include" />
+            <e p="Mintegral" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+            <e p="UnityAds" t="Include">
+              <e p="Editor" t="Include">
+                <e p="Dependencies.xml" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Editor" t="Include">
+              <e p="MaxInitialization.cs" t="Include" />
+              <e p="MaxPostProcessBuildAndroid.cs" t="Include" />
+              <e p="MaxPostProcessBuildiOS.cs" t="Include" />
+              <e p="MaxSdk.Scripts.Editor.asmdef" t="Include" />
+            </e>
+            <e p="IntegrationManager" t="Include">
+              <e p="Editor" t="Include">
+                <e p="AppLovinAutoUpdater.cs" t="Include" />
+                <e p="AppLovinCommandLine.cs" t="Include" />
+                <e p="AppLovinDownloadHandler.cs" t="Include" />
+                <e p="AppLovinEditorCoroutine.cs" t="Include" />
+                <e p="AppLovinIntegrationManager.cs" t="Include" />
+                <e p="AppLovinIntegrationManagerWindow.cs" t="Include" />
+                <e p="AppLovinMenuItems.cs" t="Include" />
+                <e p="AppLovinPostProcessAndroidGradle.cs" t="Include" />
+                <e p="AppLovinPostProcessiOS.cs" t="Include" />
+                <e p="AppLovinPreProcessAndroid.cs" t="Include" />
+                <e p="AppLovinProcessGradleBuildFile.cs" t="Include" />
+                <e p="AppLovinSettings.cs" t="Include" />
+                <e p="MaxSdk.IntegrationManager.Editor.asmdef" t="Include" />
+              </e>
+            </e>
+            <e p="MaxEvents.cs" t="Include" />
+            <e p="MaxSdk.cs" t="Include" />
+            <e p="MaxSdk.Scripts.asmdef" t="Include" />
+            <e p="MaxSdkAndroid.cs" t="Include" />
+            <e p="MaxSdkBase.cs" t="Include" />
+            <e p="MaxSdkCallbacks.cs" t="Include" />
+            <e p="MaxSdkiOS.cs" t="Include" />
+            <e p="MaxSdkLogger.cs" t="Include" />
+            <e p="MaxSdkUnityEditor.cs" t="Include" />
+            <e p="MaxSdkUtils.cs" t="Include" />
+            <e p="MaxTargetingData.cs" t="Include" />
+            <e p="MaxUserSegment.cs" t="Include" />
+            <e p="MaxUserServiceAndroid.cs" t="Include" />
+            <e p="MaxUserServiceiOS.cs" t="Include" />
+            <e p="MaxUserServiceUnityEditor.cs" t="Include" />
+            <e p="MaxVariableServiceAndroid.cs" t="Include" />
+            <e p="MaxVariableServiceiOS.cs" t="Include" />
+            <e p="MaxVariableServiceUnityEditor.cs" t="Include" />
+            <e p="ThirdParty" t="Include">
+              <e p="MiniJSON.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="Plugins" t="Include">
           <e p="Android" t="Include">
             <e p="AndroidManifest.xml" t="Include" />
+            <e p="MaxMediationGoogle.androidlib" t="Include">
+              <e p="AndroidManifest.xml" t="Include" />
+            </e>
           </e>
           <e p="Demigiant" t="Include">
             <e p="DOTween" t="Include">
@@ -576,6 +684,7 @@
           <e p="MainMenuScript.cs" t="Include" />
           <e p="PlayerController.cs" t="Include" />
           <e p="PluginsScripts" t="Include">
+            <e p="ApplovinManager.cs" t="Include" />
             <e p="FaceBookScript.cs" t="Include" />
             <e p="FlurryStart.cs" t="Include" />
             <e p="GAScript.cs" t="Include" />
@@ -752,6 +861,9 @@
       <e p="Dreamteck.Splines.Editor.csproj" t="IncludeRecursive" />
       <e p="Dreamteck.Utilities.csproj" t="IncludeRecursive" />
       <e p="Dreamteck.Utilities.Editor.csproj" t="IncludeRecursive" />
+      <e p="MaxSdk.Scripts.csproj" t="IncludeRecursive" />
+      <e p="MaxSdk.Scripts.Editor.csproj" t="IncludeRecursive" />
+      <e p="MaxSdk.Scripts.IntegrationManager.Editor.csproj" t="IncludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Poppy-playtime.sln" t="IncludeFlat" />

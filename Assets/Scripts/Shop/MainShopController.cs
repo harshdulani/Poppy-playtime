@@ -12,6 +12,7 @@ public class MainShopController : MonoBehaviour
 	
 	[Header("Coins and costs"), SerializeField] private TextMeshProUGUI coinText;
 	public int[] weaponSkinCosts, armsSkinCosts;
+	public static bool clickedOn150ExtraConis,clickedOn300ExtraConis ; 
 
 	[SerializeField] private GridLayoutGroup weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
@@ -160,28 +161,24 @@ public class MainShopController : MonoBehaviour
 
 	private void ChangeSelectedWeapon(int index = -1)
 	{
-		var weaponStates = ShopStateController.CurrentState.GetWeaponStates();
 		for (var i = 0; i < GetWeaponSkinCount(); i++)
 		{
 			if (i == index) continue;
 
-			if (weaponStates[(WeaponType) i] == ShopItemState.Selected)
-				weaponStates[(WeaponType) i] = ShopItemState.Unlocked;
+			if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] == ShopItemState.Selected)
+				ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] = ShopItemState.Unlocked;
 		}
-		SaveCurrentShopState();
 	}
 
 	private void ChangeSelectedArmsSkin(int index = -1)
 	{
-		var armStates = ShopStateController.CurrentState.GetSkinStates();
 		for (var i = 0; i < GetArmsSkinCount(); i++)
 		{
-			if (i == index) continue;
+			if (i != index) continue;
 
-			if (armStates[(ArmsType) i] == ShopItemState.Selected)
-				armStates[(ArmsType) i] = ShopItemState.Unlocked;
+			if (ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] == ShopItemState.Selected)
+				ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] = ShopItemState.Unlocked;
 		}
-		SaveCurrentShopState();
 	}
 
 	public void OpenShop()
@@ -198,6 +195,7 @@ public class MainShopController : MonoBehaviour
 		_anim.SetTrigger(Close);
 		_anim.SetTrigger(ShowShopButton);
 		InputHandler.Only.AssignIdleState();
+		FindObjectOfType<SidebarShopController>().UpdateButtons();
 	}
 
 	public void ClickArms()
@@ -211,6 +209,8 @@ public class MainShopController : MonoBehaviour
 		//switch to arms panel
 		armsHolder.transform.parent.parent.gameObject.SetActive(true);
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(false);
+		if(ApplovinManager.instance)
+			ApplovinManager.instance.ShowInterstitialAds();
 	}
 
 	public void ClickWeapons()
@@ -224,6 +224,9 @@ public class MainShopController : MonoBehaviour
 		//switch to weapons panel
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(true);
 		armsHolder.transform.parent.parent.gameObject.SetActive(false);
+		
+		if(ApplovinManager.instance)
+			ApplovinManager.instance.ShowInterstitialAds();
 	}
 	
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
@@ -231,6 +234,7 @@ public class MainShopController : MonoBehaviour
 		if(shouldDeductCoins)
 		{
 			//if was locked before this, Decrease coin count
+			
 			ShopStateController.CurrentState.GetState().CoinCount -= weaponSkinCosts[index];
 			UpdateCoinText();
 		} 
@@ -240,8 +244,7 @@ public class MainShopController : MonoBehaviour
 		
 		//make sure nobody else is selected/ old one is now marked as unlocked
 		ChangeSelectedWeapon(index);
-		
-		
+
 		//Save the state and reflect it in Shop UI
 		SaveCurrentShopState();
 	}
@@ -269,6 +272,25 @@ public class MainShopController : MonoBehaviour
 	{
 		_anim.SetTrigger(HideShopButton);
 		_canClick = false;
+	}
+
+	public void ClickExtraCoins_150()
+	{
+		if(!ApplovinManager.instance)
+			return;
+		
+		ApplovinManager.instance.ShowRewardedAds();
+		clickedOn150ExtraConis = true;
+		clickedOn300ExtraConis = false;
+	}
+	public void ClickExtraCoins_300()
+	{
+		if(!ApplovinManager.instance)
+			return;
+		
+		ApplovinManager.instance.ShowRewardedAds();
+		clickedOn300ExtraConis = true;
+		clickedOn150ExtraConis = false;
 	}
 }
 

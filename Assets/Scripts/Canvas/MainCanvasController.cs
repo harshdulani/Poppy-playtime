@@ -61,12 +61,18 @@ public class MainCanvasController : MonoBehaviour
 
 	public void Retry()
 	{
+		if(ApplovinManager.instance)
+			ApplovinManager.instance.ShowInterstitialAds();
+		
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
 	}
 	
 	public void NextLevel()
 	{
+		if(ApplovinManager.instance)
+			ApplovinManager.instance.ShowInterstitialAds();
+		
 		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
@@ -111,7 +117,7 @@ public class MainCanvasController : MonoBehaviour
 	private void EnableVictoryObjects()
 	{
 		victory.SetActive(true);
-		nextLevel.SetActive(GameObject.FindGameObjectWithTag("GameController").GetComponentInChildren<SkinLoader>().ShouldShowNextLevel());
+		//nextLevel.SetActive(GameObject.FindGameObjectWithTag("GameController").GetComponentInChildren<SkinLoader>().ShouldShowNextLevel());
 		nextLevelButton.interactable = false;
 		constantRetryButton.SetActive(false);
 		

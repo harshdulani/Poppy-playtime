@@ -1,10 +1,14 @@
 using DG.Tweening;
+using Dreamteck.Splines.Primitives;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
 public class SidebarShopController : MonoBehaviour
 {
+	public bool speedAdsBtnClicked, powerAdsBtnClicked, skinAdsBtnClicked;
+	
+	[SerializeField] private Sprite VideoBtn, normalBtn;
 	[SerializeField] private int[] speedLevelCosts, powerLevelCosts;
 	[SerializeField] private Button speedButton, powerButton, skinButton;
 	[SerializeField] private GameObject speedHand, powerHand, skinHand;
@@ -27,7 +31,7 @@ public class SidebarShopController : MonoBehaviour
 		
 		GameEvents.only.weaponSelect += OnWeaponPurchase;
 		
-		GameEvents.only.gameEnd += OnGameEnd;
+		//GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
@@ -36,18 +40,19 @@ public class SidebarShopController : MonoBehaviour
 		
 		GameEvents.only.weaponSelect -= OnWeaponPurchase;
 		
-		GameEvents.only.gameEnd -= OnGameEnd;
+	//	GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
-	private static void AlterCoinCount(int change)
+	public static void AlterCoinCount(int change)
 	{
 		ShopStateController.CurrentState.GetState().CoinCount += change;
+		
 		ShopStateController.ShopStateSerializer.SaveCurrentState();
 		MainShopController.Main.UpdateCoinText();
 		MainShopController.Main.ReadCurrentShopState();
 	}
 
-	private static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
+	public static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
 
 	private void Start()
 	{
@@ -108,7 +113,18 @@ public class SidebarShopController : MonoBehaviour
 		{
 			speedMultiplier.text = "Speed: x" + (_currentSpeedLevel + 1);
 			speedCostText.text = speedLevelCosts[_currentSpeedLevel + 1].ToString();
-			speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
+			//speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
+			if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
+			{
+				speedButton.image.sprite = VideoBtn;
+				speedCostText.gameObject.SetActive(false);
+			}
+			else
+			{
+				speedButton.image.sprite = normalBtn;
+				speedCostText.gameObject.SetActive(true);
+			}
+
 		}
 		else
 		{
@@ -122,7 +138,18 @@ public class SidebarShopController : MonoBehaviour
 		{
 			powerMultiplier.text = "Power: x" + (_currentPowerLevel + 1);
 			powerCostText.text = powerLevelCosts[_currentPowerLevel + 1].ToString();
-			powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
+			//powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
+			if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
+			{
+				powerButton.image.sprite = VideoBtn;
+				powerCostText.gameObject.SetActive(false);
+			}
+			else
+			{
+				powerButton.image.sprite = normalBtn;
+				powerCostText.gameObject.SetActive(true);
+			}
+
 		}
 		else
 		{
@@ -142,7 +169,18 @@ public class SidebarShopController : MonoBehaviour
 		{
 			skinName.text = ((WeaponType) GetSidebarWeapon()).ToString();
 			skinCostText.text = MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()].ToString();
-			skinButton.interactable = GetCoinCount() >= MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()];
+			//skinButton.interactable = GetCoinCount() >= MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()];
+			if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
+			{
+				skinButton.image.sprite = VideoBtn;
+				skinCostText.gameObject.SetActive(false);
+			}
+			else
+			{
+				skinButton.image.sprite = normalBtn;
+				skinCostText.gameObject.SetActive(true);
+			}
+			
 		}
 		
 		skinHand.SetActive(skinButton.interactable);
@@ -152,6 +190,25 @@ public class SidebarShopController : MonoBehaviour
 
 	public void BuySpeed()
 	{
+		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
+		{
+			if(!ApplovinManager.instance)
+				return;
+
+			print("sss");
+			speedAdsBtnClicked = true;
+			ApplovinManager.instance.ShowRewardedAds();
+		}
+		else
+		{
+			SpeedWithCoins();
+		}
+		//confetti and/or power up vfx
+	}
+
+	public void SpeedWithCoins()
+	{
+		speedAdsBtnClicked = false;
 		speedButtonPressAnimation.Play();
 		
 		AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
@@ -160,12 +217,58 @@ public class SidebarShopController : MonoBehaviour
 
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
-		//confetti and/or power up vfx
+	}
+
+	public void Callback_Speed()
+	{
+		speedAdsBtnClicked = false;
+		speedButtonPressAnimation.Play();
+		
+		AlterCoinCount(speedLevelCosts[++_currentSpeedLevel]);
+		AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
+		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
+		PlayerPrefs.SetInt("currentSpeedLevel", _currentSpeedLevel);
+
+		UpdateButtons();
+		AudioManager.instance.Play("Button");
 	}
 
 	public void BuyPower()
 	{
+
+		if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
+		{
+			if(!ApplovinManager.instance)
+				return;
+
+			powerAdsBtnClicked = true;
+			ApplovinManager.instance.ShowRewardedAds();
+		}
+		else
+		{
+			PowerWithCoins();
+		}
+
+	}
+
+	public void PowerWithCoins()
+	{
+		powerAdsBtnClicked = false;
 		powerButtonPressAnimation.Play();
+		AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
+		//ABSOLUTELY NO change in power script
+		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
+
+		UpdateButtons();
+		AudioManager.instance.Play("Button");
+		//confetti and/or power up vfx
+	}
+
+	public void Callback_Power()
+	{
+		powerAdsBtnClicked = false;
+		powerButtonPressAnimation.Play();
+		AlterCoinCount(powerLevelCosts[++_currentPowerLevel]);
 		AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
 		//ABSOLUTELY NO change in power script
 		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
@@ -177,13 +280,39 @@ public class SidebarShopController : MonoBehaviour
 
 	public void BuyNewWeapon()
 	{
-		skinButtonPressAnimation.Play();
+		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
+		{
+			if(!ApplovinManager.instance)
+				return;
 
-		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
-		
-		AudioManager.instance.Play("Button");
-		//confetti and/or power up vfx
+			skinAdsBtnClicked = true;
+			ApplovinManager.instance.ShowRewardedAds();
+		}
+		else
+		{
+			NewWeapon_WithWeapons();
+			//confetti and/or power up vfx
+		}
 	}
+
+	void NewWeapon_WithWeapons()
+	{
+		skinAdsBtnClicked = false;
+		skinButtonPressAnimation.Play();
+		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
+		AudioManager.instance.Play("Button");
+	}
+
+
+	public void Callback_NewWeapon()
+	{
+		skinAdsBtnClicked = false;
+		skinButtonPressAnimation.Play();
+		AlterCoinCount(MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()]);
+		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
+		AudioManager.instance.Play("Button");
+	}
+	
 
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
@@ -199,7 +328,7 @@ public class SidebarShopController : MonoBehaviour
 		_anim.Play();
 	}
 	
-	private void OnGameEnd()
+	public void OnGameEnd()
 	{
 		var seq = DOTween.Sequence();
 		seq.AppendInterval(1.25f);
@@ -217,10 +346,16 @@ public class SidebarShopController : MonoBehaviour
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{
+			print("sssssssss");
 			AlterCoinCount(coinIncreaseCount);
 		});
 		seq.AppendInterval(1.5f);
 		seq.AppendCallback(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>()
 			.EnableNextLevel);
+	}
+
+	public void CoinsGoingUpEffect()
+	{
+		coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder, false, false, false);
 	}
 }
