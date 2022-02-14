@@ -25,8 +25,8 @@ public class ShopItem : MonoBehaviour
 	private void OnDisable()
 	{
 		if(!_shouldWaitForAd) return;
-		
-		MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent -= OnAdRewardReceived;
+
+		EndWaitForAds();
 	}
 
 	public void SetIconSprite(Sprite image)
