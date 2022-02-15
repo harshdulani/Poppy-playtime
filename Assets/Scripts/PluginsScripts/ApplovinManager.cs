@@ -176,15 +176,16 @@ public class ApplovinManager : MonoBehaviour
         retryAttemptRewarded++;
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptRewarded));
 
-        Invoke("LoadRewardedAd", (float)retryDelay);
+        Invoke(nameof(LoadRewardedAd), (float)retryDelay);
 
 		var sidebarShopController = FindObjectOfType<SidebarShopController>();
 		sidebarShopController.skinAdsBtnClicked = false;
 		sidebarShopController.powerAdsBtnClicked = false;
 		sidebarShopController.speedAdsBtnClicked = false;
+		
 		var skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader.claimAdsMulXCoins = false;
-		skinLoader.getItAdsWeaponLoader = false;
+		skinLoader._claimAdsMulXCoins = false;
+		skinLoader._getItAdsWeaponLoader = false;
 		
 		if (MainShopController.clickedOn150ExtraConis)
 		{
@@ -223,8 +224,8 @@ public class ApplovinManager : MonoBehaviour
 		sidebarShopController.powerAdsBtnClicked = false;
 		sidebarShopController.speedAdsBtnClicked = false;
 		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader.claimAdsMulXCoins = false;
-		skinLoader.getItAdsWeaponLoader = false;
+		skinLoader._claimAdsMulXCoins = false;
+		skinLoader._getItAdsWeaponLoader = false;
     }
 
 	private void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
@@ -254,8 +255,8 @@ public class ApplovinManager : MonoBehaviour
 		sidebarShopController.powerAdsBtnClicked = false;
 		sidebarShopController.speedAdsBtnClicked = false;
 		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader.claimAdsMulXCoins = false;
-		skinLoader.getItAdsWeaponLoader = false;
+		skinLoader._claimAdsMulXCoins = false;
+		skinLoader._getItAdsWeaponLoader = false;
 	}
 
     private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
@@ -298,12 +299,12 @@ public class ApplovinManager : MonoBehaviour
 
 		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
 		
-		if (skinLoader.claimAdsMulXCoins)
+		if (skinLoader._claimAdsMulXCoins)
 		{
 			skinLoader.Callback_MulXCoins();
 		}
 
-		if (skinLoader.getItAdsWeaponLoader)
+		if (skinLoader._getItAdsWeaponLoader)
 		{
 			skinLoader.Callback_WeaponLoader();
 		}

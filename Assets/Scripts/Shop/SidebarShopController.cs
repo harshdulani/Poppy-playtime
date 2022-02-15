@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Dreamteck.Splines.Primitives;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -295,7 +294,7 @@ public class SidebarShopController : MonoBehaviour
 		}
 	}
 
-	void NewWeapon_WithWeapons()
+	private void NewWeapon_WithWeapons()
 	{
 		skinAdsBtnClicked = false;
 		skinButtonPressAnimation.Play();

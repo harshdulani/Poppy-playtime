@@ -1,13 +1,10 @@
-using System.IO;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class SkinLoader : MonoBehaviour
 {
-
-	public bool getItAdsWeaponLoader, claimAdsMulXCoins;
 	[SerializeField] private RectTransform barPivot;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	
@@ -26,8 +23,10 @@ public class SkinLoader : MonoBehaviour
 	private MainCanvasController _mainCanvas;
 	private float _currentSkinPercentageUnlocked;
 
+	public bool _getItAdsWeaponLoader, _claimAdsMulXCoins;
+	private bool _shouldWaitForAds;
+	
 	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
-
 
 	private void OnEnable()
 	{
@@ -54,11 +53,16 @@ public class SkinLoader : MonoBehaviour
 		getItButton.interactable = false;
 
 		barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f).SetEase(Ease.Flash).SetLoops(-1, LoopType.Yoyo);
-		Invoke("SkipBtnAfteraSec",10);
+		Invoke(nameof(EnableSkipButton),10);
 		coinIncreaseCount = 100;
 	}
+	
+	private void Update()
+	{
+		claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount)+ "";
+	}
 
-	void SkipBtnAfteraSec()
+	private void EnableSkipButton()
 	{
 		skipButton.gameObject.SetActive(true);
 	}
@@ -69,7 +73,7 @@ public class SkinLoader : MonoBehaviour
 
 		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
 
-		coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), false);
+		coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon());
 		blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), true);
 		
 		if((int)(_currentSkinPercentageUnlocked * 100) >= 100)
@@ -118,7 +122,6 @@ public class SkinLoader : MonoBehaviour
 	
 	public void Skip()
 	{
-		
 		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
 		{
 			FindNewLoaderWeapon(GetLoaderWeapon());
@@ -129,7 +132,7 @@ public class SkinLoader : MonoBehaviour
 		skipButton.interactable = false;
 		claimButton.interactable = false;
 		FindObjectOfType<SidebarShopController>().OnGameEnd();
-		_mainCanvas.Invoke("NextLevel",3f);
+		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),3f);
 	}
 
 	public void GetIt() // Get it for WeaponLoader
@@ -137,44 +140,22 @@ public class SkinLoader : MonoBehaviour
 		if(!ApplovinManager.instance)
 			return;
 
-		getItAdsWeaponLoader = true;
+		_getItAdsWeaponLoader = true;
+		_shouldWaitForAds = true;
 		ApplovinManager.instance.ShowRewardedAds();
 		
+		
 	}
-
-	public void Callback_WeaponLoader()
-	{
-		getItAdsWeaponLoader = false;
-		claimButton.interactable = false;
-		skipButton.interactable = false;
-		getItButton.interactable = false;
-		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), false);
-		_mainCanvas.Invoke("NextLevel",0.25f);
-		FindNewLoaderWeapon(GetLoaderWeapon());
-		ResetLoader();
-		//_mainCanvas.NextLevel();
-	}
-
+	
 	public void Claim()
 	{
 		if(!ApplovinManager.instance)
 			return;
 
-		claimAdsMulXCoins = true;
+		_claimAdsMulXCoins = true;
 		ApplovinManager.instance.ShowRewardedAds();
 	}
-
-	public void Callback_MulXCoins()
-	{
-		DOTween.Kill(barPivot);
-		claimAdsMulXCoins = false;
-		skipButton.interactable = false;
-		claimButton.interactable = false;
-		SidebarShopController.AlterCoinCount(ReturningXRewards() * coinIncreaseCount);
-		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
-		_mainCanvas.Invoke("NextLevel",2f);
-	}
-
+	
 	private void ResetLoader()
 	{
 		_currentSkinPercentageUnlocked = 0f;
@@ -219,7 +200,28 @@ public class SkinLoader : MonoBehaviour
 		unlockedButtonsHolder.SetActive(true);
 		//confetti particle fx for complete loader
 	}
+	
+	private float ReturnMultiplierZRotation()
+	{
+		if (barPivot.localEulerAngles.z >= 0 && barPivot.localEulerAngles.z<=90)
+		{
+			return barPivot.localEulerAngles.z;
+		}
 
+		return 360 - barPivot.localEulerAngles.z;
+	}
+
+	private int GetMultiplierResult()
+	{
+		var z = ReturnMultiplierZRotation();
+
+		if (z <= 90 && z >= 70)
+			return 3;
+		if (z >= 20 && z <= 69)
+			return 2;
+		return 5;
+	}
+	
 	public bool ShouldShowNextLevel()
 	{
 		/*
@@ -260,38 +262,32 @@ public class SkinLoader : MonoBehaviour
 		// var initSize = MainShopController.Main.GetCoinText().fontSize;
 		//
 		// var dummyCoinCount = SidebarShopController.GetCoinCount();
-
-		//AudioManager.instance.Play("CoinCollect");
+		// AudioManager.instance.Play("CoinCollect");
+	}
+	
+	public void Callback_WeaponLoader()
+	{
+		_getItAdsWeaponLoader = false;
 		
+		claimButton.interactable = false;
+		skipButton.interactable = false;
+		getItButton.interactable = false;
+		
+		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), false);
+		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),0.25f);
+		FindNewLoaderWeapon(GetLoaderWeapon());
+		ResetLoader();
+		//_mainCanvas.NextLevel();
 	}
 
-	private void Update()
+	public void Callback_MulXCoins()
 	{
-		claimMulTxt.text = (ReturningXRewards() * coinIncreaseCount)+ "";
-	}
-
-	float ReturnZRotation()
-	{
-		if (barPivot.localEulerAngles.z >= 0 && barPivot.localEulerAngles.z<=90)
-		{
-			return barPivot.localEulerAngles.z;
-		}
-		else 
-		{
-			return 360 - (barPivot.localEulerAngles.z);
-		}
-
-	}
-
-	int ReturningXRewards()
-	{
-		float z = ReturnZRotation();
-
-		if (z <= 90 && z >= 70)
-			return 3;
-		else if (z >= 20 && z <= 69)
-			return 2;
-		else
-			return 5;
+		DOTween.Kill(barPivot);
+		_claimAdsMulXCoins = false;
+		skipButton.interactable = false;
+		claimButton.interactable = false;
+		SidebarShopController.AlterCoinCount(GetMultiplierResult() * coinIncreaseCount);
+		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
+		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),2f);
 	}
 }

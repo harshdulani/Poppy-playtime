@@ -20,14 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/AdsMediator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Shop/SkinItem Variant.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Shop/SkinItem Variant.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/ApplovinManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/ApplovinManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/ShopItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/ShopItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Ads/Bouton2.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Ads/Bouton2.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/white panel.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/white panel.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +121,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Combat.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TimeController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Shop/AdsMediator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Utilities/AsyncJobSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraController.cs.meta" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" root0="FORCE_HIGHLIGHTING" />
@@ -300,7 +302,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/ShatterEnemyController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FaceBookScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs" />
@@ -344,13 +345,14 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
         <option value="$USER_HOME$/Downloads/LevelComplete.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/ApplovinManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/ApplovinManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/ShopItem.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/AdsMediator.cs" />
       </list>
     </option>
   </component>
@@ -408,8 +410,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added bullet and bullet muzzle" />
-    <MESSAGE value="Added bullet firing and player hit, loader" />
     <MESSAGE value="Somewhat buggy helicopter level implemented, giant levels remain unrefactored for even more changes" />
     <MESSAGE value="Helicopter mechanic completed" />
     <MESSAGE value="Refactored giant levels to work with new punching mechanic" />
@@ -433,7 +433,9 @@
     <MESSAGE value="release with ads" />
     <MESSAGE value="moved ads required assets from GUI folder" />
     <MESSAGE value="Fixed arms skin bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed arms skin bug" />
+    <MESSAGE value="Added ads to shop items" />
+    <MESSAGE value="fixed unsubscribe bug for shop item" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed unsubscribe bug for shop item" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -466,15 +468,15 @@
     </state>
     <state x="184" y="8" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1640001540319" />
     <state x="345" y="15" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1643114733098" />
-    <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog" timestamp="1644038344473">
+    <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog" timestamp="1644833583317">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1644038344473" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1644819902581">
+    <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1644833583317" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1644832740706">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="465" y="167" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1639995761930" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1644819902581" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1644832740706" />
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1642142945145">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -484,10 +486,10 @@
     </state>
     <state x="495" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.728@0.0.1366.728" timestamp="1640002404407" />
     <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1644243076582" />
-    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1644819225336">
+    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1644832010538">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1644819225336" />
+    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1644832010538" />
     <state x="1089" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1642590202329">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -513,10 +515,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="617" y="244" width="611" height="681" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1641809440684" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1644823029689">
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup" timestamp="1644914085257">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="503" y="164" width="672" height="160" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1640002538323" />
-    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1644823029689" />
+    <state x="943" y="315" width="672" height="346" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1644914085257" />
   </component>
 </project>
