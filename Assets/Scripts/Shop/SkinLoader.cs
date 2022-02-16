@@ -3,8 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinLoader : MonoBehaviour
+public class SkinLoader : MonoBehaviour, IWantsAds
 {
+	private enum AdRewardType
+	{
+		None,
+		CoinMultiplier,
+		NewWeapon
+	}
+
 	[SerializeField] private RectTransform barPivot;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	
@@ -22,9 +29,8 @@ public class SkinLoader : MonoBehaviour
 	
 	private MainCanvasController _mainCanvas;
 	private float _currentSkinPercentageUnlocked;
-
-	public bool _getItAdsWeaponLoader, _claimAdsMulXCoins;
-	private bool _shouldWaitForAds;
+	
+	private AdRewardType _currentAdRewardType;
 	
 	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
 
@@ -140,19 +146,20 @@ public class SkinLoader : MonoBehaviour
 		if(!ApplovinManager.instance)
 			return;
 
-		_getItAdsWeaponLoader = true;
-		_shouldWaitForAds = true;
+		StartWaiting(AdRewardType.NewWeapon);
+		AdsMediator.StartListeningForAds(this);
+		
 		ApplovinManager.instance.ShowRewardedAds();
-		
-		
 	}
 	
-	public void Claim()
+	public void Claim() // Claim for coin multiplier
 	{
 		if(!ApplovinManager.instance)
 			return;
 
-		_claimAdsMulXCoins = true;
+		StartWaiting(AdRewardType.CoinMultiplier);
+		AdsMediator.StartListeningForAds(this);
+		
 		ApplovinManager.instance.ShowRewardedAds();
 	}
 	
@@ -265,9 +272,9 @@ public class SkinLoader : MonoBehaviour
 		// AudioManager.instance.Play("CoinCollect");
 	}
 	
-	public void Callback_WeaponLoader()
+	public void ReceiveWeaponLoaderReward()
 	{
-		_getItAdsWeaponLoader = false;
+		AdsMediator.StopListeningForAds(this);
 		
 		claimButton.interactable = false;
 		skipButton.interactable = false;
@@ -280,14 +287,60 @@ public class SkinLoader : MonoBehaviour
 		//_mainCanvas.NextLevel();
 	}
 
-	public void Callback_MulXCoins()
+	public void ReceiveCoinMultiplierReward()
 	{
 		DOTween.Kill(barPivot);
-		_claimAdsMulXCoins = false;
+		
+		AdsMediator.StopListeningForAds(this);
+		
 		skipButton.interactable = false;
 		claimButton.interactable = false;
 		SidebarShopController.AlterCoinCount(GetMultiplierResult() * coinIncreaseCount);
 		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
 		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),2f);
+	}
+
+	private void StartWaiting(AdRewardType newType)
+	{
+		_currentAdRewardType = newType;
+	}
+
+	private void StopWaiting()
+	{
+		_currentAdRewardType = AdRewardType.None;
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		switch (_currentAdRewardType)
+		{
+			case AdRewardType.CoinMultiplier:
+				ReceiveCoinMultiplierReward();
+				break;
+			case AdRewardType.NewWeapon:
+				ReceiveWeaponLoaderReward();
+				break;
+		}
+
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 }

@@ -117,9 +117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d151145538bff499a2704bafc4e296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedAdsBtnClicked: 0
-  powerAdsBtnClicked: 0
-  skinAdsBtnClicked: 0
   VideoBtn: {fileID: 21300000, guid: 274cf7e545fbb9041a0b63b3b8596a2d, type: 3}
   normalBtn: {fileID: 21300000, guid: 5828d8493e2323347b84116b1e2a447a, type: 3}
   speedLevelCosts: 00000000640000006400000064000000640000006400000064000000640000006400000064000000
@@ -1729,8 +1726,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 233311912049936013}
-        m_TargetAssemblyTypeName: CoinShopController, Assembly-CSharp
-        m_MethodName: BuyPower
+        m_TargetAssemblyTypeName: SidebarShopController, Assembly-CSharp
+        m_MethodName: ClickOnBuyPower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1977,7 +1974,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 233311912049936013}
         m_TargetAssemblyTypeName: SidebarShopController, Assembly-CSharp
-        m_MethodName: BuyNewWeapon
+        m_MethodName: ClickOnBuyNewWeapon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2206,8 +2203,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 233311912049936013}
-        m_TargetAssemblyTypeName: CoinShopController, Assembly-CSharp
-        m_MethodName: BuySpeed
+        m_TargetAssemblyTypeName: SidebarShopController, Assembly-CSharp
+        m_MethodName: ClickOnBuySpeed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -177,29 +177,7 @@ public class ApplovinManager : MonoBehaviour
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptRewarded));
 
         Invoke(nameof(LoadRewardedAd), (float)retryDelay);
-
-		var sidebarShopController = FindObjectOfType<SidebarShopController>();
-		sidebarShopController.skinAdsBtnClicked = false;
-		sidebarShopController.powerAdsBtnClicked = false;
-		sidebarShopController.speedAdsBtnClicked = false;
-		
-		var skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader._claimAdsMulXCoins = false;
-		skinLoader._getItAdsWeaponLoader = false;
-		
-		if (MainShopController.clickedOn150ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-		if (MainShopController.clickedOn300ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-    }
+	}
 
     private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
 
@@ -207,107 +185,22 @@ public class ApplovinManager : MonoBehaviour
     {
         // Rewarded ad failed to display. AppLovin recommends that you load the next ad.
         LoadRewardedAd();
-		if (MainShopController.clickedOn150ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-		if (MainShopController.clickedOn300ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-		SidebarShopController sidebarShopController = FindObjectOfType<SidebarShopController>();
-		sidebarShopController.skinAdsBtnClicked = false;
-		sidebarShopController.powerAdsBtnClicked = false;
-		sidebarShopController.speedAdsBtnClicked = false;
-		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader._claimAdsMulXCoins = false;
-		skinLoader._getItAdsWeaponLoader = false;
-    }
+	}
 
 	private void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
 	{
 		
 	}
 
-    private void OnRewardedAdHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-    {
-        // Rewarded ad is hidden. Pre-load the next ad
-        LoadRewardedAd();
-		if (MainShopController.clickedOn150ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-		if (MainShopController.clickedOn300ExtraConis)
-		{
-			// dont pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-		}
-		
-		var sidebarShopController = FindObjectOfType<SidebarShopController>();
-		sidebarShopController.skinAdsBtnClicked = false;
-		sidebarShopController.powerAdsBtnClicked = false;
-		sidebarShopController.speedAdsBtnClicked = false;
-		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-		skinLoader._claimAdsMulXCoins = false;
-		skinLoader._getItAdsWeaponLoader = false;
+	private void OnRewardedAdHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		// Rewarded ad is hidden. Pre-load the next ad
+		LoadRewardedAd();
 	}
 
-    private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
     {
-		print("ss");
-	
-		var sidebarShopController = FindObjectOfType<SidebarShopController>();
-		
-        // The rewarded ad displayed and the user should receive the reward.
-		if (MainShopController.clickedOn150ExtraConis)
-		{
-			// pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-			SidebarShopController.AlterCoinCount(150);
-			sidebarShopController.CoinsGoingUpEffect();
-		}
-		if (MainShopController.clickedOn300ExtraConis)
-		{
-			// pay him extra coins
-			MainShopController.clickedOn150ExtraConis = false;
-			MainShopController.clickedOn300ExtraConis = false;
-			SidebarShopController.AlterCoinCount(300);
-			sidebarShopController.CoinsGoingUpEffect();
-		}
-
-		if (sidebarShopController.speedAdsBtnClicked)
-		{
-			sidebarShopController.Callback_Speed();
-		}
-
-		if (sidebarShopController.powerAdsBtnClicked)
-		{
-			sidebarShopController.Callback_Power();
-		}
-		if(sidebarShopController.skinAdsBtnClicked)
-		{
-			sidebarShopController.Callback_NewWeapon();
-		}
-
-		SkinLoader skinLoader = FindObjectOfType<SkinLoader>();
-		
-		if (skinLoader._claimAdsMulXCoins)
-		{
-			skinLoader.Callback_MulXCoins();
-		}
-
-		if (skinLoader._getItAdsWeaponLoader)
-		{
-			skinLoader.Callback_WeaponLoader();
-		}
+		// The rewarded ad displayed and the user should receive the reward.
 	}
 	
 

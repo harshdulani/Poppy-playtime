@@ -20,16 +20,17 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	[SerializeField] private bool shouldUseMask;
 
 	[SerializeField] private GameObject stickyCost, stickyAds;
-	[HideInInspector] public bool shouldWaitForAd;
+	private bool _shouldWaitForAd;
 
 	private bool _isWeaponItem, _isAvailable;
 	private int _mySkinIndex;
 
 	private void OnDisable()
 	{
-		if (!shouldWaitForAd) return;
+		if (!_shouldWaitForAd) return;
 
-		this.StopListeningForAds();
+		AdsMediator.StopListeningForAds(this);
+		_shouldWaitForAd = false;
 	}
 
 	public void SetIconSprite(Sprite image)
@@ -121,7 +122,8 @@ public class ShopItem : MonoBehaviour, IWantsAds
 
 		if (!ApplovinManager.instance) return;
 
-		this.StartListeningForAds();
+		StartWaiting();
+		AdsMediator.StartListeningForAds(this);
 		
 		ApplovinManager.instance.ShowRewardedAds();
 	}
@@ -136,8 +138,8 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		AudioManager.instance.Play("Button");
 	}
 
-	public void StartWaiting() => shouldWaitForAd = true;
-	public void StopWaiting() => shouldWaitForAd = false;
+	private void StartWaiting() => _shouldWaitForAd = true;
+	private void StopWaiting() => _shouldWaitForAd = false;
 
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
@@ -146,21 +148,25 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		else
 			GameEvents.only.InvokeSkinSelect(_mySkinIndex, false);
 
-		this.StopListeningForAds();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
 	{
-		this.StopListeningForAds();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 
 	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
 	{
-		this.StopListeningForAds();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 
 	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
 	{
-		this.StopListeningForAds();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 }

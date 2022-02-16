@@ -3,8 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainShopController : MonoBehaviour
+public class MainShopController : MonoBehaviour, IWantsAds
 {
+	private enum AdRewardType
+	{
+		None,
+		OneFifty,
+		ThreeHundred
+	}
+	
 	public static MainShopController Main;
 	
 	[SerializeField] private Sprite[] coloredWeaponSprites, blackWeaponSprites;
@@ -12,20 +19,22 @@ public class MainShopController : MonoBehaviour
 	
 	[Header("Coins and costs"), SerializeField] private TextMeshProUGUI coinText;
 	public int[] weaponSkinCosts, armsSkinCosts;
-	public static bool clickedOn150ExtraConis,clickedOn300ExtraConis ; 
 
 	[SerializeField] private GridLayoutGroup weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
-	
+
 	[Header("Arms and Weapons Panels"), SerializeField] private Button weaponsButton;
 	[SerializeField] private Button armsButton;
 	[SerializeField] private TextMeshProUGUI weaponsText, armsText;
 	[SerializeField] private Color black, grey;
-	
+
 	private Animator _anim;
 	private bool _canClick = true;
 
+	private AdRewardType _currentRewardType;
+
 	#region Animator Hashes
+
 	private static readonly int Close = Animator.StringToHash("Close");
 	private static readonly int Open = Animator.StringToHash("Open");
 	private static readonly int ShowShopButton = Animator.StringToHash("showShopButton");
@@ -275,21 +284,64 @@ public class MainShopController : MonoBehaviour
 
 	public void ClickExtraCoins_150()
 	{
-		if(!ApplovinManager.instance)
-			return;
+		if(!ApplovinManager.instance) return;
+		
+		StartWaiting(AdRewardType.OneFifty);
+		AdsMediator.StartListeningForAds(this);
 		
 		ApplovinManager.instance.ShowRewardedAds();
-		clickedOn150ExtraConis = true;
-		clickedOn300ExtraConis = false;
 	}
 	public void ClickExtraCoins_300()
 	{
-		if(!ApplovinManager.instance)
-			return;
+		if(!ApplovinManager.instance) return;
+		
+		StartWaiting(AdRewardType.ThreeHundred);
+		AdsMediator.StartListeningForAds(this);
 		
 		ApplovinManager.instance.ShowRewardedAds();
-		clickedOn300ExtraConis = true;
-		clickedOn150ExtraConis = false;
+	}
+
+	private void StartWaiting(AdRewardType newType) => _currentRewardType = newType;
+	private void StopWaiting() => _currentRewardType = AdRewardType.None;
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		switch (_currentRewardType)
+		{
+			case AdRewardType.None:
+				break;
+			case AdRewardType.OneFifty:
+				SidebarShopController.AlterCoinCount(150);
+				SidebarShopController.only.CoinsGoingUpEffect();
+				break;
+			case AdRewardType.ThreeHundred:
+				SidebarShopController.AlterCoinCount(300);
+				SidebarShopController.only.CoinsGoingUpEffect();
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+		
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 }
 

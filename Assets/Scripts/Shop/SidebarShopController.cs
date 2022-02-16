@@ -1,12 +1,21 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class SidebarShopController : MonoBehaviour
+public class SidebarShopController : MonoBehaviour, IWantsAds
 {
-	public bool speedAdsBtnClicked, powerAdsBtnClicked, skinAdsBtnClicked;
+	private enum AdRewardTypes
+	{
+		None,
+		Speed,
+		Power,
+		Weapon
+	}
 	
+	public static SidebarShopController only;
+
 	[SerializeField] private Sprite VideoBtn, normalBtn;
 	[SerializeField] private int[] speedLevelCosts, powerLevelCosts;
 	[SerializeField] private Button speedButton, powerButton, skinButton;
@@ -22,7 +31,15 @@ public class SidebarShopController : MonoBehaviour
 	private Animation _anim;
 	private int _currentSpeedLevel, _currentPowerLevel;
 	
+	private AdRewardTypes _currentRewardType;
+	
 	private static int GetSidebarWeapon() => ShopStateController.CurrentState.GetState().SidebarWeapon;
+
+	private void Awake()
+	{
+		if (!only) only = this;
+		else Destroy(gameObject);
+	}
 
 	private void OnEnable()
 	{
@@ -51,15 +68,15 @@ public class SidebarShopController : MonoBehaviour
 		MainShopController.Main.ReadCurrentShopState();
 	}
 
-	public static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
+	private static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
 
 	private void Start()
 	{
 		_anim = GetComponent<Animation>();
-		
-		_currentPowerLevel = PlayerPrefs.GetInt("currentPowerLevel", 0);
-		_currentSpeedLevel = PlayerPrefs.GetInt("currentSpeedLevel", 0);
-		
+
+		_currentSpeedLevel = ShopStateController.CurrentState.GetCurrentSpeedLevel();
+		_currentPowerLevel = ShopStateController.CurrentState.GetCurrentPowerLevel();
+
 		UpdateButtons();
 	}
 
@@ -123,7 +140,6 @@ public class SidebarShopController : MonoBehaviour
 				speedButton.image.sprite = normalBtn;
 				speedCostText.gameObject.SetActive(true);
 			}
-
 		}
 		else
 		{
@@ -148,7 +164,6 @@ public class SidebarShopController : MonoBehaviour
 				powerButton.image.sprite = normalBtn;
 				powerCostText.gameObject.SetActive(true);
 			}
-
 		}
 		else
 		{
@@ -179,7 +194,6 @@ public class SidebarShopController : MonoBehaviour
 				skinButton.image.sprite = normalBtn;
 				skinCostText.gameObject.SetActive(true);
 			}
-			
 		}
 		
 		skinHand.SetActive(skinButton.interactable);
@@ -187,131 +201,109 @@ public class SidebarShopController : MonoBehaviour
 		currentSkinImage.sprite = MainShopController.Main.GetWeaponSprite(GetSidebarWeapon());
 	}
 
-	public void BuySpeed()
+	public void ClickOnBuySpeed()
 	{
 		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 		{
-			if(!ApplovinManager.instance)
-				return;
+			if(!ApplovinManager.instance) return;
 
-			print("sss");
-			speedAdsBtnClicked = true;
+			StartWaiting(AdRewardTypes.Speed);
+			AdsMediator.StartListeningForAds(this);
+			
 			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
-		{
-			SpeedWithCoins();
-		}
+			BuySpeed();
+
 		//confetti and/or power up vfx
 	}
-
-	public void SpeedWithCoins()
+	
+	public void ClickOnBuyPower()
 	{
-		speedAdsBtnClicked = false;
-		speedButtonPressAnimation.Play();
-		
-		AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
-		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
-		PlayerPrefs.SetInt("currentSpeedLevel", _currentSpeedLevel);
-
-		UpdateButtons();
-		AudioManager.instance.Play("Button");
-	}
-
-	public void Callback_Speed()
-	{
-		speedAdsBtnClicked = false;
-		speedButtonPressAnimation.Play();
-		
-		AlterCoinCount(speedLevelCosts[++_currentSpeedLevel]);
-		AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
-		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
-		PlayerPrefs.SetInt("currentSpeedLevel", _currentSpeedLevel);
-
-		UpdateButtons();
-		AudioManager.instance.Play("Button");
-	}
-
-	public void BuyPower()
-	{
-
 		if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
 		{
 			if(!ApplovinManager.instance)
 				return;
 
-			powerAdsBtnClicked = true;
+			StartWaiting(AdRewardTypes.Power);
+			AdsMediator.StartListeningForAds(this);
+			
 			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
-		{
-			PowerWithCoins();
-		}
-
+			BuyPower();
 	}
 
-	public void PowerWithCoins()
-	{
-		powerAdsBtnClicked = false;
-		powerButtonPressAnimation.Play();
-		AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
-		//ABSOLUTELY NO change in power script
-		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
-
-		UpdateButtons();
-		AudioManager.instance.Play("Button");
-		//confetti and/or power up vfx
-	}
-
-	public void Callback_Power()
-	{
-		powerAdsBtnClicked = false;
-		powerButtonPressAnimation.Play();
-		AlterCoinCount(powerLevelCosts[++_currentPowerLevel]);
-		AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
-		//ABSOLUTELY NO change in power script
-		PlayerPrefs.SetInt("currentPowerLevel", _currentPowerLevel);
-
-		UpdateButtons();
-		AudioManager.instance.Play("Button");
-		//confetti and/or power up vfx
-	}
-
-	public void BuyNewWeapon()
+	public void ClickOnBuyNewWeapon()
 	{
 		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 		{
 			if(!ApplovinManager.instance)
 				return;
 
-			skinAdsBtnClicked = true;
+			StartWaiting(AdRewardTypes.Weapon);
+			AdsMediator.StartListeningForAds(this);
+
 			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
+			BuyWeapon();
+		//confetti and/or power up vfx
+	}
+
+	private void BuySpeed(bool usingAds = false)
+	{
+		speedButtonPressAnimation.Play();
+		if (usingAds)
 		{
-			NewWeapon_WithWeapons();
-			//confetti and/or power up vfx
+			StopWaiting();
+			AdsMediator.StopListeningForAds(this);
+			_currentSpeedLevel++;
 		}
-	}
-
-	private void NewWeapon_WithWeapons()
-	{
-		skinAdsBtnClicked = false;
-		skinButtonPressAnimation.Play();
-		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
+		else
+			AlterCoinCount(-speedLevelCosts[++_currentSpeedLevel]);
+		
+		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
+		ShopStateController.CurrentState.SetNewSpeedLevel(_currentSpeedLevel);
+		
+		UpdateButtons();
 		AudioManager.instance.Play("Button");
 	}
 
-
-	public void Callback_NewWeapon()
+	private void BuyPower(bool usingAds = false)
 	{
-		skinAdsBtnClicked = false;
+		powerButtonPressAnimation.Play();
+		
+		if (usingAds)
+		{
+			StopWaiting();
+			AdsMediator.StopListeningForAds(this);
+			_currentPowerLevel++;
+		}
+		else
+			AlterCoinCount(-powerLevelCosts[++_currentPowerLevel]);
+		
+		//ABSOLUTELY NO change in power script
+		ShopStateController.CurrentState.SetNewPowerLevel(_currentPowerLevel);
+
+		UpdateButtons();
+		AudioManager.instance.Play("Button");
+		//confetti and/or power up vfx
+	}
+
+	private void BuyWeapon(bool usingAds = false)
+	{
+		if (usingAds)
+		{
+			StopWaiting();
+			AdsMediator.StopListeningForAds(this);
+		}
+		
 		skinButtonPressAnimation.Play();
-		AlterCoinCount(MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()]);
-		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), true);
+		//deduct money if not buying through ads
+		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), !usingAds);
 		AudioManager.instance.Play("Button");
 	}
-	
 
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
@@ -345,7 +337,6 @@ public class SidebarShopController : MonoBehaviour
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{
-			print("sssssssss");
 			AlterCoinCount(coinIncreaseCount);
 		});
 		seq.AppendInterval(1.5f);
@@ -356,5 +347,50 @@ public class SidebarShopController : MonoBehaviour
 	public void CoinsGoingUpEffect()
 	{
 		coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder, false, false, false);
+	}
+
+	private void StartWaiting(AdRewardTypes newType) => _currentRewardType = newType;
+	private void StopWaiting() => _currentRewardType = AdRewardTypes.None;
+
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		switch (_currentRewardType)
+		{
+			case AdRewardTypes.None:
+				break;
+			case AdRewardTypes.Speed:
+				BuySpeed(true);
+				break;
+			case AdRewardTypes.Power:
+				BuyPower(true);
+				break;
+			case AdRewardTypes.Weapon:
+				BuyWeapon(true);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+		
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 }

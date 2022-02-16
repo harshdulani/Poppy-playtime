@@ -12,6 +12,10 @@ public class ShopState
 	public int CoinCount { get; set;}
 	public bool AllWeaponsUnlocked { get; set; }
 
+	public int CurrentSpeedLevel { get; set; }
+	
+	public int CurrentPowerLevel { get; set; }
+
 	public ShopState(Dictionary<WeaponType, ShopItemState> newWeaponState, Dictionary<ArmsType, ShopItemState> newArmStates, int newCoinCount, int sidebarSkin, int loaderSkin)
 	{
 		weaponStates = newWeaponState;
@@ -37,8 +41,14 @@ public class ShopStateHelpers
 	public int GetCurrentWeapon() => (int) _shopState.weaponStates.First(state => state.Value == ShopItemState.Selected).Key;
 	public int GetCurrentArmsSkin() => (int) _shopState.armStates.First(state => state.Value == ShopItemState.Selected).Key;
 
-	public int SetNewLoaderWeapon(int index) => _shopState.LoaderWeapon = index;
-	public int SetNewSideBarWeapon(int index) => _shopState.SidebarWeapon = index;
+	public void SetNewLoaderWeapon(int index) => _shopState.LoaderWeapon = index;
+	public void SetNewSideBarWeapon(int index) => _shopState.SidebarWeapon = index;
+
+	public int GetCurrentSpeedLevel() => _shopState.CurrentSpeedLevel;
+	public int GetCurrentPowerLevel() => _shopState.CurrentPowerLevel;
+	
+	public void SetNewSpeedLevel(int level) => _shopState.CurrentSpeedLevel = level;
+	public void SetNewPowerLevel(int level) => _shopState.CurrentPowerLevel = level;
 
 	public bool AreAllWeaponsUnlocked()
 	{

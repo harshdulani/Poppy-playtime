@@ -1,8 +1,5 @@
 public interface IWantsAds
 {
-	public void StartWaiting();
-	public void StopWaiting();
-	
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo);
 	
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo);
@@ -14,10 +11,8 @@ public interface IWantsAds
 
 public static class AdsMediator
 {
-	public static void StartListeningForAds(this IWantsAds subscriber)
+	public static void StartListeningForAds(IWantsAds subscriber)
 	{
-		subscriber.StartWaiting();
-		
 		// Subscribe to ad based events
 		MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += subscriber.OnAdRewardReceived;
 		MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += subscriber.OnAdFailedToLoad;
@@ -25,10 +20,8 @@ public static class AdsMediator
 		MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += subscriber.OnAdFailed;
 	}
 	
-	public static void StopListeningForAds(this IWantsAds subscriber)
+	public static void StopListeningForAds(IWantsAds subscriber)
 	{
-		subscriber.StopWaiting();
-		
 		// Unsubscribe from ad based events
 		MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent -= subscriber.OnAdRewardReceived;
 		MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent -= subscriber.OnAdFailedToLoad;
