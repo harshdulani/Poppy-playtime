@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class PropController : MonoBehaviour
+public class PropController : MonoBehaviour, IWantsAds
 {
-	public bool shouldExplode, hasBeenInteractedWith;
+	public bool shouldShowAds, shouldExplode, hasBeenInteractedWith;
 	[SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;
@@ -25,6 +25,8 @@ public class PropController : MonoBehaviour
 
 	private bool _inHitBox, _hasBeenPickedUp, _amDestroyed;
 	private GameObject _trail;
+
+	private bool _shouldWaitForAds;
 
 	private void OnEnable()
 	{
@@ -134,9 +136,22 @@ public class PropController : MonoBehaviour
 
 		_inHitBox = false;
 	}
-	
+
+	public void TryShowAds()
+	{
+		if(!shouldShowAds) return;
+
+		TimeController.only.SlowDownTime(0f);
+
+		StartWaiting();
+		AdsMediator.StartListeningForAds(this);
+		
+		ApplovinManager.instance.ShowRewardedAds();
+	}
+
 	private void OnCollisionEnter(Collision other)
 	{
+		//behaviour when thrown by giant at player
 		if(CompareTag("EnemyAttack"))
 		{
 			if (!(other.gameObject.CompareTag("HitBox") || other.gameObject.CompareTag("Arm") ||
@@ -171,5 +186,51 @@ public class PropController : MonoBehaviour
 
 		if (raghu || other.transform.TryGetComponent(out HelicopterController heli))
 			GameEvents.only.InvokePropHitsEnemy();
+	}
+
+	private void StartWaiting()
+	{
+		_shouldWaitForAds = true;
+		InputHandler.Only.userIsWatchingAnAdForPickupProp = true;
+	}
+
+	private void StopWaiting()
+	{
+		_shouldWaitForAds = false;
+		InputHandler.Only.userIsWatchingAnAdForPickupProp = false;
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		TimeController.only.RevertTime();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+	{
+		Explode();
+		TimeController.only.RevertTime();
+		
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+	{
+		Explode();
+		TimeController.only.RevertTime();
+		
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		Explode();
+		TimeController.only.RevertTime();
+		
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
 	}
 }

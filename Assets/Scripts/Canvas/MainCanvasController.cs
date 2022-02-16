@@ -40,6 +40,8 @@ public class MainCanvasController : MonoBehaviour
 
 	private void Update()
 	{
+		if(Input.GetKeyDown(KeyCode.N)) NextLevel();
+		
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		
 		if(_hasTapped) return;

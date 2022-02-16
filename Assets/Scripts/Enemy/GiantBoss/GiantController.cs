@@ -221,9 +221,14 @@ public class GiantController : MonoBehaviour
 		Vibration.Vibrate(20);
 	}
 
-	public void GetHit()
+	public void GetHit(bool isPartOfMultipleHits = false)
 	{
-		if(!_health.AddHit()) return;
+		/*
+		 this will try adding a hit
+		 if this hit is part of multiple hits, we dont want to care about cooldowns
+		 */
+		if(!_health.AddHit(!isPartOfMultipleHits)) return;
+		
 		_anim.SetTrigger(Hit);
 		Vibration.Vibrate(20);
 

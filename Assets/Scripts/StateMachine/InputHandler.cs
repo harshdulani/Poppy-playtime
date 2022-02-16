@@ -23,6 +23,9 @@ public class InputHandler : MonoBehaviour
 	private static InputStateBase _leftHandState;
 
 	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled, _inTapCooldown;
+	
+	//only is being set by the in game ads, pickable barrel etc
+	[HideInInspector] public bool userIsWatchingAnAdForPickupProp;
 
 	private void OnEnable()
 	{
@@ -77,9 +80,11 @@ public class InputHandler : MonoBehaviour
 	}
 
 	private void Update()
-	{ 
+	{
 		if(!_tappedToPlay) return;
 
+		if(userIsWatchingAnAdForPickupProp) return;
+		
 		if (_inTapCooldown) return;
 
 		//print(_leftHandState);

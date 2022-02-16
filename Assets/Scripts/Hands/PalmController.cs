@@ -93,7 +93,10 @@ public class PalmController : MonoBehaviour
 		
 		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
-	
+
+		if (other.TryGetComponent(out PropController prop))
+			prop.TryShowAds();
+		
 		if(other.CompareTag("Button"))
 		{
 			myHand.HandReachTarget(other.transform);

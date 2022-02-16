@@ -45,6 +45,11 @@ public class GiantLimbController : MonoBehaviour
 		{
 			victim.gameObject.SetActive(false);
 		});
+
 		_parent.GetHit();
+		
+		if (!victim.TryGetComponent(out PropController prop) || !prop.shouldShowAds) return;
+		_parent.GetHit(true);
+		_parent.GetHit(true);
 	}
 }

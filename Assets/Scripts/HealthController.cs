@@ -19,10 +19,11 @@ public class HealthController : MonoBehaviour
 		return result;
 	}
 
-	public bool AddHit()
+	public bool AddHit(bool careAboutCooldown = true)
 	{
+		if(careAboutCooldown)
 		//changing stuff here, if you have boss fight bugs, its probably because i broke them adding heli compatibility
-		if(_isInHitCooldown) return false;
+			if(_isInHitCooldown) return false;
 
 		VisibilityToggle(true);
 

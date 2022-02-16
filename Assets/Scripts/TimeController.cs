@@ -10,12 +10,11 @@ public class TimeController : MonoBehaviour
 	[SerializeField] private float slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
 	[SerializeField] private AnimationCurve easing;
 	private float _defaultTimeScale = 1;
-	private readonly float _defaultDeltaTime = 0.02f;
+	private const float DefaultFixedDeltaTime = 0.02f;
 	private float _slowedDeltaTime;
 
 	private TweenerCore<float, float, FloatOptions> _timeDeltaTween, _fixedTimeDeltaTween;
-
-
+	
 	private void OnEnable()
 	{
 		GameEvents.only.enterHitBox += OnEnterHitBox;
@@ -40,7 +39,7 @@ public class TimeController : MonoBehaviour
 		
 		slowedTimeScale *= _defaultTimeScale;
 		
-		_slowedDeltaTime = _defaultDeltaTime * slowedTimeScale;
+		_slowedDeltaTime = DefaultFixedDeltaTime * slowedTimeScale;
 	}
 
 	private void Update()
@@ -63,7 +62,7 @@ public class TimeController : MonoBehaviour
 		_fixedTimeDeltaTween.Kill();
 
 		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
-		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _defaultDeltaTime, timeRampUpDuration);
+		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, DefaultFixedDeltaTime, timeRampUpDuration);
 		
 		if (!lastEnemy) return;
 		

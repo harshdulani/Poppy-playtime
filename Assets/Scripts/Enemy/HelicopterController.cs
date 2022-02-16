@@ -96,9 +96,13 @@ public class HelicopterController : MonoBehaviour
 		_moveToStartSeq.Kill();
 	}
 
-	private void GetHit()
+	private void GetHit(bool isPartOfMultipleHits = false)
 	{
-		if(!_health.AddHit()) return;
+		/*
+		 this will try adding a hit
+		 if this hit is part of multiple hits, we dont want to care about cooldowns
+		 */
+		if(!_health.AddHit(!isPartOfMultipleHits)) return;
 
 		if (passengers.Count > 0)
 		{
@@ -161,6 +165,10 @@ public class HelicopterController : MonoBehaviour
 	{
 		victim.DOScale(Vector3.zero, 1f).OnComplete(() => victim.gameObject.SetActive(false));
 		GetHit();
+		
+		if (!victim.TryGetComponent(out PropController prop) || !prop.shouldShowAds) return;
+		GetHit(true);
+		GetHit(true);
 	}
 
 	private void OnCollisionEnter(Collision other)
