@@ -87,7 +87,9 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		
 		GameEvents.only.tapToPlay -= OnTapToPlay;
 	}
-	
+
+	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+
 	private void Awake()
 	{
 		if (!Main) Main = this;

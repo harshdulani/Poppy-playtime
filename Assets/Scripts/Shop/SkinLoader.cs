@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -47,6 +48,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		
 		GameEvents.only.gameEnd -= OnGameEnd;
 	}
+
+	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Start()
 	{
@@ -314,12 +317,16 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		switch (_currentAdRewardType)
 		{
+			case AdRewardType.None:
+				break;
 			case AdRewardType.CoinMultiplier:
 				ReceiveCoinMultiplierReward();
 				break;
 			case AdRewardType.NewWeapon:
 				ReceiveWeaponLoaderReward();
 				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 
 		StopWaiting();

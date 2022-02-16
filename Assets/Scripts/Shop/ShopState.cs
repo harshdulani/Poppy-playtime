@@ -13,7 +13,6 @@ public class ShopState
 	public bool AllWeaponsUnlocked { get; set; }
 
 	public int CurrentSpeedLevel { get; set; }
-	
 	public int CurrentPowerLevel { get; set; }
 
 	public ShopState(Dictionary<WeaponType, ShopItemState> newWeaponState, Dictionary<ArmsType, ShopItemState> newArmStates, int newCoinCount, int sidebarSkin, int loaderSkin)

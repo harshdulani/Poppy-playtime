@@ -35,6 +35,17 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	
 	private static int GetSidebarWeapon() => ShopStateController.CurrentState.GetState().SidebarWeapon;
 
+	public static void AlterCoinCount(int change)
+	{
+		ShopStateController.CurrentState.GetState().CoinCount += change;
+		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		MainShopController.Main.UpdateCoinText();
+		MainShopController.Main.ReadCurrentShopState();
+	}
+
+	private static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
+
 	private void Awake()
 	{
 		if (!only) only = this;
@@ -59,16 +70,8 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	//	GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
-	public static void AlterCoinCount(int change)
-	{
-		ShopStateController.CurrentState.GetState().CoinCount += change;
-		
-		ShopStateController.ShopStateSerializer.SaveCurrentState();
-		MainShopController.Main.UpdateCoinText();
-		MainShopController.Main.ReadCurrentShopState();
-	}
 
-	private static int GetCoinCount() => ShopStateController.CurrentState.GetState().CoinCount;
+	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Start()
 	{
@@ -351,7 +354,6 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 
 	private void StartWaiting(AdRewardTypes newType) => _currentRewardType = newType;
 	private void StopWaiting() => _currentRewardType = AdRewardTypes.None;
-
 
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
