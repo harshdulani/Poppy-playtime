@@ -23,9 +23,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	
 	[SerializeField] private int levelsPerUnlock = 5;
 	[SerializeField] private float tweenDuration, panelOpenWait;
-
-	[Header("Coin Particle Effect"), SerializeField] private RectTransform coinHolder;
-	[SerializeField] private ParticleControlScript coinParticles;
+	
 	[SerializeField] private int coinIncreaseCount = 100;
 	
 	private MainCanvasController _mainCanvas;
@@ -60,15 +58,9 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		loaderPanel.SetActive(false);
 		//skipButton.interactable = false;
 		getItButton.interactable = false;
-
-		barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f).SetEase(Ease.Flash).SetLoops(-1, LoopType.Yoyo);
+		
 		Invoke(nameof(EnableSkipButton),10);
 		coinIncreaseCount = 100;
-	}
-	
-	private void Update()
-	{
-		claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount)+ "";
 	}
 
 	private void EnableSkipButton()
@@ -178,7 +170,14 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		InputHandler.Only.AssignDisabledState();
 		loaderPanel.SetActive(true);
-		
+
+		// show multiplier
+		barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
+			.SetEase(Ease.Flash)
+			.SetLoops(-1, LoopType.Yoyo)
+			.OnUpdate(() => claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount) + "");
+
+		//show loader
 		var oldValue = _currentSkinPercentageUnlocked;
 		_currentSkinPercentageUnlocked += 1 / (float)levelsPerUnlock;
 		
@@ -274,8 +273,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		// var dummyCoinCount = SidebarShopController.GetCoinCount();
 		// AudioManager.instance.Play("CoinCollect");
 	}
-	
-	public void ReceiveWeaponLoaderReward()
+
+	private void ReceiveWeaponLoaderReward()
 	{
 		AdsMediator.StopListeningForAds(this);
 		
@@ -290,7 +289,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		//_mainCanvas.NextLevel();
 	}
 
-	public void ReceiveCoinMultiplierReward()
+	private void ReceiveCoinMultiplierReward()
 	{
 		DOTween.Kill(barPivot);
 		

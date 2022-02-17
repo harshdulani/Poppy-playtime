@@ -20,7 +20,7 @@ public class HandController : MonoBehaviour
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
 	[Header("Weapon Skins"), SerializeField] private WeaponType currentWeaponsSkin;
-	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry, burger, poop;
+	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry, burger, poop, flowers, phone, iceCream;
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
 	
 	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
@@ -60,7 +60,9 @@ public class HandController : MonoBehaviour
 	private static readonly int CloseFingers = Animator.StringToHash("closeFingers");
 	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
-	#endregion
+	private static readonly int IsHoldingAPhone = Animator.StringToHash("isHoldingAPhone");
+
+#endregion
 		
 	#region  Helpers and Getters
 	
@@ -344,6 +346,21 @@ public class HandController : MonoBehaviour
 				_myAnimator.SetTrigger(OpenFingers);
 				_rootAnimator.SetTrigger(IsHoldingPastryHash);
 				break;
+			case WeaponType.Flowers:
+				flowers.SetActive(true);
+				_myAnimator.SetTrigger(CloseFingers);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				break;
+			case WeaponType.Phone:
+				phone.SetActive(true);
+				_myAnimator.SetTrigger(OpenFingers);
+				_rootAnimator.SetTrigger(IsHoldingAPhone);
+				break;
+			case WeaponType.IceCream:
+				iceCream.SetActive(true);
+				_myAnimator.SetTrigger(CloseFingers);
+				_rootAnimator.SetTrigger(IsHoldingFootWearHash);
+				break;
 			default:
 				throw new ArgumentOutOfRangeException();
 		}
@@ -456,7 +473,7 @@ public class HandController : MonoBehaviour
 	{
 		windLines.Stop();
 		
-		if (currentWeaponsSkin != WeaponType.Pastry) return;
+		if (currentWeaponsSkin != WeaponType.Pastry || currentWeaponsSkin != WeaponType.IceCream) return;
 		
 		pastrySplash.Play();
 		_audio.PlayOneShot(splashAudioClip);

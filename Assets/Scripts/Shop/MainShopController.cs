@@ -358,7 +358,10 @@ public enum WeaponType
 	Sneaker,
 	Pastry,
 	Burger,
-	Poop
+	Poop,
+	Flowers,
+	Phone,
+	IceCream
 }
 
 public enum ArmsType
