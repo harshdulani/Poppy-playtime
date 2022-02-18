@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainCanvasController : MonoBehaviour
+public class MainCanvasController : MonoBehaviour, IWantsAds
 {
-	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton;
+	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;
 	[SerializeField] private Image red;
 	[SerializeField] private Toggle abToggle;
@@ -30,9 +30,13 @@ public class MainCanvasController : MonoBehaviour
 
 	private void Start()
 	{
-		levelText.text = "Level " + PlayerPrefs.GetInt("levelNo", 1);
+		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
+		levelText.text = "Level " + levelNo;
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
+		
+		if(levelNo < 5)
+			skipLevel.SetActive(false);
 
 		if(GAScript.Instance)
 			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
@@ -95,6 +99,12 @@ public class MainCanvasController : MonoBehaviour
 		Vibration.Vibrate(15);
 	}
 
+	public void SkipLevel()
+	{
+		AdsMediator.StartListeningForAds(this);
+		ApplovinManager.instance.ShowRewardedAds();
+	}
+
 	public void ABToggle(bool status)
 	{
 		InputHandler.Only.ShouldUseTapAndPunch(status);
@@ -146,5 +156,44 @@ public class MainCanvasController : MonoBehaviour
 	public void EnableNextLevel()
 	{
 		nextLevelButton.interactable = true;
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
+		{
+			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
+			PlayerPrefs.SetInt("lastBuildIndex", x);
+			SceneManager.LoadScene(x);
+		}
+		else
+		{
+			var x = Random.Range(5, SceneManager.sceneCountInBuildSettings - 1);
+			PlayerPrefs.SetInt("lastBuildIndex", x);
+			SceneManager.LoadScene(x);
+		}
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
+		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		
+		AudioManager.instance.Play("Button");
+		Vibration.Vibrate(15);
+		
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+	{
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+	{
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+	{
+		AdsMediator.StopListeningForAds(this);
 	}
 }

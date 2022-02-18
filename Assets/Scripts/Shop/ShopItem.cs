@@ -1,7 +1,9 @@
 using System;
-using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum ShopItemState
@@ -25,6 +27,18 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	private int _mySkinIndex;
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+
+	private void GetObjectUnderPointer()
+	{
+		if (!Input.GetMouseButtonDown(0)) return;
+		
+		var pointerData = new PointerEventData(EventSystem.current) {pointerId = -1, position = Input.mousePosition,};
+
+		var results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(pointerData, results);
+			
+		print(results[0].gameObject);
+	}
 
 	public void SetIconSprite(Sprite image)
 	{
@@ -55,13 +69,11 @@ public class ShopItem : MonoBehaviour, IWantsAds
 			case ShopItemState.Unlocked:
 				unlocked.enabled = true;
 				selected.enabled = false;
-				stickyCost.SetActive(false);
 				stickyAds.SetActive(false);
 				break;
 			case ShopItemState.Selected:
 				unlocked.enabled = false;
 				selected.enabled = true;
-				stickyCost.SetActive(false);
 				stickyAds.SetActive(false);
 				break;
 			default:
@@ -82,6 +94,7 @@ public class ShopItem : MonoBehaviour, IWantsAds
 			// if the item is already owned
 			costText.gameObject.SetActive(false);
 			unavailable.gameObject.SetActive(false);
+			stickyCost.SetActive(false);
 			return;
 		}
 
@@ -89,7 +102,6 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		_isAvailable = CheckAvailability(price);
 
 		stickyAds.SetActive(!_isAvailable);
-		stickyCost.SetActive(_isAvailable);
 
 		costText.color = _isAvailable ? Color.white : cantBuyColor;
 		unavailable.gameObject.SetActive(!_isAvailable);
