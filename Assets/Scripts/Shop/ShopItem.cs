@@ -28,18 +28,6 @@ public class ShopItem : MonoBehaviour, IWantsAds
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
-	private void GetObjectUnderPointer()
-	{
-		if (!Input.GetMouseButtonDown(0)) return;
-		
-		var pointerData = new PointerEventData(EventSystem.current) {pointerId = -1, position = Input.mousePosition,};
-
-		var results = new List<RaycastResult>();
-		EventSystem.current.RaycastAll(pointerData, results);
-			
-		print(results[0].gameObject);
-	}
-
 	public void SetIconSprite(Sprite image)
 	{
 		iconMask.graphic.enabled = shouldUseMask;

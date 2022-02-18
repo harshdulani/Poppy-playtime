@@ -1015,6 +1015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 1
   hasBeenInteractedWith: 0
   explosionForce: 50
@@ -1062,7 +1063,14 @@ MonoBehaviour:
   - {fileID: 3244222930846614679}
   magnitude: 1
   rotationMagnitude: 10
-  explosionFx: []
+  trailParent: {fileID: 0}
+  explosion: {fileID: 0}
+  explosionFx:
+  - {fileID: 8300000, guid: 9963fdc7cf06ca142b7e646ec9131f0e, type: 3}
+  - {fileID: 8300000, guid: a595e81c787e9ea47bb24ea023fb1a07, type: 3}
+  - {fileID: 8300000, guid: 57ed69012a4f2644e9497a8b6e15ce8d, type: 3}
+  shrinkSpeedMultiplier: 0.2
+  explosionScale: 0.3
 --- !u!1 &3274736508054395597
 GameObject:
   m_ObjectHideFlags: 0

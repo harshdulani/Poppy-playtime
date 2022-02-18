@@ -36,6 +36,7 @@ public class RagdollLimbController : MonoBehaviour
 		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
+	// here can go logic for if i have an immediate child shield, i give you that otherwise chest
 	public Rigidbody AskParentForHook() => _parent.chest;
 	
 	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;

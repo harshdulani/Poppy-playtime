@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public static class GameExtensions
 {
@@ -40,6 +41,21 @@ public static class GameExtensions
 		return Mathf.Lerp(oMin, oMax, Mathf.InverseLerp(iMin, iMax, v));
 	}
 
+	/// <summary>
+	/// Use whenever you can't find out why a canvas element is not being pressed
+	/// </summary>
+	public static void GetObjectUnderPointer()
+	{
+		if (!Input.GetMouseButtonDown(0)) return;
+		
+		var pointerData = new PointerEventData(EventSystem.current) {pointerId = -1, position = Input.mousePosition,};
+
+		var results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(pointerData, results);
+			
+		Print(results[0].gameObject);
+	}
+	
 	private static void Print(object msg)
 	{
 		Debug.Log(msg);
