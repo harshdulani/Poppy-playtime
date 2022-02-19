@@ -13,12 +13,12 @@ public class RagdollController : MonoBehaviour
 	[SerializeField] private int toChangeMatIndex;
 	private Material _material;
 	[SerializeField] private Color deadColor;
+	
+	[SerializeField] private float giantStompForce;
 
 	[Header("Audio"), SerializeField] private AudioClip punch1;
 	[SerializeField] private AudioClip punch2;
 
-	[SerializeField] private float giantStompForce;
-	
 	private Animator _anim;
 	private EnemyPatroller _patroller;
 	private AudioSource _audioSource;

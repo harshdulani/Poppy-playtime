@@ -74,6 +74,9 @@ public class RagdollLimbController : MonoBehaviour
 			var prop = other.gameObject.GetComponent<PropController>();
 			if (!prop) return;
 			
+			if(prop.IsACompositeProp)
+				prop.GetTouchedComposite(prop.transform.position - transform.position, true);
+			
 			if(prop.shouldExplode)
 				prop.Explode();
 		}

@@ -15,7 +15,8 @@ public class AimController : MonoBehaviour
 
 	private PlayerSoundController _soundController;
 	private Canvas _canvas;
-	
+
+	private Quaternion _areaInitRotation;
 	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
 	private bool _canPlayLockOnSound = true;
 	
@@ -46,8 +47,9 @@ public class AimController : MonoBehaviour
 		_canvas.worldCamera = Camera.main;
 
 		_reticle = _canvas.transform.GetChild(0).GetComponent<Image>();
-		
-		Vector3 rot = transform.eulerAngles;
+
+		_areaInitRotation = transform.rotation;
+		var rot = _areaInitRotation.eulerAngles;
 
 		_initRotAxisX = rot.x;
 		_initRotAxisY = rot.y;
@@ -119,14 +121,15 @@ public class AimController : MonoBehaviour
 	private void OnMoveToNextArea()
 	{
 		_punchHit.Kill();
-		DOTween.Sequence().Append(transform.DORotate(Vector3.right * _initRotAxisX, 0.5f));
+		DOTween.Sequence().Append(transform.DORotateQuaternion(_areaInitRotation, 0.5f));
 		_rotX = _initRotAxisX;
 		_rotY = 0f;
 	}
 
 	private void OnReachNextArea()
 	{
-		var rot = transform.eulerAngles;
+		_areaInitRotation = transform.rotation;
+		var rot = _areaInitRotation.eulerAngles;
 
 		_initRotAxisX = rot.x;
 		_initRotAxisY = rot.y;

@@ -43,6 +43,9 @@ public class ShopStateSerializer
 
 	public ShopState LoadSavedState()
 	{
+		//if you are here to solve multiple calls at the same time,
+		//here is what i suggest: set a delayed call to allow loading.
+		// if someone comes to load state in that window, give them a current state
 		if (!File.Exists(_savePath))
 		{
 			MonoBehaviour.print(_savePath);

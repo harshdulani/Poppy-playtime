@@ -42,10 +42,7 @@ public class PalmController : MonoBehaviour
 		_canBeAdopted = true;
 	}
 
-	private void EnablePunching()
-	{
-		myHand.StopPunching();
-	}
+	private void EnablePunching() => myHand.StopPunching();
 
 	private void OnPunchHit()
 	{
@@ -95,7 +92,15 @@ public class PalmController : MonoBehaviour
 		if (!myHand.isLeftHand) return;
 
 		if (other.TryGetComponent(out PropController prop))
+		{
+			prop.PlayerPicksUp();
 			prop.TryShowAds();
+			if (prop.IsACompositeProp)
+			{
+				prop.MakeKinematic();
+				prop.GetTouchedComposite(Vector3.up, false);
+			}
+		}
 		
 		if(other.CompareTag("Button"))
 		{

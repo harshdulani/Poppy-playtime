@@ -478,4 +478,9 @@ public class HandController : MonoBehaviour
 		pastrySplash.Play();
 		_audio.PlayOneShot(splashAudioClip);
 	}
+
+	private void OnGameEnd()
+	{
+		OnPropDestroyed();
+	}
 }

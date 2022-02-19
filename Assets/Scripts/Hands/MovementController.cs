@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Dreamteck.Splines;
 using UnityEngine;
 
