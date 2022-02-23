@@ -128,8 +128,9 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	private void EnableVictoryObjects()
 	{
+		if(defeat.activeSelf) return;
+		
 		victory.SetActive(true);
-		//nextLevel.SetActive(GameObject.FindGameObjectWithTag("GameController").GetComponentInChildren<SkinLoader>().ShouldShowNextLevel());
 		nextLevelButton.interactable = false;
 		constantRetryButton.SetActive(false);
 		
@@ -138,6 +139,8 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	private void EnableLossObjects()
 	{
+		if(victory.activeSelf) return;
+
 		if (_hasLost) return;
 		
 		red.enabled = true;

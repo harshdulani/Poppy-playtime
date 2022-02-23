@@ -21,6 +21,8 @@ public class HealthCanvasController : MonoBehaviour
 	
 	public void ReduceHealth()
 	{
-		heartParent.GetChild(heartParent.childCount - ++_healthReduced).GetComponent<Image>().sprite = hollowHeart;
+		var x = heartParent.childCount - ++_healthReduced;
+		if(x >= 0)
+			heartParent.GetChild(x).GetComponent<Image>().sprite = hollowHeart;
 	}
 }

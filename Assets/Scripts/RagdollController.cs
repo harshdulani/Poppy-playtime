@@ -22,18 +22,19 @@ public class RagdollController : MonoBehaviour
 	private Animator _anim;
 	private EnemyPatroller _patroller;
 	private AudioSource _audioSource;
-	
+
 	private bool _isAttacking;
 
 	private static readonly int IsFlying = Animator.StringToHash("isFlying");
 	private static readonly int Attack1 = Animator.StringToHash("attack1");
 	private static readonly int Attack2 = Animator.StringToHash("attack2");
-	private static readonly int IsMirrored = Animator.StringToHash("isMirrored");	
+	private static readonly int IsMirrored = Animator.StringToHash("isMirrored");
 	private static readonly int HasWon = Animator.StringToHash("hasWon");
 	private static readonly int Idle1 = Animator.StringToHash("idle1");
 	private static readonly int Idle2 = Animator.StringToHash("idle2");
 	private static readonly int Idle3 = Animator.StringToHash("idle3");
-	
+	private ThrowAtPlayer _throwAtPlayer;
+
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
@@ -55,6 +56,7 @@ public class RagdollController : MonoBehaviour
 		_anim = GetComponent<Animator>();
 		_audioSource = GetComponent<AudioSource>();
 		TryGetComponent(out _patroller);
+		TryGetComponent(out _throwAtPlayer);
 		
 		if(shouldMirror)
 			_anim.SetBool(IsMirrored, Random.value > 0.5f);
@@ -99,6 +101,8 @@ public class RagdollController : MonoBehaviour
 		
 		GameEvents.only.InvokeEnemyKill();
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
+		if(_throwAtPlayer)
+			_throwAtPlayer.StopThrowing();
 
 		var x = GetComponentInChildren<EnemyWeaponController>();
 		if (x)
@@ -113,13 +117,20 @@ public class RagdollController : MonoBehaviour
 
 	private void PlayRandomAnim()
 	{
-		var random = Random.Range(0f, 1f);
-		if(random < 0.33f)
-			_anim.SetTrigger(Idle1);
-		else if(random < 0.66f)
-			_anim.SetTrigger(Idle2);
-		else
-			_anim.SetTrigger(Idle3);
+		_anim.SetBool(Idle1, false);
+		_anim.SetBool(Idle2, false);
+		_anim.SetBool(Idle3, false);
+
+		DOVirtual.DelayedCall(0.02f, () =>
+		{
+			var random = Random.Range(0f, 1f);
+			if (random < 0.33f)
+				_anim.SetBool(Idle1, true);
+			else if (random < 0.66f)
+				_anim.SetBool(Idle2, true);
+			else
+				_anim.SetBool(Idle3, true);
+		});
 	}
 	
 	public void AttackEnemy()
@@ -138,7 +149,7 @@ public class RagdollController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = false;
 	}
-	
+
 	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);
 
 	public void WalkOnAnimation()

@@ -5,12 +5,12 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatroller : MonoBehaviour
 {
-	[SerializeField] private bool hasWeapon, enterPatrolAreaRunning;
-	[SerializeField] private int myPatrolArea;
-	[SerializeField] private List<Transform> waypoints;
-	[SerializeField] private float waypointChangeDistance = 0.5f;
 	public bool shouldPatrol;
-	
+	public int myPatrolArea;
+	[SerializeField] private List<Transform> waypoints;
+	[SerializeField] private bool hasWeapon, enterPatrolAreaRunning;
+	[SerializeField] private float waypointChangeDistance = 0.5f;
+
 	private NavMeshAgent _agent;
 	private Animator _anim;
 

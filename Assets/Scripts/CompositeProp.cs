@@ -12,8 +12,24 @@ public class CompositeProp : MonoBehaviour
 	{
 		if(!showOverlapBoxDebug) return;
 		
+		// cache previous Gizmos settings
+		var prevColor = Gizmos.color;
+		Matrix4x4 prevMatrix = Gizmos.matrix;
+
 		Gizmos.color = new Color(0f, 0.75f, 1f, 0.5f);
-		Gizmos.DrawCube(transform.position + transform.up * overlapBoxBounds.distance, new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z));
+		Gizmos.matrix = transform.localToWorldMatrix;
+
+		var boxPosition = transform.position + transform.up * overlapBoxBounds.distance;
+
+		// convert from world position to local position 
+		boxPosition = transform.InverseTransformPoint(boxPosition); 
+
+		var boxSize = new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z);
+		Gizmos.DrawCube(boxPosition, boxSize);
+
+		
+		// restore previous Gizmos settings
+		Gizmos.matrix = prevMatrix;
 	}
 	
 	public void StopBeingKinematic(Vector3 direction, Transform caller)
@@ -27,7 +43,8 @@ public class CompositeProp : MonoBehaviour
 				prop.Collapse(direction.normalized);
 		
 		var colliders = Physics.OverlapBox(transform.position + transform.up * overlapBoxBounds.distance, 
-			new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2), Quaternion.identity);
+			new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2),
+			transform.rotation);
 
 		foreach (var item in colliders)
 		{
