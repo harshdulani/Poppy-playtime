@@ -147,6 +147,7 @@ public class HandController : MonoBehaviour
 				return;
 			}
 			
+			print("Going home");
 			palm.localPosition = 
 				Vector3.MoveTowards(palm.localPosition,
 				Vector3.zero, 
@@ -156,6 +157,7 @@ public class HandController : MonoBehaviour
 		{
 			if (!_initPosSet)
 			{
+				print("reset init pos");
 				_lastTarget = hit.transform;
 				_lastTargetRoot = _lastTarget.root;
 				_lastTargetRoot.TryGetComponent(out _lastRaghu);
@@ -165,6 +167,7 @@ public class HandController : MonoBehaviour
 				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
 			}
 
+			print("moving towards");
 			palm.position =
 				Vector3.MoveTowards(palm.position,
 					_lastTarget.position,

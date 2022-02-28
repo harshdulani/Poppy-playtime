@@ -90,7 +90,7 @@ public class PalmController : MonoBehaviour
 		
 		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
-
+		
 		if (other.TryGetComponent(out PropController prop))
 		{
 			prop.PlayerPicksUp();

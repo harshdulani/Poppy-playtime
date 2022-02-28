@@ -82,6 +82,7 @@ public class RagdollController : MonoBehaviour
 			if (!_health.IsDead())
 			{
 				DropArmor();
+				print("dropping armor");
 				return false;
 			}
 		}
@@ -93,12 +94,12 @@ public class RagdollController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
 
+		print("hi");
 		return true;
 	}
 
 	private void DropArmor()
 	{
-		print("drop armor");
 		armor[0].isKinematic = false;
 		armor[0].AddForce(Vector3.up * 2f);
 		armor[0].transform.parent = null;

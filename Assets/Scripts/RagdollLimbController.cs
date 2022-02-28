@@ -22,11 +22,13 @@ public class RagdollLimbController : MonoBehaviour
 	{
 		if(_parent.TryHoldInAir())
 		{
+			print("held in air");
 			if (_shatterParent)
 				_shatterParent.HoldInAir();
 			return true;
 		}
 
+		print("cant hold in air");
 		return false;
 		// here can go logic for if i have an immediate child shield, i give you that otherwise chest
 	}

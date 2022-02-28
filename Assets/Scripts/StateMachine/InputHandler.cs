@@ -82,12 +82,12 @@ public class InputHandler : MonoBehaviour
 	private void Update()
 	{
 		if(!_tappedToPlay) return;
-
+		
 		if(userIsWatchingAnAdForPickupProp) return;
 		
 		if (_inTapCooldown) return;
 
-		//print(_leftHandState);
+		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
