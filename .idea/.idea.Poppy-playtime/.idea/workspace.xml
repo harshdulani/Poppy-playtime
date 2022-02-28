@@ -21,14 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/Main Camera.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/Main Camera.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 3.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 2.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,8 +299,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/HeliAudioController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/BoxingGloveController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelFlowController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SaveState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopCanvasController.cs" />
@@ -344,14 +340,16 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ThrowAtPlayer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CompositeProp.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/InputHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EventManagers/GameEvents.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/HealthCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/HealthController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ShatterableParent.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollLimbController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
       </list>
     </option>
   </component>
@@ -409,7 +407,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Added arm skins shop" />
     <MESSAGE value="Added more features to make shop fuller, animations to open and close shop with a new button, , bug in arms shop showing white sprites. added half baked tap cooldown, just remove it if it is broken." />
     <MESSAGE value="Update buttons now works properly" />
     <MESSAGE value="barrel made lighter, added broken glass panel" />
@@ -434,7 +431,8 @@
     <MESSAGE value="Made radial shooter available to guards who can now throw an object - baseball bat at the players" />
     <MESSAGE value="working on adding one hit for steal armor, n hits to kill feature" />
     <MESSAGE value="added poppy master files" />
-    <option name="LAST_COMMIT_MESSAGE" value="added poppy master files" />
+    <MESSAGE value="completed functioning of armor feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed functioning of armor feature" />
   </component>
   <component name="WindowStateProjectService">
     <state x="539" y="304" width="635" height="293" key="#C#" timestamp="1639991631933">
@@ -475,11 +473,11 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1645255390965" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1646031039279">
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2" timestamp="1646039762148">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="465" y="167" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1639995761930" />
-    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1646031039279" />
+    <state x="872" y="419" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1646039762148" />
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1642142945145">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -489,10 +487,10 @@
     </state>
     <state x="495" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.728@0.0.1366.728" timestamp="1640002404407" />
     <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1645610613631" />
-    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1646030915423">
+    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1646039741527">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1646030915423" />
+    <state x="826" y="434" width="604" height="531" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1646039741527" />
     <state x="1089" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1642590202329">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

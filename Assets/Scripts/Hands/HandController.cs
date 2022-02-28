@@ -156,7 +156,6 @@ public class HandController : MonoBehaviour
 		{
 			if (!_initPosSet)
 			{
-				print("reset init pos");
 				_lastTarget = hit.transform;
 				_lastTargetRoot = _lastTarget.root;
 				_lastTargetRoot.TryGetComponent(out _lastRaghu);
@@ -190,7 +189,6 @@ public class HandController : MonoBehaviour
 					{
 						//punch sfx
 						InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-						print($"go home, empty hit, not carrying body");
 						Vibration.Vibrate(15);
 						
 						ClearStateInfo();
@@ -210,7 +208,6 @@ public class HandController : MonoBehaviour
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));
-			print($"go home, empty hit, carrying body");
 		}
 		else
 		{

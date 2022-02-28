@@ -38,6 +38,8 @@ public class ShatterableParent : MonoBehaviour
 
 		foreach (var shatterable in theShatterables)
 			shatterable.Shatter();
+
+		if (!overlapCube) return;
 		
 		foreach (var collider in Physics.OverlapBox(overlapCube.bounds.center, overlapCube.bounds.extents, overlapCube.transform.rotation))
 			if (collider.transform.root.TryGetComponent(out RagdollController raghu))

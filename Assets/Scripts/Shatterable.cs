@@ -40,6 +40,4 @@ public class Shatterable : MonoBehaviour
 		_rb.isKinematic = false;
 		_rb.useGravity = true;
 	}
-
-	public ShatterableParent GetShatterableParent() => _parent;
 }
