@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,21 +8,24 @@ public class RagdollController : MonoBehaviour
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	[HideInInspector] public bool isRagdoll, isWaitingForPunch, isAttackerSoCantRagdoll;
-
-	[SerializeField] private bool shouldTurnToGrey, shouldMirror = true;
-	[SerializeField] private Renderer skin;
-	[SerializeField] private int toChangeMatIndex;
-	private Material _material;
-	[SerializeField] private Color deadColor;
-	
 	[SerializeField] private float giantStompForce;
+
+	[Header("Change color on death"), SerializeField] private Renderer skin;
+	[SerializeField] private bool shouldTurnToGrey, shouldMirror = true;
+	[SerializeField] private int toChangeMatIndex;
+	[SerializeField] private Color deadColor;
+	private Material _material;
+
+	[SerializeField] private List<Rigidbody> armor;
 
 	[Header("Audio"), SerializeField] private AudioClip punch1;
 	[SerializeField] private AudioClip punch2;
 
 	private Animator _anim;
-	private EnemyPatroller _patroller;
 	private AudioSource _audioSource;
+	private EnemyPatroller _patroller;
+	private ThrowAtPlayer _throwAtPlayer;
+	private HealthController _health;
 
 	private bool _isAttacking;
 
@@ -33,7 +37,6 @@ public class RagdollController : MonoBehaviour
 	private static readonly int Idle1 = Animator.StringToHash("idle1");
 	private static readonly int Idle2 = Animator.StringToHash("idle2");
 	private static readonly int Idle3 = Animator.StringToHash("idle3");
-	private ThrowAtPlayer _throwAtPlayer;
 
 	private void OnEnable()
 	{
@@ -57,6 +60,7 @@ public class RagdollController : MonoBehaviour
 		_audioSource = GetComponent<AudioSource>();
 		TryGetComponent(out _patroller);
 		TryGetComponent(out _throwAtPlayer);
+		TryGetComponent(out _health);
 		
 		if(shouldMirror)
 			_anim.SetBool(IsMirrored, Random.value > 0.5f);
@@ -70,8 +74,17 @@ public class RagdollController : MonoBehaviour
 		PlayRandomAnim();
 	}
 
-	public void HoldInAir()
+	public bool TryHoldInAir()
 	{
+		if (_health)
+		{
+			_health.AddHit();
+			if (!_health.IsDead())
+			{
+				DropArmor();
+				return false;
+			}
+		}
 		isWaitingForPunch = true;
 		_anim.SetBool(IsFlying, true);
 		_anim.applyRootMotion = false;
@@ -79,6 +92,17 @@ public class RagdollController : MonoBehaviour
 			_patroller.ToggleAI(false);
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
+
+		return true;
+	}
+
+	private void DropArmor()
+	{
+		print("drop armor");
+		armor[0].isKinematic = false;
+		armor[0].AddForce(Vector3.up * 2f);
+		armor[0].transform.parent = null;
+		armor.RemoveAt(0);
 	}
 
 	public void GoRagdoll(Vector3 direction)

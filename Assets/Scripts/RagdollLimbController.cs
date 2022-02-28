@@ -18,11 +18,17 @@ public class RagdollLimbController : MonoBehaviour
 		_rb = GetComponent<Rigidbody>();
 	}
 
-	public void TellParent()
+	public bool TellParent()
 	{
-		_parent.HoldInAir();
-		if (_shatterParent)
-			_shatterParent.HoldInAir();
+		if(_parent.TryHoldInAir())
+		{
+			if (_shatterParent)
+				_shatterParent.HoldInAir();
+			return true;
+		}
+
+		return false;
+		// here can go logic for if i have an immediate child shield, i give you that otherwise chest
 	}
 
 	public void DisableRagdolling() => _parent.isAttackerSoCantRagdoll = true;
@@ -36,7 +42,7 @@ public class RagdollLimbController : MonoBehaviour
 		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
-	// here can go logic for if i have an immediate child shield, i give you that otherwise chest
+	
 	public Rigidbody AskParentForHook() => _parent.chest;
 	
 	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;

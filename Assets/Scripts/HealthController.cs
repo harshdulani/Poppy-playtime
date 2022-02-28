@@ -19,10 +19,14 @@ public class HealthController : MonoBehaviour
 		return result;
 	}
 
+	/// <summary>
+	/// Add a hit to the health and if exists, the health canvas
+	/// </summary>
+	/// <param name="careAboutCooldown"> should delivering this hit care about the hit cooldown, i.e., avoiding giving hits too quickly</param>
+	/// <returns>Return whether player was allowed to deliver a hit</returns>
 	public bool AddHit(bool careAboutCooldown = true)
 	{
 		if(careAboutCooldown)
-		//changing stuff here, if you have boss fight bugs, its probably because i broke them adding heli compatibility
 			if(_isInHitCooldown) return false;
 
 		VisibilityToggle(true);
