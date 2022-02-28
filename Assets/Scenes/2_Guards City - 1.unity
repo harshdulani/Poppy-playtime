@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.10252544, g: 0.41278774, b: 0.8966378, a: 1}
+  m_IndirectSpecularColor: {r: 0.102512434, g: 0.41277474, b: 0.8966248, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -346,7 +346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311185874752, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 45.00005
+      value: 45.00096
       objectReference: {fileID: 0}
     - target: {fileID: 592453311387248778, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.x
@@ -386,7 +386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311930542070, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 45.00005
+      value: 45.00096
       objectReference: {fileID: 0}
     - target: {fileID: 2006200668292180719, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3226,6 +3226,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ddc1a2536715a24095c464a2c394d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &651853934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4308884356920250819, guid: bcb9269b005ffd740bef53bebe8f9a59, type: 3}
+  m_PrefabInstance: {fileID: 651853932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &651853935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651853934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1001 &772040109
 PrefabInstance:
   m_ObjectHideFlags: 0
