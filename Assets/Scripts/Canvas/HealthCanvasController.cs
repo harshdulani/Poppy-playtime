@@ -24,5 +24,8 @@ public class HealthCanvasController : MonoBehaviour
 		var x = heartParent.childCount - ++_healthReduced;
 		if(x >= 0)
 			heartParent.GetChild(x).GetComponent<Image>().sprite = hollowHeart;
+
+		if (x == 0)
+			_canvas.enabled = false;
 	}
 }

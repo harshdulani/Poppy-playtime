@@ -147,7 +147,6 @@ public class HandController : MonoBehaviour
 				return;
 			}
 			
-			print("Going home");
 			palm.localPosition = 
 				Vector3.MoveTowards(palm.localPosition,
 				Vector3.zero, 
@@ -166,8 +165,7 @@ public class HandController : MonoBehaviour
 				
 				Sounds.PlaySound(Sounds.ziplineLeave, 1f);
 			}
-
-			print("moving towards");
+			
 			palm.position =
 				Vector3.MoveTowards(palm.position,
 					_lastTarget.position,
@@ -192,8 +190,14 @@ public class HandController : MonoBehaviour
 					{
 						//punch sfx
 						InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+						print($"go home, empty hit, not carrying body");
+						Vibration.Vibrate(15);
+						
+						ClearStateInfo();
 						return;
 					}
+					
+					ClearStateInfo();
 				}		
 				else if (CurrentObjectCarriedType == CarriedObjectType.Car)
 					other.GetComponent<CarController>().StopMoving();
@@ -206,6 +210,7 @@ public class HandController : MonoBehaviour
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
 				true));
+			print($"go home, empty hit, carrying body");
 		}
 		else
 		{

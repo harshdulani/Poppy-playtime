@@ -16,6 +16,7 @@ public class PalmController : MonoBehaviour
 		{
 			GameEvents.only.propDestroyed += OnPropDestroyed;
 			GameEvents.only.giantPickupProp += OnPropDestroyed;
+			GameEvents.only.dropArmor += OnDropArmor;
 		}
 		else
 		{
@@ -29,6 +30,7 @@ public class PalmController : MonoBehaviour
 		{
 			GameEvents.only.propDestroyed -= OnPropDestroyed;
 			GameEvents.only.giantPickupProp -= OnPropDestroyed;
+			GameEvents.only.dropArmor -= OnDropArmor;
 		}
 		else
 		{
@@ -43,40 +45,6 @@ public class PalmController : MonoBehaviour
 	}
 
 	private void EnablePunching() => myHand.StopPunching();
-
-	private void OnPunchHit()
-	{
-		if (!GetCurrentTransform())
-		{
-			InputHandler.Only.AssignIdleState();
-			
-			Invoke(nameof(EnablePunching), punchWaitTime);
-			Invoke(nameof(ResetAdoptability), 0.5f);
-			return;
-		}
-		
-		myHand.HandReachTarget(GetCurrentTransform());
-
-		var trans = GetCurrentTransform();
-
-		SetCurrentTransform(null);
-		
-		Invoke(nameof(EnablePunching), punchWaitTime);
-		Invoke(nameof(ResetAdoptability), 0.5f);
-		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
-		
-		//this is for climber level
-		ShatterableParent.AddToPossibleShatterers(trans.root);
-	}
-
-	private void OnPropDestroyed(Transform target)
-	{
-		if(target != GetCurrentTransform()) return;
-		
-		SetCurrentTransform(null);
-		myHand.OnPropDestroyed();
-		Invoke(nameof(ResetAdoptability), 0.5f);
-	}
 
 	private void ResetAdoptability()
 	{
@@ -123,7 +91,47 @@ public class PalmController : MonoBehaviour
 		myHand.HandReachTarget(other.transform);
 		_canBeAdopted = false;
 	}
+
+	private void OnDropArmor()
+	{
+		SetCurrentTransform(null);
+		Invoke(nameof(ResetAdoptability), 0.5f);
+	}
 	
+	private void OnPunchHit()
+	{
+		if (!GetCurrentTransform())
+		{
+			InputHandler.Only.AssignIdleState();
+			
+			Invoke(nameof(EnablePunching), punchWaitTime);
+			Invoke(nameof(ResetAdoptability), 0.5f);
+			return;
+		}
+		
+		myHand.HandReachTarget(GetCurrentTransform());
+
+		var trans = GetCurrentTransform();
+
+		SetCurrentTransform(null);
+		
+		Invoke(nameof(EnablePunching), punchWaitTime);
+		Invoke(nameof(ResetAdoptability), 0.5f);
+		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
+		
+		//this is for climber level
+		ShatterableParent.AddToPossibleShatterers(trans.root);
+	}
+
+	private void OnPropDestroyed(Transform target)
+	{
+		if(target != GetCurrentTransform()) return;
+		
+		SetCurrentTransform(null);
+		myHand.OnPropDestroyed();
+		Invoke(nameof(ResetAdoptability), 0.5f);
+	}
+
 	private static bool HasTargetTransform() => _lastPickedTarget;
 	private static Transform GetCurrentTransform() => _lastPickedTarget;
 	private static void SetCurrentTransform(Transform newT) => _lastPickedTarget = newT;

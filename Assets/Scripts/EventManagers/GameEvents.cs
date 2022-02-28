@@ -26,7 +26,7 @@ public class GameEvents : MonoBehaviour
 	
 	public Action<Transform> rayfireShattered;
 	
-	public Action enemyKilled;
+	public Action dropArmor, enemyKilled;
 
 	public Action moveToNextArea, reachNextArea;
 
@@ -50,7 +50,8 @@ public class GameEvents : MonoBehaviour
 	public void InvokeGiantPickupProp(Transform car) => giantPickupProp?.Invoke(car);
 
 	public void InvokeRayfireShattered(Transform shattered) => rayfireShattered?.Invoke(shattered);
-	
+
+	public void InvokeDropArmor() => dropArmor?.Invoke();
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
 	
 	public void InvokeEnemyHitPlayer(Transform hitter) => enemyHitPlayer?.Invoke(hitter);

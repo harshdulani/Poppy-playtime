@@ -82,7 +82,7 @@ public class RagdollController : MonoBehaviour
 			if (!_health.IsDead())
 			{
 				DropArmor();
-				print("dropping armor");
+				GameEvents.only.InvokeDropArmor();
 				return false;
 			}
 		}
@@ -94,7 +94,6 @@ public class RagdollController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
 
-		print("hi");
 		return true;
 	}
 
