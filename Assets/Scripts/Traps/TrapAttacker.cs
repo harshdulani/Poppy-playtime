@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BoxingGloveController : MonoBehaviour
+public class TrapAttacker : MonoBehaviour
 {
 	[SerializeField] private Transform desiredPosition;
 

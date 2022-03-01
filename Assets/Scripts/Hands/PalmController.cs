@@ -54,7 +54,7 @@ public class PalmController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if(!_canBeAdopted) return;
-		if(!other.CompareTag("Target") && !other.CompareTag("Button")) return;
+		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton")) return;
 		
 		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
@@ -70,7 +70,7 @@ public class PalmController : MonoBehaviour
 			}
 		}
 		
-		if(other.CompareTag("Button"))
+		if(other.CompareTag("TrapButton"))
 		{
 			myHand.HandReachTarget(other.transform);
 			

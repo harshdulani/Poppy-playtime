@@ -179,8 +179,8 @@ public class HandController : MonoBehaviour
 		{
 			if (!InputHandler.Only.CanSwitchToTargetState()) return;
 			
-			if(other.CompareTag("Button"))
-				other.GetComponent<ButtonController>().PressButton();
+			if(other.CompareTag("TrapButton"))
+				other.GetComponent<TrapButtonController>().PressButton();
 			else
 			{
 				if (other.transform.TryGetComponent(out RagdollLimbController raghu))

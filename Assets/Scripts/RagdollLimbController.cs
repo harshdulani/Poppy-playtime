@@ -60,7 +60,7 @@ public class RagdollLimbController : MonoBehaviour
 		if(!_parent.isRagdoll) return;
 
 		if(other.transform.root == transform.root) return;
-		if (!other.collider.CompareTag("Target")) return;
+		if (!other.collider.CompareTag("Target") || !other.collider.CompareTag("Trap")) return;
 		
 		var direction = other.transform.position - transform.position;
 		if (_rb.velocity.sqrMagnitude < 4f)

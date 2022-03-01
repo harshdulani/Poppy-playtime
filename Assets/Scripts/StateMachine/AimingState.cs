@@ -33,7 +33,7 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;
 		}
-		if (!_hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("Button"))
+		if (!_hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton"))
 		{
 			_aimer.LoseTarget();
 			return;
@@ -70,7 +70,7 @@ public class AimingState : InputStateBase
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
-		if (!hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("Button"))
+		if (!hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
