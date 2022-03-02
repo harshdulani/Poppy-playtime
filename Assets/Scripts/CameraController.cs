@@ -40,6 +40,7 @@ public class CameraController : MonoBehaviour
 	private void Start()
 	{
 		_me = GetComponent<Camera>();
+		_me.depthTextureMode |= DepthTextureMode.Depth;
 
 		_normalFov = _me.fieldOfView;
 		_initialLocalPos = transform.localPosition;
