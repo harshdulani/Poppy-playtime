@@ -20,6 +20,7 @@ public class RagdollLimbController : MonoBehaviour
 
 	public bool TellParent()
 	{
+		DropContainer();
 		if (!_parent.TryHoldInAir()) return false;
 		
 		if (_shatterParent)
@@ -35,9 +36,18 @@ public class RagdollLimbController : MonoBehaviour
 			_parent.GoRagdoll(direction);
 		else
 			_hostage.GoRagdoll(direction);
+		
 		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
+	private void DropContainer()
+	{
+		print(1);
+		
+		if(!_parent.TryGetComponent(out HoldContainerUpHelper helper)) return;
+
+		GameEvents.only.InvokeDropContainer(helper.myContainer);
+	}
 	
 	public Rigidbody AskParentForHook() => _parent.chest;
 	
@@ -60,7 +70,7 @@ public class RagdollLimbController : MonoBehaviour
 		if(!_parent.isRagdoll) return;
 
 		if(other.transform.root == transform.root) return;
-		if (!other.collider.CompareTag("Target") || !other.collider.CompareTag("Trap")) return;
+		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Trap")) return;
 		
 		var direction = other.transform.position - transform.position;
 		if (_rb.velocity.sqrMagnitude < 4f)

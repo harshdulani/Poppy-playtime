@@ -26,6 +26,7 @@ public class GameEvents : MonoBehaviour
 	
 	public Action<Transform> rayfireShattered;
 	
+	public Action<Rigidbody> dropContainer;
 	public Action dropArmor, enemyKilled;
 
 	public Action moveToNextArea, reachNextArea;
@@ -51,6 +52,8 @@ public class GameEvents : MonoBehaviour
 
 	public void InvokeRayfireShattered(Transform shattered) => rayfireShattered?.Invoke(shattered);
 
+	public void InvokeDropContainer(Rigidbody container) => dropContainer?.Invoke(container);
+	
 	public void InvokeDropArmor() => dropArmor?.Invoke();
 	public void InvokeEnemyKill() => enemyKilled?.Invoke();
 	

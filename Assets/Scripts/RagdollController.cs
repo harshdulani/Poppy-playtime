@@ -86,14 +86,16 @@ public class RagdollController : MonoBehaviour
 				return false;
 			}
 		}
+		
 		isWaitingForPunch = true;
 		_anim.SetBool(IsFlying, true);
 		_anim.applyRootMotion = false;
+		
 		if(_patroller)
 			_patroller.ToggleAI(false);
 		foreach (var rb in rigidbodies)
 			rb.isKinematic = true;
-
+		
 		return true;
 	}
 
@@ -109,6 +111,8 @@ public class RagdollController : MonoBehaviour
 	{
 		if(isRagdoll) return;
 		if(isAttackerSoCantRagdoll) return;
+	
+		print(gameObject.name + " is ragdolling");
 		
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;
