@@ -17,7 +17,10 @@ public class ChainLink : MonoBehaviour
 		if(!other.collider.CompareTag("Target")) return;
 
 		if(other.collider.TryGetComponent(out RagdollLimbController raghuvendra))
-			if(!raghuvendra.IsRaghuRagdolling()) return;
+			if(!raghuvendra.IsRaghuRagdolling())
+			{
+				return;
+			}
 
 		if(transform.parent.TryGetComponent(out ChainLinkPlatform platform))
 			platform.BreakChainLinkUsingBarrel(gameObject, other.transform.position);
