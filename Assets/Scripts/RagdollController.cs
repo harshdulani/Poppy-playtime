@@ -111,8 +111,6 @@ public class RagdollController : MonoBehaviour
 	{
 		if(isRagdoll) return;
 		if(isAttackerSoCantRagdoll) return;
-	
-		print(gameObject.name + " is ragdolling");
 		
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;

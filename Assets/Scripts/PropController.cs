@@ -14,6 +14,7 @@ public class PropController : MonoBehaviour, IWantsAds
 	[SerializeField] private Transform trailParent;
 	[SerializeField] private GameObject explosion;
 	[SerializeField] private AudioClip[] explosionFx;
+	[SerializeField] private bool alwaysSpawnVfx;
 	private AudioSource _source;
 	private static int _explosionSoundCounter;
 	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier, explosionScale;
@@ -46,7 +47,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		_rb = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
 		_source = GetComponent<AudioSource>();
-		if(transform.parent)
+		if (transform.parent)
 			transform.parent.TryGetComponent(out _parent);
 	}
 
@@ -108,7 +109,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		_amDestroyed = true;
 		_isHeldByPlayer = false;
 
-		if(explosionFx.Length > 0)
+		if (explosionFx.Length > 0)
 			_source.PlayOneShot(explosionFx[_explosionSoundCounter++ % explosionFx.Length]);
 		Vibration.Vibrate(25);
 	}
@@ -130,12 +131,15 @@ public class PropController : MonoBehaviour, IWantsAds
 	{
 		_rb.isKinematic = false;
 		transform.parent = null;
-		if(_trail)
+		if (_trail)
 			_trail.SetActive(false);
 	}
 
 	public bool IsACompositeProp => _parent;
-	public void GetTouchedComposite(Vector3 direction, bool collapseMe) => _parent.StopBeingKinematic(direction, collapseMe ? null : transform);
+
+	public void GetTouchedComposite(Vector3 direction, bool collapseMe) =>
+		_parent.StopBeingKinematic(direction, collapseMe ? null : transform);
+
 	public void Collapse(Vector3 direction)
 	{
 		_rb.isKinematic = false;
@@ -150,14 +154,23 @@ public class PropController : MonoBehaviour, IWantsAds
 
 	public void TryShowAds()
 	{
-		if(!shouldShowAds) return;
+		if (!shouldShowAds) return;
 
 		TimeController.only.SlowDownTime(0f);
 
 		StartWaiting();
 		AdsMediator.StartListeningForAds(this);
-		
+
 		ApplovinManager.instance.ShowRewardedAds();
+	}
+
+	private void CreateVFX(Vector3 position, Quaternion rotation)
+	{
+		var exploder = Instantiate(explosion, position, rotation);
+
+		exploder.transform.localScale *= explosionScale;
+
+		Destroy(exploder, 3f);
 	}
 
 	private void OnCollisionEnter(Collision other)
@@ -172,15 +185,16 @@ public class PropController : MonoBehaviour, IWantsAds
 
 			if(explosion)
 			{
-				var exploder = Instantiate(explosion, other.contacts[0].point,
-					Quaternion.LookRotation(other.contacts[0].normal));
-
-				exploder.transform.localScale *= explosionScale;
-
-				Destroy(exploder, 3f);
+				CreateVFX(other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal));
 			}
 			transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));
 			return;
+		}
+		
+		if(other.collider.CompareTag("ChainLink"))
+		{
+			Explode();
+			CreateVFX(other.contacts[0].point, Quaternion.LookRotation(other.contacts[0].normal));
 		}
 		
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;

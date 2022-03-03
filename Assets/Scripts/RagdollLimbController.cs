@@ -42,15 +42,13 @@ public class RagdollLimbController : MonoBehaviour
 
 	private void DropContainer()
 	{
-		print(1);
-		
 		if(!_parent.TryGetComponent(out HoldContainerUpHelper helper)) return;
 
 		GameEvents.only.InvokeDropContainer(helper.myContainer);
 	}
 	
 	public Rigidbody AskParentForHook() => _parent.chest;
-	
+	public bool IsRaghuRagdolling() => _parent.isRagdoll;
 	public bool IsRaghuWaitingForPunch() => _parent.isWaitingForPunch;
 
 	public void Attack(Vector3 endPos)

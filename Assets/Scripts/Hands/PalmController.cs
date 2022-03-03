@@ -54,7 +54,7 @@ public class PalmController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if(!_canBeAdopted) return;
-		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton")) return;
+		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton") && !other.CompareTag("ChainLink")) return;
 		
 		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
@@ -73,6 +73,15 @@ public class PalmController : MonoBehaviour
 		if(other.CompareTag("TrapButton"))
 		{
 			myHand.HandReachTarget(other.transform);
+			
+			Invoke(nameof(EnablePunching), punchWaitTime);
+			Invoke(nameof(ResetAdoptability), 0.5f);
+			return;
+		}
+
+		if (other.CompareTag("ChainLink"))
+		{
+			other.GetComponent<ChainLink>().TryBreakPlatformUsingPalm(transform.position);
 			
 			Invoke(nameof(EnablePunching), punchWaitTime);
 			Invoke(nameof(ResetAdoptability), 0.5f);

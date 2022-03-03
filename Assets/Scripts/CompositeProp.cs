@@ -27,7 +27,6 @@ public class CompositeProp : MonoBehaviour
 		var boxSize = new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z);
 		Gizmos.DrawCube(boxPosition, boxSize);
 
-		
 		// restore previous Gizmos settings
 		Gizmos.matrix = prevMatrix;
 	}

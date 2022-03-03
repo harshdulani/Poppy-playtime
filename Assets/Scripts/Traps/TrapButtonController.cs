@@ -37,4 +37,6 @@ public class TrapButtonController : MonoBehaviour
 
 		seq.InsertCallback(_myTrap.GetTweenDuration(), () => _canPress = true);
 	}
+
+	public bool IsInCurrentArea() => _myTrap.IsInCurrentArea();
 }

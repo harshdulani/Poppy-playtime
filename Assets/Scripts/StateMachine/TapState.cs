@@ -35,7 +35,7 @@ public class TapState : InputStateBase
 			return;
 		}
 		//Print(hit.transform.root.gameObject);
-		if (!hit.collider.CompareTag("Target") && !hit.collider.CompareTag("TrapButton"))
+		if (!hit.collider.CompareTag("Target") && !hit.collider.CompareTag("TrapButton") && !hit.collider.CompareTag("ChainLink"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
@@ -47,13 +47,17 @@ public class TapState : InputStateBase
 				return;
 			}
 		if (hit.collider.TryGetComponent(out EnemyPatroller patrol))
-			if (!patrol.IsInCurrentPatrolArea())
-				return;
+			if (!patrol.IsInCurrentPatrolArea()) return;
 
 		if (hit.collider.TryGetComponent(out ShatterEnemyController shat))
-			if (!shat.IsInCurrentArea())
-				return;
+			if (!shat.IsInCurrentArea()) return;
 
+		if(hit.collider.TryGetComponent(out TrapButtonController trapButton))
+			if(!trapButton.IsInCurrentArea()) return;
+		
+		if(hit.collider.TryGetComponent(out ChainLink chainLink))
+			if(!chainLink.IsInCurrentArea()) return;
+		
 		if(raghu)
 			raghu.PopScale();
 		

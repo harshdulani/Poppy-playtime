@@ -27,4 +27,10 @@ public class TrapAttacker : MonoBehaviour
 
 		raghu.GetPunched(dir, dir.magnitude);
 	}
+
+	public void MakeNonKinematic(Vector3 direction)
+	{
+		_rb.isKinematic = false;
+		_rb.AddForce(direction * 0f, ForceMode.Impulse);
+	}
 }

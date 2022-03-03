@@ -33,28 +33,39 @@ public class AimingState : InputStateBase
 			_aimer.LoseTarget(); //if raycast didn't hit anything
 			return;
 		}
-		if (!_hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton"))
+		if (!_hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton") && !_hit.collider.CompareTag("ChainLink"))
 		{
 			_aimer.LoseTarget();
 			return;
 		}
+		
 		if (_hit.collider.TryGetComponent(out EnemyPatroller patrol))
-		{
 			if (!patrol.IsInCurrentPatrolArea())
 			{
 				_aimer.LoseTarget();
 				return;
 			}
-		}
 
 		if (_hit.collider.TryGetComponent(out ShatterEnemyController shat))
-		{
 			if (!shat.IsInCurrentArea())
 			{
 				_aimer.LoseTarget();
 				return;
 			}
-		}
+
+		if(_hit.collider.TryGetComponent(out TrapButtonController trapButton))
+			if(!trapButton.IsInCurrentArea())
+			{
+				_aimer.LoseTarget();
+				return;
+			}
+		
+		if(_hit.collider.TryGetComponent(out ChainLink chainLink))
+			if(!chainLink.IsInCurrentArea())
+			{
+				_aimer.LoseTarget();
+				return;
+			}
 		
 		_aimer.FindTarget();
 	}
