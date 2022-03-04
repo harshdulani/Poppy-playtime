@@ -41,6 +41,7 @@ public class RagdollController : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.only.reachNextArea += OnReachNextArea;
 		GameEvents.only.giantLanding += OnGiantLanding;
 
 		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
@@ -49,6 +50,7 @@ public class RagdollController : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		GameEvents.only.reachNextArea -= OnReachNextArea;
 		GameEvents.only.giantLanding -= OnGiantLanding;
 		
 		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
@@ -195,6 +197,14 @@ public class RagdollController : MonoBehaviour
 		if(isPoppy) return;
 		
 		PlayRandomAnim();
+	}
+
+	private void OnReachNextArea()
+	{
+		if (_patroller.myPatrolArea < LevelFlowController.only.currentArea)
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
 	private void OnGiantLanding(Transform giant)

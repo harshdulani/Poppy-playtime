@@ -181,6 +181,12 @@ public class HandController : MonoBehaviour
 			
 			if(other.CompareTag("TrapButton"))
 				other.GetComponent<TrapButtonController>().PressButton();
+			else if (other.CompareTag("ChainLink"))
+			{
+				InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
+					true));
+				return;
+			}
 			else
 			{
 				if (other.transform.TryGetComponent(out RagdollLimbController raghu))

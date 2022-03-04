@@ -7,7 +7,7 @@ public class PalmController : MonoBehaviour
 	[SerializeField] private float punchWaitTime = 1f;
 
 	private static Transform _lastPickedTarget;
-	private static bool _canBeAdopted = true;
+	private static bool _canAdopt = true;
 	private static int _punchIndex;
 	
 	private void OnEnable()
@@ -41,19 +41,19 @@ public class PalmController : MonoBehaviour
 	private void Start()
 	{
 		_lastPickedTarget = null;
-		_canBeAdopted = true;
+		_canAdopt = true;
 	}
 
 	private void EnablePunching() => myHand.StopPunching();
 
 	private void ResetAdoptability()
 	{
-		_canBeAdopted = true;
+		_canAdopt = true;
 	}
 	
 	private void OnTriggerEnter(Collider other)
 	{
-		if(!_canBeAdopted) return;
+		if(!_canAdopt) return;
 		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton") && !other.CompareTag("ChainLink")) return;
 		
 		//AudioManager play sound
@@ -83,6 +83,8 @@ public class PalmController : MonoBehaviour
 		{
 			other.GetComponent<ChainLink>().TryBreakPlatformUsingPalm(transform.position);
 			
+			myHand.HandReachTarget(other.transform);
+			
 			Invoke(nameof(EnablePunching), punchWaitTime);
 			Invoke(nameof(ResetAdoptability), 0.5f);
 			return;
@@ -98,7 +100,7 @@ public class PalmController : MonoBehaviour
 		
 		SetCurrentTransform(other.transform);
 		myHand.HandReachTarget(other.transform);
-		_canBeAdopted = false;
+		_canAdopt = false;
 	}
 
 	private void OnDropArmor()
