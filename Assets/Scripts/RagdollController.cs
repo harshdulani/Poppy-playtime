@@ -37,6 +37,7 @@ public class RagdollController : MonoBehaviour
 	private static readonly int Idle1 = Animator.StringToHash("idle1");
 	private static readonly int Idle2 = Animator.StringToHash("idle2");
 	private static readonly int Idle3 = Animator.StringToHash("idle3");
+	private static readonly int HitReaction = Animator.StringToHash("hitReaction");
 
 	private void OnEnable()
 	{
@@ -103,6 +104,9 @@ public class RagdollController : MonoBehaviour
 
 	private void DropArmor()
 	{
+		_anim.SetTrigger(HitReaction);
+		if(armor.Count == 0) return;
+		
 		armor[0].isKinematic = false;
 		armor[0].AddForce(Vector3.up * 2f);
 		armor[0].transform.parent = null;
