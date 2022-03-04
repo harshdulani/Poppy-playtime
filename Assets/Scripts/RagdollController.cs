@@ -121,6 +121,7 @@ public class RagdollController : MonoBehaviour
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;
 		isRagdoll = true;
+		_patroller.ToggleAI(false);
 
 		foreach (var rb in rigidbodies)
 		{
@@ -179,7 +180,7 @@ public class RagdollController : MonoBehaviour
 	private void GoKinematic()
 	{
 		foreach (var rb in rigidbodies)
-			rb.isKinematic = false;
+			rb.isKinematic = true;
 	}
 
 	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);

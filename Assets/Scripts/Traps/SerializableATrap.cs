@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class SerializableITrap : MonoBehaviour
+public abstract class SerializableATrap : MonoBehaviour
 {
 	[SerializeField] private int myArea;
 

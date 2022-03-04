@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public class BoxingGloveTrap : SerializableITrap
+public class BoxingGloveTrap : SerializableATrap
 {
 	[SerializeField] private float tweenDuration;
 	

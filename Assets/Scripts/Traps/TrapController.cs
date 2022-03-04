@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TrapController : MonoBehaviour
 {
-	[SerializeField] private SerializableITrap myTrap;
+	[SerializeField] private SerializableATrap myTrap;
 
 	public void HandleTrapBehaviour() => myTrap.TrapBehaviour();
 	public float GetTweenDuration() => myTrap.GetTweenDuration();

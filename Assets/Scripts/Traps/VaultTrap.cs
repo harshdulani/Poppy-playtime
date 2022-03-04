@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class VaultTrap : SerializableITrap
+public class VaultTrap : SerializableATrap
 {
 	[SerializeField] private Rigidbody vaultRigidbody;
 

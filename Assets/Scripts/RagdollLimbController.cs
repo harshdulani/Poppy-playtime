@@ -28,6 +28,11 @@ public class RagdollLimbController : MonoBehaviour
 		return true;
 	}
 
+	public void SimpleDie()
+	{
+		_parent.GoRagdoll(Vector3.zero);
+	}
+
 	public void DisableRagdolling() => _parent.isAttackerSoCantRagdoll = true;
 	
 	public void GetPunched(Vector3 direction, float punchForce)
@@ -74,7 +79,8 @@ public class RagdollLimbController : MonoBehaviour
 		if (_rb.velocity.sqrMagnitude < 4f)
 		{
 			if(_parent.isAttackerSoCantRagdoll) return;
-			GetPunched(-direction, direction.magnitude);
+			if(!other.gameObject.TryGetComponent(out FlameThrowerTrap _))
+				GetPunched(-direction, direction.magnitude);
 			return;
 		}
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu) && !raghu._parent.isWaitingForPunch)
