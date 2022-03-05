@@ -28,11 +28,6 @@ public class RagdollLimbController : MonoBehaviour
 		return true;
 	}
 
-	public void SimpleDie()
-	{
-		_parent.GoRagdoll(Vector3.zero);
-	}
-
 	public void DisableRagdolling() => _parent.isAttackerSoCantRagdoll = true;
 	
 	public void GetPunched(Vector3 direction, float punchForce)

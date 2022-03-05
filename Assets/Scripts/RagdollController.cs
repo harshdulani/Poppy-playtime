@@ -115,6 +115,24 @@ public class RagdollController : MonoBehaviour
 		armor.RemoveAt(0);
 	}
 
+	public void TryGoRagdoll(Vector3 direction)
+	{
+		if (!_health)
+		{
+			GoRagdoll(direction);
+			return;
+		}
+		
+		_health.AddHit();
+		if (_health.IsDead())
+			GoRagdoll(direction);
+		else
+		{
+			DropArmor();
+			GameEvents.only.InvokeDropArmor();
+		}
+	}
+
 	public void GoRagdoll(Vector3 direction)
 	{
 		if(isRagdoll) return;

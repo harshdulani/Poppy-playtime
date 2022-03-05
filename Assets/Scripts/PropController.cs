@@ -217,7 +217,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		if (!other.transform.root.CompareTag("Target")) return;
 
 		if (other.transform.root.TryGetComponent(out RagdollController raghu))
-			raghu.GoRagdoll((other.contacts[0].point - transform.position).normalized);
+			raghu.TryGoRagdoll((other.contacts[0].point - transform.position).normalized);
 
 		if (raghu || other.transform.TryGetComponent(out HelicopterController heli))
 			GameEvents.only.InvokePropHitsEnemy();
