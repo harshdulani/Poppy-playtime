@@ -30,7 +30,7 @@ MonoBehaviour:
   secretKey:
   - b143b590259a836aa7390bc00a038c04a143b02a
   Build:
-  - 0.8
+  - 0.9
   SelectedPlatformOrganization:
   - Day Dreamz Studio
   SelectedPlatformStudio:
@@ -41,23 +41,34 @@ MonoBehaviour:
   SelectedOrganization: 01000000
   SelectedStudio: 01000000
   SelectedGame: 39000000
-  NewVersion: 7.3.17
-  Changes: '7.3.19
+  NewVersion: 7.3.21
+  Changes: '7.3.21
+
+    - fixed bug in internal error reporting
+
+
+    7.3.20
+
+    -
+    added event uuid to events sent
+
+
+    7.3.19
 
     - updated dependencies
 
 
     7.3.18
 
-    - fixed fps event
-    script to still run coroutines when Time.timeScale = 0 by using WaitForSecondsRealtime
-    instead of WaitForSeconds
+    -
+    fixed fps event script to still run coroutines when Time.timeScale = 0 by using
+    WaitForSecondsRealtime instead of WaitForSeconds
 
 
     7.3.17
 
-    - added method manually update gamekey
-    and secretkey
+    - added method
+    manually update gamekey and secretkey
 
 
     7.3.16

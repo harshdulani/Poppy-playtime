@@ -21,6 +21,12 @@ public class RagdollLimbController : MonoBehaviour
 	public bool TellParent()
 	{
 		DropContainer();
+		
+		if(_parent.touchToKill)
+		{
+			_parent.GoRagdoll(Vector3.zero);
+			return false;
+		}
 		if (!_parent.TryHoldInAir()) return false;
 		
 		if (_shatterParent)

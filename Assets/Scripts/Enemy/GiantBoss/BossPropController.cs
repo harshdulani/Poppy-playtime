@@ -50,6 +50,11 @@ public class BossPropController : MonoBehaviour
 
 	private void SpawnProp()
 	{
+		if(transform.childCount == 0)
+		{
+			StopSpawning();
+			return;
+		}
 		var prop = transform.GetChild(Random.Range(0, transform.childCount)).gameObject;
 		var oldPosY = prop.transform.position.y;
 		prop.transform.position += Vector3.up * 10f;

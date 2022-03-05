@@ -158,9 +158,10 @@ public class PropController : MonoBehaviour, IWantsAds
 
 		TimeController.only.SlowDownTime(0f);
 
+		if(!ApplovinManager.instance) return;
+		
 		StartWaiting();
 		AdsMediator.StartListeningForAds(this);
-
 		ApplovinManager.instance.ShowRewardedAds();
 	}
 

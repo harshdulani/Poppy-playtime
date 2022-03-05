@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -22,7 +23,8 @@ public class GiantController : MonoBehaviour
 	[SerializeField] private Transform carHolderSlot;
 	[Range(0.1f, 1f)] public float explosionScale = 1f;
 	[SerializeField] private float throwForce, waitBetweenAttacks;
-	
+
+	[SerializeField] private float endYValue;
 	[SerializeField] private GameObject trailPrefab;
 	[SerializeField] private GameObject smokeEffectOnLand;
 	[SerializeField] private AudioClip landing, roar, propPull;
@@ -120,7 +122,7 @@ public class GiantController : MonoBehaviour
 			_anim.SetTrigger(Grab);
 			_audioSource.PlayOneShot(roar);
 			_isAttacking = true;
-
+			
 			//grab animation calls get car on animation -> grab vehicle -> attack anim -> throws car
 			
 			yield return new WaitUntil(() => !_isAttacking);
@@ -132,16 +134,17 @@ public class GiantController : MonoBehaviour
 	
 	private IEnumerator GrabVehicle()
 	{
-		while(transform.position.y > 0.5f)
-			yield return GameExtensions.GetWaiter(0.25f);
-		
+		if(Math.Abs(endYValue) < 0.01f)
+			while (transform.position.y > 0.5f)
+				yield return GameExtensions.GetWaiter(0.25f);
+
 		_grabbedTargetCarController = null;
-		
 		do
 		{
 			var colliders = Physics.OverlapBox(transform.position + transform.forward * overlapBoxBounds.distance, 
 				new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2), Quaternion.identity);
 
+			print(colliders.Length);
 			foreach (var item in colliders)
 			{
 				if(!item.CompareTag("Target")) continue;
@@ -207,7 +210,7 @@ public class GiantController : MonoBehaviour
 	public void StartJumpOnAnimation()
 	{
 		//this duration comes from animation - event keyframe time with anim fps, approx 32 * 1/60 of a second 
-		transform.DOMoveY(0f, 0.5f).SetEase(Ease.InQuad);
+		transform.DOMoveY(endYValue, 0.5f).SetEase(Ease.InQuad);
 	}
 
 	public void ScreenShakeOnAnimation()

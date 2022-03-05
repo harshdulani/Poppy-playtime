@@ -16,6 +16,7 @@ public class RagdollController : MonoBehaviour
 	[SerializeField] private Color deadColor;
 	private Material _material;
 
+	[Header("Health/ Death Modifiers")] public bool touchToKill;
 	[SerializeField] private List<Rigidbody> armor;
 
 	[Header("Audio"), SerializeField] private AudioClip punch1;
@@ -226,10 +227,9 @@ public class RagdollController : MonoBehaviour
 
 	private void OnReachNextArea()
 	{
-		if (_patroller.myPatrolArea < LevelFlowController.only.currentArea)
-		{
-			gameObject.SetActive(false);
-		}
+		if(LevelFlowController.only.isGiantLevel) return;
+		
+		if (_patroller.myPatrolArea < LevelFlowController.only.currentArea) gameObject.SetActive(false);
 	}
 
 	private void OnGiantLanding(Transform giant)
