@@ -20,7 +20,7 @@ public class TrapAttacker : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		if (!other.collider.CompareTag("Target")) return;
-
+		
 		if (!other.gameObject.TryGetComponent(out RagdollLimbController raghu)) return;
 
 		var dir = other.transform.position - transform.position;

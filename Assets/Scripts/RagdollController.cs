@@ -105,7 +105,9 @@ public class RagdollController : MonoBehaviour
 	private void DropArmor()
 	{
 		_anim.SetTrigger(HitReaction);
+		
 		if(armor.Count == 0) return;
+		if(!armor[0]) return;
 		
 		armor[0].isKinematic = false;
 		armor[0].AddForce(Vector3.up * 2f);
