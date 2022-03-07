@@ -75,19 +75,6 @@ public class PlayerController : MonoBehaviour
         else
             leftHandLR.positionCount = 0;
 
-
-        //if (rightHandScript.inUse)
-        //    rightHandLR.positionCount = 2;
-        //else
-        //    rightHandLR.positionCount = 0;
-
-        //if (leftHandScript.inUse)
-        //    leftHandLR.positionCount = 2;
-        //else
-        //    leftHandLR.positionCount = 0; 
-
-
-
         LeftHandLineRendererPoints();
 
         RightHandLineRendererPoints();
@@ -431,6 +418,16 @@ public class PlayerController : MonoBehaviour
     public void GameOver()
     {
         stopController = true;
+        leftHandLR.positionCount = 0;
+        rightHandLR.positionCount = 0;
+    }
+
+    public void GameOver_Forward()
+    {
+        stopMoving = false;
+        stopController = false;
+        lfHandScript.inUse = true;
+        rtHandScript.inUse = true;
         leftHandLR.positionCount = 0;
         rightHandLR.positionCount = 0;
     }

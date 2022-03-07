@@ -196,7 +196,8 @@ public class PoppyEnemy : MonoBehaviour
     {
         StillCarrying = false;
         move = false;
-        playerController.GameOver();
+        playerController.GameOver_Forward();
+        //  playerController.GameOver();
         myTransform.DOScale(Vector3.one * baseScale, 0.25f).SetEase(Ease.Flash);
         myTransform.DOMove(playerController.girl.transform.position + new Vector3(0, 0, 6.5f), 0.25f).SetEase(Ease.Flash).OnComplete(()=> { myAnimator.SetTrigger("Lift"); Invoke("SetGirlAsParent", 1.2f); });
         if (Help.instance)
@@ -208,7 +209,8 @@ public class PoppyEnemy : MonoBehaviour
         move = false;
         gotHit = false;
         StillCarrying = false;
-        playerController.GameOver();
+        // playerController.GameOver();
+        playerController.GameOver_Forward();
        // myTransform.DOScale(Vector3.one * baseScale, 0.25f).SetEase(Ease.Flash);
         float y = 15.5f;
         Vector3 tempPos;
