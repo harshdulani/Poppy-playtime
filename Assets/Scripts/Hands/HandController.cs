@@ -19,13 +19,15 @@ public class HandController : MonoBehaviour
 	[SerializeField] private AudioClip splashAudioClip, gunshotAudioClip;
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
+	public bool isWaitingToGivePunch;
+	
 	[Header("Weapon Skins"), SerializeField] private WeaponType currentWeaponsSkin;
 	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry, burger, poop, flowers, phone, iceCream;
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
-	
+
 	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
 	[SerializeField] private Material poppy, batman, hulk, spidey, circuits, captain;
-	
+
 	public static PlayerSoundController Sounds;
 
 	private Animator _myAnimator;
@@ -38,7 +40,7 @@ public class HandController : MonoBehaviour
 	private Transform _lastTarget, _lastTargetRoot;
 	private static RagdollController _lastRaghu;
 	private Vector3 _palmInitLocalPos;
-	private bool _isHandMoving, _canGivePunch;
+	private bool _isHandMoving;
 
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
@@ -267,7 +269,7 @@ public class HandController : MonoBehaviour
 		}
 
 		_myAnimator.SetBool(IsPunching, true);
-		_canGivePunch = true;
+		isWaitingToGivePunch = true;
 		_rope.ReturnHome();
 		windLines.Play();
 	}
@@ -405,9 +407,9 @@ public class HandController : MonoBehaviour
 
 	public void GivePunch()
 	{
-		if (!_canGivePunch) return;
+		if (!isWaitingToGivePunch) return;
 		
-		_canGivePunch = false;
+		isWaitingToGivePunch = false;
 		_rootAnimator.SetTrigger(Attack);
 		if(currentWeaponsSkin == WeaponType.Gun)
 		{

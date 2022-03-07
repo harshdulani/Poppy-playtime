@@ -408,6 +408,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: b53cc411670ac41429bd9135212c8882, type: 2}
     - target: {fileID: 5866666021909216657, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: da0303c91afc3e34bb82b454707d274c, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
@@ -1161,12 +1165,14 @@ MonoBehaviour:
   isRagdoll: 0
   isWaitingForPunch: 0
   isAttackerSoCantRagdoll: 0
+  giantStompForce: 500
+  skin: {fileID: 0}
   shouldTurnToGrey: 0
   shouldMirror: 1
-  skin: {fileID: 0}
   toChangeMatIndex: 0
   deadColor: {r: 0, g: 0, b: 0, a: 0}
-  giantStompForce: 500
+  touchToKill: 0
+  armor: []
   punch1: {fileID: 8300000, guid: 717bbbc0d4f18cc4696041fa6c4b1bcd, type: 3}
   punch2: {fileID: 8300000, guid: 61b40c6e692ffdf4a89aba7ad5b71aca, type: 3}
 --- !u!114 &5950390656349273211

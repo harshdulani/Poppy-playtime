@@ -76,7 +76,7 @@ public class InputHandler : MonoBehaviour
 		
 		//if "control mechanic" is zero, this variable is true
 		//so default is tap and punch
-		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
+		isUsingTapAndPunch = PlayerPrefs.GetInt("controlMechanic", 0) != 0;
 	}
 
 	private void Update()

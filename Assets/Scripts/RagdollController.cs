@@ -144,7 +144,7 @@ public class RagdollController : MonoBehaviour
 		isRagdoll = true;
 		if(_patroller)
 			_patroller.ToggleAI(false);
-
+		
 		foreach (var rb in rigidbodies)
 		{
 			rb.isKinematic = false;
@@ -214,6 +214,18 @@ public class RagdollController : MonoBehaviour
 	
 	private void OnMoveToNextArea()
 	{
+		if(_patroller)
+			if (_patroller.myPatrolArea > LevelFlowController.only.currentArea)
+			{
+				_anim.enabled = false;
+				gameObject.SetActive(false);
+				DOVirtual.DelayedCall(0.015f, () =>
+				{
+					_anim.enabled = true;
+					gameObject.SetActive(true);
+				});
+			}
+
 		if(isPoppy) return;
 		
 		PlayRandomAnim();

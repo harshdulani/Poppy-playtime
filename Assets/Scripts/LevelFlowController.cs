@@ -74,6 +74,9 @@ public class LevelFlowController : MonoBehaviour
 			if(timer < elapsed) break;
 		}
 
+		while (InputHandler.Only.GetRightHand().isWaitingToGivePunch)
+			yield return GameExtensions.GetWaiter(intervals);
+		
 		if (currentArea == enemiesInArea.Count - 1)
 			GameEvents.only.InvokeGameEnd();
 		else
