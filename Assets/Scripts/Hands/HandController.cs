@@ -189,7 +189,8 @@ public class HandController : MonoBehaviour
 			}
 			else
 			{
-				if (other.transform.TryGetComponent(out RagdollLimbController raghu))
+				StartCarryingBody(other);
+				if (other.TryGetComponent(out RagdollLimbController raghu))
 				{
 					if (!raghu.TellParent())
 					{
@@ -202,14 +203,16 @@ public class HandController : MonoBehaviour
 					}
 					
 					ClearStateInfo();
+					StartCarryingBody(other);
 				}		
 				else if (CurrentObjectCarriedType == CarriedObjectType.Car)
+				{
+					print($"{other} {CurrentObjectCarriedType}");
 					other.GetComponent<CarController>().StopMoving();
+				}
 				
-				if (other.TryGetComponent(out PropController prop))
+				if (other.TryGetComponent(out PropController prop)) 
 					prop.hasBeenInteractedWith = true;
-				
-				StartCarryingBody(other.transform);
 			}
 			
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 

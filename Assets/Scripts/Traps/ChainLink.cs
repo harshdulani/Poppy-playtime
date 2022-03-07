@@ -13,12 +13,20 @@ public class ChainLink : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		if (_broken) return;
-
-		if(!other.collider.CompareTag("Target")) return;
-
+		
+		//after enemies become ragdolls, their limbs lose their Target tag, but props still have the target tag till they are destroyed, which will ideally always be after it collides with a chain link 
+		if(!other.collider.CompareTag("Target") && !other.collider.CompareTag("Untagged")) return;
+		
+		//only people that are allowed interactions with this are a thrown prop or a thrown ragdoll
+		//so if it collides with a ragdoll, and it is not ragdolling, return
+		//otherwise
+		//if it collides with an object that is not a ragdoll, check if it is a prop
+		//if it is neither, return
 		if(other.collider.TryGetComponent(out RagdollLimbController raghuvendra))
-			if(!raghuvendra.IsRaghuRagdolling())
-				return;
+		{
+			if (!raghuvendra.IsRaghuRagdolling()) return;
+		}
+		else if(!other.collider.TryGetComponent(out PropController _)) return;
 
 		if(_parent)
 			_parent.BreakChainLinkUsingBarrel(gameObject, other.transform.position);

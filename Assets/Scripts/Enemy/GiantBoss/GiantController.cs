@@ -2,11 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public struct BoxBounds { public float x, y, z, distance; }
 
 public class GiantController : MonoBehaviour
@@ -37,7 +35,7 @@ public class GiantController : MonoBehaviour
 	private AudioSource _audioSource;
 	private HealthController _health;
 
-	private TweenerCore<Quaternion, Vector3, QuaternionOptions> _tweener;
+	private Tweener _tweener;
 	private bool _isAttacking;
 	
 	private static readonly int Hit = Animator.StringToHash("Hit");
@@ -128,7 +126,7 @@ public class GiantController : MonoBehaviour
 			yield return new WaitUntil(() => !_isAttacking);
 			yield return GameExtensions.GetWaiter(waitBetweenAttacks);
 			transform.DORotateQuaternion(Quaternion.LookRotation(playerTemp - myTemp), 0.2f);
-			transform.DOMoveY(0f, 0.2f);
+			transform.DOMoveY(endYValue, 0.2f);
 		}
 	}
 	
@@ -144,7 +142,6 @@ public class GiantController : MonoBehaviour
 			var colliders = Physics.OverlapBox(transform.position + transform.forward * overlapBoxBounds.distance, 
 				new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2), Quaternion.identity);
 
-			print(colliders.Length);
 			foreach (var item in colliders)
 			{
 				if(!item.CompareTag("Target")) continue;

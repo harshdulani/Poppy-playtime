@@ -142,7 +142,8 @@ public class RagdollController : MonoBehaviour
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;
 		isRagdoll = true;
-		_patroller.ToggleAI(false);
+		if(_patroller)
+			_patroller.ToggleAI(false);
 
 		foreach (var rb in rigidbodies)
 		{
@@ -150,8 +151,6 @@ public class RagdollController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 			rb.tag = "Untagged";
 		}
-
-		Invoke(nameof(GoKinematic), 4f);
 		
 		GameEvents.only.InvokeEnemyKill();
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
@@ -193,15 +192,10 @@ public class RagdollController : MonoBehaviour
 
 		_anim.applyRootMotion = true;
 		_anim.SetTrigger(Random.value > 0.5f ? Attack1 : Attack2);
-		_patroller.ToggleAI(false);
+		if(_patroller)
+			_patroller.ToggleAI(false);
 		_isAttacking = true;
 		InputHandler.Only.AssignDisabledState();
-	}
-
-	private void GoKinematic()
-	{
-		foreach (var rb in rigidbodies)
-			rb.isKinematic = true;
 	}
 
 	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);
@@ -228,6 +222,7 @@ public class RagdollController : MonoBehaviour
 	private void OnReachNextArea()
 	{
 		if(LevelFlowController.only.isGiantLevel) return;
+		if (!_patroller) return;
 		
 		if (_patroller.myPatrolArea < LevelFlowController.only.currentArea) gameObject.SetActive(false);
 	}

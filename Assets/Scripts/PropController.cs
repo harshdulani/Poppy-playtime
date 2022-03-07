@@ -95,15 +95,18 @@ public class PropController : MonoBehaviour, IWantsAds
 		_collider.enabled = false;
 		var parent = new GameObject(gameObject.name + " debris").transform;
 
-		for (var i = 0; i < rigidbodies.Count; i++)
-		{
-			colliders[i].enabled = true;
-			rigidbodies[i].transform.parent = parent;
-			rigidbodies[i].isKinematic = false;
-			rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 10f);
+		if(colliders.Count == 0 || !colliders[0])
+			print($"{gameObject} has no/null colliders");
+		else
+			for (var i = 0; i < rigidbodies.Count; i++)
+			{
+				colliders[i].enabled = true;
+				rigidbodies[i].transform.parent = parent;
+				rigidbodies[i].isKinematic = false;
+				rigidbodies[i].AddExplosionForce(explosionForce, transform.position, 10f);
 
-			_pieces.Add(rigidbodies[i].transform);
-		}
+				_pieces.Add(rigidbodies[i].transform);
+			}
 
 		GameEvents.only.InvokePropDestroy(transform);
 		_amDestroyed = true;
