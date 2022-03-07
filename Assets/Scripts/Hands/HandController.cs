@@ -199,20 +199,16 @@ public class HandController : MonoBehaviour
 						//punch sfx
 						InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
 						Vibration.Vibrate(15);
-						
+
 						ClearStateInfo();
 						return;
 					}
-					
+
 					ClearStateInfo();
 					StartCarryingBody(other);
-				}		
-				else if (CurrentObjectCarriedType == CarriedObjectType.Car)
-				{
-					print($"{other} {CurrentObjectCarriedType}");
-					other.GetComponent<CarController>().StopMoving();
 				}
-				
+				else if (CurrentObjectCarriedType == CarriedObjectType.Car)
+					other.GetComponent<CarController>().StopMoving();
 				if (other.TryGetComponent(out PropController prop)) 
 					prop.hasBeenInteractedWith = true;
 			}
