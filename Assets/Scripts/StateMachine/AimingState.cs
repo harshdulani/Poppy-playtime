@@ -81,7 +81,7 @@ public class AimingState : InputStateBase
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
 		}
-		if (!hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton") && !_hit.collider.CompareTag("ChainLink"))	
+		if (!hit.collider.CompareTag("Target") && !_hit.collider.CompareTag("TrapButton") && !_hit.collider.CompareTag("ChainLink"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);
 			return;
