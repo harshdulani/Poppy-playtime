@@ -17,7 +17,6 @@ public class ChainLinkPlatform : MonoBehaviour
     	if(!showOverlapBoxDebug) return;
     	
     	// cache previous Gizmos settings
-    	var prevColor = Gizmos.color;
     	Matrix4x4 prevMatrix = Gizmos.matrix;
 
     	Gizmos.color = new Color(0f, 0.75f, 1f, 0.5f);

@@ -73,8 +73,22 @@ public class GiantController : MonoBehaviour
 	{
 		if(!showOverlapBoxDebug) return;
 		
+		// cache previous Gizmos settings
+		Matrix4x4 prevMatrix = Gizmos.matrix;
+
 		Gizmos.color = new Color(0f, 0.75f, 1f, 0.5f);
-		Gizmos.DrawCube(transform.position + transform.forward * overlapBoxBounds.distance, new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z));
+		Gizmos.matrix = transform.localToWorldMatrix;
+
+		var boxPosition = transform.position + transform.forward * overlapBoxBounds.distance;
+
+		// convert from world position to local position
+		boxPosition = transform.InverseTransformPoint(boxPosition); 
+
+		var boxSize = new Vector3(overlapBoxBounds.x, overlapBoxBounds.y, overlapBoxBounds.z);
+		Gizmos.DrawCube(boxPosition, boxSize);
+
+		// restore previous Gizmos settings
+		Gizmos.matrix = prevMatrix;
 	}
 
 	private void GoRagdoll(Vector3 direction)

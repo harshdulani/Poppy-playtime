@@ -4,24 +4,25 @@ using UnityEngine;
 public class FlameThrowerTrap : SerializableATrap
 {
 	[SerializeField] private GameObject[] flamethrowers;
+	[SerializeField] private float trapDuration;
 	private bool _throwingFlame;
-
-	private void OnDisable()
-	{
-		if(_throwingFlame)
-			GameEvents.only.moveToNextArea -= OnMoveNextArea;
-	}
 
 	public override void TrapBehaviour()
 	{
 		foreach (var flame in flamethrowers)
 			flame.SetActive(true);
-
-		GameEvents.only.moveToNextArea += OnMoveNextArea;
 		_throwingFlame = true;
+
+		DOVirtual.DelayedCall(trapDuration, () =>
+		{
+			foreach (var flame in flamethrowers)
+				flame.SetActive(false);
+			
+			_throwingFlame = false;
+		}); 
 	}
 
-	public override float GetTweenDuration() => 0;
+	public override float GetTweenDuration() => trapDuration + 0.75f;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -33,15 +34,5 @@ public class FlameThrowerTrap : SerializableATrap
 
 		if (other.TryGetComponent(out RagdollLimbController raghu)) 
 			raghu.GetPunched(transform.position - other.transform.position, 1f);
-	}
-	
-	private void OnMoveNextArea()
-	{
-		if(!_throwingFlame) return;
-		
-		foreach (var flame in flamethrowers)
-			flame.SetActive(false);
-
-		_throwingFlame = false;
 	}
 }

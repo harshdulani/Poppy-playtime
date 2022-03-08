@@ -81,11 +81,14 @@ public class RagdollLimbController : MonoBehaviour
 		{
 			if(_parent.isAttackerSoCantRagdoll) return;
 			if(!other.gameObject.TryGetComponent(out FlameThrowerTrap _))
-				GetPunched(-direction, direction.magnitude);
+				GetPunched(-direction, 0.25f);
 			return;
 		}
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu) && !raghu._parent.isWaitingForPunch)
-			raghu.GetPunched(direction, direction.magnitude);
+		{
+			if (raghu._parent.IsInPatrolArea())
+				raghu.GetPunched(direction, direction.magnitude);
+		}
 		else
 		{
 			var prop = other.gameObject.GetComponent<PropController>();

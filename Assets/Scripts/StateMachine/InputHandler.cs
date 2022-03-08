@@ -138,11 +138,11 @@ public class InputHandler : MonoBehaviour
 		return _aimingState;
 	}
 
-	private void PutInTapCoolDown()
+	private void PutInTapCoolDown(float customCooldownTime = -1f)
 	{
 		_inTapCooldown = true;
 		AssignDisabledState();
-		DOVirtual.DelayedCall(tapCooldownWaitTime, TapCoolDown);
+		DOVirtual.DelayedCall(customCooldownTime > 0f ? customCooldownTime : tapCooldownWaitTime, TapCoolDown);
 	}
 
 	private void TapCoolDown()
@@ -210,7 +210,11 @@ public class InputHandler : MonoBehaviour
 		AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 	}
 
-	private void OnTapToPlay() => _tappedToPlay = true;
+	private void OnTapToPlay()
+	{
+		_tappedToPlay = true;
+		PutInTapCoolDown(0.75f);
+	}
 
 	private void OnGameOver()
 	{

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -96,9 +97,13 @@ public class EnemyPatroller : MonoBehaviour
 
 		_anim.applyRootMotion = false;
 		//this is perma true because uske bina soona soona lagta hai ghar
-		ToggleAI(shouldPatrol);
-		_anim.SetBool(IsWalking, true);
-		SetNextWaypoint();
+		
+		DOVirtual.DelayedCall(Random.Range(0f, 0.5f), () =>
+		{
+			ToggleAI(true);
+			_anim.SetBool(IsWalking, true);
+			SetNextWaypoint();
+		});
 	}
 
 	public bool IsInCurrentPatrolArea() => LevelFlowController.only.currentArea == myPatrolArea;

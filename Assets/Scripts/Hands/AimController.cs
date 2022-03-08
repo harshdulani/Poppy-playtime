@@ -27,6 +27,7 @@ public class AimController : MonoBehaviour
 	{
 		GameEvents.only.punchHit += OnPunchHit;
 		
+		GameEvents.only.trapButtonPressed += OnTrapButtonPressed;
 		GameEvents.only.moveToNextArea += OnMoveToNextArea;
 		GameEvents.only.reachNextArea += OnReachNextArea;
 	}
@@ -35,6 +36,7 @@ public class AimController : MonoBehaviour
 	{
 		GameEvents.only.punchHit -= OnPunchHit;
 		
+		GameEvents.only.trapButtonPressed -= OnTrapButtonPressed;
 		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
 		GameEvents.only.reachNextArea -= OnReachNextArea;
 	}
@@ -89,11 +91,6 @@ public class AimController : MonoBehaviour
 		_hasTarget = false;
 	}
 
-	private IEnumerator TryVibrate()
-	{
-		yield break;
-	}
-
 	private void ResetLockOnSound()
 	{
 		_canPlayLockOnSound = true;
@@ -111,6 +108,18 @@ public class AimController : MonoBehaviour
 		transform.rotation = newRot;
 	}
 
+	private void ResetRotationToAreaInit()
+	{
+		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
+		_rotX = _initRotAxisX;
+		_rotY = _initRotAxisY;
+	}
+
+	private void OnTrapButtonPressed()
+	{
+		ResetRotationToAreaInit();
+	}
+	
 	private void OnPunchHit()
 	{
 		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);

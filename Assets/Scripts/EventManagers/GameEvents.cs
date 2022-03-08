@@ -25,7 +25,8 @@ public class GameEvents : MonoBehaviour
 	public Action<Transform> giantPickupProp;
 	
 	public Action<Transform> rayfireShattered;
-	
+
+	public Action trapButtonPressed;
 	public Action<Rigidbody> dropContainer;
 	public Action dropArmor, enemyKilled;
 
@@ -52,6 +53,7 @@ public class GameEvents : MonoBehaviour
 
 	public void InvokeRayfireShattered(Transform shattered) => rayfireShattered?.Invoke(shattered);
 
+	public void InvokeTrapButtonPressed() => trapButtonPressed?.Invoke();
 	public void InvokeDropContainer(Rigidbody container) => dropContainer?.Invoke(container);
 	
 	public void InvokeDropArmor() => dropArmor?.Invoke();

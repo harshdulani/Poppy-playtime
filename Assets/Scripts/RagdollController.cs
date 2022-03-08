@@ -78,6 +78,8 @@ public class RagdollController : MonoBehaviour
 		PlayRandomAnim();
 	}
 
+	public bool IsInPatrolArea() => _patroller.IsInCurrentPatrolArea();
+
 	public bool TryHoldInAir()
 	{
 		if (_health)

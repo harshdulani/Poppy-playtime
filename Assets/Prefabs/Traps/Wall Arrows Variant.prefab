@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a0881023e81ad948bdd8afdea053703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnabled: 0
+  isAlwaysEnabled: 1
   desiredPosition: {fileID: 0}
 --- !u!1001 &2122599006388429224
 PrefabInstance:
@@ -137,7 +139,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3845965367262742809, guid: cfb26f2dba6dbe74198466ba93136a51, type: 3}
       propertyPath: m_Name
-      value: Wall Arrows
+      value: Wall Arrows Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4473285763036271523, guid: cfb26f2dba6dbe74198466ba93136a51, type: 3}
       propertyPath: m_RootOrder
@@ -239,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myArea: 1
+  attacker: {fileID: 0}
   arrows:
   - {fileID: 1096182253349164881}
   - {fileID: 7950162693712644160}
@@ -255,7 +258,8 @@ MonoBehaviour:
   - {fileID: 2726101480720409712}
   - {fileID: 1594384225}
   arrowEndDistance: 15
-  arrowFireSpeed: 1
+  arrowFireDuration: 1.5
+  returnToOrigin: 0
 --- !u!4 &3244550011378594331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3490863138274071475, guid: cfb26f2dba6dbe74198466ba93136a51, type: 3}

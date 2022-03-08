@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class TrapAttacker : MonoBehaviour
 {
+	public bool isEnabled;
+	[SerializeField] private bool isAlwaysEnabled = true;
+	
 	[SerializeField] private Transform desiredPosition;
 
 	private Rigidbody _rb;
@@ -9,6 +12,8 @@ public class TrapAttacker : MonoBehaviour
 	private void Start()
 	{
 		_rb = GetComponent<Rigidbody>();
+
+		isEnabled = isAlwaysEnabled;
 	}
 
 	private void Update()
@@ -19,6 +24,8 @@ public class TrapAttacker : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		if(!isEnabled) return;
+		
 		if (!other.collider.CompareTag("Target")) return;
 		
 		if (!other.gameObject.TryGetComponent(out RagdollLimbController raghu)) return;

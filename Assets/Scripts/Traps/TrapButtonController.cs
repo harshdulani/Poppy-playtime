@@ -24,7 +24,9 @@ public class TrapButtonController : MonoBehaviour
 	public void PressButton()
 	{
 		if(!_canPress) return;
+		
 		var seq = DOTween.Sequence();
+		GameEvents.only.InvokeTrapButtonPressed();
 
 		foreach (var trap in _myTrapControllers)
 			seq.AppendCallback(() => trap.HandleTrapBehaviour());
