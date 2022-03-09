@@ -1417,7 +1417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311185874752, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 45.000095
+      value: 139.5003
       objectReference: {fileID: 0}
     - target: {fileID: 592453311387248778, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1457,7 +1457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311930542070, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 45.000095
+      value: 139.5003
       objectReference: {fileID: 0}
     - target: {fileID: 2006200668292180719, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.y
@@ -14696,6 +14696,7 @@ MonoBehaviour:
   - {fileID: 1436942973}
   - {fileID: 1798438449}
   overlapCube: {fileID: 0}
+  shouldPlayBrickAudioOnShatter: 1
   showOverlapBoxDebug: 0
 --- !u!4 &1995127572
 Transform:
@@ -15666,6 +15667,7 @@ MonoBehaviour:
   - {fileID: 1202540598}
   - {fileID: 1381473685}
   overlapCube: {fileID: 0}
+  shouldPlayBrickAudioOnShatter: 1
   showOverlapBoxDebug: 0
 --- !u!4 &2068289302
 Transform:
@@ -16627,6 +16629,10 @@ PrefabInstance:
     - target: {fileID: 3883471855503271294, guid: 8c78d22be4faf744c8a1e34cdf47c6be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883471855503271295, guid: 8c78d22be4faf744c8a1e34cdf47c6be, type: 3}
+      propertyPath: shouldPlayBrickAudioOnShatter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5221073939766956934, guid: 8c78d22be4faf744c8a1e34cdf47c6be, type: 3}
       propertyPath: m_StaticEditorFlags

@@ -32,6 +32,7 @@ public class CarController : MonoBehaviour
 	public void DropVehicle()
 	{
 		_rb.isKinematic = false;
+		_rb.useGravity = true;
 		transform.parent = null;
 		_trail.SetActive(false);
 	}
@@ -56,7 +57,7 @@ public class CarController : MonoBehaviour
 	{
 		if(!CompareTag("EnemyAttack")) return;
 		
-		if(!(other.gameObject.CompareTag("HitBox") || other.gameObject.CompareTag("Arm") || other.gameObject.CompareTag("Player"))) return;
+		if(!other.gameObject.CompareTag("HitBox") && !other.gameObject.CompareTag("Arm") && !other.gameObject.CompareTag("Player")) return;
 		
 		GameEvents.only.InvokeEnemyHitPlayer(transform);
 		

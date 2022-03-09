@@ -6,6 +6,7 @@ public class ShatterableParent : MonoBehaviour
 	public bool isShattered, shouldUnparent, shouldOnlyBeShatteredByLastEnemy;
 	[SerializeField] private Shatterable[] theShatterables;
 	[SerializeField] private MeshRenderer overlapCube;
+	[SerializeField] private bool shouldPlayBrickAudioOnShatter;
 
 	private static List<Transform> _possibleShatterers = new List<Transform>();
 	
@@ -35,6 +36,12 @@ public class ShatterableParent : MonoBehaviour
 			if(!LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 		
 		GameEvents.only.InvokeRayfireShattered(transform);
+		
+		if(shouldPlayBrickAudioOnShatter)
+		{
+			AudioManager.instance.Play("BrickBreakHigh");
+			AudioManager.instance.Play("BrickFall" + Random.Range(1, 3));
+		}
 
 		foreach (var shatterable in theShatterables)
 			shatterable.Shatter();

@@ -41,11 +41,18 @@ public static class GameExtensions
 		return Mathf.Lerp(oMin, oMax, Mathf.InverseLerp(iMin, iMax, v));
 	}
 
+	public static float ClampAngleTo (float angle, float from, float to)
+    {
+        if (angle < 0f) angle = 360 + angle;
+        return angle > 180f ? Mathf.Max(angle, 360 + @from) : Mathf.Min(angle, to);
+    }
+
 	/// <summary>
 	/// Use whenever you can't find out why a canvas element is not being pressed
 	/// </summary>
 	public static void GetObjectUnderPointer()
 	{
+		//if you have InputExtensions.cs, replace these first 2 lines with appropriate simplified calls.
 		if (!Input.GetMouseButtonDown(0)) return;
 		
 		var pointerData = new PointerEventData(EventSystem.current) {pointerId = -1, position = Input.mousePosition};

@@ -92,8 +92,22 @@ public static class InputExtensions
 		return Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary;
 	}
 
+	/// <summary>
+	/// Returns the center point in screen space co-ordinates as a Vector3 with z = 0. (Returns the half of the screen resolution)
+	/// </summary>
+	/// <param name="percentageOnY"> Optionally add a normalised Y axis percentage to get the center point in X axis and custom Y axis point</param>
+	/// <returns></returns>
 	public static Vector3 GetCenterOfScreen(float percentageOnY = -2f)
 	{
 		return new Vector3(Screen.width * 0.5f, Screen.height * (percentageOnY < -1f || percentageOnY > 1f ? 0.5f : percentageOnY));
+	}
+
+	/// <summary>
+	/// Return the current pointer Id, typically for use with the EventSystem as it requires a pointer Id to do many functions. 
+	/// </summary>
+	/// <returns></returns>
+	public static int GetPointerId()
+	{
+		return IsUsingTouch ? Input.GetTouch(0).fingerId : -1;
 	}
 }

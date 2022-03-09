@@ -62,6 +62,8 @@ public class GiantController : MonoBehaviour
 		foreach (var rend in rends)
 			rend.enabled = false;
 
+		foreach (var rb in rigidbodies) rb.isKinematic = true;
+
 		_player = GameObject.FindGameObjectWithTag("Player").transform;
 		_health.VisibilityToggle(false);
 		
@@ -159,7 +161,7 @@ public class GiantController : MonoBehaviour
 			foreach (var item in colliders)
 			{
 				if(!item.CompareTag("Target")) continue;
-				
+
 				_grabbedTargetTransform = item.transform;
 				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetPropController);
 				if(_grabbedTargetPropController.hasBeenInteractedWith)
@@ -203,6 +205,7 @@ public class GiantController : MonoBehaviour
 		_grabbedTargetTransform.parent = null;
 
 		rb.isKinematic = false;
+		rb.useGravity = true;
 		//if it collides w another barrel mid air, it falls and lays there - you know, just killing the vibe
 		var seq = DOTween.Sequence();
 		seq.AppendCallback(() => rb.AddForce((GameObject.FindGameObjectWithTag("Player").transform.position - _grabbedTargetTransform.position).normalized * throwForce, ForceMode.Impulse));
@@ -211,8 +214,12 @@ public class GiantController : MonoBehaviour
 		{
 			if (rb)
 				rb.AddForce(Vector3.right * 200f, ForceMode.Impulse);
+			
+			_grabbedTargetTransform = null;
+			_grabbedTargetCarController = null;
+			_grabbedTargetPropController = null;
 		});
-		
+
 		_tweener.Kill();
 		_tweener = null;
 		_isAttacking = false;
@@ -282,6 +289,8 @@ public class GiantController : MonoBehaviour
 		if(!LevelFlowController.only.IsThisLastEnemy()) return;
 
 		_health.VisibilityToggle(true);
+		
+		
 		foreach (var item in headgear)
 			item.SetActive(true);
 		

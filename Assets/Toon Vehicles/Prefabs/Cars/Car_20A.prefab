@@ -269,7 +269,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 2671772f97072427baf3a31e0828fa04, type: 3}
 --- !u!54 &7982669690391366194
@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
   explosionForce: 0
@@ -336,7 +337,12 @@ MonoBehaviour:
   colliders: []
   magnitude: 1
   rotationMagnitude: 10
+  trailParent: {fileID: 0}
+  explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
+  shrinkSpeedMultiplier: 0
+  explosionScale: 0
 --- !u!1 &1708676276822774
 GameObject:
   m_ObjectHideFlags: 0
