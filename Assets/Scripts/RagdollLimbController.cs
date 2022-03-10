@@ -91,8 +91,7 @@ public class RagdollLimbController : MonoBehaviour
 		}
 		else
 		{
-			var prop = other.gameObject.GetComponent<PropController>();
-			if (!prop) return;
+			if(!other.gameObject.TryGetComponent(out PropController prop)) return;
 			
 			if(prop.IsACompositeProp)
 				prop.GetTouchedComposite(prop.transform.position - transform.position, true);

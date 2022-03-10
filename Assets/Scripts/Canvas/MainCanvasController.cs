@@ -13,8 +13,10 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	[SerializeField] private Toggle abToggle;
 	[SerializeField] private string tapInstruction, swipeInstruction;
 
-	private bool _hasTapped, _hasLost;
 	[SerializeField] private Button nextLevelButton;
+
+	private LevelIndicator _indicator;
+	private bool _hasTapped, _hasLost;
 
 	private void OnEnable()
 	{
@@ -30,13 +32,18 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	private void Start()
 	{
+		_indicator = GetComponent<LevelIndicator>();
+		
 		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
 		levelText.text = "Level " + levelNo;
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
-		
+
 		if(levelNo < 5)
+		{
 			skipLevel.SetActive(false);
+			_indicator.SetIndicatorEnable(false);
+		}
 
 		if(GAScript.Instance)
 			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());

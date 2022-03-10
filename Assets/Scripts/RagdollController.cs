@@ -118,7 +118,7 @@ public class RagdollController : MonoBehaviour
 		armor.RemoveAt(0);
 	}
 
-	public void TryGoRagdoll(Vector3 direction)
+	public void TryGoRagdoll(Vector3 direction, bool isPartOfMultipleHits = false)
 	{
 		if (!_health)
 		{
@@ -126,7 +126,7 @@ public class RagdollController : MonoBehaviour
 			return;
 		}
 		
-		_health.AddHit();
+		_health.AddHit(!isPartOfMultipleHits);
 		if (_health.IsDead())
 			GoRagdoll(direction);
 		else

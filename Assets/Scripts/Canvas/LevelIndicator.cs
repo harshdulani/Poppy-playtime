@@ -17,7 +17,6 @@ public class LevelIndicator : MonoBehaviour
 	[SerializeField] private Transform circlesRoot;
 	[SerializeField] private ThemeInfo theme;
 	[SerializeField] private float inactiveLevelScale = 0.75f;
-	[SerializeField] private int totalThemes = 7;
 
 	private List<Image> _backgroundCircles, _foregroundCircles;
 	private List<Transform> _textRects;
@@ -53,7 +52,7 @@ public class LevelIndicator : MonoBehaviour
 		var currentTheme = currentLevel / LevelsPerTheme;
 
 		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
-		if (currentTheme > totalThemes) return false;
+		if (SceneManager.sceneCountInBuildSettings < PlayerPrefs.GetInt("levelNo")) return false;
 
 		var currentThemedLevel = currentLevel % LevelsPerTheme;
 		
@@ -73,12 +72,9 @@ public class LevelIndicator : MonoBehaviour
 		}
 		
 		progressBarFill.color = theme.progressBarColor;
-		progressBarFillRect.anchorMax = new Vector2(currentLevel / (float)LevelsPerTheme, progressBarFillRect.anchorMax.y);
+		progressBarFillRect.anchorMax = new Vector2(currentThemedLevel / (float)LevelsPerTheme, progressBarFillRect.anchorMax.y);
 		return true;
 	}
 
-	private void OnValidate()
-	{
-		
-	}
+	public void SetIndicatorEnable(bool status) => plainText.transform.parent.gameObject.SetActive(status);
 }

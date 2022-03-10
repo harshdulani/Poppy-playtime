@@ -15,18 +15,21 @@ public class PropController : MonoBehaviour, IWantsAds
 	[SerializeField] private GameObject explosion;
 	[SerializeField] private AudioClip[] explosionFx;
 	[SerializeField] private bool alwaysSpawnVfx;
-	private AudioSource _source;
-	private static int _explosionSoundCounter;
 	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier, explosionScale;
+	[SerializeField] private Transform adButton;
 
+	private Tweener _adScaleTween;
+	private static int _explosionSoundCounter;
 	private readonly List<Transform> _pieces = new List<Transform>();
+
+	private bool _inHitBox, _amDestroyed, _isHeldByPlayer;
+	private GameObject _trail;
+	
+	private AudioSource _source;
 	private CompositeProp _parent;
 	private Rigidbody _rb;
 	private Collider _collider;
 	private Vector3 _previousPerlin, _previousPerlinRot;
-
-	private bool _inHitBox, _amDestroyed, _isHeldByPlayer;
-	private GameObject _trail;
 
 	private void OnEnable()
 	{
@@ -49,6 +52,11 @@ public class PropController : MonoBehaviour, IWantsAds
 		_source = GetComponent<AudioSource>();
 		if (transform.parent)
 			transform.parent.TryGetComponent(out _parent);
+
+		if(!adButton) return;
+		
+		var initScale = adButton.localScale;
+		_adScaleTween = adButton.DOScale(initScale * 1.25f, 0.5f).SetLoops(-1, LoopType.Yoyo);
 	}
 
 	private void Update()
@@ -71,7 +79,16 @@ public class PropController : MonoBehaviour, IWantsAds
 		}
 	}
 
-	public void PlayerPicksUp() => _isHeldByPlayer = true;
+	public void PlayerPicksUp()
+	{
+		_isHeldByPlayer = true;
+		
+		if(!_adScaleTween.IsActive()) return;
+
+		adButton.gameObject.SetActive(false);
+		_adScaleTween.Kill();
+	}
+
 	public void PlayerDrops() => _isHeldByPlayer = false;
 
 	private void PerlinNoise()
@@ -108,6 +125,9 @@ public class PropController : MonoBehaviour, IWantsAds
 				_pieces.Add(rigidbodies[i].transform);
 			}
 
+		if(alwaysSpawnVfx)
+			CreateVFX(transform.position, Quaternion.identity);
+		
 		GameEvents.only.InvokePropDestroy(transform);
 		_amDestroyed = true;
 		_isHeldByPlayer = false;
@@ -221,9 +241,14 @@ public class PropController : MonoBehaviour, IWantsAds
 		if (!other.transform.root.CompareTag("Target")) return;
 
 		if (other.transform.root.TryGetComponent(out RagdollController raghu))
+		{
 			raghu.TryGoRagdoll((other.contacts[0].point - transform.position).normalized);
 
-		if (raghu || other.transform.TryGetComponent(out HelicopterController heli))
+			if (shouldShowAds) 
+				raghu.TryGoRagdoll(Vector3.zero, true);
+		}
+
+		if (raghu || other.transform.TryGetComponent(out HelicopterController _))
 			GameEvents.only.InvokePropHitsEnemy();
 	}
 

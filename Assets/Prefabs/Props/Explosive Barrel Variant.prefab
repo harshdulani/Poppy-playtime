@@ -928,6 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 1
   hasBeenInteractedWith: 0
   explosionForce: 50
@@ -983,8 +984,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9963fdc7cf06ca142b7e646ec9131f0e, type: 3}
   - {fileID: 8300000, guid: a595e81c787e9ea47bb24ea023fb1a07, type: 3}
   - {fileID: 8300000, guid: 57ed69012a4f2644e9497a8b6e15ce8d, type: 3}
+  alwaysSpawnVfx: 1
   shrinkSpeedMultiplier: 0.2
-  explosionScale: 0.3
+  explosionScale: 0.75
+  adButton: {fileID: 0}
 --- !u!1 &4909591950993631586 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8379158579321734955, guid: 877f7c342bd1d1547856ae4d31986d6e, type: 3}
