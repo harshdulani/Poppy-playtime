@@ -122,8 +122,8 @@ public class HandController : MonoBehaviour
 		
 		if(isLeftHand)
 		{
-			_appliedMoveSpeed = moveSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
-			_appliedReturnSpeed = returnSpeed * (1f + PlayerPrefs.GetInt("currentSpeedLevel", 0) / 10f);
+			_appliedMoveSpeed = moveSpeed * (1f + ShopStateController.CurrentState.GetCurrentSpeedLevel() / 10f);
+			_appliedReturnSpeed = returnSpeed * (1f + ShopStateController.CurrentState.GetCurrentSpeedLevel() / 10f);
 		}
 		
 		UpdateEquippedArmsSkin();
