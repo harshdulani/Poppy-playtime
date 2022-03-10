@@ -150,7 +150,7 @@ public class RagdollController : MonoBehaviour
 		foreach (var rb in rigidbodies)
 		{
 			rb.isKinematic = false;
-			rb.AddForce(direction * 10f, ForceMode.Impulse);
+			rb.AddForce(direction * 7.5f, ForceMode.Impulse);
 			rb.tag = "Untagged";
 		}
 		
