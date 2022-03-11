@@ -6,6 +6,7 @@ using DG.Tweening;
 public class FireManDeath : MonoBehaviour
 {
     public bool off;
+    public Collider mycol;
     public List<GameObject> bodyIcePieces;
     public Material iceMaterial;
     public GameObject hitEffect;
@@ -16,22 +17,28 @@ public class FireManDeath : MonoBehaviour
 
     Animator animator;
     bool switchOn;
-    private void Start()
+
+    void Start()
     {
+        mycol = GetComponent<Collider>();
         animator = GetComponent<Animator>();
         animator.SetInteger("Idle", Random.Range(1, 3));
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            if (!PoppyEnemies.instance.IsPoppiesCleared())
+                return;
+            mycol.enabled = false;
+            PlayerController.instance.GameOver();
             InGamePanel.instance.levelNum.SetActive(false);
-            PlayerController.instance.stopController = true;
             PlayerController.instance.girl.GetComponent<Animator>().SetTrigger("Idle");
             Jump();
         }
     }
+   
 
     void OnJumpComplete()
     {
@@ -48,7 +55,7 @@ public class FireManDeath : MonoBehaviour
 
     void Jump()
     {
-        transform.DOLocalMoveY(-0.25f, 0.2f).SetEase(Ease.OutFlash).OnComplete(()=> {  OnJumpComplete(); });
+        transform.DOLocalMoveY(-0.25f, 0.2f).SetDelay(0.25f).SetEase(Ease.OutFlash).OnComplete(()=> {  OnJumpComplete(); });
     }
 
     private void Update()
