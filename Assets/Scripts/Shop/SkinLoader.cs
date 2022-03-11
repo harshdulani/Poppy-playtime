@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SkinLoader : MonoBehaviour, IWantsAds
@@ -229,6 +230,11 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		if (z >= 20 && z <= 69)
 			return 2;
 		return 5;
+	}
+
+	public void GoToBonusLevelOnButtonPress(int buildIndex)
+	{
+		SceneManager.LoadScene(buildIndex);
 	}
 	
 	public bool ShouldShowNextLevel()
