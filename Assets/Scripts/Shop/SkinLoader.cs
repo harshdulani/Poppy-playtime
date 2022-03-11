@@ -2,7 +2,6 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SkinLoader : MonoBehaviour, IWantsAds
@@ -15,7 +14,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	}
 
 	[SerializeField] private RectTransform barPivot;
-	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
+	[SerializeField] private Image coloredWeaponImage, blackWeaponImage, blackBackground;
 	
 	[SerializeField] private Button skipButton,  getItButton, claimButton;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText, claimMulTxt;
@@ -170,6 +169,12 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	private void ShowPanel()
 	{
 		InputHandler.Only.AssignDisabledState();
+
+		blackBackground.gameObject.SetActive(true);
+		var color = blackBackground.color;
+		blackBackground.color = Color.clear;
+		blackBackground.DOColor(color, .75f);
+		
 		loaderPanel.SetActive(true);
 
 		// show multiplier
@@ -232,11 +237,6 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		return 5;
 	}
 
-	public void GoToBonusLevelOnButtonPress(int buildIndex)
-	{
-		SceneManager.LoadScene(buildIndex);
-	}
-	
 	public bool ShouldShowNextLevel()
 	{
 		/*
@@ -267,17 +267,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	private void OnGameEnd()
 	{
 		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
-		
+
 		Invoke(nameof(ShowPanel), panelOpenWait);
-		
-		// var seq = DOTween.Sequence();
-		// seq.AppendInterval(1.25f);
-		//
-		// var coinText = MainShopController.Main.GetCoinText();
-		// var initSize = MainShopController.Main.GetCoinText().fontSize;
-		//
-		// var dummyCoinCount = SidebarShopController.GetCoinCount();
-		// AudioManager.instance.Play("CoinCollect");
 	}
 
 	private void ReceiveWeaponLoaderReward()
