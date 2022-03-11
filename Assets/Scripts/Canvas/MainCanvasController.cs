@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class MainCanvasController : MonoBehaviour, IWantsAds
 {
+	[SerializeField] private int lastStandardLevel;
+	
 	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;
 	[SerializeField] private Image red;
@@ -63,10 +65,47 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 			TapToPlay();
 	}
 
+	private void EnableVictoryObjects()
+	{
+		if(defeat.activeSelf) return;
+		
+		victory.SetActive(true);
+		nextLevelButton.interactable = false;
+		constantRetryButton.SetActive(false);
+		
+		AudioManager.instance.Play("Win");
+	}
+
+	private void EnableLossObjects()
+	{
+		if(victory.activeSelf) return;
+
+		if (_hasLost) return;
+		
+		red.enabled = true;
+		var originalColor = red.color;
+		red.color = Color.clear;
+		red.DOColor(originalColor, 1f);
+
+		defeat.SetActive(true);
+		retry.SetActive(true);
+		skipLevel.SetActive(true);
+		constantRetryButton.SetActive(false);
+		_hasLost = true;
+		
+		AudioManager.instance.Play("Lose");
+	}
+
+	public void EnableNextLevel()
+	{
+		nextLevelButton.interactable = true;
+	}
+	
 	private void TapToPlay()
 	{
 		_hasTapped = true;
 		holdToAim.SetActive(false);
+		skipLevel.SetActive(false);
 		
 		if(GameEvents.only)
 			GameEvents.only.InvokeTapToPlay();
@@ -86,7 +125,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		if(ApplovinManager.instance)
 			ApplovinManager.instance.ShowInterstitialAds();
 		
-		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
+		if (PlayerPrefs.GetInt("levelNo", 1) < lastStandardLevel + 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
 			PlayerPrefs.SetInt("lastBuildIndex", x);
@@ -94,7 +133,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		}
 		else
 		{
-			var x = Random.Range(5, SceneManager.sceneCountInBuildSettings - 1);
+			var x = Random.Range(5, lastStandardLevel + 1);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
@@ -132,42 +171,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		
 		Invoke(nameof(EnableVictoryObjects), 1f);
 	}
-
-	private void EnableVictoryObjects()
-	{
-		if(defeat.activeSelf) return;
-		
-		victory.SetActive(true);
-		nextLevelButton.interactable = false;
-		constantRetryButton.SetActive(false);
-		
-		AudioManager.instance.Play("Win");
-	}
-
-	private void EnableLossObjects()
-	{
-		if(victory.activeSelf) return;
-
-		if (_hasLost) return;
-		
-		red.enabled = true;
-		var originalColor = red.color;
-		red.color = Color.clear;
-		red.DOColor(originalColor, 1f);
-
-		defeat.SetActive(true);
-		retry.SetActive(true);
-		constantRetryButton.SetActive(false);
-		_hasLost = true;
-		
-		AudioManager.instance.Play("Lose");
-	}
-
-	public void EnableNextLevel()
-	{
-		nextLevelButton.interactable = true;
-	}
-
+	
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
 		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
