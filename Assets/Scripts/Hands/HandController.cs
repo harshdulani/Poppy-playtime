@@ -303,7 +303,7 @@ public class HandController : MonoBehaviour
 		_appliedReturnSpeed = returnSpeed * (1f + level / 10f);
 	}
 
-	private void UpdateEquippedWeaponsSkin(bool initialising = true, int newWeapon = -1)
+	public void UpdateEquippedWeaponsSkin(bool initialising = true, int newWeapon = -1)
 	{
 		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
 		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
