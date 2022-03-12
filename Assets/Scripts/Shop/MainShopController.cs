@@ -78,6 +78,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		GameEvents.only.skinSelect += OnSkinPurchase;
 		
 		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
@@ -86,6 +87,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		GameEvents.only.skinSelect -= OnSkinPurchase;
 		
 		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
@@ -278,12 +280,6 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		SaveCurrentShopState();
 	}
 	
-	private void OnTapToPlay()
-	{
-		_anim.SetTrigger(HideShopButton);
-		_canClick = false;
-	}
-
 	public void ClickExtraCoins_150()
 	{
 		if(!ApplovinManager.instance) return;
@@ -301,6 +297,18 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		AdsMediator.StartListeningForAds(this);
 		
 		ApplovinManager.instance.ShowRewardedAds();
+	}
+	
+	private void OnTapToPlay()
+	{
+		_anim.SetTrigger(HideShopButton);
+		_canClick = false;
+		coinText.transform.parent.gameObject.SetActive(false);
+	}
+
+	private void OnGameEnd()
+	{
+		coinText.transform.parent.gameObject.SetActive(true);
 	}
 
 	private void StartWaiting(AdRewardType newType) => _currentRewardType = newType;

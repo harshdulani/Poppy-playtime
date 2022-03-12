@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class MainCanvasController : MonoBehaviour, IWantsAds
 {
-	[SerializeField] private int lastStandardLevel;
+	[SerializeField] private int lastRegularLevel;
 	
 	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;
@@ -125,7 +125,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		if(ApplovinManager.instance)
 			ApplovinManager.instance.ShowInterstitialAds();
 		
-		if (PlayerPrefs.GetInt("levelNo", 1) < lastStandardLevel + 1)
+		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
 			PlayerPrefs.SetInt("lastBuildIndex", x);
@@ -133,7 +133,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		}
 		else
 		{
-			var x = Random.Range(5, lastStandardLevel + 1);
+			var x = Random.Range(5, lastRegularLevel + 1);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}

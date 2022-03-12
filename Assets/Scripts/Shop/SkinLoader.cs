@@ -22,7 +22,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder; 
 	
 	[SerializeField] private int levelsPerUnlock = 5;
-	[SerializeField] private float tweenDuration, panelOpenWait;
+	[SerializeField] private float tweenDuration, panelOpenWait, skipButtonWait;
 	
 	[SerializeField] private int coinIncreaseCount = 100;
 	
@@ -57,9 +57,9 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		
 		loaderPanel.SetActive(false);
 		//skipButton.interactable = false;
+		skipButton.gameObject.SetActive(false);
 		getItButton.interactable = false;
 		
-		Invoke(nameof(EnableSkipButton),10);
 		coinIncreaseCount = 100;
 	}
 
@@ -204,6 +204,9 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 			//skipButton.interactable = true;
 			getItButton.interactable = true;
 		});
+
+		seq.AppendInterval(skipButtonWait);
+		seq.AppendCallback(EnableSkipButton);
 
 		if (_currentSkinPercentageUnlocked < 0.99f)
 		{
