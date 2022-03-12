@@ -35,18 +35,20 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	private void Start()
 	{
 		_indicator = GetComponent<LevelIndicator>();
-		
+
 		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
 		levelText.text = "Level " + levelNo;
 		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
-
+		
 		if(levelNo < 5)
 		{
 			skipLevel.SetActive(false);
 			_indicator.SetIndicatorEnable(false);
 		}
 
+		PlayerPrefs.SetInt("lastRegularLevel", lastRegularLevel);
+		
 		if(GAScript.Instance)
 			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
 	}
@@ -174,7 +176,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
-		if (PlayerPrefs.GetInt("levelNo", 1) < SceneManager.sceneCountInBuildSettings - 1)
+		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
 			PlayerPrefs.SetInt("lastBuildIndex", x);
@@ -182,7 +184,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		}
 		else
 		{
-			var x = Random.Range(5, SceneManager.sceneCountInBuildSettings - 1);
+			var x = Random.Range(5, lastRegularLevel + 1);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}

@@ -1,45 +1,47 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class LevelComplete : MonoBehaviour
 {
     public static LevelComplete instace;
     GameEssentials gameEssentials { get { return GameEssentials.instance; } }
 
-    int levelNumber;
+    private int _lastRegularLevel;
     private void Awake()
     {
         instace = this;
-       
-    }
+	}
 
     void Start()
     {
-        levelNumber = gameEssentials.sd.GetLevelNumber();
+		_lastRegularLevel = PlayerPrefs.GetInt("lastRegularLevel");
         if(GAScript.Instance)
-            GAScript.Instance.LevelCompleted(levelNumber.ToString());
+            GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo") + " bonus");
         //levelNumber++;
      //   gameEssentials.sd.SetLevelNumber(levelNumber);
     }
 
     void SaveLevels()
     {
-        int currentSceneIndex = gameEssentials.sd.GetLevelNumber();
-        int totalBuildSettingsScenes = gameEssentials.sl.GetTotalScenesInBuildSettings();
-
-        gameEssentials.sd.SetLevelNumber(currentSceneIndex + 1);
-        gameEssentials.sd.SaveData();
-
-        if (currentSceneIndex >= totalBuildSettingsScenes - 1)
-        {
-            gameEssentials.sl.LoadSceneByInt(UnityEngine.Random.Range(2, totalBuildSettingsScenes - 1));
-        }
-        else
-        {
-            gameEssentials.sl.LoadSceneByInt(gameEssentials.sl.GetNextSceneByBuildIndex());
-        }
-    }
+		if(ApplovinManager.instance)
+			ApplovinManager.instance.ShowInterstitialAds();
+		
+		if (PlayerPrefs.GetInt("levelNo", 1) < _lastRegularLevel)
+		{
+			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
+			PlayerPrefs.SetInt("lastBuildIndex", x);
+			SceneManager.LoadScene(x);
+		}
+		else
+		{
+			var x = Random.Range(5, _lastRegularLevel);
+			PlayerPrefs.SetInt("lastBuildIndex", x);
+			SceneManager.LoadScene(x);
+		}
+		
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
+	}
+	
     public void Next()
     {
         // gameEssentials.sl.LoadSceneByInt(gameEssentials.sd.GetLevelNumber());

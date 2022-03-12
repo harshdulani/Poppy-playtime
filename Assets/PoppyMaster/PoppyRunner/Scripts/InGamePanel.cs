@@ -12,20 +12,20 @@ public class InGamePanel : MonoBehaviour
 
     public GameObject levelNum;
     public TextMeshProUGUI levelNumTxt;
-    GameEssentials gameEssentials { get { return GameEssentials.instance; } }
-    GAScript ga { get { return GAScript.Instance; } }
+    GameEssentials gameEssentials => GameEssentials.instance;
+	GAScript ga { get { return GAScript.Instance; } }
 
     private void Awake()
     {
         instance = this;
         if(gameEssentials)
-            levelNumTxt.text = "LEVEL " + gameEssentials.sd.GetLevelNumber().ToString();
+            levelNumTxt.text = "LEVEL " + gameEssentials.sd.GetLevelNumber();
     }
 
     void Start()
     {
         if(ga)
-            ga.LevelStart(gameEssentials.sd.GetLevelNumber()+"");
+            ga.LevelStart(PlayerPrefs.GetInt("levelNo", 1) +" bonus");
     }
 
     public void TurnOnDefaultIcons()
