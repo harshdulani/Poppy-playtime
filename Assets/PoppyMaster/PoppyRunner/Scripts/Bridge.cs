@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class Bridge : MonoBehaviour
 {
@@ -12,16 +12,17 @@ public class Bridge : MonoBehaviour
     public SpriteRenderer hand;
 
     void Start()
-	{
-		hand.transform.DOScale(Vector3.one * 2.25f, 1f).SetLoops(-1, LoopType.Yoyo);
-	}
+    {
+        if(hand)
+            hand.transform.DOScale(Vector3.one * 2.25f, 1).SetEase(Ease.Flash).SetLoops(-1, LoopType.Yoyo);
+    }
 
     public void ActivateBarrels()
     {
         for (int i = 0; i < barrels.Count; i++)
         {
             barrels[i].GetComponent<Rigidbody>().isKinematic = false;
-            barrels[i].GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(50,75), ForceMode.Impulse);
+            barrels[i].GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(100,150), ForceMode.Impulse);
         }
     }
 
@@ -31,6 +32,7 @@ public class Bridge : MonoBehaviour
 
         for (int j = 0; j < barrel.transform.childCount; j++)
         {
+            barrel.transform.GetChild(j).GetComponent<MeshCollider>().enabled = true;
             barrel.transform.GetChild(j).GetComponent<Rigidbody>().isKinematic = false;
             barrel.transform.GetChild(j).GetComponent<Rigidbody>().AddExplosionForce(7.5f, barrel.transform.position,0.65f,2.5f,ForceMode.Impulse);
         }
