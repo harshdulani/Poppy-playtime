@@ -22,8 +22,17 @@ public class LevelIndicator : MonoBehaviour
 	private List<Transform> _textRects;
 	private const int LevelsPerTheme = 7;
 	
-	private static int GetCurrentLevel() => PlayerPrefs.GetInt("levelNo", 1);
 	private static int GetBuildIndex() => SceneManager.GetActiveScene().buildIndex;
+
+	private void OnEnable()
+	{
+		GameEvents.only.reachNextArea += OnReachNextArea;
+	}
+	
+	private void OnDisable()
+	{
+		GameEvents.only.reachNextArea -= OnReachNextArea;
+	}
 
 	private void Start()
 	{
@@ -49,7 +58,6 @@ public class LevelIndicator : MonoBehaviour
 	private bool MakeCurrentLevel()
 	{
 		var currentLevel = GetBuildIndex() - 1;
-		var currentTheme = currentLevel / LevelsPerTheme;
 
 		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
 		if (SceneManager.sceneCountInBuildSettings < PlayerPrefs.GetInt("levelNo")) return false;
@@ -77,4 +85,12 @@ public class LevelIndicator : MonoBehaviour
 	}
 
 	public void SetIndicatorEnable(bool status) => plainText.transform.parent.gameObject.SetActive(status);
+
+	private void OnReachNextArea()
+	{
+		if(!LevelFlowController.only.IsInGiantFight()) return;
+		
+		indicator.SetActive(false);
+		plainText.SetActive(false);
+	}
 }

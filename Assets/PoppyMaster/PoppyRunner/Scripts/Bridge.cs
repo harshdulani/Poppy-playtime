@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 
@@ -11,9 +12,9 @@ public class Bridge : MonoBehaviour
     public SpriteRenderer hand;
 
     void Start()
-    {
-        
-    }
+	{
+		hand.transform.DOScale(Vector3.one * 2.25f, 1f).SetLoops(-1, LoopType.Yoyo);
+	}
 
     public void ActivateBarrels()
     {
