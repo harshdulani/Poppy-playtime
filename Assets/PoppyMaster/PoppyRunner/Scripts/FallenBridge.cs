@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class FallenBridge : MonoBehaviour
 {
     public static FallenBridge instance;
-
     public bool isCleared;
     public Rigidbody[] blocks;
+    public GameObject helpTxt;
     public List<PoppyEnemy> enemiesOnBridge;
 
    public FallenBridge[] temp;
@@ -17,6 +19,7 @@ public class FallenBridge : MonoBehaviour
 
         blocks = GetComponentsInChildren<Rigidbody>();
         temp = FindObjectsOfType<FallenBridge>();
+        helpTxt.transform.DOMoveY(7, 0.75f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
     }
 
     public void ActivateBlocks(Transform hand)
@@ -29,10 +32,14 @@ public class FallenBridge : MonoBehaviour
 
         for (int i = 0; i < enemiesOnBridge.Count; i++)
         {
-            enemiesOnBridge[i].ActivateRB(hand);
-        }
+            if (!enemiesOnBridge[i].gotHit)
+                enemiesOnBridge[i].ActivateRB(hand);
+            else 
+                CheckForBridgesCleared();
 
+        }
         isCleared = true;
+        helpTxt.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,7 +56,7 @@ public class FallenBridge : MonoBehaviour
         {
             if (!enemiesOnBridge.Contains(other.GetComponent<PoppyEnemy>()))
             {
-                if(other.name.Contains("Gorilla"))
+               // if(other.name.Contains("Gorilla"))
                     enemiesOnBridge.Add(other.GetComponent<PoppyEnemy>());
             }
         }
@@ -61,7 +68,7 @@ public class FallenBridge : MonoBehaviour
         {
             if (enemiesOnBridge.Contains(other.GetComponent<PoppyEnemy>()))
             {
-                if (other.name.Contains("Gorilla"))
+               // if (other.name.Contains("Gorilla"))
                     enemiesOnBridge.Remove(other.GetComponent<PoppyEnemy>());
             }
         }
@@ -81,17 +88,29 @@ public class FallenBridge : MonoBehaviour
 
     public void CheckForBridgesCleared()
     {
-        if (!FallenBrigesCleared())
-            return;
-
-        PlayerController.instance.stopMoving = false;
-        PlayerController.instance.girl.GetComponent<Animator>().SetTrigger("Walk");
+        if ((FallenBrigesCleared() || IsEnemiesOnBridgeCleared()) && PoppyEnemies.instance.IsPoppiesCleared())
+        {
+            PlayerController.instance.stopMoving = false;
+            PlayerController.instance.girl.GetComponent<Animator>().SetTrigger("Walk");
+        }
     }
 
+    bool IsEnemiesOnBridgeCleared()
+    {
+        for (int i = 0; i < temp.Length; i++)
+        {
+            for (int j = 0; j < temp[i].enemiesOnBridge.Count; j++)
+            {
+                if (!temp[i].enemiesOnBridge[j].gotHit)
+                    return false;
+            }
+        }
+
+        return true;
+    }
 
     bool FallenBrigesCleared()
     {
-
         for (int i = 0; i < temp.Length; i++)
         {
             if (temp[i].isCleared == false)

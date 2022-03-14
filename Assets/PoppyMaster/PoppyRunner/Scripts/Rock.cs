@@ -15,6 +15,15 @@ public class Rock : MonoBehaviour
         rb.isKinematic = false;
         rb.AddForce(transform.forward * 250, ForceMode.Impulse);
         rb.AddTorque(transform.forward * 250, ForceMode.Impulse);
+        Invoke("AfteraSec", 2f);
+    }
+
+    void AfteraSec()
+    {
+        if (transform.position.x > 0)
+            transform.DOMoveX(30, 0.6f).SetEase(Ease.InOutQuad);
+        else
+            transform.DOMoveX(-30, 0.6f).SetEase(Ease.InOutQuad);
     }
 
     void IgnoreColliders( List<Rigidbody> cols)

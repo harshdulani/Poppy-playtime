@@ -28,6 +28,7 @@ public class PoppyEnemy : MonoBehaviour
     private void Awake()
     {
         girl.tag = "Untagged";
+        GetAllRigiBodies();
         RB_State(true);
     }
 
@@ -45,6 +46,15 @@ public class PoppyEnemy : MonoBehaviour
         for (int i = 0; i < bodyParts.Count; i++)
         {
             bodyParts[i].isKinematic = state;
+        }
+    }
+
+    void GetAllRigiBodies()
+    {
+        if (name.Contains("Venom")) 
+        {
+            bodyParts.Clear();
+            bodyParts = GetComponentsInChildren<Rigidbody>().ToList();
         }
     }
 
@@ -103,18 +113,17 @@ public class PoppyEnemy : MonoBehaviour
 
         if (other.name.Contains("ClimbUp"))
         {
-            print("ClimUp");
+            if (gotHit)
+                 return;
+           
             StartCoroutine("ClimbUpAndAttack");
         }
     }
 
     IEnumerator ClimbUpAndAttack()
     {
-        if (gotHit)
-            yield return null;
-
-        GetComponent<Collider>().enabled = false;
         myState = PoppyEnemyState.ClimbToRoof;
+        GetComponent<Collider>().enabled = false;
         climb = false;
         myAnimator.SetTrigger("Top");
         yield return new WaitForSeconds(4f);
@@ -196,8 +205,7 @@ public class PoppyEnemy : MonoBehaviour
     {
         StillCarrying = false;
         move = false;
-        playerController.GameOver_Forward();
-        //  playerController.GameOver();
+        playerController.GameOver();
         myTransform.DOScale(Vector3.one * baseScale, 0.25f).SetEase(Ease.Flash);
         myTransform.DOMove(playerController.girl.transform.position + new Vector3(0, 0, 6.5f), 0.25f).SetEase(Ease.Flash).OnComplete(()=> { myAnimator.SetTrigger("Lift"); Invoke("SetGirlAsParent", 1.2f); });
         if (Help.instance)
@@ -209,8 +217,7 @@ public class PoppyEnemy : MonoBehaviour
         move = false;
         gotHit = false;
         StillCarrying = false;
-        // playerController.GameOver();
-        playerController.GameOver_Forward();
+        playerController.GameOver();
        // myTransform.DOScale(Vector3.one * baseScale, 0.25f).SetEase(Ease.Flash);
         float y = 15.5f;
         Vector3 tempPos;
