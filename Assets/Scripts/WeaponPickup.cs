@@ -3,26 +3,30 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour, IWantsAds
 {
-	[SerializeField] private bool randomiseIndex;
 	[ContextMenuItem("Reflect Changes To GameObject", nameof(Validate)), SerializeField] private WeaponType myWeaponType;
 
 	[SerializeField] private Transform weaponParent;
 
 	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
+	
 	private Vector3 _previousSine, _previousSineRot;
 	private int _myWeaponIndex;
+	private bool _isKilled;
+
+	private void OnEnable()
+	{
+		GameEvents.only.tapToPlay += OnTapToPlay;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.only.tapToPlay -= OnTapToPlay;
+	}
 
 	private void Start()
 	{
 		_myWeaponIndex = (int) myWeaponType;
-		
-		//make sure you dont randomise to the actively selected weapon
-		if (randomiseIndex)
-		{
-			while(_myWeaponIndex == ShopStateController.CurrentState.GetCurrentWeapon())
-				_myWeaponIndex = Random.Range(0, weaponParent.childCount);
-		}
 		
 		for(var i = 0; i < weaponParent.childCount; i++)
 			weaponParent.GetChild(i).gameObject.SetActive(i == _myWeaponIndex);
@@ -43,7 +47,7 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		_previousSine = sine;
 		_previousSineRot = sineRot;
 	}
-	
+
 	private void Validate()
 	{
 		_myWeaponIndex = (int) myWeaponType;
@@ -54,6 +58,7 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	private void DestroyPickup()
 	{
 		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() => gameObject.SetActive(false));
+		_isKilled = true;
 		GameEvents.only.InvokePropDestroy(transform);
 	}
 
@@ -69,6 +74,21 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		TimeController.only.SlowDownTime(0f);
 		AdsMediator.StartListeningForAds(this);
 		ApplovinManager.instance.ShowRewardedAds();
+	}
+
+
+	private void OnCollisionEnter(Collision other)
+	{
+		if(_isKilled) return;
+		if (!other.collider.TryGetComponent(out RagdollLimbController raghu)) return;
+		
+		DestroyPickup();
+	}
+
+	private void OnTapToPlay()
+	{
+		for(var i = 0; i < weaponParent.childCount; i++)
+			weaponParent.GetChild(i).gameObject.SetActive(i == _myWeaponIndex);
 	}
 
 	private void StartWaiting()
