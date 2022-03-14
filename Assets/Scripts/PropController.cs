@@ -179,11 +179,11 @@ public class PropController : MonoBehaviour, IWantsAds
 	{
 		if (!shouldShowAds) return;
 
-		TimeController.only.SlowDownTime(0f);
 
 		if(!ApplovinManager.instance) return;
-		
+
 		StartWaiting();
+		TimeController.only.SlowDownTime(0f);
 		AdsMediator.StartListeningForAds(this);
 		ApplovinManager.instance.ShowRewardedAds();
 	}
@@ -275,12 +275,12 @@ public class PropController : MonoBehaviour, IWantsAds
 	
 	private void StartWaiting()
 	{
-		InputHandler.Only.userIsWatchingAnAdForPickupProp = true;
+		InputHandler.Only.userIsWatchingAnAdForPickup = true;
 	}
 
 	private void StopWaiting()
 	{
-		InputHandler.Only.userIsWatchingAnAdForPickupProp = false;
+		InputHandler.Only.userIsWatchingAnAdForPickup = false;
 	}
 
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PalmController : MonoBehaviour
@@ -46,19 +47,14 @@ public class PalmController : MonoBehaviour
 
 	private void EnablePunching() => myHand.StopPunching();
 
-	private void ResetAdoptability()
-	{
-		_canAdopt = true;
-	}
-	
+	private void ResetAdoptability() => _canAdopt = true;
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if(!_canAdopt) return;
-		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton") && !other.CompareTag("ChainLink")) return;
-		
-		//AudioManager play sound
 		if (!myHand.isLeftHand) return;
-		
+		if(!other.CompareTag("Target") && !other.CompareTag("TrapButton") && !other.CompareTag("ChainLink")) return;
+
 		if (other.TryGetComponent(out PropController prop))
 		{
 			prop.PlayerPicksUp();
@@ -69,13 +65,21 @@ public class PalmController : MonoBehaviour
 				prop.GetTouchedComposite(Vector3.up, false);
 			}
 		}
+		else if (other.TryGetComponent(out WeaponPickup weapon))
+		{
+			weapon.PlayerInteractWithPickup();
+			
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
+			return;
+		}
 		
 		if(other.CompareTag("TrapButton"))
 		{
 			myHand.HandReachTarget(other.transform);
 			
-			Invoke(nameof(EnablePunching), punchWaitTime);
-			Invoke(nameof(ResetAdoptability), 0.5f);
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
 
@@ -85,16 +89,16 @@ public class PalmController : MonoBehaviour
 			
 			myHand.HandReachTarget(other.transform);
 			
-			Invoke(nameof(EnablePunching), punchWaitTime);
-			Invoke(nameof(ResetAdoptability), 0.5f);
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
 		
 		if(HasTargetTransform())
 		{
 			InputHandler.Only.AssignReturnTransitState();
-			Invoke(nameof(EnablePunching), punchWaitTime);
-			Invoke(nameof(ResetAdoptability), 0.5f);
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
 		
@@ -115,8 +119,8 @@ public class PalmController : MonoBehaviour
 		{
 			InputHandler.Only.AssignIdleState();
 			
-			Invoke(nameof(EnablePunching), punchWaitTime);
-			Invoke(nameof(ResetAdoptability), 0.5f);
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
 		
@@ -126,8 +130,8 @@ public class PalmController : MonoBehaviour
 
 		SetCurrentTransform(null);
 		
-		Invoke(nameof(EnablePunching), punchWaitTime);
-		Invoke(nameof(ResetAdoptability), 0.5f);
+		DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+		DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
 		
 		//this is for climber level

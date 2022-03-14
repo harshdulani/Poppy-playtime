@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 [Serializable]
 public class ShopState
@@ -37,8 +36,9 @@ public class ShopStateHelpers
 
 	public ShopState GetState() => _shopState;
 	
-	public int GetCurrentWeapon() => (int) _shopState.weaponStates.First(state => state.Value == ShopItemState.Selected).Key;
-	public int GetCurrentArmsSkin() => (int) _shopState.armStates.First(state => state.Value == ShopItemState.Selected).Key;
+	public int GetCurrentWeapon() => GetFirstSelected(_shopState.weaponStates);
+
+	public int GetCurrentArmsSkin() => GetFirstSelected(_shopState.armStates);
 
 	public void SetNewLoaderWeapon(int index) => _shopState.LoaderWeapon = index;
 	public void SetNewSideBarWeapon(int index) => _shopState.SidebarWeapon = index;
@@ -49,11 +49,27 @@ public class ShopStateHelpers
 	public void SetNewSpeedLevel(int level) => _shopState.CurrentSpeedLevel = level;
 	public void SetNewPowerLevel(int level) => _shopState.CurrentPowerLevel = level;
 
+	private static int GetFirstSelected<T>(Dictionary<T, ShopItemState> states) where T : Enum
+	{
+		var index = 0;
+		foreach (var state in states)
+		{
+			index++;
+			if (state.Value == ShopItemState.Selected) break;
+		}
+		return index;
+	}
+
 	public bool AreAllWeaponsUnlocked()
 	{
 		if (_shopState.AllWeaponsUnlocked) return true;
 
-		return _shopState.weaponStates.Count(state => state.Value == ShopItemState.Locked) == 0;
+		foreach (var state in _shopState.weaponStates)
+			if (state.Value == ShopItemState.Locked)
+				return false;
+
+		AllWeaponsHaveBeenUnlocked();
+		return true;
 	}
 
 	public void AllWeaponsHaveBeenUnlocked() => _shopState.AllWeaponsUnlocked = true;
