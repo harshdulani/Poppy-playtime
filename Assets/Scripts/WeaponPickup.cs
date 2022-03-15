@@ -61,11 +61,8 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		_isKilled = true;
 		
-		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() =>
-		{
-			gameObject.SetActive(false);
-			GameEvents.only.InvokePropDestroy(transform);
-		});
+		GameEvents.only.InvokePropDestroy(transform);
+		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() => gameObject.SetActive(false));
 	}
 
 	public void PlayerInteractWithPickup()
