@@ -63,6 +63,8 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		
 		if (!InputExtensions.GetFingerDown()) return;
 		
+		if(!EventSystem.current) { print("no event system"); return; }
+		
 		if(!EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1))
 			TapToPlay();
 	}

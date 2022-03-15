@@ -52,8 +52,8 @@ public class TimeController : MonoBehaviour
 		_timeDeltaTween.Kill();
 		_fixedTimeDeltaTween.Kill();
 		
-		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale * multiplier, timeRampDownDuration);
-		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _slowedDeltaTime * multiplier, timeRampDownDuration);
+		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, slowedTimeScale * multiplier, timeRampDownDuration).SetUpdate(true);
+		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, _slowedDeltaTime * multiplier, timeRampDownDuration).SetUpdate(true);
 	}
 
 	public void RevertTime(bool lastEnemy = false)
@@ -61,8 +61,8 @@ public class TimeController : MonoBehaviour
 		_timeDeltaTween.Kill();
 		_fixedTimeDeltaTween.Kill();
 
-		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration);
-		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, DefaultFixedDeltaTime, timeRampUpDuration);
+		_timeDeltaTween = DOTween.To(() => Time.timeScale, value => Time.timeScale = value, _defaultTimeScale, timeRampUpDuration).SetUpdate(true);
+		_fixedTimeDeltaTween = DOTween.To(() => Time.fixedDeltaTime, value => Time.fixedDeltaTime = value, DefaultFixedDeltaTime, timeRampUpDuration).SetUpdate(true);
 		
 		if (!lastEnemy) return;
 		

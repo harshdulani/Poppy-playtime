@@ -178,8 +178,6 @@ public class PropController : MonoBehaviour, IWantsAds
 	public void TryShowAds()
 	{
 		if (!shouldShowAds) return;
-
-
 		if(!ApplovinManager.instance) return;
 
 		StartWaiting();

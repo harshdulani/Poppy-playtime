@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,8 +25,7 @@ public class UIManager : MonoBehaviour
         lf.DeactiveGO(false);
         if (GameEssentials.instance)
             GameEssentials.instance.shm.PlayWinSound();
-       
-    }
+	}
 
     public void LevelFailed()
     {

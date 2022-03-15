@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using CGTespy.UI;
 using TMPro;
 
 public class InGamePanel : MonoBehaviour
@@ -19,7 +14,7 @@ public class InGamePanel : MonoBehaviour
     {
         instance = this;
         if(gameEssentials)
-            levelNumTxt.text = "LEVEL " + gameEssentials.sd.GetLevelNumber();
+            levelNumTxt.text = "BONUS LEVEL";
     }
 
     void Start()

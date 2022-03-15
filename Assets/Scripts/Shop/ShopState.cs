@@ -51,7 +51,8 @@ public class ShopStateHelpers
 
 	private static int GetFirstSelected<T>(Dictionary<T, ShopItemState> states) where T : Enum
 	{
-		var index = 0;
+		//starting from -1 to account for case 0
+		var index = -1;
 		foreach (var state in states)
 		{
 			index++;

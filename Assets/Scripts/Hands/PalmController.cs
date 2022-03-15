@@ -71,7 +71,6 @@ public class PalmController : MonoBehaviour
 			
 			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
-			return;
 		}
 		
 		if(other.CompareTag("TrapButton"))

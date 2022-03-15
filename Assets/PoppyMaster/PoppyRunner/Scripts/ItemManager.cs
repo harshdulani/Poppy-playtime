@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 [ExecuteInEditMode]
 public class ItemManager : MonoBehaviour

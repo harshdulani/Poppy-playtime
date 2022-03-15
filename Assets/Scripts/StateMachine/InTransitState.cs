@@ -2,7 +2,7 @@
 
 public class InTransitState : InputStateBase
 {
-	private readonly RaycastHit _hit;
+	public readonly RaycastHit _hit;
 	public readonly bool GoHome, IsCarryingBody;
 
 	public InTransitState(bool goHome, RaycastHit hitInfo, bool isCarryingBody = false)

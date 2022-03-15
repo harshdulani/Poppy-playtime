@@ -21,7 +21,7 @@ public class GiantLimbController : MonoBehaviour
 		
 		if (!other.collider.CompareTag("Target")) return;
 
-		var exploder = Instantiate(explosion, other.contacts[0].point,
+		var exploder = Instantiate(explosion, other.contacts[0].point, 
 			Quaternion.LookRotation(other.contacts[0].normal));
 
 		if(other.collider.CompareTag("Giant")) return;
@@ -40,6 +40,8 @@ public class GiantLimbController : MonoBehaviour
 		//this method is called continuously
 		//i just turn put all these flags on this so it doesn't get to DO anything
 		//but every frame/physics step, Collision other ka value change hota hai
+		
+		if(!victim) return;
 		
 		victim.DOScale(Vector3.zero, 1f).OnComplete(() =>
 		{

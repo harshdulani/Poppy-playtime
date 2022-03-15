@@ -9,7 +9,8 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 
 	[Header("Sine Wave Noise"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
-	
+
+	private Collider _collider;
 	private Vector3 _previousSine, _previousSineRot;
 	private int _myWeaponIndex;
 	private bool _isKilled;
@@ -26,8 +27,9 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 
 	private void Start()
 	{
+		_collider = GetComponent<Collider>();
 		_myWeaponIndex = (int) myWeaponType;
-		
+
 		for(var i = 0; i < weaponParent.childCount; i++)
 			weaponParent.GetChild(i).gameObject.SetActive(i == _myWeaponIndex);
 	}
@@ -57,25 +59,32 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 
 	private void DestroyPickup()
 	{
-		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() => gameObject.SetActive(false));
 		_isKilled = true;
-		GameEvents.only.InvokePropDestroy(transform);
+		
+		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() =>
+		{
+			gameObject.SetActive(false);
+			GameEvents.only.InvokePropDestroy(transform);
+		});
 	}
 
 	public void PlayerInteractWithPickup()
 	{
+		if(_isKilled) return;
+		_isKilled = true;
+		_collider.enabled = false;
+		
 		if(!ApplovinManager.instance)
 		{
 			DestroyPickup();
 			return;
 		}
 		
+		AdsMediator.StartListeningForAds(this);
 		StartWaiting();
 		TimeController.only.SlowDownTime(0f);
-		AdsMediator.StartListeningForAds(this);
 		ApplovinManager.instance.ShowRewardedAds();
 	}
-
 
 	private void OnCollisionEnter(Collision other)
 	{
@@ -104,7 +113,7 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		TimeController.only.RevertTime();	
 	}
 
-	private void StopWaiting()
+	private static void StopWaiting()
 	{
 		InputHandler.Only.userIsWatchingAnAdForPickup = false;
 	}
