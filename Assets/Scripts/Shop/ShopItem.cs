@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,9 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	[SerializeField] private bool shouldUseMask;
 
 	[SerializeField] private GameObject stickyCost, stickyAds;
+
+	private static bool _canClickOnItem = true;
+	private const float CanTouchCooldownTimer = 0.25f;
 
 	private bool _isWeaponItem, _isAvailable;
 	private int _mySkinIndex;
@@ -98,6 +102,11 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	{
 		if (myState != ShopItemState.Locked) return;
 
+		if(!_canClickOnItem) return;
+
+		_canClickOnItem = false;
+		DOVirtual.DelayedCall(CanTouchCooldownTimer, () => _canClickOnItem = true);
+		
 		AudioManager.instance.Play("Button");
 		//confetti and/or power up vfx
 
@@ -118,6 +127,11 @@ public class ShopItem : MonoBehaviour, IWantsAds
 
 	public void ClickOnUnlocked()
 	{
+		if(!_canClickOnItem) return;
+
+		_canClickOnItem = false;
+		DOVirtual.DelayedCall(CanTouchCooldownTimer, () => _canClickOnItem = true);
+		
 		if (_isWeaponItem)
 			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
 		else

@@ -25,6 +25,8 @@ public class RagdollLimbController : MonoBehaviour
 		if(_parent.touchToKill)
 		{
 			_parent.GoRagdoll(Vector3.zero);
+			//tell palm to clear targets in a delay
+			GameEvents.Only.InvokePunchHit();
 			return false;
 		}
 		if (!_parent.TryHoldInAir()) return false;

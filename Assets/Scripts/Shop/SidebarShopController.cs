@@ -24,6 +24,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	[SerializeField] private TextMeshProUGUI speedMultiplier, speedCostText, powerMultiplier, powerCostText, skinName, skinCostText;
 	[SerializeField] private Animation speedButtonPressAnimation, powerButtonPressAnimation, skinButtonPressAnimation;
 
+	private const float CooldownTimerDuration = 0.25f;
+	private bool _allowedToPressButton = true;
+
 	[Header("Coin Particle Effect"), SerializeField] private RectTransform coinHolder;
 	[SerializeField] private ParticleControlScript coinParticles;
 	[SerializeField] private int coinIncreaseCount;
@@ -206,6 +209,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 
 	public void ClickOnBuySpeed()
 	{
+		if(!_allowedToPressButton) return;
+
+
 		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 		{
 			if(!ApplovinManager.instance) return;
@@ -217,11 +223,14 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		else
 			BuySpeed();
 
-		//confetti and/or power up vfx
+		_allowedToPressButton = speedButton.interactable = false;
+		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = speedButton.interactable = true);
 	}
 	
 	public void ClickOnBuyPower()
 	{
+		if(!_allowedToPressButton) return;
+		
 		if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
 		{
 			if(!ApplovinManager.instance) return;
@@ -232,10 +241,15 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		}
 		else
 			BuyPower();
+		
+		_allowedToPressButton = powerButton.interactable = false;
+		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = powerButton.interactable = true);
 	}
 
 	public void ClickOnBuyNewWeapon()
 	{
+		if(!_allowedToPressButton) return;
+		
 		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 		{
 			if(!ApplovinManager.instance) return;
@@ -246,7 +260,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		}
 		else
 			BuyWeapon();
-		//confetti and/or power up vfx
+		
+		_allowedToPressButton = skinButton.interactable = false;
+		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = skinButton.interactable = true);
 	}
 
 	private void BuySpeed(bool usingAds = false)
