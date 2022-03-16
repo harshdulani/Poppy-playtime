@@ -138,24 +138,21 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	public void GetIt() // Get it for WeaponLoader
 	{
-		if(!ApplovinManager.instance)
-			return;
+		if(!ApplovinManager.instance) return;
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting(AdRewardType.NewWeapon);
 		AdsMediator.StartListeningForAds(this);
 		
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 	
 	public void Claim() // Claim for coin multiplier
 	{
-		if(!ApplovinManager.instance)
-			return;
+		if(!ApplovinManager.instance) return;
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting(AdRewardType.CoinMultiplier);
 		AdsMediator.StartListeningForAds(this);
-		
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 	
 	private void ResetLoader()
@@ -168,7 +165,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	
 	private void ShowPanel()
 	{
-		InputHandler.Only.AssignDisabledState();
+		InputHandler.Only.AssignTemporaryDisabledState();
 
 		blackBackground.gameObject.SetActive(true);
 		var color = blackBackground.color;

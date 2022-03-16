@@ -200,7 +200,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		
 		_anim.SetTrigger(Open);
 		_anim.SetTrigger(HideShopButton);
-		InputHandler.Only.AssignDisabledState();
+		InputHandler.Only.AssignTemporaryDisabledState();
 	}
 
 	public void CloseShop()
@@ -283,20 +283,18 @@ public class MainShopController : MonoBehaviour, IWantsAds
 	public void ClickExtraCoins_150()
 	{
 		if(!ApplovinManager.instance) return;
-		
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+
 		StartWaiting(AdRewardType.OneFifty);
 		AdsMediator.StartListeningForAds(this);
-		
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 	public void ClickExtraCoins_300()
 	{
 		if(!ApplovinManager.instance) return;
-		
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+
 		StartWaiting(AdRewardType.ThreeHundred);
 		AdsMediator.StartListeningForAds(this);
-		
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 	
 	private void OnTapToPlay()

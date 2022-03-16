@@ -76,11 +76,16 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 			DestroyPickup();
 			return;
 		}
+
+		if(!ApplovinManager.instance.TryShowRewardedAds())
+		{
+			DestroyPickup();
+			return;
+		}
 		
 		AdsMediator.StartListeningForAds(this);
 		StartWaiting();
 		TimeController.only.SlowDownTime(0f);
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 
 	private void OnCollisionEnter(Collision other)

@@ -179,11 +179,11 @@ public class PropController : MonoBehaviour, IWantsAds
 	{
 		if (!shouldShowAds) return;
 		if(!ApplovinManager.instance) return;
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting();
 		TimeController.only.SlowDownTime(0f);
 		AdsMediator.StartListeningForAds(this);
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 
 	private void CreateVFX(Vector3 position, Quaternion rotation)

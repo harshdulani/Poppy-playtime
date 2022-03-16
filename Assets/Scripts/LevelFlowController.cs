@@ -62,12 +62,12 @@ public class LevelFlowController : MonoBehaviour
 
 	private IEnumerator WaitBeforeMovingToNextArea()
 	{
-		//were waiting so that the wrist ctrler can return to arm
+		//were waiting so that the Wrist/ WristController can return to arm
 
 		const float timer = 1f;
 		var elapsed = 0f;
 		const float intervals = 0.2f;
-		while (!InputHandler.Only.IsInIdleState())
+		while (!InputHandler.IsInIdleState())
 		{
 			elapsed += intervals;
 			yield return GameExtensions.GetWaiter(intervals);
@@ -82,7 +82,7 @@ public class LevelFlowController : MonoBehaviour
 		else
 		{
 			GameEvents.only.InvokeMoveToNextArea();
-			InputHandler.Only.AssignDisabledState();
+			InputHandler.Only.AssignTemporaryDisabledState();
 		}
 	}
 

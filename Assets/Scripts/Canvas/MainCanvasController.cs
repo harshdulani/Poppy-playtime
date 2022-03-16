@@ -151,8 +151,9 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	public void SkipLevel()
 	{
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+
 		AdsMediator.StartListeningForAds(this);
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 
 	public void ABToggle(bool status)

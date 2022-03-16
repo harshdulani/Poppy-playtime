@@ -210,14 +210,12 @@ public class ApplovinManager : MonoBehaviour
         // Ad revenue paid. Use this callback to track user revenue.
     }
 
-    public void ShowRewardedAds()
+    public bool TryShowRewardedAds()
     {
-		if(rewardedAdUnitId == "")
-			return;
+		if(rewardedAdUnitId == "") return false;
+		if (!MaxSdk.IsRewardedAdReady(rewardedAdUnitId)) return false;
 		
-        if (MaxSdk.IsRewardedAdReady(rewardedAdUnitId))
-        {
-            MaxSdk.ShowRewardedAd(rewardedAdUnitId);
-        }
-    }
+		MaxSdk.ShowRewardedAd(rewardedAdUnitId);
+		return true;
+	}
 }

@@ -111,10 +111,9 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		}
 
 		if (!ApplovinManager.instance) return;
+		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		AdsMediator.StartListeningForAds(this);
-		
-		ApplovinManager.instance.ShowRewardedAds();
 	}
 
 	public void ClickOnUnlocked()

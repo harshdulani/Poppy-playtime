@@ -209,11 +209,10 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 		{
 			if(!ApplovinManager.instance) return;
+			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Speed);
 			AdsMediator.StartListeningForAds(this);
-			
-			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
 			BuySpeed();
@@ -225,13 +224,11 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	{
 		if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
 		{
-			if(!ApplovinManager.instance)
-				return;
+			if(!ApplovinManager.instance) return;
+			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Power);
 			AdsMediator.StartListeningForAds(this);
-			
-			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
 			BuyPower();
@@ -241,13 +238,11 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	{
 		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 		{
-			if(!ApplovinManager.instance)
-				return;
+			if(!ApplovinManager.instance) return;
+			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Weapon);
 			AdsMediator.StartListeningForAds(this);
-
-			ApplovinManager.instance.ShowRewardedAds();
 		}
 		else
 			BuyWeapon();

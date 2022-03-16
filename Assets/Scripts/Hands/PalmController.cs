@@ -69,8 +69,11 @@ public class PalmController : MonoBehaviour
 		{
 			weapon.PlayerInteractWithPickup();
 			
+			myHand.HandReachTarget(other.transform);
+			
 			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
+			return;
 		}
 		
 		if(other.CompareTag("TrapButton"))
@@ -95,7 +98,7 @@ public class PalmController : MonoBehaviour
 		
 		if(HasTargetTransform())
 		{
-			InputHandler.Only.AssignReturnTransitState();
+			InputHandler.AssignReturnTransitState();
 			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;

@@ -130,7 +130,7 @@ public class AimController : MonoBehaviour
 	private void OnMoveToNextArea()
 	{
 		_punchHit.Kill();
-		DOTween.Sequence().Append(transform.DORotateQuaternion(_areaInitRotation, 0.5f));
+		transform.DORotateQuaternion(_areaInitRotation, 0.5f);
 		_rotX = _initRotAxisX;
 		_rotY = 0f;
 	}

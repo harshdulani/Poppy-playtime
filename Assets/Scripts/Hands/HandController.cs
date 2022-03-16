@@ -189,6 +189,12 @@ public class HandController : MonoBehaviour
 					true));
 				return;
 			}
+			else if (other.TryGetComponent(out WeaponPickup _))
+			{
+				InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, 
+					true));
+				return;
+			}
 			else
 			{
 				StartCarryingBody(other);
@@ -272,7 +278,7 @@ public class HandController : MonoBehaviour
 
 	public void HandReachHome()
 	{
-		if(!InputHandler.Only.IsInDisabledState())
+		if(!InputHandler.IsInDisabledState())
 			InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
@@ -401,9 +407,9 @@ public class HandController : MonoBehaviour
 		};
 	}
 
-	public void GivePunch()
+	public bool TryGivePunch()
 	{
-		if (!isWaitingToGivePunch) return;
+		if (!isWaitingToGivePunch) return false;
 		
 		isWaitingToGivePunch = false;
 		_rootAnimator.SetTrigger(Attack);
@@ -413,6 +419,8 @@ public class HandController : MonoBehaviour
 			_audio.PlayOneShot(gunshotAudioClip);
 		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
+
+		return true;
 	}
 
 	private static void ClearInitTargetPos()
@@ -454,7 +462,7 @@ public class HandController : MonoBehaviour
 	{
 		ClearInitTargetPos();
 		ResetPalmParent();
-		InputHandler.Only.AssignReturnTransitState();
+		InputHandler.AssignReturnTransitState();
 	}
 
 	private void OnWeaponPurchased(int index, bool shouldDeductCoins)

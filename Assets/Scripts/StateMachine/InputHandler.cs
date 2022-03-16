@@ -87,13 +87,13 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		//print(_leftHandState);
+		print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
 			if(!InputExtensions.GetFingerDown()) return;
-
-			_rightHand.GivePunch();
+			if(!_rightHand.TryGivePunch()) return;
+			
 			PutInTapCoolDown();
 			return;
 		}
@@ -140,8 +140,10 @@ public class InputHandler : MonoBehaviour
 
 	private void PutInTapCoolDown(float customCooldownTime = -1f)
 	{
+		if(IsInDisabledState()) return;
+		
 		_inTapCooldown = true;
-		AssignDisabledState();
+		AssignTemporaryDisabledState();
 		DOVirtual.DelayedCall(customCooldownTime > 0f ? customCooldownTime : tapCooldownWaitTime, TapCoolDown);
 	}
 
@@ -165,8 +167,9 @@ public class InputHandler : MonoBehaviour
 		PlayerPrefs.SetInt("controlMechanic", status ? 0 : 1);
 	}
 	
-	private static void ChangeStateToDisabled()
+	private void ChangeStateToDisabled()
 	{
+		_isTemporarilyDisabled = false;
 		AssignNewState(DisabledState);
 	}
 
@@ -176,15 +179,12 @@ public class InputHandler : MonoBehaviour
 		return false;
 	}
 
-	public bool IsInDisabledState() => _leftHandState is DisabledState;
-	public bool IsInIdleState() => _leftHandState is IdleState;
+	public static bool IsInDisabledState() => _leftHandState is DisabledState;
+	public static bool IsInIdleState() => _leftHandState is IdleState;
 
 	public void WaitForPunch(Transform other) => _rightHand.WaitForPunch(other.transform);
 
-	public void StopCarryingBody()
-	{
-		_leftHand.StopCarryingBody();
-	}
+	public void StopCarryingBody() => _leftHand.StopCarryingBody();
 
 	public HandController GetLeftHand() => _leftHand;
 	public HandController GetRightHand() => _rightHand;
@@ -192,20 +192,24 @@ public class InputHandler : MonoBehaviour
 	public void AssignIdleState()
 	{
 		if(_inDisabledState && !_isTemporarilyDisabled) return;
+		
+		print("assigned idle");
+		//Debug.Break();
 		AssignNewState(IdleState);
 
 		_isTemporarilyDisabled = false;
 		_inDisabledState = false;
 	}
 
-	public void AssignDisabledState()
+	public void AssignTemporaryDisabledState()
 	{
+		print("assigned temp disab");
 		AssignNewState(DisabledState);
 		_isTemporarilyDisabled = true;
 		_inDisabledState = true;
 	}
 
-	public void AssignReturnTransitState()
+	public static void AssignReturnTransitState()
 	{
 		AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 	}
@@ -225,12 +229,11 @@ public class InputHandler : MonoBehaviour
 
 	private void OnEnterHitBox(Transform target)
 	{
-		AssignDisabledState();
+		AssignTemporaryDisabledState();
 	}
 
 	private void OnPunchHit()
 	{
-		//might need to come back here to add flexibility for enemies that take multiple hits
 		if(LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 
 		Invoke(nameof(AssignIdleState), .1f);

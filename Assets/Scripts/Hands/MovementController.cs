@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Dreamteck.Splines;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ public class MovementController : MonoBehaviour
 	
 	private void OnMoveToNextArea()
 	{
-		Invoke(nameof(StartFollowing), 1.5f);
+		DOVirtual.DelayedCall(1.5f, StartFollowing);
 	}
 
 	private void StartFollowing()

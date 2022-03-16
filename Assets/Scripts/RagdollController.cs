@@ -197,7 +197,7 @@ public class RagdollController : MonoBehaviour
 		if(_patroller)
 			_patroller.ToggleAI(false);
 		_isAttacking = true;
-		InputHandler.Only.AssignDisabledState();
+		InputHandler.Only.AssignTemporaryDisabledState();
 	}
 
 	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);
