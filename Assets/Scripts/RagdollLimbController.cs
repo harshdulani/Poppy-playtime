@@ -50,7 +50,7 @@ public class RagdollLimbController : MonoBehaviour
 	{
 		if(!_parent.TryGetComponent(out HoldContainerUpHelper helper)) return;
 
-		GameEvents.only.InvokeDropContainer(helper.myContainer);
+		GameEvents.Only.InvokeDropContainer(helper.myContainer);
 	}
 	
 	public Rigidbody AskParentForHook() => _parent.chest;
@@ -64,7 +64,7 @@ public class RagdollLimbController : MonoBehaviour
 		endPos.y = transform.root.position.y;
 		_parent.transform.DOMove(endPos, 0.5f);
 		_parent.AttackEnemy();
-		GameEvents.only.InvokeEnemyKillPlayer();
+		GameEvents.Only.InvokeEnemyKillPlayer();
 	}
 	
 	private void OnCollisionEnter(Collision other)

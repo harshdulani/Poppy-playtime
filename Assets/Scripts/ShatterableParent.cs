@@ -14,12 +14,12 @@ public class ShatterableParent : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.Only.PunchHit += OnPunchHit;
 	}
 	
 	private void OnDisable()
 	{
-		GameEvents.only.punchHit -= OnPunchHit;
+		GameEvents.Only.PunchHit -= OnPunchHit;
 	}
 
 	private void OnDrawGizmos()
@@ -35,7 +35,7 @@ public class ShatterableParent : MonoBehaviour
 		if(shouldOnlyBeShatteredByLastEnemy)
 			if(!LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 		
-		GameEvents.only.InvokeRayfireShattered(transform);
+		GameEvents.Only.InvokeRayfireShattered(transform);
 		
 		if(shouldPlayBrickAudioOnShatter)
 		{

@@ -26,16 +26,16 @@ public class ComboCanvasManager : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.punchHit += OnPunchHit;
-		GameEvents.only.enemyKilled += OnEnemyKilled;
-		GameEvents.only.propHitsEnemy += OnPropHitsEnemy;
+		GameEvents.Only.PunchHit += OnPunchHit;
+		GameEvents.Only.EnemyKilled += OnEnemyKilled;
+		GameEvents.Only.PropHitsEnemy += OnPropHitsEnemy;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.punchHit -= OnPunchHit;
-		GameEvents.only.punchHit -= OnEnemyKilled;
-		GameEvents.only.propHitsEnemy -= OnPropHitsEnemy;
+		GameEvents.Only.PunchHit -= OnPunchHit;
+		GameEvents.Only.PunchHit -= OnEnemyKilled;
+		GameEvents.Only.PropHitsEnemy -= OnPropHitsEnemy;
 
 	}
 

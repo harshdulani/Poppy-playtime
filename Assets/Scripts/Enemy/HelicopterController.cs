@@ -35,16 +35,16 @@ public class HelicopterController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.enemyKillPlayer += OnEnemyKillPlayer;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
+		GameEvents.Only.EnemyKillPlayer += OnEnemyKillPlayer;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.enemyKillPlayer -= OnEnemyKillPlayer;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
+		GameEvents.Only.EnemyKillPlayer -= OnEnemyKillPlayer;
 	}
 
 	private void Start()
@@ -89,7 +89,7 @@ public class HelicopterController : MonoBehaviour
 		_rb.AddForce(Vector3.left * deathExplosionForce + Vector3.down * deathExplosionForce, ForceMode.Impulse);
 		_rb.AddTorque(Vector3.up * 720f, ForceMode.Acceleration);
 
-		GameEvents.only.InvokeEnemyKill();
+		GameEvents.Only.InvokeEnemyKill();
 		
 		_audio.OnHeliDeath();
 		EndShooterSequence();

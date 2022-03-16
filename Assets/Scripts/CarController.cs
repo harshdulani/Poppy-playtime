@@ -59,7 +59,7 @@ public class CarController : MonoBehaviour
 		
 		if(!other.gameObject.CompareTag("HitBox") && !other.gameObject.CompareTag("Arm") && !other.gameObject.CompareTag("Player")) return;
 		
-		GameEvents.only.InvokeEnemyHitPlayer(transform);
+		GameEvents.Only.InvokeEnemyHitPlayer(transform);
 		
 		//smoke vfx
 		transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));

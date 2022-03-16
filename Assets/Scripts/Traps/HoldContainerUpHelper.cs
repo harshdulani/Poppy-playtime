@@ -6,12 +6,12 @@ public class HoldContainerUpHelper : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.dropContainer += OnDropContainer;
+		GameEvents.Only.DropContainer += OnDropContainer;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.dropContainer -= OnDropContainer;
+		GameEvents.Only.DropContainer -= OnDropContainer;
 	}
 
 	private void OnDropContainer(Rigidbody container)

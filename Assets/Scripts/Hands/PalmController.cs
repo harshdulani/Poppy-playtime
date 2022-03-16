@@ -15,13 +15,13 @@ public class PalmController : MonoBehaviour
 	{
 		if(myHand.isLeftHand)
 		{
-			GameEvents.only.propDestroyed += OnPropDestroyed;
-			GameEvents.only.giantPickupProp += OnPropDestroyed;
-			GameEvents.only.dropArmor += OnDropArmor;
+			GameEvents.Only.PropDestroyed += OnPropDestroyed;
+			GameEvents.Only.GiantPickupProp += OnPropDestroyed;
+			GameEvents.Only.DropArmor += OnDropArmor;
 		}
 		else
 		{
-			GameEvents.only.punchHit += OnPunchHit;
+			GameEvents.Only.PunchHit += OnPunchHit;
 		}
 	}
 
@@ -29,13 +29,13 @@ public class PalmController : MonoBehaviour
 	{
 		if(myHand.isLeftHand)
 		{
-			GameEvents.only.propDestroyed -= OnPropDestroyed;
-			GameEvents.only.giantPickupProp -= OnPropDestroyed;
-			GameEvents.only.dropArmor -= OnDropArmor;
+			GameEvents.Only.PropDestroyed -= OnPropDestroyed;
+			GameEvents.Only.GiantPickupProp -= OnPropDestroyed;
+			GameEvents.Only.DropArmor -= OnDropArmor;
 		}
 		else
 		{
-			GameEvents.only.punchHit -= OnPunchHit;
+			GameEvents.Only.PunchHit -= OnPunchHit;
 		}
 	}
 

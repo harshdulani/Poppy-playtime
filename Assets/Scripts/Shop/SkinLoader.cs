@@ -35,16 +35,16 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private void OnEnable()
 	{
-		GameEvents.only.weaponSelect += OnWeaponPurchase;
+		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
 		
-		GameEvents.only.gameEnd += OnGameEnd;
+		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.weaponSelect -= OnWeaponPurchase;
+		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
 		
-		GameEvents.only.gameEnd -= OnGameEnd;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
@@ -140,10 +140,9 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		if(!ApplovinManager.instance) return;
 		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
-
+		
 		StartWaiting(AdRewardType.NewWeapon);
 		AdsMediator.StartListeningForAds(this);
-		
 	}
 	
 	public void Claim() // Claim for coin multiplier
@@ -279,7 +278,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		skipButton.interactable = false;
 		getItButton.interactable = false;
 		
-		GameEvents.only.InvokeWeaponSelect(GetLoaderWeapon(), false);
+		GameEvents.Only.InvokeWeaponSelect(GetLoaderWeapon(), false);
 		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),0.25f);
 		FindNewLoaderWeapon(GetLoaderWeapon());
 		ResetLoader();
@@ -309,7 +308,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		_currentAdRewardType = AdRewardType.None;
 	}
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void AdRewardReceiveBehaviour()
 	{
 		switch (_currentAdRewardType)
 		{
@@ -327,6 +326,16 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardReceiveBehaviour();
+	}
+
+	public void OnShowDummyAd()
+	{
+		AdRewardReceiveBehaviour();
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)

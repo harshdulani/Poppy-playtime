@@ -77,7 +77,7 @@ public class HelicopterSoldierController : MonoBehaviour
 		StartCoroutine(ShootBullet());
 		
 		_anim.SetTrigger(Fire);
-		GameEvents.only.InvokeEnemyHitPlayer(transform);
+		GameEvents.Only.InvokeEnemyHitPlayer(transform);
 
 		Destroy(muzzle.gameObject, 3f);
 		Vibration.Vibrate(15);

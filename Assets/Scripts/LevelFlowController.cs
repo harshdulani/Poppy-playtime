@@ -18,14 +18,14 @@ public class LevelFlowController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.enemyKilled += OnEnemyKilled;
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.EnemyKilled += OnEnemyKilled;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enemyKilled -= OnEnemyKilled;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.EnemyKilled -= OnEnemyKilled;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 
 	private void Awake()
@@ -78,10 +78,10 @@ public class LevelFlowController : MonoBehaviour
 			yield return GameExtensions.GetWaiter(intervals);
 		
 		if (currentArea == enemiesInArea.Count - 1)
-			GameEvents.only.InvokeGameEnd();
+			GameEvents.Only.InvokeGameEnd();
 		else
 		{
-			GameEvents.only.InvokeMoveToNextArea();
+			GameEvents.Only.InvokeMoveToNextArea();
 			InputHandler.Only.AssignTemporaryDisabledState();
 		}
 	}

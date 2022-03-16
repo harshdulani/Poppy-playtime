@@ -45,12 +45,12 @@ public class GiantController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 
 	private void Start()
@@ -109,7 +109,7 @@ public class GiantController : MonoBehaviour
 
 		Invoke(nameof(GoKinematic), 4f);
 		
-		GameEvents.only.InvokeEnemyKill();
+		GameEvents.Only.InvokeEnemyKill();
 
 		foreach (var rb in rigidbodies)
 			rb.tag = "Untagged";
@@ -174,7 +174,7 @@ public class GiantController : MonoBehaviour
 				_grabbedTargetTransform.TryGetComponent(out _grabbedTargetCarController);				
 				_grabbedTargetTransform.tag = "EnemyAttack";
 
-				GameEvents.only.InvokeGiantPickupProp(_grabbedTargetTransform);
+				GameEvents.Only.InvokeGiantPickupProp(_grabbedTargetTransform);
 				_audioSource.PlayOneShot(propPull);
 				break;
 			}
@@ -237,7 +237,7 @@ public class GiantController : MonoBehaviour
 		_audioSource.PlayOneShot(landing);
 		smokeEffectOnLand.SetActive(true);
 		
-		GameEvents.only.InvokeGiantLanding(transform);
+		GameEvents.Only.InvokeGiantLanding(transform);
 		StartCoroutine(AttackCycle());
 		Vibration.Vibrate(20);
 	}

@@ -12,18 +12,18 @@ public class MovementController : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
 		
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
+		GameEvents.Only.MoveToNextArea += OnMoveToNextArea;
 		_isSubscribed = true;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
 		if(!_isSubscribed) return;
 		
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
+		GameEvents.Only.MoveToNextArea -= OnMoveToNextArea;
 		_isSubscribed = false;
 	}
 

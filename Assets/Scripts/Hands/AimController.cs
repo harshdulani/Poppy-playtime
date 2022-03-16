@@ -25,20 +25,20 @@ public class AimController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.Only.PunchHit += OnPunchHit;
 		
-		GameEvents.only.trapButtonPressed += OnTrapButtonPressed;
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.TrapButtonPressed += OnTrapButtonPressed;
+		GameEvents.Only.MoveToNextArea += OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.punchHit -= OnPunchHit;
+		GameEvents.Only.PunchHit -= OnPunchHit;
 		
-		GameEvents.only.trapButtonPressed -= OnTrapButtonPressed;
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.TrapButtonPressed -= OnTrapButtonPressed;
+		GameEvents.Only.MoveToNextArea -= OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 
 	private void Start ()

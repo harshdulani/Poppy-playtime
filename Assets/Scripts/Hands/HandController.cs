@@ -77,28 +77,28 @@ public class HandController : MonoBehaviour
 	{
 		if(!isLeftHand) //only for right/punching hand
 		{
-			GameEvents.only.weaponSelect += OnWeaponPurchased;
+			GameEvents.Only.WeaponSelect += OnWeaponPurchased;
 
-			GameEvents.only.enterHitBox += OnEnterHitBox;
+			GameEvents.Only.EnterHitBox += OnEnterHitBox;
 		}
 		
-		GameEvents.only.skinSelect += OnSkinPurchased;
-		GameEvents.only.giantPickupProp += OnGiantPickupCar;
-		GameEvents.only.punchHit += OnPunchHit;
+		GameEvents.Only.SkinSelect += OnSkinPurchased;
+		GameEvents.Only.GiantPickupProp += OnGiantPickupCar;
+		GameEvents.Only.PunchHit += OnPunchHit;
 	}
 	
 	private void OnDisable()
 	{
 		if (!isLeftHand) //only for right/punching hand
 		{
-			GameEvents.only.weaponSelect -= OnWeaponPurchased;
+			GameEvents.Only.WeaponSelect -= OnWeaponPurchased;
 
-			GameEvents.only.enterHitBox -= OnEnterHitBox;
+			GameEvents.Only.EnterHitBox -= OnEnterHitBox;
 		}
 		
-		GameEvents.only.skinSelect -= OnSkinPurchased;
-		GameEvents.only.giantPickupProp -= OnGiantPickupCar;
-		GameEvents.only.punchHit -= OnPunchHit;
+		GameEvents.Only.SkinSelect -= OnSkinPurchased;
+		GameEvents.Only.GiantPickupProp -= OnGiantPickupCar;
+		GameEvents.Only.PunchHit -= OnPunchHit;
 	}
 	
 	private void Start()

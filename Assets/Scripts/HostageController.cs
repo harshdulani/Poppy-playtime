@@ -15,14 +15,14 @@ public class HostageController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.gameEnd += OnGameEnd;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.gameEnd -= OnGameEnd;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void Start()

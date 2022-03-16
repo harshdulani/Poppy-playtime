@@ -13,14 +13,14 @@ public class MyPlayerController : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.enemyHitPlayer += OnEnemyHitPlayer;
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.EnemyHitPlayer += OnEnemyHitPlayer;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enemyHitPlayer -= OnEnemyHitPlayer;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.EnemyHitPlayer -= OnEnemyHitPlayer;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 
 	private void Start()
@@ -50,7 +50,7 @@ public class MyPlayerController : MonoBehaviour
 
 		if (!_health.IsDead()) return;
 		
-		GameEvents.only.InvokeEnemyKillPlayer();
+		GameEvents.Only.InvokeEnemyKillPlayer();
 		foreach (var bulletHole in _bulletHole)
 			bulletHole.enabled = true;
 	}

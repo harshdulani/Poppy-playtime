@@ -11,7 +11,7 @@ public class PunchAnimationController : MonoBehaviour
 
 	public void GivePunchOnAnimation()
 	{
-		GameEvents.only.InvokePunchHit();
+		GameEvents.Only.InvokePunchHit();
 		punchFx.Play();
 	}
 }

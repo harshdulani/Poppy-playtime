@@ -33,16 +33,16 @@ public class PropController : MonoBehaviour, IWantsAds
 
 	private void OnEnable()
 	{
-		GameEvents.only.enterHitBox += OnEnterHitBox;
-		GameEvents.only.punchHit += OnPunchHit;
-		GameEvents.only.gameEnd += OnGameEnd;
+		GameEvents.Only.EnterHitBox += OnEnterHitBox;
+		GameEvents.Only.PunchHit += OnPunchHit;
+		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enterHitBox -= OnEnterHitBox;
-		GameEvents.only.punchHit -= OnPunchHit;
-		GameEvents.only.gameEnd -= OnGameEnd;
+		GameEvents.Only.EnterHitBox -= OnEnterHitBox;
+		GameEvents.Only.PunchHit -= OnPunchHit;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void Start()
@@ -128,7 +128,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		if(alwaysSpawnVfx)
 			CreateVFX(transform.position, Quaternion.identity);
 		
-		GameEvents.only.InvokePropDestroy(transform);
+		GameEvents.Only.InvokePropDestroy(transform);
 		_amDestroyed = true;
 		_isHeldByPlayer = false;
 
@@ -203,7 +203,7 @@ public class PropController : MonoBehaviour, IWantsAds
 			if (!(other.gameObject.CompareTag("HitBox") || other.gameObject.CompareTag("Arm") ||
 				  other.gameObject.CompareTag("Player"))) return;
 
-			GameEvents.only.InvokeEnemyHitPlayer(transform);
+			GameEvents.Only.InvokeEnemyHitPlayer(transform);
 
 			if(explosion)
 			{
@@ -247,7 +247,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		}
 
 		if (raghu || other.transform.TryGetComponent(out HelicopterController _))
-			GameEvents.only.InvokePropHitsEnemy();
+			GameEvents.Only.InvokePropHitsEnemy();
 	}
 
 	private void OnEnterHitBox(Transform target)
@@ -282,6 +282,13 @@ public class PropController : MonoBehaviour, IWantsAds
 	}
 
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		TimeController.only.RevertTime();
+		StopWaiting();
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnShowDummyAd()
 	{
 		TimeController.only.RevertTime();
 		StopWaiting();

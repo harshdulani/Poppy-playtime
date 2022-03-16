@@ -11,12 +11,12 @@ public class JumperEnemyController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
 	}
 	
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
 	}
 
 	private void Start()

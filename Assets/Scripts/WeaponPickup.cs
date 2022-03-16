@@ -17,12 +17,12 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
 	}
 
 	private void Start()
@@ -61,7 +61,7 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		_isKilled = true;
 		
-		GameEvents.only.InvokePropDestroy(transform);
+		GameEvents.Only.InvokePropDestroy(transform);
 		transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() => gameObject.SetActive(false));
 	}
 
@@ -119,14 +119,19 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		InputHandler.Only.userIsWatchingAnAdForPickup = false;
 	}
-	
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+
+	private void AdRewardReceiveBehaviour()
 	{
 		weaponParent.gameObject.SetActive(false);
 		InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false, _myWeaponIndex);
-		
+
 		EndAds();
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardReceiveBehaviour();
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
@@ -145,5 +150,10 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		EndAds();
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnShowDummyAd()
+	{
+		AdRewardReceiveBehaviour();
 	}
 }

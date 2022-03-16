@@ -17,12 +17,12 @@ public class TimeController : MonoBehaviour
 	
 	private void OnEnable()
 	{
-		GameEvents.only.enterHitBox += OnEnterHitBox;
+		GameEvents.Only.EnterHitBox += OnEnterHitBox;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enterHitBox -= OnEnterHitBox;
+		GameEvents.Only.EnterHitBox -= OnEnterHitBox;
 
 		Time.timeScale = _defaultTimeScale;
 	}

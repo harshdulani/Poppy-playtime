@@ -104,9 +104,9 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		if (_isAvailable)
 		{
 			if (_isWeaponItem)
-				GameEvents.only.InvokeWeaponSelect(_mySkinIndex, true);
+				GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, true);
 			else
-				GameEvents.only.InvokeSkinSelect(_mySkinIndex, true);
+				GameEvents.Only.InvokeSkinSelect(_mySkinIndex, true);
 			return;
 		}
 
@@ -119,9 +119,9 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	public void ClickOnUnlocked()
 	{
 		if (_isWeaponItem)
-			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, false);
+			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
 		else
-			GameEvents.only.InvokeSkinSelect(_mySkinIndex, false);
+			GameEvents.Only.InvokeSkinSelect(_mySkinIndex, false);
 
 		AudioManager.instance.Play("Button");
 	}
@@ -129,9 +129,19 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
 		if (_isWeaponItem)
-			GameEvents.only.InvokeWeaponSelect(_mySkinIndex, false);
+			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
 		else
-			GameEvents.only.InvokeSkinSelect(_mySkinIndex, false);
+			GameEvents.Only.InvokeSkinSelect(_mySkinIndex, false);
+
+		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnShowDummyAd()
+	{
+		if (_isWeaponItem)
+			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
+		else
+			GameEvents.Only.InvokeSkinSelect(_mySkinIndex, false);
 
 		AdsMediator.StopListeningForAds(this);
 	}

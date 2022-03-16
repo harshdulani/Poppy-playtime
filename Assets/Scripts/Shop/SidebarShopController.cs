@@ -54,18 +54,18 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
 		
-		GameEvents.only.weaponSelect += OnWeaponPurchase;
+		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
 		
 		//GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
 		
-		GameEvents.only.weaponSelect -= OnWeaponPurchase;
+		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
 		
 	//	GameEvents.only.gameEnd -= OnGameEnd;
 	}
@@ -299,7 +299,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		skinButtonPressAnimation.Play();
 		//deduct money if not buying through ads
-		GameEvents.only.InvokeWeaponSelect(GetSidebarWeapon(), !usingAds);
+		GameEvents.Only.InvokeWeaponSelect(GetSidebarWeapon(), !usingAds);
 		AudioManager.instance.Play("Button");
 	}
 
@@ -350,7 +350,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	private void StartWaiting(AdRewardTypes newType) => _currentRewardType = newType;
 	private void StopWaiting() => _currentRewardType = AdRewardTypes.None;
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void AdRewardReceiveBehaviour()
 	{
 		switch (_currentRewardType)
 		{
@@ -368,9 +368,19 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			default:
 				throw new ArgumentOutOfRangeException();
 		}
-		
+
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardReceiveBehaviour();
+	}
+
+	public void OnShowDummyAd()
+	{
+		AdRewardReceiveBehaviour();
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)

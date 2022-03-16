@@ -22,14 +22,14 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	private void OnEnable()
 	{
-		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
-		GameEvents.only.gameEnd += OnGameEnd;
+		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
+		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
-		GameEvents.only.gameEnd -= OnGameEnd;
+		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void Start()
@@ -111,14 +111,15 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		holdToAim.SetActive(false);
 		skipLevel.SetActive(false);
 		
-		if(GameEvents.only)
-			GameEvents.only.InvokeTapToPlay();
+		if(GameEvents.Only)
+			GameEvents.Only.InvokeTapToPlay();
 	}
 
 	public void Retry()
 	{
 		if(ApplovinManager.instance)
-			ApplovinManager.instance.ShowInterstitialAds();
+			if(ApplovinManager.instance.enableAds)
+				ApplovinManager.instance.ShowInterstitialAds();
 		
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
@@ -127,7 +128,8 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	public void NextLevel()
 	{
 		if(ApplovinManager.instance)
-			ApplovinManager.instance.ShowInterstitialAds();
+			if(ApplovinManager.instance.enableAds)
+				ApplovinManager.instance.ShowInterstitialAds();
 		
 		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
@@ -168,7 +170,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		
 		Invoke(nameof(EnableLossObjects), 1.5f);
 	}
-	
+
 	private void OnGameEnd()
 	{
 		if(GAScript.Instance)
@@ -176,8 +178,8 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		
 		Invoke(nameof(EnableVictoryObjects), 1f);
 	}
-	
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+
+	private void AdRewardRecieveBehaviour()
 	{
 		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
@@ -191,14 +193,25 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
+
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
-		
+
 		ShopStateController.ShopStateSerializer.SaveCurrentState();
-		
+
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
-		
+
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardRecieveBehaviour();
+	}
+
+	public void OnShowDummyAd()
+	{
+		AdRewardRecieveBehaviour();
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)

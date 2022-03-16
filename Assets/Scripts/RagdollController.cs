@@ -42,20 +42,20 @@ public class RagdollController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
-		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.giantLanding += OnGiantLanding;
+		GameEvents.Only.MoveToNextArea += OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
+		GameEvents.Only.GiantLanding += OnGiantLanding;
 
-		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
+		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.giantLanding -= OnGiantLanding;
+		GameEvents.Only.MoveToNextArea -= OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
+		GameEvents.Only.GiantLanding -= OnGiantLanding;
 		
-		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
+		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
 	}
 	
 	private void Start()
@@ -88,7 +88,7 @@ public class RagdollController : MonoBehaviour
 			if (!_health.IsDead())
 			{
 				DropArmor();
-				GameEvents.only.InvokeDropArmor();
+				GameEvents.Only.InvokeDropArmor();
 				return false;
 			}
 		}
@@ -132,7 +132,7 @@ public class RagdollController : MonoBehaviour
 		else
 		{
 			DropArmor();
-			GameEvents.only.InvokeDropArmor();
+			GameEvents.Only.InvokeDropArmor();
 		}
 	}
 
@@ -154,7 +154,7 @@ public class RagdollController : MonoBehaviour
 			rb.tag = "Untagged";
 		}
 		
-		GameEvents.only.InvokeEnemyKill();
+		GameEvents.Only.InvokeEnemyKill();
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
 		if(_throwAtPlayer)
 			_throwAtPlayer.StopThrowing();

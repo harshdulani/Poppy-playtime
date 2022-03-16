@@ -29,18 +29,18 @@ public class EnemyPatroller : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 		
-		GameEvents.only.enemyKillPlayer += OnEnemyReachPlayer;
+		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 
-		GameEvents.only.enemyKillPlayer -= OnEnemyReachPlayer;
+		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
 	}
 
 	private void Start()

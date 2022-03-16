@@ -17,16 +17,16 @@ public class ShatterEnemyController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.rayfireShattered += OnShatteredTower;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
+		GameEvents.Only.RayfireShattered += OnShatteredTower;
 	}
 	
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.rayfireShattered -= OnShatteredTower;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
+		GameEvents.Only.RayfireShattered -= OnShatteredTower;
 	}
 
 	private void Start()

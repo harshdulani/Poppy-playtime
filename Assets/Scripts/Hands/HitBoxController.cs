@@ -9,20 +9,20 @@ public class HitBoxController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.punchHit += OnPunchHit;
-		GameEvents.only.propDestroyed += OnPropDestroyed;
+		GameEvents.Only.PunchHit += OnPunchHit;
+		GameEvents.Only.PropDestroyed += OnPropDestroyed;
 
-		GameEvents.only.moveToNextArea += OnMoveToNextArea;
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.MoveToNextArea += OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.punchHit -= OnPunchHit;
-		GameEvents.only.propDestroyed -= OnPropDestroyed;
+		GameEvents.Only.PunchHit -= OnPunchHit;
+		GameEvents.Only.PropDestroyed -= OnPropDestroyed;
 		
-		GameEvents.only.moveToNextArea -= OnMoveToNextArea;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.MoveToNextArea -= OnMoveToNextArea;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -53,7 +53,7 @@ public class HitBoxController : MonoBehaviour
 		_prop = other.transform;
 		_prop.TryGetComponent(out _waitingForPunch);
 		
-		GameEvents.only.InvokeEnterHitBox(_prop);
+		GameEvents.Only.InvokeEnterHitBox(_prop);
 		InputHandler.Only.WaitForPunch(_prop);
 	}
 

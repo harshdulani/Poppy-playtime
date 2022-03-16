@@ -1,11 +1,13 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class ApplovinManager : MonoBehaviour
 {
+	public static ApplovinManager instance;
 
-    public static ApplovinManager instance;
-
-    // Retrieve the ID's from your account
+	public bool enableAds;
+	
+	// Retrieve the ID's from your account
     public string bannerAdUnitId = "YOUR_BANNER_AD_UNIT_ID";
     public string rewardedAdUnitId = "YOUR_REWARDED_AD_UNIT_ID";
     public string interstitialAdUnitId = "YOUR_INTERSTITIAL_AD_UNIT_ID";
@@ -150,7 +152,7 @@ public class ApplovinManager : MonoBehaviour
         MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
         MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
-
+		
         // Load the first rewarded ad
         LoadRewardedAd();
     }
@@ -203,7 +205,6 @@ public class ApplovinManager : MonoBehaviour
 		// The rewarded ad displayed and the user should receive the reward.
 	}
 	
-
     private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
 		print("sss");
@@ -212,6 +213,12 @@ public class ApplovinManager : MonoBehaviour
 
     public bool TryShowRewardedAds()
     {
+		if (!enableAds)
+		{
+			DOVirtual.DelayedCall(0.5f, AdsMediator.InvokeShowDummyRewardedAds);
+			return true;
+		}
+		
 		if(rewardedAdUnitId == "") return false;
 		if (!MaxSdk.IsRewardedAdReady(rewardedAdUnitId)) return false;
 		

@@ -29,14 +29,14 @@ public class ThrowAtPlayer : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.enemyKillPlayer += OnEnemyKillPlayer;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
+		GameEvents.Only.EnemyKillPlayer += OnEnemyKillPlayer;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.enemyKillPlayer -= OnEnemyKillPlayer;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
+		GameEvents.Only.EnemyKillPlayer -= OnEnemyKillPlayer;
 	}
 
 	private void Start()

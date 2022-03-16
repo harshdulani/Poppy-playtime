@@ -13,18 +13,18 @@ public class BossPropController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.reachNextArea += OnReachNextArea;
-		GameEvents.only.gameEnd += StopSpawning;
-		GameEvents.only.enemyKillPlayer += StopSpawning;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
+		GameEvents.Only.GameEnd += StopSpawning;
+		GameEvents.Only.EnemyKillPlayer += StopSpawning;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.reachNextArea -= OnReachNextArea;
-		GameEvents.only.gameEnd -= StopSpawning;
-		GameEvents.only.enemyKillPlayer -= StopSpawning;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
+		GameEvents.Only.GameEnd -= StopSpawning;
+		GameEvents.Only.EnemyKillPlayer -= StopSpawning;
 	}
 	
 	private void StopSpawning()

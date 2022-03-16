@@ -14,12 +14,12 @@ public class HeliAudioController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.reachNextArea += OnReachNextArea;
+		GameEvents.Only.ReachNextArea += OnReachNextArea;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.reachNextArea -= OnReachNextArea;
+		GameEvents.Only.ReachNextArea -= OnReachNextArea;
 	}
 	
 	private void Start()

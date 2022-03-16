@@ -5,70 +5,70 @@ public class GameEvents : MonoBehaviour
 {
 	#region Singleton
 	
-	public static GameEvents only;
+	public static GameEvents Only;
 
 	private void Awake()
 	{
-		if (only) Destroy(gameObject);
-		else only = this;
+		if (Only) Destroy(gameObject);
+		else Only = this;
 	}
 
 	#endregion
 
-	public Action tapToPlay;
+	public event Action TapToPlay;
 		
-	public Action<Transform> enterHitBox;
-	public Action punchHit;
+	public event Action<Transform> EnterHitBox;
+	public event Action PunchHit;
 	
-	public Action propHitsEnemy;
-	public Action<Transform> propDestroyed, giantLanding;
-	public Action<Transform> giantPickupProp;
+	public event Action PropHitsEnemy;
+	public event Action<Transform> PropDestroyed, GiantLanding;
+	public event Action<Transform> GiantPickupProp;
 	
-	public Action<Transform> rayfireShattered;
+	public event Action<Transform> RayfireShattered;
 
-	public Action trapButtonPressed;
-	public Action<Rigidbody> dropContainer;
-	public Action dropArmor, enemyKilled;
+	public event Action TrapButtonPressed;
+	public event Action<Rigidbody> DropContainer;
+	public event Action DropArmor, EnemyKilled;
 
-	public Action moveToNextArea, reachNextArea;
+	public event Action MoveToNextArea, ReachNextArea;
 
-	public Action<Transform> enemyHitPlayer;
-	public Action enemyKillPlayer;
-	public Action gameEnd;
+	public event Action<Transform> EnemyHitPlayer;
+	public event Action EnemyKillPlayer;
+	public event Action GameEnd;
 
-	public Action<int, bool> weaponSelect, skinSelect;
+	public event Action<int, bool> WeaponSelect, SkinSelect;
 
-	public void InvokeTapToPlay() => tapToPlay?.Invoke();
-	public void InvokeEnterHitBox(Transform target) => enterHitBox?.Invoke(target);
+	public void InvokeTapToPlay() => TapToPlay?.Invoke();
+	public void InvokeEnterHitBox(Transform target) => EnterHitBox?.Invoke(target);
 
-	public void InvokePunchHit() => punchHit?.Invoke();
+	public void InvokePunchHit() => PunchHit?.Invoke();
 
-	public void InvokePropHitsEnemy() => propHitsEnemy?.Invoke();
+	public void InvokePropHitsEnemy() => PropHitsEnemy?.Invoke();
 	
-	public void InvokePropDestroy(Transform target) => propDestroyed?.Invoke(target);
+	public void InvokePropDestroy(Transform target) => PropDestroyed?.Invoke(target);
 
-	public void InvokeGiantLanding(Transform giant) => giantLanding?.Invoke(giant);
+	public void InvokeGiantLanding(Transform giant) => GiantLanding?.Invoke(giant);
 	
-	public void InvokeGiantPickupProp(Transform car) => giantPickupProp?.Invoke(car);
+	public void InvokeGiantPickupProp(Transform car) => GiantPickupProp?.Invoke(car);
 
-	public void InvokeRayfireShattered(Transform shattered) => rayfireShattered?.Invoke(shattered);
+	public void InvokeRayfireShattered(Transform shattered) => RayfireShattered?.Invoke(shattered);
 
-	public void InvokeTrapButtonPressed() => trapButtonPressed?.Invoke();
-	public void InvokeDropContainer(Rigidbody container) => dropContainer?.Invoke(container);
+	public void InvokeTrapButtonPressed() => TrapButtonPressed?.Invoke();
+	public void InvokeDropContainer(Rigidbody container) => DropContainer?.Invoke(container);
 	
-	public void InvokeDropArmor() => dropArmor?.Invoke();
-	public void InvokeEnemyKill() => enemyKilled?.Invoke();
+	public void InvokeDropArmor() => DropArmor?.Invoke();
+	public void InvokeEnemyKill() => EnemyKilled?.Invoke();
 	
-	public void InvokeEnemyHitPlayer(Transform hitter) => enemyHitPlayer?.Invoke(hitter);
+	public void InvokeEnemyHitPlayer(Transform hitter) => EnemyHitPlayer?.Invoke(hitter);
 	
 	//Mass migration of kill player subscribers and invokers coming to hit player 
-	public void InvokeEnemyKillPlayer() => enemyKillPlayer?.Invoke();
+	public void InvokeEnemyKillPlayer() => EnemyKillPlayer?.Invoke();
 	
-	public void InvokeMoveToNextArea() => moveToNextArea?.Invoke();
-	public void InvokeReachNextArea() => reachNextArea?.Invoke();
+	public void InvokeMoveToNextArea() => MoveToNextArea?.Invoke();
+	public void InvokeReachNextArea() => ReachNextArea?.Invoke();
 	
-	public void InvokeGameEnd() => gameEnd?.Invoke();
+	public void InvokeGameEnd() => GameEnd?.Invoke();
 
-	public void InvokeWeaponSelect(int index, bool shouldDeductCoins) => weaponSelect?.Invoke(index, shouldDeductCoins);
-	public void InvokeSkinSelect(int index, bool shouldDeductCoins) => skinSelect?.Invoke(index, shouldDeductCoins);
+	public void InvokeWeaponSelect(int index, bool shouldDeductCoins) => WeaponSelect?.Invoke(index, shouldDeductCoins);
+	public void InvokeSkinSelect(int index, bool shouldDeductCoins) => SkinSelect?.Invoke(index, shouldDeductCoins);
 }

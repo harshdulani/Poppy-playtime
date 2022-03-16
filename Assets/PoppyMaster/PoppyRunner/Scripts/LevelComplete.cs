@@ -23,8 +23,9 @@ public class LevelComplete : MonoBehaviour
 
     void SaveLevels()
     {
-		if(ApplovinManager.instance)
-			ApplovinManager.instance.ShowInterstitialAds();
+		if (ApplovinManager.instance)
+			if(ApplovinManager.instance.enableAds)
+				ApplovinManager.instance.ShowInterstitialAds();
 		
 		if (PlayerPrefs.GetInt("levelNo", 1) < _lastRegularLevel)
 		{
@@ -38,7 +39,7 @@ public class LevelComplete : MonoBehaviour
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
-		
+
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 	}
 	

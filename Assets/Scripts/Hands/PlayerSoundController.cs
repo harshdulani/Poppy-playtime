@@ -12,12 +12,12 @@ public class PlayerSoundController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.reachNextArea += StopFootSteps;
+		GameEvents.Only.ReachNextArea += StopFootSteps;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.reachNextArea -= StopFootSteps;
+		GameEvents.Only.ReachNextArea -= StopFootSteps;
 	}
 
 	private void Awake()

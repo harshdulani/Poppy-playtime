@@ -22,15 +22,15 @@ public class TutorialCanvasController : MonoBehaviour
 	{
 		if (myType == TutorialType.Boss)
 		{
-			GameEvents.only.reachNextArea += OnReachNextArea;
-			GameEvents.only.giantLanding += OnGiantLand;
+			GameEvents.Only.ReachNextArea += OnReachNextArea;
+			GameEvents.Only.GiantLanding += OnGiantLand;
 		}
 		if (myType != TutorialType.Punching)
-			GameEvents.only.tapToPlay += OnTapToPlay;
+			GameEvents.Only.TapToPlay += OnTapToPlay;
 		else
 		{
-			GameEvents.only.enterHitBox += OnEnterHitBox;
-			GameEvents.only.punchHit += OnPunchHit;
+			GameEvents.Only.EnterHitBox += OnEnterHitBox;
+			GameEvents.Only.PunchHit += OnPunchHit;
 		}
 	}
 
@@ -38,15 +38,15 @@ public class TutorialCanvasController : MonoBehaviour
 	{
 		if (myType == TutorialType.Boss)
 		{
-			GameEvents.only.reachNextArea -= OnReachNextArea;
-			GameEvents.only.giantLanding -= OnGiantLand;
+			GameEvents.Only.ReachNextArea -= OnReachNextArea;
+			GameEvents.Only.GiantLanding -= OnGiantLand;
 		}
 		if(myType != TutorialType.Punching)
-			GameEvents.only.tapToPlay -= OnTapToPlay;
+			GameEvents.Only.TapToPlay -= OnTapToPlay;
 		else
 		{
-			GameEvents.only.enterHitBox -= OnEnterHitBox;
-			GameEvents.only.punchHit -= OnPunchHit;
+			GameEvents.Only.EnterHitBox -= OnEnterHitBox;
+			GameEvents.Only.PunchHit -= OnPunchHit;
 		}
 	}
 

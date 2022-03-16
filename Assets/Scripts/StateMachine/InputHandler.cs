@@ -29,20 +29,20 @@ public class InputHandler : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.enterHitBox += OnEnterHitBox;
-		GameEvents.only.punchHit += OnPunchHit;
-		GameEvents.only.gameEnd += OnGameOver;
-		GameEvents.only.enemyKillPlayer += OnGameOver;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.EnterHitBox += OnEnterHitBox;
+		GameEvents.Only.PunchHit += OnPunchHit;
+		GameEvents.Only.GameEnd += OnGameOver;
+		GameEvents.Only.EnemyKillPlayer += OnGameOver;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.enterHitBox -= OnEnterHitBox;
-		GameEvents.only.punchHit -= OnPunchHit;
-		GameEvents.only.gameEnd -= OnGameOver;
-		GameEvents.only.enemyKillPlayer -= OnGameOver;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.EnterHitBox -= OnEnterHitBox;
+		GameEvents.Only.PunchHit -= OnPunchHit;
+		GameEvents.Only.GameEnd -= OnGameOver;
+		GameEvents.Only.EnemyKillPlayer -= OnGameOver;
 	}
 
 	private void Awake()
@@ -87,7 +87,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		print(_leftHandState);
+		//print(_leftHandState);
 		if (_inDisabledState)
 		{
 			if(!_isTemporarilyDisabled) return;
@@ -193,8 +193,6 @@ public class InputHandler : MonoBehaviour
 	{
 		if(_inDisabledState && !_isTemporarilyDisabled) return;
 		
-		print("assigned idle");
-		//Debug.Break();
 		AssignNewState(IdleState);
 
 		_isTemporarilyDisabled = false;
@@ -203,7 +201,6 @@ public class InputHandler : MonoBehaviour
 
 	public void AssignTemporaryDisabledState()
 	{
-		print("assigned temp disab");
 		AssignNewState(DisabledState);
 		_isTemporarilyDisabled = true;
 		_inDisabledState = true;

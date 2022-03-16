@@ -74,20 +74,20 @@ public class MainShopController : MonoBehaviour, IWantsAds
 	
 	private void OnEnable()
 	{
-		GameEvents.only.weaponSelect += OnWeaponPurchase;
-		GameEvents.only.skinSelect += OnSkinPurchase;
+		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
+		GameEvents.Only.SkinSelect += OnSkinPurchase;
 		
-		GameEvents.only.tapToPlay += OnTapToPlay;
-		GameEvents.only.gameEnd += OnGameEnd;
+		GameEvents.Only.TapToPlay += OnTapToPlay;
+		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.only.weaponSelect -= OnWeaponPurchase;
-		GameEvents.only.skinSelect -= OnSkinPurchase;
+		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
+		GameEvents.Only.SkinSelect -= OnSkinPurchase;
 		
-		GameEvents.only.tapToPlay -= OnTapToPlay;
-		GameEvents.only.gameEnd -= OnGameEnd;
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
@@ -213,6 +213,10 @@ public class MainShopController : MonoBehaviour, IWantsAds
 
 	public void ClickArms()
 	{
+		if (ApplovinManager.instance) 
+			if(ApplovinManager.instance.enableAds)
+				ApplovinManager.instance.ShowInterstitialAds();
+		
 		armsButton.interactable = false;
 		armsText.color = grey;
 		
@@ -222,12 +226,14 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		//switch to arms panel
 		armsHolder.transform.parent.parent.gameObject.SetActive(true);
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(false);
-		if(ApplovinManager.instance)
-			ApplovinManager.instance.ShowInterstitialAds();
 	}
 
 	public void ClickWeapons()
 	{
+		if (ApplovinManager.instance) 
+			if(ApplovinManager.instance.enableAds)
+				ApplovinManager.instance.ShowInterstitialAds();
+		
 		weaponsButton.interactable = false;
 		weaponsText.color = grey;
 
@@ -237,9 +243,6 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		//switch to weapons panel
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(true);
 		armsHolder.transform.parent.parent.gameObject.SetActive(false);
-		
-		if(ApplovinManager.instance)
-			ApplovinManager.instance.ShowInterstitialAds();
 	}
 	
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
@@ -310,9 +313,10 @@ public class MainShopController : MonoBehaviour, IWantsAds
 	}
 
 	private void StartWaiting(AdRewardType newType) => _currentRewardType = newType;
+
 	private void StopWaiting() => _currentRewardType = AdRewardType.None;
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void AdRewardReceiveBehaviour()
 	{
 		switch (_currentRewardType)
 		{
@@ -329,9 +333,19 @@ public class MainShopController : MonoBehaviour, IWantsAds
 			default:
 				throw new ArgumentOutOfRangeException();
 		}
-		
+
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
+	}
+
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardReceiveBehaviour();
+	}
+
+	public void OnShowDummyAd()
+	{
+		AdRewardReceiveBehaviour();
 	}
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)

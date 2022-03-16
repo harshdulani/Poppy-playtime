@@ -20,7 +20,7 @@ public class EnemyWeaponController : MonoBehaviour
 			if (!(other.gameObject.CompareTag("HitBox") || other.gameObject.CompareTag("Arm") ||
 				  other.gameObject.CompareTag("Player"))) return;
 
-			GameEvents.only.InvokeEnemyHitPlayer(transform);
+			GameEvents.Only.InvokeEnemyHitPlayer(transform);
 
 			transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => gameObject.SetActive(false));
 			return;
@@ -31,7 +31,7 @@ public class EnemyWeaponController : MonoBehaviour
 		if(!other.collider.TryGetComponent(out RagdollLimbController raghu)) return;
 		
 		raghu.GetPunched((other.transform.root.position - transform.position).normalized, 10f);
-		GameEvents.only.InvokeEnemyKillPlayer();
+		GameEvents.Only.InvokeEnemyKillPlayer();
 		AudioManager.instance.Play("Bonk");
 	}
 }
