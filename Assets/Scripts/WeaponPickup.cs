@@ -127,9 +127,18 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 
 		EndAds();
 		AdsMediator.StopListeningForAds(this);
+		
+		AudioManager.instance.Play("PreWeaponPickup");
+		AudioManager.instance.Play("PreWeaponPickupSwoosh");
+		DOVirtual.DelayedCall(0.35f, () => AudioManager.instance.Play("WeaponPickup"));
 	}
 
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	{
+		AdRewardReceiveBehaviour();
+	}
+
+	public void OnShowDummyAd()
 	{
 		AdRewardReceiveBehaviour();
 	}
@@ -150,10 +159,5 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		EndAds();
 		AdsMediator.StopListeningForAds(this);
-	}
-
-	public void OnShowDummyAd()
-	{
-		AdRewardReceiveBehaviour();
 	}
 }

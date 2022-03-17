@@ -22,7 +22,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 
 	[SerializeField] private GridLayoutGroup weaponsHolder, armsHolder;
 	[SerializeField] private GameObject shopItemPrefab;
-
+	
 	[Header("Arms and Weapons Panels"), SerializeField] private Button weaponsButton;
 	[SerializeField] private Button armsButton;
 	[SerializeField] private TextMeshProUGUI weaponsText, armsText;

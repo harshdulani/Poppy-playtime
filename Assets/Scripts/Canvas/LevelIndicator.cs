@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,10 +20,9 @@ public class LevelIndicator : MonoBehaviour
 	[SerializeField] private float inactiveLevelScale = 0.75f;
 
 	private List<Image> _backgroundCircles, _foregroundCircles;
+	private List<TextMeshProUGUI> _levelNums;
 	private List<Transform> _textRects;
 	private const int LevelsPerTheme = 7;
-	
-	private static int GetBuildIndex() => SceneManager.GetActiveScene().buildIndex;
 
 	private void OnEnable()
 	{
@@ -38,15 +38,22 @@ public class LevelIndicator : MonoBehaviour
 	{
 		_backgroundCircles = new List<Image>();
 		_foregroundCircles = new List<Image>();
+		_levelNums = new List<TextMeshProUGUI>();
 		_textRects = new List<Transform>();
 
 		for (var i = 0; i < LevelsPerTheme; i++)
 		{
-			_backgroundCircles.Add(circlesRoot.GetChild(i).GetComponent<Image>());
-			_foregroundCircles.Add(circlesRoot.GetChild(i).GetChild(0).GetComponent<Image>());
+			var currentChild = circlesRoot.GetChild(i);
+			_backgroundCircles.Add(currentChild.GetComponent<Image>());
+			_foregroundCircles.Add(currentChild.GetChild(0).GetComponent<Image>());
 
-			var levelText = circlesRoot.GetChild(i).GetChild(1);
-			_textRects.Add(levelText.gameObject.activeSelf ? levelText : circlesRoot.GetChild(i).GetChild(2));
+			var levelText = currentChild.GetChild(1);
+			
+			//if level text is disabled, that means this child has an image for spcl level/boss level
+			var textActiveStatus = levelText.gameObject.activeSelf;
+
+			_levelNums.Add(textActiveStatus ? levelText.GetComponent<TextMeshProUGUI>() : null);
+			_textRects.Add(textActiveStatus ? levelText : currentChild.GetChild(2));
 		}
 		
 		if(MakeCurrentLevel()) return;
@@ -57,17 +64,21 @@ public class LevelIndicator : MonoBehaviour
 
 	private bool MakeCurrentLevel()
 	{
-		var currentLevel = GetBuildIndex() - 1;
+		var currentLevel = PlayerPrefs.GetInt("levelNo") - 1;
 
 		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
-		if (SceneManager.sceneCountInBuildSettings < PlayerPrefs.GetInt("levelNo")) return false;
+		if (SceneManager.sceneCountInBuildSettings < currentLevel) return false;
 
 		var currentThemedLevel = currentLevel % LevelsPerTheme;
+		var currentTheme = Mathf.FloorToInt(currentLevel / (float) LevelsPerTheme);
 		
 		for (var i = 0; i < LevelsPerTheme; i++)
 		{
 			_backgroundCircles[i].color = theme.backgroundCircleColor;
 			_foregroundCircles[i].color = i < currentThemedLevel ? theme.foregroundCircleColor : Color.clear;
+			
+			if(_levelNums[i])
+				_levelNums[i].text = ((currentTheme * LevelsPerTheme) + i).ToString();
 
 			if (i != currentThemedLevel)
 			{
