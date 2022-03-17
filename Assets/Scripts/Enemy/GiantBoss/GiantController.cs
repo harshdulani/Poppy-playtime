@@ -278,7 +278,7 @@ public class GiantController : MonoBehaviour
 	{
 		if(_grabbedTargetCarController)
 			_grabbedTargetCarController.DropVehicle();
-		else
+		else if(_grabbedTargetPropController)
 			_grabbedTargetPropController.DropProp();
 		
 		_tweener?.Kill();

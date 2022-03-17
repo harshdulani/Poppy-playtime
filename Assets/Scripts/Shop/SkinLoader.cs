@@ -127,7 +127,6 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		{
 			FindNewLoaderWeapon(GetLoaderWeapon());
 			ResetLoader();
-			//SidebarShopController.AlterCoinCount(100);
 		}
 		getItButton.interactable = false;
 		skipButton.interactable = false;

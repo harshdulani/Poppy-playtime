@@ -9,7 +9,7 @@ public class EnemyPatroller : MonoBehaviour
 	public bool shouldPatrol;
 	public int myPatrolArea;
 	[SerializeField] private List<Transform> waypoints;
-	[SerializeField] private bool hasWeapon, enterPatrolAreaRunning;
+	[SerializeField] private bool hasWeapon;
 	[SerializeField] private float waypointChangeDistance = 0.5f;
 
 	private NavMeshAgent _agent;
@@ -72,9 +72,7 @@ public class EnemyPatroller : MonoBehaviour
 		if (waypoints.Count > 1)
 			SetNextWaypoint();
 		else
-		{
 			ToggleAI(false);
-		}
 	}
 
 	private void SetNextWaypoint()
@@ -113,22 +111,8 @@ public class EnemyPatroller : MonoBehaviour
 		ToggleAI(false);
 	}
 
-	private void OnMoveToNextArea()
-	{
-		
-	}
-	
 	private void OnReachNextArea()
 	{
-		if (enterPatrolAreaRunning)
-		{
-			
-		}
-		//on move to next area, call this
-		//AI at high movement speed goes to waypoint 0
-		//when current waypoint == 1, slow movement speed
-		//if(!enterPatrolAreaRunning) return;
-		
 		if(!shouldPatrol) return;
 		
 		if(myPatrolArea != LevelFlowController.only.currentArea) return;

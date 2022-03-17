@@ -21,20 +21,16 @@ public class ApplovinManager : MonoBehaviour
         MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) => {
             // AppLovin SDK is initialized, start loading ads
 
-            if (bannerAdUnitId == "" || rewardedAdUnitId == "" || interstitialAdUnitId == "")
-                return;
+            if (bannerAdUnitId == "" || rewardedAdUnitId == "" || interstitialAdUnitId == "") return;
+			print("contains ids");
 
-            print("contains ids");
-
-            InitializeBannerAds();
-
-            InitializeRewardedAds();
-
-            InitializeInterstitialAds();
-
-            ShowBannerAds();
-
-        };
+			if (!enableAds) return;
+			
+			InitializeBannerAds();
+			InitializeRewardedAds();
+			InitializeInterstitialAds();
+			ShowBannerAds();
+		};
 
         MaxSdk.SetSdkKey("qx1n7X8i53FgIANTP6L6vRD5KlRgJCW87XvF41y94CrNMDsnJBuDd6Jyrlc9x8H3fAJlCGuHSkfqxVaFgTSIZn");
         MaxSdk.InitializeSdk();

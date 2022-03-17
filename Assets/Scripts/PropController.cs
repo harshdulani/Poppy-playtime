@@ -15,7 +15,7 @@ public class PropController : MonoBehaviour, IWantsAds
 	[SerializeField] private GameObject explosion;
 	[SerializeField] private AudioClip[] explosionFx;
 	[SerializeField] private bool alwaysSpawnVfx;
-	[SerializeField, Range(0.1f, 1f)] private float shrinkSpeedMultiplier, explosionScale;
+	[SerializeField, Range(0.1f, 2f)] private float shrinkSpeedMultiplier, explosionScale;
 	[SerializeField] private Transform adButton;
 
 	private Tweener _adScaleTween;
@@ -189,7 +189,7 @@ public class PropController : MonoBehaviour, IWantsAds
 	private void CreateVFX(Vector3 position, Quaternion rotation)
 	{
 		var exploder = Instantiate(explosion, position, rotation);
-
+		
 		exploder.transform.localScale *= explosionScale;
 
 		Destroy(exploder, 3f);

@@ -22,9 +22,8 @@ public class Shatterable : MonoBehaviour
 	{
 		if(!_canShatter) return;
 		if(_parent.isShattered) return;
-		//if(!other.transform.root.CompareTag("Target")) return;
 		
-		if(!other.transform.root.TryGetComponent(out RagdollController _)) return;
+		if(!other.transform.root.TryGetComponent(out RagdollController _) && !other.transform.root.TryGetComponent(out GiantController _)) return;
 		
 		//maybe remove this, because the ones knocked out can also shatter the tower but theyre not in this list
 		if(!ShatterableParent.IsThisAPossibleShatterer(other.transform.root)) return;
