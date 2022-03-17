@@ -39,7 +39,7 @@ public class GAScript : MonoBehaviour
     public void LevelStart(string levelname)
     {
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, levelname);
-		FlurryStart.instance?.LevelStart(levelname);
+		//FlurryStart.instance?.LevelStart(levelname);
         //FaceBookScript.instance.LevelStarted(levelname);
        
     }
@@ -55,7 +55,7 @@ public class GAScript : MonoBehaviour
     public void LevelCompleted(string levelname)
     {
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, levelname);
-		FlurryStart.instance?.LevelCompleted(levelname);
+		//FlurryStart.instance?.LevelCompleted(levelname);
 		// FaceBookScript.instance.LevelCompleted(levelname);
 
 	}

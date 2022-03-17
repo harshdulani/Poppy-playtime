@@ -1,15 +1,20 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    public LevelFail lf;
-    public InGamePanel ig;
-    public LevelComplete lc;
+	public LevelFail lf;
+	public InGamePanel ig;
+	public LevelComplete lc;
 
-    public SafeAreaController safeArea;
+	public SafeAreaController safeArea;
+
+	public GameObject aimHelperText;
+	private bool _hasTappedToPlay;
 
     private void Awake()
     {
@@ -18,7 +23,21 @@ public class UIManager : MonoBehaviour
         // safeArea = GetComponentInChildren<SafeAreaController>();
     }
 
-    public void LevelCompleted()
+	private void Update()
+	{
+		if(_hasTappedToPlay) return;
+		if (!InputExtensions.GetFingerDown()) return;
+		if(!EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1))
+			TapToPlay();
+	}
+
+	private void TapToPlay()
+	{
+		aimHelperText.SetActive(false);
+		_hasTappedToPlay = true;
+	}
+
+	public void LevelCompleted()
     {
         ig.DeactiveGO(false);
         lc.DeactiveGO(true);

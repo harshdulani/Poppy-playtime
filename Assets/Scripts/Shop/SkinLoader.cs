@@ -19,7 +19,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	[SerializeField] private Button skipButton,  getItButton, claimButton;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText, claimMulTxt;
 
-	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder; 
+	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder, percentageUI; 
 	
 	[SerializeField] private int levelsPerUnlock = 5;
 	[SerializeField] private float tweenDuration, panelOpenWait, skipButtonWait;
@@ -196,6 +196,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 				DOTween.To(() => oldValue, value => oldValue = value, _currentSkinPercentageUnlocked, tweenDuration)
 					.SetEase(Ease.OutBack).OnUpdate(() => percentageUnlockedText.text = (int) (oldValue * 100) + "%"));
 		}
+		else
+			percentageUI.SetActive(false);
 
 		seq.AppendCallback(() =>
 		{
