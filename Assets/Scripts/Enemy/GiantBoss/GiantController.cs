@@ -263,6 +263,7 @@ public class GiantController : MonoBehaviour
 		
 		GoRagdoll(-transform.forward);
 		ReleaseVehicle();
+		ShatterableParent.AddToPossibleShatterers(transform);
 	}
 
 	private static void ThrowHeadgear(GameObject obj)

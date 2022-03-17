@@ -170,30 +170,33 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		blackBackground.color = Color.clear;
 		blackBackground.DOColor(color, .75f);
 		
-		loaderPanel.SetActive(true);
-
-		// show multiplier
-		barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
-			.SetEase(Ease.Flash)
-			.SetLoops(-1, LoopType.Yoyo)
-			.OnUpdate(() => claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount) + "");
-
-		//show loader
-		var oldValue = _currentSkinPercentageUnlocked;
-		_currentSkinPercentageUnlocked += 1 / (float)levelsPerUnlock;
-		
-		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-
 		var seq = DOTween.Sequence();
 
-		seq.AppendInterval(1f);
-		seq.Append(DOTween.To(() => blackWeaponImage.fillAmount, value => blackWeaponImage.fillAmount = value,
-			1 - _currentSkinPercentageUnlocked, tweenDuration).SetEase(Ease.OutBack));
-		
-		seq.Insert(1f,
-			DOTween.To(() => oldValue, value => oldValue = value, _currentSkinPercentageUnlocked, tweenDuration)
-				.SetEase(Ease.OutBack).OnUpdate(() => percentageUnlockedText.text = (int) (oldValue * 100) + "%"));
-		
+		seq.AppendInterval(LevelFlowController.only.isGiantLevel ? 2f : 1f);
+		seq.AppendCallback(() => loaderPanel.SetActive(true));
+
+		// show multiplier
+		seq.Append(barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
+			.SetEase(Ease.Flash)
+			.SetLoops(-1, LoopType.Yoyo)
+			.OnUpdate(() => claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount) + ""));
+
+		if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
+		{
+			//show loader
+			var oldValue = _currentSkinPercentageUnlocked;
+			_currentSkinPercentageUnlocked += 1 / (float) levelsPerUnlock;
+
+			PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+
+			seq.Append(DOTween.To(() => blackWeaponImage.fillAmount, value => blackWeaponImage.fillAmount = value,
+				1 - _currentSkinPercentageUnlocked, tweenDuration).SetEase(Ease.OutBack));
+
+			seq.Insert(1f,
+				DOTween.To(() => oldValue, value => oldValue = value, _currentSkinPercentageUnlocked, tweenDuration)
+					.SetEase(Ease.OutBack).OnUpdate(() => percentageUnlockedText.text = (int) (oldValue * 100) + "%"));
+		}
+
 		seq.AppendCallback(() =>
 		{
 			//skipButton.interactable = true;
@@ -264,8 +267,6 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private void OnGameEnd()
 	{
-		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
-
 		Invoke(nameof(ShowPanel), panelOpenWait);
 	}
 
