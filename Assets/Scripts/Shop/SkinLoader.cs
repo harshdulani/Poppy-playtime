@@ -174,12 +174,13 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 		seq.AppendInterval(LevelFlowController.only.isGiantLevel ? 2f : 1f);
 		seq.AppendCallback(() => loaderPanel.SetActive(true));
-
+		
 		// show multiplier
-		seq.Append(barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
+		seq.AppendCallback(() =>
+			barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
 			.SetEase(Ease.Flash)
 			.SetLoops(-1, LoopType.Yoyo)
-			.OnUpdate(() => claimMulTxt.text = (GetMultiplierResult() * coinIncreaseCount) + ""));
+			.OnUpdate(() => claimMulTxt.text = GetMultiplierResult() * coinIncreaseCount + ""));
 
 		if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
 		{

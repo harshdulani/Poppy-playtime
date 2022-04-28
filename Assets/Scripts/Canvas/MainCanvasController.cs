@@ -38,7 +38,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
 		levelText.text = "Level " + levelNo;
-		abToggle.isOn = PlayerPrefs.GetInt("controlMechanic", 0) != 0;
+		abToggle.isOn = PlayerPrefs.GetInt("isUsingTapAndPunch", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
 		
 		if(levelNo < 5)

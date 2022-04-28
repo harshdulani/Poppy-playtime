@@ -33,7 +33,7 @@ public class GAScript : MonoBehaviour
 	{
 		yield return new WaitUntil(GameAnalytics.IsRemoteConfigsReady);
 		
-		PlayerPrefs.SetInt("controlMechanic", int.Parse(GameAnalytics.GetRemoteConfigsValueAsString("Input", "0")));
+		PlayerPrefs.SetInt("isUsingTapAndPunch", int.Parse(GameAnalytics.GetRemoteConfigsValueAsString("Input", "0")));
 	}
 
     public void LevelStart(string levelname)
