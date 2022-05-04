@@ -417,6 +417,9 @@ public class HandController : MonoBehaviour
 			_ => throw new ArgumentOutOfRangeException()
 		};
 
+		if(currentArmsSkin == ArmsType.Skin)
+			myArm.materials[1] = humanSkin;
+		
 		if (!isLeftHand) return;
 		
 		if ((ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() == ArmsType.Skin)
