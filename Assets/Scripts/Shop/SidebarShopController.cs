@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
 public class SidebarShopController : MonoBehaviour, IWantsAds
 {
 	private enum AdRewardTypes

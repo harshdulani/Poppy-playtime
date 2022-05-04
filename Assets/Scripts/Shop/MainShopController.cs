@@ -45,12 +45,9 @@ public class MainShopController : MonoBehaviour, IWantsAds
 	public TextMeshProUGUI GetCoinText() => coinText;
 	public void UpdateCoinText() => coinText.text = ShopStateController.CurrentState.GetState().CoinCount.ToString();
 	
-	private int GetWeaponSkinPrice(int index) => weaponSkinCosts[index];
-	private int GetArmsSkinPrice(int index) => armsSkinCosts[index];
-
 	public static int GetWeaponSkinCount() => Enum.GetNames(typeof(WeaponType)).Length;
 	public static int GetArmsSkinCount() => Enum.GetNames(typeof(ArmsType)).Length;
-	
+
 	public Sprite GetWeaponSprite(int index, bool wantsBlackSprite = false)
 	{
 		var currentList = wantsBlackSprite ? blackWeaponSprites : coloredWeaponSprites;
@@ -70,6 +67,9 @@ public class MainShopController : MonoBehaviour, IWantsAds
 
 		return currentList[index];
 	}
+	
+	private int GetWeaponSkinPrice(int index) => weaponSkinCosts[index];
+	private int GetArmsSkinPrice(int index) => armsSkinCosts[index];
 	#endregion
 	
 	private void OnEnable()
@@ -386,6 +386,7 @@ public enum WeaponType
 
 public enum ArmsType
 {
+	Skin,
 	Poppy,
 	Batman,
 	Hulk,

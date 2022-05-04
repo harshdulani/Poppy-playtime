@@ -26,7 +26,10 @@ public class HandController : MonoBehaviour
 	[SerializeField] private ParticleSystem fireExplosion, pastrySplash;
 
 	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
-	[SerializeField] private Material poppy, batman, hulk, spidey, circuits, captain;
+	[SerializeField] private Renderer leftPalm, rightPalm;
+	[SerializeField] private Material poppy, batman, hulk, spidey, circuits, captain, humanSkin;
+
+	private Material _initRightPalmMat, _initLeftPalmMat;
 
 	public static PlayerSoundController Sounds;
 
@@ -112,7 +115,13 @@ public class HandController : MonoBehaviour
 			_rootAnimator = transform.root.GetComponent<Animator>();
 		
 		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
-		
+
+		if(isLeftHand)
+		{
+			_initLeftPalmMat = leftPalm.material;
+			_initRightPalmMat = rightPalm.material;
+		}
+
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
 		_lastRaghu = null;
@@ -395,7 +404,8 @@ public class HandController : MonoBehaviour
 
 	private void UpdateEquippedArmsSkin()
 	{
-		myArm.material = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() switch
+		var currentArmsSkin = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin(); 
+		myArm.material = currentArmsSkin switch
 		{
 			ArmsType.Poppy => poppy,
 			ArmsType.Batman => batman,
@@ -403,8 +413,19 @@ public class HandController : MonoBehaviour
 			ArmsType.Spidey => spidey,
 			ArmsType.Circuits => circuits,
 			ArmsType.Captain => captain,
+			ArmsType.Skin => humanSkin,
 			_ => throw new ArgumentOutOfRangeException()
 		};
+
+		if (!isLeftHand) return;
+		
+		if ((ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() == ArmsType.Skin)
+			rightPalm.material = leftPalm.material = humanSkin;
+		else
+		{
+			rightPalm.material = _initRightPalmMat;
+			leftPalm.material = _initLeftPalmMat;
+		}
 	}
 
 	public bool TryGivePunch()
