@@ -58,6 +58,8 @@ public class PalmController : MonoBehaviour
 		if (other.TryGetComponent(out PropController prop))
 		{
 			prop.PlayerPicksUp();
+			HandController.TargetHeldToPunch = prop;
+
 			prop.TryShowAds();
 			if (prop.IsACompositeProp)
 			{

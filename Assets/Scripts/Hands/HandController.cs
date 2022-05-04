@@ -12,6 +12,9 @@ public class HandController : MonoBehaviour
 {
 	public bool isLeftHand;
 	public Transform palm;
+	
+	public static PropController TargetHeldToPunch { get; set; }
+	
 	[SerializeField] private Transform ragdollHoldingLocation, propHoldingLocation;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
 
@@ -418,7 +421,7 @@ public class HandController : MonoBehaviour
 		};
 
 		if(currentArmsSkin == ArmsType.Skin)
-			myArm.materials[1] = humanSkin;
+			myArm.sharedMaterials = new Material[] {humanSkin, humanSkin};
 		
 		if (!isLeftHand) return;
 		
@@ -444,6 +447,12 @@ public class HandController : MonoBehaviour
 		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 
+		if(TargetHeldToPunch)
+		{
+			TargetHeldToPunch.PlayerLetsGo();
+			TargetHeldToPunch = null;
+		}
+		
 		return true;
 	}
 
@@ -525,7 +534,7 @@ public class HandController : MonoBehaviour
 	private void OnPunchHit()
 	{
 		windLines.Stop();
-		
+
 		if (currentWeaponsSkin != WeaponType.Pastry || currentWeaponsSkin != WeaponType.IceCream) return;
 		
 		pastrySplash.Play();
