@@ -421,7 +421,7 @@ public class HandController : MonoBehaviour
 		};
 
 		if(currentArmsSkin == ArmsType.Skin)
-			myArm.sharedMaterials = new Material[] {humanSkin, humanSkin};
+			myArm.sharedMaterials = new[] {humanSkin, humanSkin};
 		
 		if (!isLeftHand) return;
 		
