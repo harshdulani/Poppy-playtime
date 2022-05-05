@@ -136,11 +136,20 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		{
 			speedMultiplier.text = "Speed: x" + (_currentSpeedLevel + 1);
 			speedCostText.text = speedLevelCosts[_currentSpeedLevel + 1].ToString();
-			//speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
+			
+			speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
 			if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 			{
-				speedButton.image.sprite = VideoBtn;
-				speedCostText.gameObject.SetActive(false);
+				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				{
+					speedButton.image.sprite = VideoBtn;
+					speedCostText.gameObject.SetActive(false);
+				}
+				else
+				{
+					speedButton.image.sprite = normalBtn;
+					speedCostText.gameObject.SetActive(true);
+				}
 			}
 			else
 			{
@@ -160,11 +169,21 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		{
 			powerMultiplier.text = "Power: x" + (_currentPowerLevel + 1);
 			powerCostText.text = powerLevelCosts[_currentPowerLevel + 1].ToString();
-			//powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
+			
+			powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
 			if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
 			{
-				powerButton.image.sprite = VideoBtn;
-				powerCostText.gameObject.SetActive(false);
+				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				{
+					powerButton.image.sprite = VideoBtn;
+					powerCostText.gameObject.SetActive(false);
+				}
+				else
+				{
+					powerButton.image.sprite = normalBtn;
+					powerButton.interactable = false;
+					powerCostText.gameObject.SetActive(true);
+				}
 			}
 			else
 			{
@@ -190,11 +209,20 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		{
 			skinName.text = ((WeaponType) GetSidebarWeapon()).ToString();
 			skinCostText.text = MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()].ToString();
-			//skinButton.interactable = GetCoinCount() >= MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()];
+			
+			skinButton.interactable = GetCoinCount() >= MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()];
 			if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 			{
-				skinButton.image.sprite = VideoBtn;
-				skinCostText.gameObject.SetActive(false);
+				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				{
+					skinButton.image.sprite = VideoBtn;
+					skinCostText.gameObject.SetActive(false);
+				}
+				else
+				{
+					skinButton.image.sprite = normalBtn;
+					skinCostText.gameObject.SetActive(true);
+				}
 			}
 			else
 			{
@@ -211,12 +239,10 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	public void ClickOnBuySpeed()
 	{
 		if(!_allowedToPressButton) return;
-
-
+		
 		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 		{
-			if(!ApplovinManager.instance) return;
-			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Speed);
 			AdsMediator.StartListeningForAds(this);
@@ -224,6 +250,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		else
 			BuySpeed();
 
+		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
 		_allowedToPressButton = speedButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = speedButton.interactable = true);
 	}
@@ -232,10 +259,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	{
 		if(!_allowedToPressButton) return;
 		
-		if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
+		if (GetCoinCount() < powerLevelCosts[_currentPowerLevel + 1])
 		{
-			if(!ApplovinManager.instance) return;
-			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Power);
 			AdsMediator.StartListeningForAds(this);
@@ -243,6 +269,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		else
 			BuyPower();
 		
+		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
 		_allowedToPressButton = powerButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = powerButton.interactable = true);
 	}
@@ -253,8 +280,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 		{
-			if(!ApplovinManager.instance) return;
-			if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Weapon);
 			AdsMediator.StartListeningForAds(this);
@@ -262,6 +288,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		else
 			BuyWeapon();
 		
+		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
 		_allowedToPressButton = skinButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = skinButton.interactable = true);
 	}

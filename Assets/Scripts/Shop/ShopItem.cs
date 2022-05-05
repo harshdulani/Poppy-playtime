@@ -90,7 +90,7 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		costText.text = price.ToString();
 		_isAvailable = CheckAvailability(price);
 
-		stickyAds.SetActive(!_isAvailable);
+		stickyAds.SetActive(!_isAvailable && (ApplovinManager.instance && ApplovinManager.instance.enableAds));
 
 		costText.color = _isAvailable ? Color.white : cantBuyColor;
 		unavailable.gameObject.SetActive(!_isAvailable);
@@ -120,7 +120,9 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		}
 
 		if (!ApplovinManager.instance) return;
-		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+		if (!ApplovinManager.instance.enableAds) return;
+		
+		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		AdsMediator.StartListeningForAds(this);
 	}

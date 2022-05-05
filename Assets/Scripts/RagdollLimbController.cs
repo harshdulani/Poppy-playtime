@@ -99,7 +99,13 @@ public class RagdollLimbController : MonoBehaviour
 				prop.GetTouchedComposite(prop.transform.position - transform.position, true);
 			
 			if(prop.shouldExplode)
+			{
 				prop.Explode();
+				GetPunched(-direction.normalized, 30f);
+				
+				if(ShatterableParent.IsThisAPossibleShatterer(other.transform.root))
+					ShatterableParent.AddToPossibleShatterers(transform.root);
+			}
 		}
 	}
 }
