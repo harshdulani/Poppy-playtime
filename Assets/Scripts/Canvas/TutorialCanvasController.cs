@@ -93,7 +93,7 @@ public class TutorialCanvasController : MonoBehaviour
 	{
 		if(!LevelFlowController.only.IsInGiantFight()) return;
 		
-		InputHandler.Only.AssignTemporaryDisabledState();
+		InputHandler.AssignTemporaryDisabledState();
 	}
 	
 	private void OnGiantLand(Transform giant)

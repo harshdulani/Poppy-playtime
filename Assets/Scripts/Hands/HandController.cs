@@ -13,7 +13,8 @@ public class HandController : MonoBehaviour
 	public bool isLeftHand;
 	public Transform palm;
 	
-	public static PropController TargetHeldToPunch { get; set; }
+	public static Transform TargetHeldToPunch { get; set; }
+	public static PropController PropHeldToPunch { get; set; }
 	
 	[SerializeField] private Transform ragdollHoldingLocation, propHoldingLocation;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
@@ -191,7 +192,7 @@ public class HandController : MonoBehaviour
 		if (_isCarryingBody) return;
 		if(isLeftHand)
 		{
-			if (!InputHandler.Only.CanSwitchToTargetState()) return;
+			if (!InputHandler.CanSwitchToTargetState()) return;
 			
 			if(other.CompareTag("TrapButton"))
 				other.GetComponent<TrapButtonController>().PressButton();
@@ -238,6 +239,7 @@ public class HandController : MonoBehaviour
 		{
 			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
 			_targetInitPos.y = other.position.y;
+			print("punched here");
 			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 			{
 				other.GetComponent<RagdollLimbController>().GetPunched((
@@ -290,8 +292,7 @@ public class HandController : MonoBehaviour
 
 	public void HandReachHome()
 	{
-		if(!InputHandler.IsInDisabledState())
-			InputHandler.AssignNewState(InputHandler.IdleState);
+		if(!InputHandler.IsInDisabledState()) InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
 	private void StartCarryingBody(Transform target)
@@ -447,10 +448,10 @@ public class HandController : MonoBehaviour
 		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 
-		if(TargetHeldToPunch)
+		if(PropHeldToPunch)
 		{
-			TargetHeldToPunch.PlayerLetsGo();
-			TargetHeldToPunch = null;
+			PropHeldToPunch.PlayerLetsGo();
+			PropHeldToPunch = null;
 		}
 		
 		return true;

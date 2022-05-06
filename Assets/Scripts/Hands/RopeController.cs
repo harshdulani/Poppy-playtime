@@ -6,12 +6,10 @@ public class RopeController : MonoBehaviour
 	[SerializeField] private Transform ropeStart, ropeEnd;
 	[SerializeField] private CylinderGeneration cylinder;
 
-	private Vector3 _initLocalPos;
 	private Quaternion _initLocalRot;
 
 	private void Start()
 	{
-		_initLocalPos = ropeEnd.localPosition;
 		_initLocalRot = transform.localRotation;
 	}
 

@@ -200,7 +200,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		
 		_anim.SetTrigger(Open);
 		_anim.SetTrigger(HideShopButton);
-		InputHandler.Only.AssignTemporaryDisabledState();
+		InputHandler.AssignTemporaryDisabledState();
 	}
 
 	public void CloseShop()

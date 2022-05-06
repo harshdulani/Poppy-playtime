@@ -58,7 +58,7 @@ public class PalmController : MonoBehaviour
 		if (other.TryGetComponent(out PropController prop))
 		{
 			prop.PlayerPicksUp();
-			HandController.TargetHeldToPunch = prop;
+			HandController.PropHeldToPunch = prop;
 
 			prop.TryShowAds();
 			if (prop.IsACompositeProp)
@@ -105,14 +105,17 @@ public class PalmController : MonoBehaviour
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
-		
-		SetCurrentTransform(other.transform);
-		myHand.HandReachTarget(other.transform);
+
+		var otherTransform = other.transform;
+		HandController.TargetHeldToPunch = otherTransform;
+		SetCurrentTransform(otherTransform);
+		myHand.HandReachTarget(otherTransform);
 		_canAdopt = false;
 	}
 
 	private void OnDropArmor()
 	{
+		HandController.TargetHeldToPunch = null;
 		SetCurrentTransform(null);
 		Invoke(nameof(ResetAdoptability), 0.5f);
 	}
@@ -132,6 +135,7 @@ public class PalmController : MonoBehaviour
 
 		var trans = GetCurrentTransform();
 
+		HandController.TargetHeldToPunch = null;
 		SetCurrentTransform(null);
 		
 		DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
@@ -146,6 +150,7 @@ public class PalmController : MonoBehaviour
 	{
 		if(target != GetCurrentTransform()) return;
 		
+		HandController.TargetHeldToPunch = null;
 		SetCurrentTransform(null);
 		myHand.OnPropDestroyed();
 		Invoke(nameof(ResetAdoptability), 0.5f);

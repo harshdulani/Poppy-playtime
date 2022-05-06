@@ -82,7 +82,7 @@ public class LevelFlowController : MonoBehaviour
 		else
 		{
 			GameEvents.Only.InvokeMoveToNextArea();
-			InputHandler.Only.AssignTemporaryDisabledState();
+			InputHandler.AssignTemporaryDisabledState();
 		}
 	}
 

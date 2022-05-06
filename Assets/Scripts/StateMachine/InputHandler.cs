@@ -15,14 +15,14 @@ public class InputHandler : MonoBehaviour
 
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
-	private static readonly DisabledState DisabledState = new DisabledState();
+	private static readonly DisabledState PermanentlyDisabledState = new DisabledState(false), TemporarilyDisabledState = new DisabledState(true);
 	private static AimingState _aimingState;
 	private static TapState _tapState;
 
 	//current state holder	
 	private static InputStateBase _leftHandState;
 
-	private bool _tappedToPlay, _inDisabledState, _isTemporarilyDisabled, _inTapCooldown;
+	private bool _tappedToPlay, _inTapCooldown;
 	
 	//only is being set by the in game ads, pickable barrel etc
 	[HideInInspector] public bool userIsWatchingAnAdForPickup;
@@ -70,6 +70,8 @@ public class InputHandler : MonoBehaviour
 
 		var cam = Camera.main;
 		_ = new InputStateBase(_leftHand, cam, raycastDistance);
+		_ = new DisabledState(_rightHand);
+		
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
 		_leftHandState = IdleState;
@@ -87,16 +89,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		//print(_leftHandState);
-		if (_inDisabledState)
-		{
-			if(!_isTemporarilyDisabled) return;
-			if(!InputExtensions.GetFingerDown()) return;
-			if(!_rightHand.TryGivePunch()) return;
-			
-			PutInTapCoolDown();
-			return;
-		}
+		print($"{_leftHandState}");
 
 		if (_leftHandState is IdleState)
 		{
@@ -105,7 +98,7 @@ public class InputHandler : MonoBehaviour
 
 			if (oldState != _leftHandState)
 			{
-				oldState?.OnExit();
+				oldState.OnExit();
 				_leftHandState?.OnEnter();
 			}
 		}
@@ -126,6 +119,8 @@ public class InputHandler : MonoBehaviour
 
 	private InputStateBase HandleInput()
 	{
+		if(IsInTemporaryDisabledState()) return _leftHandState;
+		
 		if (isUsingTapAndPunch)
 		{
 			if (!InputExtensions.GetFingerDown()) return _leftHandState;
@@ -138,9 +133,9 @@ public class InputHandler : MonoBehaviour
 		return _aimingState;
 	}
 
-	private void PutInTapCoolDown(float customCooldownTime = -1f)
+	public void PutInTapCoolDown(float customCooldownTime = -1f)
 	{
-		if(IsInDisabledState()) return;
+		if(IsInPermanentDisabledState()) return;
 		
 		_inTapCooldown = true;
 		AssignTemporaryDisabledState();
@@ -166,20 +161,17 @@ public class InputHandler : MonoBehaviour
 		isUsingTapAndPunch = status;
 		PlayerPrefs.SetInt("isUsingTapAndPunch", status ? 0 : 1);
 	}
-	
-	private void ChangeStateToDisabled()
-	{
-		_isTemporarilyDisabled = false;
-		AssignNewState(DisabledState);
-	}
 
-	public bool CanSwitchToTargetState()
+	public static bool CanSwitchToTargetState()
 	{
 		if (_leftHandState is InTransitState state && !state.GoHome && !state.IsCarryingBody) return true;
 		return false;
 	}
 
 	public static bool IsInDisabledState() => _leftHandState is DisabledState;
+	public static bool IsInPermanentDisabledState() => _leftHandState is DisabledState state && !state.IsTemporary;
+	public static bool IsInTemporaryDisabledState() => _leftHandState is DisabledState state && state.IsTemporary;
+
 	public static bool IsInIdleState() => _leftHandState is IdleState;
 
 	public void WaitForPunch(Transform other) => _rightHand.WaitForPunch(other.transform);
@@ -187,47 +179,31 @@ public class InputHandler : MonoBehaviour
 	public void StopCarryingBody() => _leftHand.StopCarryingBody();
 
 	public HandController GetLeftHand() => _leftHand;
+
 	public HandController GetRightHand() => _rightHand;
 
 	public void AssignIdleState()
 	{
-		if(_inDisabledState && !_isTemporarilyDisabled) return;
+		if(IsInPermanentDisabledState()) return;
 		
 		AssignNewState(IdleState);
-
-		_isTemporarilyDisabled = false;
-		_inDisabledState = false;
 	}
 
-	public void AssignTemporaryDisabledState()
-	{
-		AssignNewState(DisabledState);
-		_isTemporarilyDisabled = true;
-		_inDisabledState = true;
-	}
+	public static void AssignTemporaryDisabledState() => AssignNewState(TemporarilyDisabledState);
 
-	public static void AssignReturnTransitState()
-	{
-		AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
-	}
+	private static void AssignPermanentDisabledState() => AssignNewState(PermanentlyDisabledState);
+
+	public static void AssignReturnTransitState() => AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
 
 	private void OnTapToPlay()
 	{
 		_tappedToPlay = true;
-		PutInTapCoolDown(0.75f);
+		PutInTapCoolDown(0.25f);
 	}
 
-	private void OnGameOver()
-	{
-		_inDisabledState = true;
-		_isTemporarilyDisabled = false;
-		ChangeStateToDisabled();
-	}
+	private void OnGameOver() => AssignPermanentDisabledState();
 
-	private void OnEnterHitBox(Transform target)
-	{
-		AssignTemporaryDisabledState();
-	}
+	private void OnEnterHitBox(Transform target) => AssignTemporaryDisabledState();
 
 	private void OnPunchHit()
 	{

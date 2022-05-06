@@ -17,7 +17,7 @@ public class AimController : MonoBehaviour
 	private Canvas _canvas;
 
 	private Quaternion _areaInitRotation;
-	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
+	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY, _lastTargetDistance;
 	private bool _canPlayLockOnSound = true;
 	
 	private Tweener _punchHit;
@@ -59,11 +59,27 @@ public class AimController : MonoBehaviour
 		_rotY = rot.y;
 		_rotX = rot.x;
 	}
-
-	private void Update()
+	
+	public void Aim(Vector2 inputDelta)
 	{
-		//print(InputExtensions.GetInputPosition().y / Screen.height);
+		_rotY += inputDelta.x * aimSpeedHorizontal * Time.deltaTime;
+		_rotX -= inputDelta.y * aimSpeedVertical * Time.deltaTime;
+ 
+		_rotY = Mathf.Clamp(_rotY, _initRotAxisY - clampAngleHorizontal, _initRotAxisY + clampAngleHorizontal);
+		_rotX = Mathf.Clamp(_rotX, _initRotAxisX - clampAngleVertical, _initRotAxisX + clampAngleVertical);
+
+		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
+		transform.rotation = newRot;
 	}
+
+	public void AimWithTargetHeld(Vector2 delta)
+	{
+		Aim(delta);
+
+		HandController.TargetHeldToPunch.position = transform.forward * _lastTargetDistance;
+	}
+
+	public void CalculateTargetDistance() => _lastTargetDistance = Vector3.Distance(transform.position, HandController.TargetHeldToPunch.position);
 
 	public void SetReticleStatus(bool isOn)
 	{
@@ -85,7 +101,7 @@ public class AimController : MonoBehaviour
 		Invoke(nameof(ResetLockOnSound), 1f);
 	}
 
-    public void LoseTarget()
+	public void LoseTarget()
     {
 	    _reticle.color = missingTargetColor;
 		_hasTarget = false;
@@ -94,18 +110,6 @@ public class AimController : MonoBehaviour
 	private void ResetLockOnSound()
 	{
 		_canPlayLockOnSound = true;
-	}
-	
-    public void Aim(Vector2 inputDelta)
-    {
-		_rotY += inputDelta.x * aimSpeedHorizontal * Time.deltaTime;
-		_rotX -= inputDelta.y * aimSpeedVertical * Time.deltaTime;
- 
-		_rotY = Mathf.Clamp(_rotY, _initRotAxisY - clampAngleHorizontal, _initRotAxisY + clampAngleHorizontal);
-		_rotX = Mathf.Clamp(_rotX, _initRotAxisX - clampAngleVertical, _initRotAxisX + clampAngleVertical);
-
-		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
-		transform.rotation = newRot;
 	}
 
 	private void ResetRotationToAreaInit()
@@ -119,14 +123,14 @@ public class AimController : MonoBehaviour
 	{
 		ResetRotationToAreaInit();
 	}
-	
+
 	private void OnPunchHit()
 	{
 		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
 		_rotX = _initRotAxisX;
 		_rotY = _initRotAxisY;
 	}
-	
+
 	private void OnMoveToNextArea()
 	{
 		_punchHit.Kill();

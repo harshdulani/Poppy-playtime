@@ -163,7 +163,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	
 	private void ShowPanel()
 	{
-		InputHandler.Only.AssignTemporaryDisabledState();
+		InputHandler.AssignTemporaryDisabledState();
 
 		blackBackground.gameObject.SetActive(true);
 		var color = blackBackground.color;
