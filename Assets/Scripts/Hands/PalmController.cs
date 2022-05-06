@@ -107,7 +107,7 @@ public class PalmController : MonoBehaviour
 		}
 
 		var otherTransform = other.transform;
-		HandController.TargetHeldToPunch = otherTransform;
+		HandController.TargetHeldToPunch = otherTransform.root;
 		SetCurrentTransform(otherTransform);
 		myHand.HandReachTarget(otherTransform);
 		_canAdopt = false;
@@ -133,17 +133,30 @@ public class PalmController : MonoBehaviour
 		
 		myHand.HandReachTarget(GetCurrentTransform());
 
-		var trans = GetCurrentTransform();
+		Tween tween = null;
+		tween = DOVirtual.DelayedCall(0.25f, () =>
+		{
+			//first is for old throw it back to where you picked it up from
+			//second condition is for the newer throw in player forward direction smash mechanic
 
-		HandController.TargetHeldToPunch = null;
-		SetCurrentTransform(null);
-		
-		DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
-		DOVirtual.DelayedCall(0.5f, ResetAdoptability);
-		HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
-		
-		//this is for climber level
-		ShatterableParent.AddToPossibleShatterers(trans.root);
+			//so it makes sure you're only waiting the 0.25 secs if you are waiting to punch
+			if (InputHandler.Only.canDragAfterGrabbingToAim && HandController.TargetHeldToPunch) return;
+
+			tween.Kill(true);
+		}).OnComplete(() =>
+		{
+			var trans = GetCurrentTransform();
+
+			HandController.TargetHeldToPunch = null;
+			SetCurrentTransform(null);
+	
+			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
+			HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
+	
+			//this is for climber level
+			ShatterableParent.AddToPossibleShatterers(trans.root);
+		});
 	}
 
 	private void OnPropDestroyed(Transform target)

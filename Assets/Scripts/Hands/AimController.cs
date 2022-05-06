@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +16,8 @@ public class AimController : MonoBehaviour
 	private Canvas _canvas;
 
 	private Quaternion _areaInitRotation;
-	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY, _lastTargetDistance;
+	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
+	private float _lastTargetYPos, _lastTargetDistance;
 	private bool _canPlayLockOnSound = true;
 	
 	private Tweener _punchHit;
@@ -75,11 +75,22 @@ public class AimController : MonoBehaviour
 	public void AimWithTargetHeld(Vector2 delta)
 	{
 		Aim(delta);
-
-		HandController.TargetHeldToPunch.position = transform.forward * _lastTargetDistance;
+		
+		var newPosition = transform.position + transform.forward * _lastTargetDistance;
+		newPosition.y = _lastTargetYPos;
+		HandController.TargetHeldToPunch.position = newPosition;
 	}
 
-	public void CalculateTargetDistance() => _lastTargetDistance = Vector3.Distance(transform.position, HandController.TargetHeldToPunch.position);
+	public void CalculateTargetDistance()
+	{
+		if(!HandController.TargetHeldToPunch) return;
+
+		var targetPos = HandController.TargetHeldToPunch.position;
+		_lastTargetYPos = targetPos.y;
+
+		targetPos.y = transform.position.y;
+		_lastTargetDistance = Vector3.Distance(transform.position, targetPos);
+	}
 
 	public void SetReticleStatus(bool isOn)
 	{

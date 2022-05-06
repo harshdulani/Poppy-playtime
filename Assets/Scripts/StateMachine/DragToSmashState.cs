@@ -1,22 +1,18 @@
-﻿using UnityEngine;
-
-public sealed class DragToSmashState : InputStateBase
+﻿public sealed class DragToSmashState : InputStateBase
 {
 	private static AimController _aimer;
-	private RaycastHit _hit;
-	private static bool _hasTarget;
-	private static float _screenPercentageOnY;
 	
+	public DragToSmashState() {}
 	public DragToSmashState(AimController aimer)
 	{
 		_aimer = aimer;
-		_screenPercentageOnY = _aimer.screenPercentageOnY;
 	}
 	
 	public override void OnEnter()
 	{
-		IsPersistent = false;
+		IsPersistent = true;
 		_aimer.CalculateTargetDistance();
+		
 		//hand controller dot tween grabbed target downwards 
 	}
 
@@ -24,14 +20,15 @@ public sealed class DragToSmashState : InputStateBase
 	{
 		base.Execute();
 		
+		if(InputExtensions.GetFingerUp())
+		{
+			InputHandler.Only.GetLeftHand().TryGivePunch();
+			
+			return;
+		}
+		
+		if(!InputExtensions.GetFingerHeld()) return;
+		
 		_aimer.AimWithTargetHeld(InputExtensions.GetInputDelta());
-	}
-
-	public override void OnExit()
-	{
-		base.OnExit();
-		_aimer.SetReticleStatus(false);
-		
-		
 	}
 }

@@ -23,7 +23,7 @@ public class HandController : MonoBehaviour
 	[SerializeField] private AudioClip splashAudioClip, gunshotAudioClip;
 	
 	public static CarriedObjectType CurrentObjectCarriedType;
-	public bool isWaitingToGivePunch;
+	public static bool IsWaitingToGivePunch;
 	
 	[Header("Weapon Skins"), SerializeField] private WeaponType currentWeaponsSkin;
 	[SerializeField] private GameObject hammer, gun, boot, heel, sneaker, shield, pastry, burger, poop, flowers, phone, iceCream;
@@ -237,33 +237,75 @@ public class HandController : MonoBehaviour
 		}
 		else
 		{
-			InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
-			_targetInitPos.y = other.position.y;
-			print("punched here");
-			if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
-			{
-				other.GetComponent<RagdollLimbController>().GetPunched((
-					(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
-						? target.position : _targetInitPos) - transform.position).normalized, punchForce);
-			}
+			//will also throw player towards a throw target if there is one
+			if(InputHandler.Only.canDragAfterGrabbingToAim)
+				PunchForward(other);
 			else
-			{
-				_targetInitPos.y = other.position.y;
-				
-				if(!other.root.TryGetComponent(out PropController prop))
-					prop = other.GetComponent<PropController>();
-
-				var direction =
-					(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
-						? target.position
-						: _targetInitPos) - other.root.position;
-
-				prop.GetPunched(direction.normalized, 
-						CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
-			}
+				PunchBackToWhereTheyCameFrom(other);
 		}
 
 		Vibration.Vibrate(15);
+	}
+
+	private void PunchBackToWhereTheyCameFrom(Transform punched)
+	{
+		InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+		_targetInitPos.y = punched.position.y;
+		
+		if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+		{
+			punched.GetComponent<RagdollLimbController>().GetPunched((
+				(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+					? target.position : _targetInitPos) - transform.position).normalized, punchForce);
+		}
+		else
+		{
+			_targetInitPos.y = punched.position.y;
+				
+			if(!punched.root.TryGetComponent(out PropController prop))
+				prop = punched.GetComponent<PropController>();
+
+			var direction =
+				(LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+					? target.position
+					: _targetInitPos) - punched.root.position;
+
+			prop.GetPunched(direction.normalized, 
+				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
+		}
+	}
+
+	private void PunchForward(Transform punched)
+	{
+		InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+		
+		if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
+		{
+			var direction = LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+				? (target.position - transform.root.position).normalized
+				: transform.root.forward;
+			
+			direction.y += 0.25f;
+			
+			punched.GetComponent<RagdollLimbController>().GetPunched(direction, punchForce);
+		}
+		else
+		{
+			if(!punched.root.TryGetComponent(out PropController prop))
+				prop = punched.GetComponent<PropController>();
+
+			var direction = LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
+					? (target.position - transform.root.position).normalized 
+					: transform.root.forward;
+
+			direction.y += 0.25f;
+			
+			prop.GetPunched(direction.normalized, 
+				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
+		}
+
+		TargetHeldToPunch = null; 
+		PropHeldToPunch = null;
 	}
 	
 	public void WaitForPunch(Transform other)
@@ -285,14 +327,19 @@ public class HandController : MonoBehaviour
 		}
 
 		_myAnimator.SetBool(IsPunching, true);
-		isWaitingToGivePunch = true;
+		IsWaitingToGivePunch = true;
 		_rope.ReturnHome();
 		windLines.Play();
 	}
 
 	public void HandReachHome()
 	{
-		if(!InputHandler.IsInDisabledState()) InputHandler.AssignNewState(InputHandler.IdleState);
+		if (InputHandler.IsInDisabledState()) return;
+		
+		if(InputHandler.Only.canDragAfterGrabbingToAim)
+			InputHandler.AssignNewState(InputHandler.DragToSmashState);
+		else 
+			InputHandler.AssignNewState(InputHandler.IdleState);
 	}
 
 	private void StartCarryingBody(Transform target)
@@ -437,9 +484,9 @@ public class HandController : MonoBehaviour
 
 	public bool TryGivePunch()
 	{
-		if (!isWaitingToGivePunch) return false;
+		if (!IsWaitingToGivePunch) return false;
 		
-		isWaitingToGivePunch = false;
+		IsWaitingToGivePunch = false;
 		_rootAnimator.SetTrigger(Attack);
 		if(currentWeaponsSkin == WeaponType.Gun)
 		{

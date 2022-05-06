@@ -7,7 +7,7 @@ public class InputHandler : MonoBehaviour
 
 	[SerializeField] private float raycastDistance = 50f;
 	public bool testingUsingTouch;
-	public bool isUsingTapAndPunch;
+	public bool isUsingTapAndPunch, canDragAfterGrabbingToAim;
 	
 	[SerializeField] private float tapCooldownWaitTime;
 
@@ -16,6 +16,7 @@ public class InputHandler : MonoBehaviour
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
 	private static readonly DisabledState PermanentlyDisabledState = new DisabledState(false), TemporarilyDisabledState = new DisabledState(true);
+	public static readonly DragToSmashState DragToSmashState = new DragToSmashState();
 	private static AimingState _aimingState;
 	private static TapState _tapState;
 
@@ -71,6 +72,7 @@ public class InputHandler : MonoBehaviour
 		var cam = Camera.main;
 		_ = new InputStateBase(_leftHand, cam, raycastDistance);
 		_ = new DisabledState(_rightHand);
+		_ = new DragToSmashState(_leftHand.GetAimController());
 		
 		_aimingState = new AimingState(_leftHand.GetAimController());
 		_tapState = new TapState(_leftHand.GetAimController());
@@ -89,8 +91,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		print($"{_leftHandState}");
-
+		//print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -169,8 +170,8 @@ public class InputHandler : MonoBehaviour
 	}
 
 	public static bool IsInDisabledState() => _leftHandState is DisabledState;
-	public static bool IsInPermanentDisabledState() => _leftHandState is DisabledState state && !state.IsTemporary;
-	public static bool IsInTemporaryDisabledState() => _leftHandState is DisabledState state && state.IsTemporary;
+	private static bool IsInPermanentDisabledState() => _leftHandState is DisabledState state && !state.IsTemporary;
+	private static bool IsInTemporaryDisabledState() => _leftHandState is DisabledState state && state.IsTemporary;
 
 	public static bool IsInIdleState() => _leftHandState is IdleState;
 
@@ -203,7 +204,13 @@ public class InputHandler : MonoBehaviour
 
 	private void OnGameOver() => AssignPermanentDisabledState();
 
-	private void OnEnterHitBox(Transform target) => AssignTemporaryDisabledState();
+	private void OnEnterHitBox(Transform target)
+	{
+		if (canDragAfterGrabbingToAim)
+			AssignNewState(DragToSmashState);
+		else
+			AssignTemporaryDisabledState();
+	}
 
 	private void OnPunchHit()
 	{

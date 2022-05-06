@@ -90,6 +90,9 @@ public class RagdollLimbController : MonoBehaviour
 		{
 			if (raghu._parent.IsInPatrolArea())
 				raghu.GetPunched(direction, direction.magnitude);
+			
+			if(ShatterableParent.IsThisAPossibleShatterer(other.transform.root))
+				ShatterableParent.AddToPossibleShatterers(transform.root);
 		}
 		else
 		{
