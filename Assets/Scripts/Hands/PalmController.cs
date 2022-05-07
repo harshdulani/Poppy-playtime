@@ -130,9 +130,10 @@ public class PalmController : MonoBehaviour
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 			return;
 		}
-		
-		myHand.HandReachTarget(GetCurrentTransform());
 
+		var trans = GetCurrentTransform();
+		myHand.HandReachTarget(trans);
+		
 		Tween tween = null;
 		tween = DOVirtual.DelayedCall(0.25f, () =>
 		{
@@ -145,8 +146,6 @@ public class PalmController : MonoBehaviour
 			tween.Kill(true);
 		}).OnComplete(() =>
 		{
-			var trans = GetCurrentTransform();
-
 			HandController.TargetHeldToPunch = null;
 			SetCurrentTransform(null);
 	

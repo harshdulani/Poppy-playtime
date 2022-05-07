@@ -48,6 +48,17 @@ public class RagdollLimbController : MonoBehaviour
 		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
 	}
 
+	private void GetPunchBack(float punchForce)
+	{
+		var direction = -transform.root.forward;
+		if (_parent)
+			_parent.GoRagdoll(direction);
+		else
+			_hostage.GoRagdoll(direction);
+		
+		_rb.AddForce(direction * punchForce + Vector3.up * punchForce / 3, ForceMode.Impulse);
+	}
+
 	private void DropContainer()
 	{
 		if(!_parent.TryGetComponent(out HoldContainerUpHelper helper)) return;
@@ -72,9 +83,8 @@ public class RagdollLimbController : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		if(!_parent) return;
-	
 		if(!_parent.isRagdoll) return;
-
+		
 		if(other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Trap")) return;
 		
@@ -91,23 +101,20 @@ public class RagdollLimbController : MonoBehaviour
 			if (raghu._parent.IsInPatrolArea())
 				raghu.GetPunched(direction, direction.magnitude);
 			
-			if(ShatterableParent.IsThisAPossibleShatterer(other.transform.root))
-				ShatterableParent.AddToPossibleShatterers(transform.root);
+			if(ShatterableParent.IsThisAPossibleShatterer(transform.root)) return;
+			ShatterableParent.AddToPossibleShatterers(transform.root);
 		}
-		else
+		else if(other.gameObject.TryGetComponent(out PropController prop))
 		{
-			if(!other.gameObject.TryGetComponent(out PropController prop)) return;
-			
-			if(prop.IsACompositeProp)
-				prop.GetTouchedComposite(prop.transform.position - transform.position, true);
-			
-			if(prop.shouldExplode)
+			if (prop.IsACompositeProp)
+				prop.GetTouchedComposite(Vector3.up, true);
+
+			if (prop.shouldExplode)
 			{
-				prop.Explode();
-				GetPunched(-direction.normalized, 30f);
-				
-				if(ShatterableParent.IsThisAPossibleShatterer(other.transform.root))
-					ShatterableParent.AddToPossibleShatterers(transform.root);
+				GetPunchBack(30f);
+
+				if (ShatterableParent.IsThisAPossibleShatterer(transform.root)) return;
+				ShatterableParent.AddToPossibleShatterers(transform.root);
 			}
 		}
 	}

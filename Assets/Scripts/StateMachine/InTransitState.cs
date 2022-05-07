@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class InTransitState : InputStateBase
 {
-	public readonly RaycastHit _hit;
+	private readonly RaycastHit _hit;
 	public readonly bool GoHome, IsCarryingBody;
+	
+	//Player cannot be in Transit forever
+	private Tween _timer;
+	private const float MaxTransitTime = 2f;
 
 	public InTransitState(bool goHome, RaycastHit hitInfo, bool isCarryingBody = false)
 	{
@@ -16,6 +21,8 @@ public class InTransitState : InputStateBase
 	public override void OnEnter()
 	{
 		IsPersistent = InputHandler.Only.isUsingTapAndPunch;
+		_timer = DOVirtual.DelayedCall(MaxTransitTime, () => InputHandler.AssignNewState(InputHandler.IdleState));
+		
 		if (GoHome)
 			PlayerSoundController.only.ZiplineCome();
 		else
@@ -37,5 +44,7 @@ public class InTransitState : InputStateBase
 	public override void OnExit()
 	{
 		base.OnExit();
+		
+		if(_timer.IsActive()) _timer.Kill();
 	}
 }

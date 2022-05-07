@@ -137,7 +137,7 @@ public class PropController : MonoBehaviour, IWantsAds
 	public void Explode()
 	{
 		if (_amDestroyed) return;
-
+		
 		_collider.enabled = false;
 		var parent = new GameObject(gameObject.name + " debris").transform;
 
@@ -192,11 +192,10 @@ public class PropController : MonoBehaviour, IWantsAds
 	public void GetTouchedComposite(Vector3 direction, bool collapseMe) =>
 		_parent.StopBeingKinematic(direction, collapseMe ? null : transform);
 
-	public void Collapse(Vector3 direction)
+	public void Collapse()
 	{
 		_rb.isKinematic = false;
 		transform.parent = null;
-		//_rb.AddForce(direction, ForceMode.Impulse);
 	}
 
 	public void MakeKinematic()
@@ -251,7 +250,7 @@ public class PropController : MonoBehaviour, IWantsAds
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Ground")) return;
 		
 		if(shouldExplode)
-			Invoke(nameof(Explode), LevelFlowController.only.IsThisLastEnemyOfArea() ? 0f : 0.2f);
+			DOVirtual.DelayedCall(LevelFlowController.only.IsThisLastEnemyOfArea() ? 0f : 0.15f, Explode);
 
 		if (other.transform.TryGetComponent(out PropController prop))
 		{

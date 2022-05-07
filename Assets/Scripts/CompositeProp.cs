@@ -39,7 +39,7 @@ public class CompositeProp : MonoBehaviour
 		_isDestroyed = true;
 		foreach (var prop in props) 
 			if(prop.transform != caller) 
-				prop.Collapse(direction.normalized);
+				prop.Collapse();
 		
 		var colliders = Physics.OverlapBox(transform.position + transform.up * overlapBoxBounds.distance, 
 			new Vector3(overlapBoxBounds.x / 2, overlapBoxBounds.y / 2, overlapBoxBounds.z / 2),
