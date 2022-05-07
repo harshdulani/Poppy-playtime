@@ -113,6 +113,12 @@ public class PalmController : MonoBehaviour
 		_canAdopt = false;
 	}
 
+	public void EnableAdoptability()
+	{
+		DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
+		DOVirtual.DelayedCall(0.5f, ResetAdoptability);
+	}
+
 	private void OnDropArmor()
 	{
 		HandController.TargetHeldToPunch = null;

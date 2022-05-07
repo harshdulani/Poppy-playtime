@@ -35,7 +35,6 @@ public class TapState : InputStateBase
 			return;
 		}
 		
-		Print(hit.transform.root.gameObject);
 		//Print(hit.transform.root.gameObject);
 		if (!hit.collider.CompareTag("Target") && !hit.collider.CompareTag("TrapButton") && !hit.collider.CompareTag("ChainLink"))
 		{
@@ -64,10 +63,5 @@ public class TapState : InputStateBase
 			raghu.PopScale();
 		
 		InputHandler.AssignNewState(new InTransitState(false, hit), false);
-	}
-
-	public override void OnExit()
-	{
-		base.OnExit();
 	}
 }

@@ -78,6 +78,8 @@ public class AimController : MonoBehaviour
 
 		//sometimes target is not being set
 		if (!HandController.TargetHeldToPunch) return;
+		if(HandController.PropHeldToPunch) if(HandController.PropHeldToPunch.isCar) return;
+		
 		var newPosition = transform.position + transform.forward * _lastTargetDistance;
 		newPosition.y = _lastTargetYPos;
 		HandController.TargetHeldToPunch.position = newPosition;

@@ -21,7 +21,19 @@ public class InTransitState : InputStateBase
 	public override void OnEnter()
 	{
 		IsPersistent = InputHandler.Only.isUsingTapAndPunch;
-		_timer = DOVirtual.DelayedCall(MaxTransitTime, () => InputHandler.AssignNewState(InputHandler.IdleState));
+		_timer = DOVirtual.DelayedCall(MaxTransitTime, () =>
+		{
+			if(GoHome)
+				//i was here, problem was: when player pulls car and slo mo starts after that
+				//on clicking during this slow mo, everything breaks,
+				//maybe set a flag to not go into slow mo in the first place if you already have picked a car up
+				InputHandler.Only.GetLeftHand().HandReachHome();
+			else
+			{
+				InputHandler.Only.GetLeftHand().HandReachTarget(_hit.transform);
+				InputHandler.Only.GetLeftHand().PalmController.EnableAdoptability();
+			}
+		});
 		
 		if (GoHome)
 			PlayerSoundController.only.ZiplineCome();
@@ -44,7 +56,7 @@ public class InTransitState : InputStateBase
 	public override void OnExit()
 	{
 		base.OnExit();
-		
+		Print("here");
 		if(_timer.IsActive()) _timer.Kill();
 	}
 }

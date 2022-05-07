@@ -15,6 +15,7 @@ public class HandController : MonoBehaviour
 	
 	public static Transform TargetHeldToPunch { get; set; }
 	public static PropController PropHeldToPunch { get; set; }
+	public PalmController PalmController { get; private set; }
 	
 	[SerializeField] private Transform ragdollHoldingLocation, propHoldingLocation;
 	[SerializeField] private float moveSpeed, returnSpeed, punchForce, carPunchForce;
@@ -120,6 +121,8 @@ public class HandController : MonoBehaviour
 		
 		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
 
+		PalmController = palm.GetComponent<PalmController>();
+		
 		if(isLeftHand)
 		{
 			_initLeftPalmMat = leftPalm.material;

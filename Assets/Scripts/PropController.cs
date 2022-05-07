@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PropController : MonoBehaviour, IWantsAds
 {
-	public bool shouldShowAds, shouldExplode, hasBeenInteractedWith;
+	public bool shouldShowAds, shouldExplode, hasBeenInteractedWith, isCar;
 	[SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;

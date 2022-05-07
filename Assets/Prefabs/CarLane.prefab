@@ -472,8 +472,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -482,8 +484,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!1001 &449726088113135077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -604,8 +609,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -614,8 +621,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!1001 &1556404048216239489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -623,6 +633,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7824316926503479737}
     m_Modifications:
+    - target: {fileID: -8946633643494365359, guid: 2afe49321eef14f6fbddc2ffa6142e16, type: 3}
+      propertyPath: isCar
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1000012883443064, guid: 2afe49321eef14f6fbddc2ffa6142e16, type: 3}
       propertyPath: m_Name
       value: Car_18A
@@ -761,6 +775,10 @@ PrefabInstance:
       propertyPath: m_Convex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5290134780417834666, guid: 7a61e68c168bc4180a848eda768083b3, type: 3}
+      propertyPath: isCar
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a61e68c168bc4180a848eda768083b3, type: 3}
 --- !u!4 &1814811196302983540 stripped
@@ -834,6 +852,10 @@ PrefabInstance:
     - target: {fileID: 4360983716225004, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718643363374903296, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
+      propertyPath: isCar
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
@@ -913,6 +935,10 @@ PrefabInstance:
       propertyPath: laneStartPoint
       value: 
       objectReference: {fileID: 7824316926761533573}
+    - target: {fileID: 5536205618905870977, guid: 104e4a606a9e3484dbc09b0e3f0de254, type: 3}
+      propertyPath: isCar
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 104e4a606a9e3484dbc09b0e3f0de254, type: 3}
 --- !u!4 &4032137624514854508 stripped
@@ -982,6 +1008,10 @@ PrefabInstance:
     - target: {fileID: 4360983716225004, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718643363374903296, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
+      propertyPath: isCar
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1adc4c44c377445a908aa0849e31d7f, type: 3}
@@ -1055,6 +1085,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 64311039724586810, guid: 7a61e68c168bc4180a848eda768083b3, type: 3}
       propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5290134780417834666, guid: 7a61e68c168bc4180a848eda768083b3, type: 3}
+      propertyPath: isCar
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1183,8 +1217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1193,8 +1229,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054626366971843 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014207007954, guid: daf30974becad44e8984683513287d53, type: 3}
@@ -1339,8 +1378,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1349,8 +1390,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054621926337182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010061638146, guid: 9c914a5a26ce746ad9e66f4c0042451c, type: 3}
@@ -1467,8 +1511,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1477,8 +1523,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054621827351662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010329005542, guid: ea4f38a9f8abb4215ad495ba77ba8301, type: 3}
@@ -1599,8 +1648,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1609,8 +1660,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054625115892247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012667336702, guid: a4a5b086a7d6046ffa24969b63a810b0, type: 3}
@@ -1735,8 +1789,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1745,8 +1801,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054623007895123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010602266822, guid: 91e561d3b109c48acad86e04a018b999, type: 3}
@@ -1867,8 +1926,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -1877,8 +1938,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054621467552500 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010257212294, guid: d2cf3fd123a0848dc8a928596c8fade5, type: 3}
@@ -2007,8 +2071,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -2017,8 +2083,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054624326014971 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011234192314, guid: 54554cdc050c946759d4448ac9353f94, type: 3}
@@ -2143,8 +2212,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -2153,8 +2224,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054623318742084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012349422456, guid: c9d4c39dacffd4342b231618fefa6e78, type: 3}
@@ -2275,8 +2349,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -2285,8 +2361,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7825844771210602834 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4348093783413710, guid: 4bb99b07d9eaf43a49d76498f84b0007, type: 3}
@@ -2411,8 +2490,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -2421,8 +2502,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054622518615842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011929840470, guid: d94437dcaebba48418228acdefa25174, type: 3}
@@ -2539,8 +2623,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9e8cc6c85f8184bb8e5b0a9f1abff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 1
   explosionForce: 0
   rigidbodies: []
   colliders: []
@@ -2549,8 +2635,11 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0
   explosionScale: 0
+  adButton: {fileID: 0}
+  renderers: []
 --- !u!4 &7826054624422871253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010472731856, guid: 58f92b9802d22401fa0f5b13ed8ca85b, type: 3}
