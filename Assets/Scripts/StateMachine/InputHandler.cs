@@ -15,8 +15,8 @@ public class InputHandler : MonoBehaviour
 
 	//derived states
 	public static readonly IdleState IdleState = new IdleState();
-	private static readonly DisabledState PermanentlyDisabledState = new DisabledState(false), TemporarilyDisabledState = new DisabledState(true);
 	public static readonly DragToSmashState DragToSmashState = new DragToSmashState();
+	private static readonly DisabledState PermanentlyDisabledState = new DisabledState(false), TemporarilyDisabledState = new DisabledState(true);
 	private static AimingState _aimingState;
 	private static TapState _tapState;
 
@@ -91,7 +91,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		//print($"{_leftHandState}");
+		print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -124,6 +124,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (isUsingTapAndPunch)
 		{
+			print(InputExtensions.GetFingerDown());
 			if (!InputExtensions.GetFingerDown()) return _leftHandState;
 			
 			return _tapState;

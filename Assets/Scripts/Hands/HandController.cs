@@ -278,14 +278,17 @@ public class HandController : MonoBehaviour
 	private void PunchForward(Transform punched)
 	{
 		InputHandler.AssignNewState(new InTransitState(true, InputStateBase.EmptyHit, false));
+
+		var throwAtTarget = LevelFlowController.only.TryGetCurrentThrowTarget(out var target);
 		
 		if(CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 		{
-			var direction = LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
-				? (target.position - transform.root.position).normalized
-				: transform.root.forward;
+			var direction = throwAtTarget
+							   ? (target.position - transform.root.position).normalized
+							   : transform.root.forward;
 			
-			direction.y += 0.25f;
+			if(!throwAtTarget)
+				direction.y += 0.25f;
 			
 			punched.GetComponent<RagdollLimbController>().GetPunched(direction, punchForce);
 		}
@@ -294,11 +297,12 @@ public class HandController : MonoBehaviour
 			if(!punched.root.TryGetComponent(out PropController prop))
 				prop = punched.GetComponent<PropController>();
 
-			var direction = LevelFlowController.only.TryGetCurrentThrowTarget(out var target)
-					? (target.position - transform.root.position).normalized 
-					: transform.root.forward;
-
-			direction.y += 0.25f;
+			var direction = throwAtTarget
+								? (target.position - transform.root.position).normalized 
+								: transform.root.forward;
+			
+			if(!throwAtTarget)
+				direction.y += 0.25f;
 			
 			prop.GetPunched(direction.normalized, 
 				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
@@ -336,7 +340,7 @@ public class HandController : MonoBehaviour
 	{
 		if (InputHandler.IsInDisabledState()) return;
 		
-		if(InputHandler.Only.canDragAfterGrabbingToAim)
+		if(InputHandler.Only.canDragAfterGrabbingToAim && TargetHeldToPunch)
 			InputHandler.AssignNewState(InputHandler.DragToSmashState);
 		else 
 			InputHandler.AssignNewState(InputHandler.IdleState);
