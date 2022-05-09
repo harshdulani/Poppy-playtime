@@ -83,6 +83,8 @@ public class AimController : MonoBehaviour
 		var newPosition = transform.position + transform.forward * _lastTargetDistance;
 		newPosition.y = _lastTargetYPos;
 		HandController.TargetHeldToPunch.position = newPosition;
+		
+		HandController.TargetHeldToPunch.rotation = Quaternion.LookRotation(transform.position - newPosition);
 	}
 
 	public void CalculateTargetDistance()
@@ -94,6 +96,18 @@ public class AimController : MonoBehaviour
 
 		targetPos.y = transform.position.y;
 		_lastTargetDistance = Vector3.Distance(transform.position, targetPos);
+	}
+
+	public static void SendTargetDown(float delta)
+	{
+		var target = HandController.TargetHeldToPunch;
+		target.DOMoveY(target.position.y - delta, 0.25f);
+	}
+
+	public static void BringTargetBackUp(float delta)
+	{
+		var target = HandController.TargetHeldToPunch;
+		target.DOMoveY(target.position.y + delta, 0.25f);
 	}
 
 	public void SetReticleStatus(bool isOn)

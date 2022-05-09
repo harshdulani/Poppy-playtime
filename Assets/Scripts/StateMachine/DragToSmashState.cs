@@ -12,7 +12,8 @@
 	{
 		IsPersistent = true;
 		_aimer.CalculateTargetDistance();
-		
+
+		//AimController.SendTargetDown(1.5f);
 		//hand controller dot tween grabbed target downwards 
 	}
 
@@ -30,5 +31,11 @@
 		if(!InputExtensions.GetFingerHeld()) return;
 		
 		_aimer.AimWithTargetHeld(InputExtensions.GetInputDelta());
+	}
+
+	public override void OnExit()
+	{
+		base.OnExit();
+		//AimController.BringTargetBackUp(1.5f);
 	}
 }
