@@ -27,22 +27,16 @@ public class InTransitState : InputStateBase
 			PlayerSoundController.only.ZiplineGo();
 
 		//to prevent guard boss slow mo bug
-		if (HandController.PropHeldToPunch && HandController.PropHeldToPunch.isCar)
-		{
-			var tut = Object.FindObjectOfType<TutorialCanvasController>();
-			if (tut)
+		if(LevelFlowController.only.isGiantLevel)
+			if (HandController.PropHeldToPunch && HandController.PropHeldToPunch.isCar)
 			{
-				tut.knowsHowToPickUpCars = true;
+				var tut = Object.FindObjectOfType<TutorialCanvasController>();
+				if (tut) tut.knowsHowToPickUpCars = true;
 			}
-		}
 
 		_timer = DOVirtual.DelayedCall(MaxTransitTime, () =>
 		{
-			if(LevelFlowController.only.isGiantLevel) return;
 			if(GoHome)
-				//i was here, problem was: when player pulls car and slo mo starts after that
-				//on clicking during this slow mo, everything breaks,
-				//maybe set a flag to not go into slow mo in the first place if you already have picked a car up
 				InputHandler.Only.GetLeftHand().HandReachHome();
 			else
 			{
@@ -50,6 +44,7 @@ public class InTransitState : InputStateBase
 				InputHandler.Only.GetLeftHand().PalmController.EnableAdoptability();
 			}
 		});
+		
 	}
 
 	public override void Execute()

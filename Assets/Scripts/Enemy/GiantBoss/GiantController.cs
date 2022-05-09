@@ -9,10 +9,10 @@ public struct BoxBounds { public float x, y, z, distance; }
 
 public class GiantController : MonoBehaviour
 {
+	public bool isRagdoll;
 	[HideInInspector] public bool isDead;
 	[SerializeField] private Renderer[] rends;
-	
-	[SerializeField] private bool isRagdoll;
+
 	[SerializeField] private Rigidbody[] rigidbodies;
 	[SerializeField] private List<GameObject> headgear;
 
@@ -263,7 +263,7 @@ public class GiantController : MonoBehaviour
 		
 		GoRagdoll(-transform.forward);
 		ReleaseVehicle();
-		ShatterableParent.AddToPossibleShatterers(transform);
+		ShatterableParent.TryAddToPossibleShatterers(transform);
 	}
 
 	private static void ThrowHeadgear(GameObject obj)

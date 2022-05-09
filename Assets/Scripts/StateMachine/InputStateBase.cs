@@ -3,7 +3,7 @@ using UnityEngine;
 public class InputStateBase
 {
 	public static bool IsPersistent;
-	protected static HandController LeftHand;
+	protected static HandController LeftHand, RightHand;
 	protected static Camera Cam;
 	protected static float RaycastDistance;
 
@@ -12,9 +12,10 @@ public class InputStateBase
 
 	protected InputStateBase() { }
 
-	public InputStateBase(HandController leftHand, Camera cam, float raycastDistance)
+	public InputStateBase(HandController leftHand, HandController rightHand, Camera cam, float raycastDistance)
 	{
 		LeftHand = leftHand;
+		RightHand = rightHand;
 		Cam = cam;
 		RaycastDistance = raycastDistance;
 		

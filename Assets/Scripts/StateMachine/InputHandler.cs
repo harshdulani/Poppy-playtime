@@ -70,7 +70,7 @@ public class InputHandler : MonoBehaviour
 		}
 
 		var cam = Camera.main;
-		_ = new InputStateBase(_leftHand, cam, raycastDistance);
+		_ = new InputStateBase(_leftHand, _rightHand, cam, raycastDistance);
 		_ = new DisabledState(_rightHand);
 		_ = new DragToSmashState(_leftHand.GetAimController());
 		
@@ -91,7 +91,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		//print($"{_leftHandState}");
+		print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -216,6 +216,7 @@ public class InputHandler : MonoBehaviour
 	{
 		if(LevelFlowController.only.DidKillLastEnemyOfArea()) return;
 
-		Invoke(nameof(AssignIdleState), .1f);
+		PutInTapCoolDown(0.75f);
+		//DOVirtual.DelayedCall(0.1f, AssignIdleState);
 	}
 }

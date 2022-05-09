@@ -27,7 +27,8 @@ public class RagdollController : MonoBehaviour
 	private EnemyPatroller _patroller;
 	private ThrowAtPlayer _throwAtPlayer;
 	private HealthController _health;
-
+	private ShatterEnemyController _shatterEnemy;
+	
 	private bool _isAttacking;
 
 	private static readonly int IsFlying = Animator.StringToHash("isFlying");
@@ -65,6 +66,7 @@ public class RagdollController : MonoBehaviour
 		TryGetComponent(out _patroller);
 		TryGetComponent(out _throwAtPlayer);
 		TryGetComponent(out _health);
+		TryGetComponent(out _shatterEnemy);
 		
 		if(shouldMirror)
 			_anim.SetBool(IsMirrored, Random.value > 0.5f);
@@ -78,7 +80,10 @@ public class RagdollController : MonoBehaviour
 		PlayRandomAnim();
 	}
 
-	public bool IsInPatrolArea() => _patroller.IsInCurrentPatrolArea();
+	public bool IsInPatrolArea()
+	{
+		return _patroller ? _patroller.IsInCurrentPatrolArea() : _shatterEnemy.IsInCurrentArea();
+	}
 
 	public bool TryHoldInAir()
 	{

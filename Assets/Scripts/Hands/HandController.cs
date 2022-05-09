@@ -502,12 +502,6 @@ public class HandController : MonoBehaviour
 		}
 		Sounds.PlaySound(Sounds.clickForPunch, 1);
 
-		if(PropHeldToPunch)
-		{
-			PropHeldToPunch.PlayerLetsGo();
-			PropHeldToPunch = null;
-		}
-		
 		return true;
 	}
 
@@ -546,7 +540,7 @@ public class HandController : MonoBehaviour
 		ClearStateInfo();
 	}
 
-	private void ClearStateInfo()
+	public void ClearStateInfo()
 	{
 		ClearInitTargetPos();
 		ResetPalmParent();
@@ -589,7 +583,14 @@ public class HandController : MonoBehaviour
 	private void OnPunchHit()
 	{
 		windLines.Stop();
-
+		
+		//to fix the carlane moving around bug that happens if you move the car/prop around between attack animation start and now
+		if(PropHeldToPunch)
+		{
+			PropHeldToPunch.PlayerLetsGo();
+			PropHeldToPunch = null;
+		}
+		
 		if (currentWeaponsSkin != WeaponType.Pastry || currentWeaponsSkin != WeaponType.IceCream) return;
 		
 		pastrySplash.Play();

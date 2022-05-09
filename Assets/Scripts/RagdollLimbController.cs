@@ -79,32 +79,32 @@ public class RagdollLimbController : MonoBehaviour
 		_parent.AttackEnemy();
 		GameEvents.Only.InvokeEnemyKillPlayer();
 	}
-	
+
 	private void OnCollisionEnter(Collision other)
 	{
-		if(!_parent) return;
-		if(!_parent.isRagdoll) return;
-		
-		if(other.transform.root == transform.root) return;
+		if (!_parent) return;
+		if (!_parent.isRagdoll) return;
+
+		if (other.transform.root == transform.root) return;
 		if (!other.collider.CompareTag("Target") && !other.collider.CompareTag("Trap")) return;
-		
+
 		var direction = other.transform.position - transform.position;
 		if (_rb.velocity.sqrMagnitude < 4f)
 		{
-			if(_parent.isAttackerSoCantRagdoll) return;
-			if(!other.gameObject.TryGetComponent(out FlameThrowerTrap _))
+			if (_parent.isAttackerSoCantRagdoll) return;
+			if (!other.gameObject.TryGetComponent(out FlameThrowerTrap _))
 				GetPunched(-direction, 0.25f);
 			return;
 		}
+
 		if (other.gameObject.TryGetComponent(out RagdollLimbController raghu) && !raghu._parent.isWaitingForPunch)
 		{
 			if (raghu._parent.IsInPatrolArea())
 				raghu.GetPunched(direction, direction.magnitude);
-			
-			if(ShatterableParent.IsThisAPossibleShatterer(transform.root)) return;
-			ShatterableParent.AddToPossibleShatterers(transform.root);
+
+			ShatterableParent.TryAddToPossibleShatterers(transform.root);
 		}
-		else if(other.gameObject.TryGetComponent(out PropController prop))
+		else if (other.gameObject.TryGetComponent(out PropController prop))
 		{
 			if (prop.IsACompositeProp)
 				prop.GetTouchedComposite(Vector3.up, true);
@@ -112,9 +112,8 @@ public class RagdollLimbController : MonoBehaviour
 			if (prop.shouldExplode)
 			{
 				GetPunchBack(30f);
-
-				if (ShatterableParent.IsThisAPossibleShatterer(transform.root)) return;
-				ShatterableParent.AddToPossibleShatterers(transform.root);
+				
+				ShatterableParent.TryAddToPossibleShatterers(transform.root);
 			}
 		}
 	}

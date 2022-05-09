@@ -160,7 +160,7 @@ public class PalmController : MonoBehaviour
 			HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
 	
 			//this is for climber level
-			ShatterableParent.AddToPossibleShatterers(trans.root);
+			ShatterableParent.TryAddToPossibleShatterers(trans.root);
 		});
 	}
 

@@ -6,11 +6,12 @@ public class TapState : InputStateBase
 	private RaycastHit _hit;
 	private static bool _hasTarget;
 	private static float _screenPercentageOnY;
-	
+
 	public TapState(AimController aimer)
 	{
 		_aimer = aimer;
 		_screenPercentageOnY = _aimer.screenPercentageOnY;
+
 	}
 	
 	public override void OnEnter()

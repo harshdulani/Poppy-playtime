@@ -23,10 +23,13 @@ public class Shatterable : MonoBehaviour
 		if(!_canShatter) return;
 		if(_parent.isShattered) return;
 		
-		if(!other.transform.root.TryGetComponent(out RagdollController _) && !other.transform.root.TryGetComponent(out GiantController _)) return;
+		if(!other.transform.root.TryGetComponent(out RagdollController raghu) & !other.transform.root.TryGetComponent(out GiantController giant)) return;
 		
 		//maybe remove this, because the ones knocked out can also shatter the tower but theyre not in this list
-		if(!ShatterableParent.IsThisAPossibleShatterer(other.transform.root)) return;
+		//if(!ShatterableParent.IsThisAPossibleShatterer(other.transform.root)) return;
+		
+		if(raghu) { if (!raghu.isRagdoll) return; }
+		else if(giant) { if(!giant.isRagdoll) return; }
 
 		_parent.isShattered = true;
 		_parent.ShatterTheShatterables();

@@ -14,6 +14,7 @@ public class AimController : MonoBehaviour
 
 	private PlayerSoundController _soundController;
 	private Canvas _canvas;
+	private Transform _transform;
 
 	private Quaternion _areaInitRotation;
 	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
@@ -47,10 +48,11 @@ public class AimController : MonoBehaviour
 		_soundController = GetComponent<PlayerSoundController>();
 		
 		_canvas.worldCamera = Camera.main;
+		_transform = transform;
 
 		_reticle = _canvas.transform.GetChild(0).GetComponent<Image>();
 
-		_areaInitRotation = transform.rotation;
+		_areaInitRotation = _transform.rotation;
 		var rot = _areaInitRotation.eulerAngles;
 
 		_initRotAxisX = rot.x;
@@ -69,22 +71,28 @@ public class AimController : MonoBehaviour
 		_rotX = Mathf.Clamp(_rotX, _initRotAxisX - clampAngleVertical, _initRotAxisX + clampAngleVertical);
 
 		var newRot = Quaternion.Euler(_rotX, _rotY, 0.0f);
-		transform.rotation = newRot;
+		_transform.rotation = newRot;
 	}
 
 	public void AimWithTargetHeld(Vector2 delta)
 	{
 		Aim(delta);
 		
-		//sometimes target is not being set
+		//sometimes target is not set
 		if (!HandController.TargetHeldToPunch) return;
 		if(HandController.PropHeldToPunch) if(HandController.PropHeldToPunch.isCar) return;
-		
-		var newPosition = transform.position + transform.forward * _lastTargetDistance;
+
+		var newPosition = _transform.position + _transform.forward * _lastTargetDistance;
 		newPosition.y = _lastTargetYPos;
 		HandController.TargetHeldToPunch.position = newPosition;
+
+		var direction = _transform.position - newPosition;
+		if (HandController.PropHeldToPunch) direction.y = 0;
 		
-		HandController.TargetHeldToPunch.rotation = Quaternion.LookRotation(transform.position - newPosition);
+		HandController.TargetHeldToPunch.rotation = Quaternion.LookRotation(direction);
+
+		if (!HandController.PropHeldToPunch)
+			HandController.TargetHeldToPunch.rotation *= Quaternion.Euler(Vector3.left * 20f);
 	}
 
 	public void CalculateTargetDistance()
@@ -94,8 +102,8 @@ public class AimController : MonoBehaviour
 		var targetPos = HandController.TargetHeldToPunch.position;
 		_lastTargetYPos = targetPos.y;
 
-		targetPos.y = transform.position.y;
-		_lastTargetDistance = Vector3.Distance(transform.position, targetPos);
+		targetPos.y = _transform.position.y;
+		_lastTargetDistance = Vector3.Distance(_transform.position, targetPos);
 	}
 
 	public static void SendTargetDown(float delta)
@@ -143,7 +151,7 @@ public class AimController : MonoBehaviour
 
 	private void ResetRotationToAreaInit()
 	{
-		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
+		_punchHit = _transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
 		_rotX = _initRotAxisX;
 		_rotY = _initRotAxisY;
 	}
@@ -155,7 +163,7 @@ public class AimController : MonoBehaviour
 
 	private void OnPunchHit()
 	{
-		_punchHit = transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
+		_punchHit = _transform.DORotate(new Vector3(_initRotAxisX, _initRotAxisY, 0), 1f);
 		_rotX = _initRotAxisX;
 		_rotY = _initRotAxisY;
 	}
@@ -163,14 +171,14 @@ public class AimController : MonoBehaviour
 	private void OnMoveToNextArea()
 	{
 		_punchHit.Kill();
-		transform.DORotateQuaternion(_areaInitRotation, 0.5f);
+		_transform.DORotateQuaternion(_areaInitRotation, 0.5f);
 		_rotX = _initRotAxisX;
 		_rotY = 0f;
 	}
 
 	private void OnReachNextArea()
 	{
-		_areaInitRotation = transform.rotation;
+		_areaInitRotation = _transform.rotation;
 		var rot = _areaInitRotation.eulerAngles;
 
 		_initRotAxisX = rot.x;

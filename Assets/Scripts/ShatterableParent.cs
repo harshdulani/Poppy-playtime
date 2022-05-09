@@ -59,13 +59,13 @@ public class ShatterableParent : MonoBehaviour
 			shatterable.MakeShatterable();
 	}
 
-	public static void AddToPossibleShatterers(Transform possibleShatterer)
+	public static void TryAddToPossibleShatterers(Transform possibleShatterer)
 	{
 		if(IsThisAPossibleShatterer(possibleShatterer)) return;
 		_possibleShatterers.Add(possibleShatterer);
 	}
 
-	public static bool IsThisAPossibleShatterer(Transform transformRoot)
+	private static bool IsThisAPossibleShatterer(Transform transformRoot)
 	{
 		return _possibleShatterers.Contains(transformRoot);
 	}

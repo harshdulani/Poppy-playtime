@@ -24,7 +24,6 @@
 		if(InputExtensions.GetFingerUp())
 		{
 			InputHandler.Only.GetLeftHand().TryGivePunch();
-			
 			return;
 		}
 		

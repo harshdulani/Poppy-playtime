@@ -41,7 +41,7 @@ public class TutorialCanvasController : MonoBehaviour
 				GameEvents.Only.PunchHit += OnPunchHit;
 				break;
 			case TutorialType.Barrel:
-				GameEvents.Only.TapToPlay += OnTapToPlay;
+				GameEvents.Only.EnterHitBox += OnEnterHitBox;
 				break;
 			case TutorialType.DragToSmash:
 				GameEvents.Only.EnterHitBox += OnEnterHitBox;
@@ -68,7 +68,7 @@ public class TutorialCanvasController : MonoBehaviour
 				GameEvents.Only.PunchHit -= OnPunchHit;
 				break;
 			case TutorialType.Barrel:
-				GameEvents.Only.TapToPlay -= OnTapToPlay;
+				GameEvents.Only.EnterHitBox -= OnEnterHitBox;
 				break;
 			case TutorialType.DragToSmash:
 				GameEvents.Only.EnterHitBox -= OnEnterHitBox;
@@ -131,21 +131,39 @@ public class TutorialCanvasController : MonoBehaviour
 
 	private void OnTapToPlay()
 	{
-		if(myType != TutorialType.Boss && myType != TutorialType.DragToSmash)
-			gameObject.SetActive(false);
+		switch (myType)
+		{
+			case TutorialType.Aiming:
+				gameObject.SetActive(false);
+				break;
+		}
 	}
 
 	private void OnEnterHitBox(Transform target)
 	{
-		toDisable.SetActive(true);
-		secondHelp.SetActive(false);
-		_hasLearned = false;
+		switch (myType)
+		{
+			case TutorialType.Barrel:
+				gameObject.SetActive(false);
+				break;
+			case TutorialType.DragToSmash:
+				toDisable.SetActive(true);
+				secondHelp.SetActive(false);
+				_hasLearned = false;
+				break;
+		}
+		
 	}
 
 	private void OnPunchHit()
 	{
-		toDisable.SetActive(false);
-		secondHelp.SetActive(false);
+		switch (myType)
+		{
+			case TutorialType.DragToSmash:
+				toDisable.SetActive(false);
+				secondHelp.SetActive(false);
+				break;
+		}
 	}
 
 	private void OnReachNextArea()
