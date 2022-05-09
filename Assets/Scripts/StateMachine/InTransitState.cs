@@ -21,8 +21,24 @@ public class InTransitState : InputStateBase
 	public override void OnEnter()
 	{
 		IsPersistent = InputHandler.Only.isUsingTapAndPunch;
+		if (GoHome)
+			PlayerSoundController.only.ZiplineCome();
+		else
+			PlayerSoundController.only.ZiplineGo();
+
+		//to prevent guard boss slow mo bug
+		if (HandController.PropHeldToPunch && HandController.PropHeldToPunch.isCar)
+		{
+			var tut = Object.FindObjectOfType<TutorialCanvasController>();
+			if (tut)
+			{
+				tut.knowsHowToPickUpCars = true;
+			}
+		}
+
 		_timer = DOVirtual.DelayedCall(MaxTransitTime, () =>
 		{
+			if(LevelFlowController.only.isGiantLevel) return;
 			if(GoHome)
 				//i was here, problem was: when player pulls car and slo mo starts after that
 				//on clicking during this slow mo, everything breaks,
@@ -34,11 +50,6 @@ public class InTransitState : InputStateBase
 				InputHandler.Only.GetLeftHand().PalmController.EnableAdoptability();
 			}
 		});
-		
-		if (GoHome)
-			PlayerSoundController.only.ZiplineCome();
-		else
-			PlayerSoundController.only.ZiplineGo();
 	}
 
 	public override void Execute()
@@ -56,7 +67,6 @@ public class InTransitState : InputStateBase
 	public override void OnExit()
 	{
 		base.OnExit();
-		Print("here");
 		if(_timer.IsActive()) _timer.Kill();
 	}
 }

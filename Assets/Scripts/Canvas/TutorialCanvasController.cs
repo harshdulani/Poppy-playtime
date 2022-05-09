@@ -10,10 +10,11 @@ public enum TutorialType
 }
 public class TutorialCanvasController : MonoBehaviour
 {
+	[HideInInspector] public bool knowsHowToPickUpCars;
 	[SerializeField] private TutorialType myType;
 	[SerializeField] private GameObject toDisable;
 
-	[SerializeField] private AnimationClip aimingClip, tappingClip; 
+	[SerializeField] private AnimationClip aimingClip, tappingClip;
 
 	private bool _bossTutorialAnimationOn;
 	[SerializeField] private Animation anim;
@@ -62,11 +63,13 @@ public class TutorialCanvasController : MonoBehaviour
 	private void Update()
 	{
 		if (!_bossTutorialAnimationOn) return;
+
+		if(knowsHowToPickUpCars) return;
 		
 		if (myType != TutorialType.Boss) return;
 
 		if(!InputExtensions.GetFingerDown()) return;
-		
+
 		TimeController.only.RevertTime();
 		toDisable.SetActive(false);
 		_bossTutorialAnimationOn = false;
@@ -98,12 +101,15 @@ public class TutorialCanvasController : MonoBehaviour
 	
 	private void OnGiantLand(Transform giant)
 	{
+		if(knowsHowToPickUpCars) return;
 		StartCoroutine(Wait());
 	}
 
 	private IEnumerator Wait()
 	{
 		yield return GameExtensions.GetWaiter(2f);
+		if(knowsHowToPickUpCars) yield break;
+		
 		toDisable.SetActive(true);
 		TimeController.only.SlowDownTime(.1f);
 

@@ -75,7 +75,7 @@ public class AimController : MonoBehaviour
 	public void AimWithTargetHeld(Vector2 delta)
 	{
 		Aim(delta);
-
+		
 		//sometimes target is not being set
 		if (!HandController.TargetHeldToPunch) return;
 		if(HandController.PropHeldToPunch) if(HandController.PropHeldToPunch.isCar) return;

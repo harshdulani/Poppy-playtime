@@ -19,7 +19,7 @@
 	public override void Execute()
 	{
 		base.Execute();
-		
+
 		if(InputExtensions.GetFingerUp())
 		{
 			InputHandler.Only.GetLeftHand().TryGivePunch();
