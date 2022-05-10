@@ -11,6 +11,7 @@ public class AimController : MonoBehaviour
 	//the magic number percentage 0.5905f is the screen Y pos when you center the crosshair on anchorY as minY = 0.565, maxY = 0.615
 	//0.5899 for 0.55, 0.63
 	[Header("Aiming")] public float screenPercentageOnY = 0.5899f;
+	[SerializeField] private float yTravelDistance = 1f;
 
 	private PlayerSoundController _soundController;
 	private Canvas _canvas;
@@ -18,10 +19,23 @@ public class AimController : MonoBehaviour
 
 	private Quaternion _areaInitRotation;
 	private float _rotX, _rotY, _initRotAxisX, _initRotAxisY;
-	private float _lastTargetYPos, _lastTargetDistance;
+	private float _targetDistance, _targetInitYPos, _targetDesiredYPos;
+
+	private float _currentYDistanceLerper;
+	private float CurrentYDistanceLerper
+	{
+		get => _currentYDistanceLerper;
+		/*{
+			print("getting " + _currentYDistanceLerper);
+			return _currentYDistanceLerper;
+		}*/
+		set => _currentYDistanceLerper = value;
+	}
 	private bool _canPlayLockOnSound = true;
-	
+
+	private Transform _myTarget;
 	private Tweener _punchHit;
+	private Tween _yPosTween;
 	private bool _hasTarget;
 
 	private void OnEnable()
@@ -61,7 +75,7 @@ public class AimController : MonoBehaviour
 		_rotY = rot.y;
 		_rotX = rot.x;
 	}
-	
+
 	public void Aim(Vector2 inputDelta)
 	{
 		_rotY += inputDelta.x * aimSpeedHorizontal * Time.deltaTime;
@@ -77,22 +91,28 @@ public class AimController : MonoBehaviour
 	public void AimWithTargetHeld(Vector2 delta)
 	{
 		Aim(delta);
-		
+
 		//sometimes target is not set
-		if (!HandController.TargetHeldToPunch) return;
+		if (!_myTarget) return;
 		if(HandController.PropHeldToPunch) if(HandController.PropHeldToPunch.isCar) return;
+		
+		ChangeTargetTransformation();
+	}
 
-		var newPosition = _transform.position + _transform.forward * _lastTargetDistance;
-		newPosition.y = _lastTargetYPos;
-		HandController.TargetHeldToPunch.position = newPosition;
-
-		var direction = _transform.position - newPosition;
+	private void ChangeTargetTransformation()
+	{
+		var desiredPos = _transform.position + _transform.forward * _targetDistance;
+		desiredPos.y = Mathf.Lerp(_targetInitYPos, _targetDesiredYPos, CurrentYDistanceLerper);
+		
+		_myTarget.position = Vector3.Lerp(_myTarget.position, desiredPos, CurrentYDistanceLerper);
+		
+		var direction = _transform.position - desiredPos;
 		if (HandController.PropHeldToPunch) direction.y = 0;
 		
-		HandController.TargetHeldToPunch.rotation = Quaternion.LookRotation(direction);
-
-		if (!HandController.PropHeldToPunch)
-			HandController.TargetHeldToPunch.rotation *= Quaternion.Euler(Vector3.left * 20f);
+		direction.y = 0f;
+		_myTarget.rotation = Quaternion.LookRotation(direction);
+		
+		if (!HandController.PropHeldToPunch) _myTarget.rotation *= Quaternion.Euler(Vector3.left * 20f);
 	}
 
 	public void CalculateTargetDistance()
@@ -100,22 +120,38 @@ public class AimController : MonoBehaviour
 		if(!HandController.TargetHeldToPunch) return;
 
 		var targetPos = HandController.TargetHeldToPunch.position;
-		_lastTargetYPos = targetPos.y;
+		_myTarget = HandController.TargetHeldToPunch;
 
 		targetPos.y = _transform.position.y;
-		_lastTargetDistance = Vector3.Distance(_transform.position, targetPos);
+		_targetDistance = Vector3.Distance(_transform.position, targetPos);
+		_targetInitYPos = _myTarget.position.y;
+		
+		if(HandController.PropHeldToPunch)
+		{
+			//is car condition is not being used because i tell the entry itself to be guard claused by if car get out
+			if (HandController.PropHeldToPunch.isCar)
+				_targetDesiredYPos = _targetInitYPos - yTravelDistance * -0.5f;
+			else
+				_targetDesiredYPos = _targetInitYPos - yTravelDistance * 0.5f;
+		}
+		else
+			_targetDesiredYPos = _targetInitYPos - yTravelDistance;
 	}
 
-	public static void SendTargetDown(float delta)
+	public void MoveTargetDown()
 	{
-		var target = HandController.TargetHeldToPunch;
-		target.DOMoveY(target.position.y - delta, 0.25f);
+		if(_yPosTween.IsActive()) return;
+		
+		CurrentYDistanceLerper = 0f;
+		_yPosTween = DOTween.To(() => CurrentYDistanceLerper, value => CurrentYDistanceLerper = value, 1f, .25f);
 	}
 
-	public static void BringTargetBackUp(float delta)
+	public void BringTargetBackUp()
 	{
-		var target = HandController.TargetHeldToPunch;
-		target.DOMoveY(target.position.y + delta, 0.25f);
+		if(_yPosTween.IsActive()) return;
+		
+		_yPosTween = DOTween.To(() => CurrentYDistanceLerper, value => CurrentYDistanceLerper = value, 0f, .25f)
+			.OnUpdate(ChangeTargetTransformation).OnComplete(() => _myTarget = null);
 	}
 
 	public void SetReticleStatus(bool isOn)

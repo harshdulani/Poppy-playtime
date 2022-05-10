@@ -779,8 +779,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12a825a4f3d278540b4456d1c4fd429b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knowsHowToPickUpCars: 0
   myType: 3
   toDisable: {fileID: 822586864}
+  secondHelp: {fileID: 0}
   aimingClip: {fileID: 0}
   tappingClip: {fileID: 0}
   anim: {fileID: 0}
@@ -2094,7 +2096,7 @@ MonoBehaviour:
       percent: 0
     - position: {x: -119.99999, y: 0.0000009536743, z: -64.716805}
       up: {x: 0, y: 1, z: 0}
-      forward: {x: 0, y: 0.000000008162632, z: 1}
+      forward: {x: -0.00029011068, y: 0.000000008162632, z: 1}
       color: {r: 1, g: 1, b: 1, a: 1}
       size: 1
       percent: 1
@@ -3155,7 +3157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311185874752, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 139.50018
+      value: 139.50003
       objectReference: {fileID: 0}
     - target: {fileID: 592453311387248778, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3195,7 +3197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 592453311930542070, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 139.50018
+      value: 139.50003
       objectReference: {fileID: 0}
     - target: {fileID: 2006200668292180719, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3251,6 +3253,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5303977201401506506, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
       propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5303977201401506506, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6505582158258849793, guid: d42c17f90ca5b754eb085d92b8f15930, type: 3}

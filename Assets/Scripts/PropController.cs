@@ -18,8 +18,6 @@ public class PropController : MonoBehaviour, IWantsAds
 	[SerializeField, Range(0.1f, 2f)] private float shrinkSpeedMultiplier, explosionScale;
 	[SerializeField] private Transform adButton;
 
-	[Header("Transparency"), SerializeField] private List<Renderer> renderers;
-
 	private Tweener _adScaleTween;
 	private static int _explosionSoundCounter;
 	private readonly List<Transform> _pieces = new List<Transform>();
@@ -85,19 +83,6 @@ public class PropController : MonoBehaviour, IWantsAds
 	{
 		_isHeldByPlayer = true;
 		
-		var val = 1f;
-		DOTween.To(() => val, value => val = value, 0.25f, 0.25f).OnUpdate(() =>
-		{
-			foreach (var rend in renderers)
-			{
-				foreach (var material in rend.materials)
-				{
-					var color = material.color;
-					material.color = new Color(color.r, color.g, color.b, val);
-				}
-			}
-		});
-		
 		//this may make picked up weapons transparent
 		if(!_adScaleTween.IsActive()) return;
 
@@ -108,16 +93,6 @@ public class PropController : MonoBehaviour, IWantsAds
 	public void PlayerLetsGo()
 	{
 		_isHeldByPlayer = false;
-		
-		var val = 0.25f;
-		DOTween.To(() => val, value => val = value, 1f, 0.25f).OnUpdate(() =>
-		{
-			foreach (var rend in renderers)
-			{
-				var color = rend.material.color;
-				rend.material.color = new Color(color.r, color.g, color.b, val);
-			}
-		});
 	}
 
 	private void PerlinNoise()

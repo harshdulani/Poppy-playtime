@@ -1,6 +1,7 @@
 ﻿public sealed class DragToSmashState : InputStateBase
 {
 	private static AimController _aimer;
+	private bool _sentDown;
 	
 	public DragToSmashState() {}
 	public DragToSmashState(AimController aimer)
@@ -11,10 +12,8 @@
 	public override void OnEnter()
 	{
 		IsPersistent = true;
+		_sentDown = false;
 		_aimer.CalculateTargetDistance();
-
-		//AimController.SendTargetDown(1.5f);
-		//hand controller dot tween grabbed target downwards 
 	}
 
 	public override void Execute()
@@ -24,17 +23,18 @@
 		if(InputExtensions.GetFingerUp())
 		{
 			InputHandler.Only.GetLeftHand().TryGivePunch();
+			_aimer.BringTargetBackUp();
 			return;
 		}
 		
 		if(!InputExtensions.GetFingerHeld()) return;
 		
+		if(!_sentDown)
+		{
+			_aimer.MoveTargetDown();
+			_sentDown = true;
+		}
+		
 		_aimer.AimWithTargetHeld(InputExtensions.GetInputDelta());
-	}
-
-	public override void OnExit()
-	{
-		base.OnExit();
-		//AimController.BringTargetBackUp(1.5f);
 	}
 }

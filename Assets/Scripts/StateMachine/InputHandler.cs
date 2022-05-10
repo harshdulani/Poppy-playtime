@@ -91,7 +91,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		print($"{_leftHandState}");
+		//print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
