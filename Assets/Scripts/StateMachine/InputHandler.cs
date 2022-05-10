@@ -23,7 +23,7 @@ public class InputHandler : MonoBehaviour
 	//current state holder	
 	private static InputStateBase _leftHandState;
 
-	private bool _tappedToPlay, _inTapCooldown;
+	private bool _tappedToPlay, _inTapCooldown, _inStateChangeCooldown;
 	
 	//only is being set by the in game ads, pickable barrel etc
 	[HideInInspector] public bool userIsWatchingAnAdForPickup;
@@ -91,7 +91,7 @@ public class InputHandler : MonoBehaviour
 		
 		if (_inTapCooldown) return;
 
-		//print($"{_leftHandState}");
+		print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -142,7 +142,7 @@ public class InputHandler : MonoBehaviour
 		AssignTemporaryDisabledState();
 		DOVirtual.DelayedCall(customCooldownTime > 0f ? customCooldownTime : tapCooldownWaitTime, TapCoolDown);
 	}
-
+	
 	private void TapCoolDown()
 	{
 		AssignIdleState();
@@ -151,6 +151,8 @@ public class InputHandler : MonoBehaviour
 
 	public static void AssignNewState(InputStateBase newState, bool callOnExit = true)
 	{
+		if(_leftHandState == newState) return;
+		
 		if(callOnExit)
 			_leftHandState?.OnExit();
 		_leftHandState = newState;
