@@ -69,6 +69,7 @@ public class CameraController : MonoBehaviour
 	private void OnPunchHit()
 	{
 		ZoomNormal();
+		ScreenShake(3f);
 	}
 
 	private void OnEnemyReachPlayer()

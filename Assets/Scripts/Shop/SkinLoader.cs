@@ -13,37 +13,50 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		NewWeapon
 	}
 
-	[SerializeField] private RectTransform barPivot;
-	[SerializeField] private Image coloredWeaponImage, blackWeaponImage, blackBackground;
-	
-	[SerializeField] private Button skipButton, getItButton, claimButton;
-	[SerializeField] private TextMeshProUGUI percentageUnlockedText, claimMulTxt;
+	[SerializeField] private Image blackBackground;
 
-	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder, percentageUI; 
+	[Header("Money Panel"), SerializeField]
+	private GameObject moneyPanel;
+
+	[SerializeField] private Transform barPivot, moneyRayBeams;
+	[SerializeField] private Button claimMoneyButton, skipMoneyButton;
+	[SerializeField] private TextMeshProUGUI moneyButtonText;
+
+	[Header("Skin Panel"), SerializeField] 
+	private GameObject skinPanel;
+	[SerializeField] private Transform skinRayBeams;
+	[SerializeField] private Button claimSkinButton, skipSkinButton;
+	[SerializeField] private TextMeshProUGUI percentageUnlockedText;
+	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	
+	[Header("Bonus Level Panel"), SerializeField]
+	private GameObject bonusLevelPanel;
+	
+	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder, percentageUI;
+
 	[SerializeField] private int levelsPerUnlock = 5;
 	[SerializeField] private float tweenDuration, panelOpenWait, skipButtonWait;
-	
+
 	[SerializeField] private int coinIncreaseCount = 100;
-	
+
 	private MainCanvasController _mainCanvas;
 	private float _currentSkinPercentageUnlocked;
-	
+
 	private AdRewardType _currentAdRewardType;
-	
+
 	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
 
 	private void OnEnable()
 	{
 		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
-		
+
 		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
-		
+
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
@@ -52,43 +65,169 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	private void Start()
 	{
 		_mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>();
-		
+
 		Initialise();
-		
+
 		loaderPanel.SetActive(false);
-		//skipButton.interactable = false;
-		skipButton.gameObject.SetActive(false);
-		getItButton.interactable = false;
-		
+		skipMoneyButton.gameObject.SetActive(false);
+		skipSkinButton.gameObject.SetActive(false);
+		claimSkinButton.interactable = false;
+
 		coinIncreaseCount = 100;
 	}
 
-	private void EnableSkipButton()
-	{
-		skipButton.gameObject.SetActive(true);
-	}
-	
 	private void Initialise()
 	{
 		_currentSkinPercentageUnlocked = PlayerPrefs.GetFloat("currentSkinPercentageUnlocked", 0f);
 
-		if(ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
+		if (ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
 
 		coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon());
 		blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), true);
-		
-		if((int)(_currentSkinPercentageUnlocked * 100) >= 100)
+
+		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
 			percentageUnlockedText.text = 100 + "%";
-		else 
-			percentageUnlockedText.text = (int)(_currentSkinPercentageUnlocked * 100) + "%";
+		else
+			percentageUnlockedText.text = (int) (_currentSkinPercentageUnlocked * 100) + "%";
 
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
+	}
+
+	public void ClaimMoney() // Claim for coin multiplier
+	{
+		if (!ApplovinManager.instance) return;
+		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
+
+		StartWaiting(AdRewardType.CoinMultiplier);
+		AdsMediator.StartListeningForAds(this);
+	}
+
+	public void SkipMoneyPanel()
+	{
+		skipMoneyButton.interactable = false;
+		claimMoneyButton.interactable = false;
+		SidebarShopController.AlterCoinCount(coinIncreaseCount);
+		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
+		
+		DOVirtual.DelayedCall(2f, () =>
+		{
+			moneyPanel.SetActive(false);
+			if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
+				ShowSkinPanel();
+			else
+				percentageUI.SetActive(false);
+		});
+	}
+
+	public void ClaimSkin() // Get it for WeaponLoader
+	{
+		if (!ApplovinManager.instance) return;
+		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
+
+		StartWaiting(AdRewardType.NewWeapon);
+		AdsMediator.StartListeningForAds(this);
+	}
+
+	public void SkipSkinPanel()
+	{
+		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
+		{
+			FindNewLoaderWeapon(GetLoaderWeapon());
+			ResetLoader();
+		}
+
+		claimSkinButton.interactable = false;
+		skipMoneyButton.interactable = false;
+		claimMoneyButton.interactable = false;
+		FindObjectOfType<SidebarShopController>().OnGameEnd();
+
+		DOVirtual.DelayedCall(3f, _mainCanvas.NextLevel);
+	}
+
+	private void ResetLoader()
+	{
+		_currentSkinPercentageUnlocked = 0f;
+		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
+
+		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+	}
+
+	private void ShowMoneyPanel()
+	{
+		InputHandler.AssignTemporaryDisabledState();
+
+		blackBackground.gameObject.SetActive(true);
+		var color = blackBackground.color;
+		blackBackground.color = Color.clear;
+		blackBackground.DOColor(color, .75f);
+
+		barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
+			.SetDelay(LevelFlowController.only.isGiantLevel ? 2f : 1f)
+			.OnStart(() => moneyPanel.SetActive(true))
+			.SetEase(Ease.Flash)
+			.SetLoops(-1, LoopType.Yoyo)
+			.OnUpdate(() => moneyButtonText.text = "Claim " + GetMultiplierResult() * coinIncreaseCount + "");
+		
+		DOVirtual.DelayedCall(skipButtonWait, EnableSkipMoneyButton);
+	}
+
+	private void ShowSkinPanel()
+	{
+		//show loader
+		var oldValue = _currentSkinPercentageUnlocked;
+		_currentSkinPercentageUnlocked += 1 / (float) levelsPerUnlock;
+
+		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+
+		DOTween.To(() => blackWeaponImage.fillAmount, value => blackWeaponImage.fillAmount = value,
+				1 - _currentSkinPercentageUnlocked, tweenDuration)
+			.SetEase(Ease.OutBack);
+
+		DOTween.To(() => oldValue, value => oldValue = value, _currentSkinPercentageUnlocked, tweenDuration)
+				.SetEase(Ease.OutBack)
+				.OnUpdate(() => percentageUnlockedText.text = (int) (oldValue * 100) + "%");
+
+		claimSkinButton.interactable = true;
+
+		DOVirtual.DelayedCall(skipButtonWait, EnableSkipSkinButton);
+		if (_currentSkinPercentageUnlocked < 0.99f)
+		{
+			claimSkinButton.gameObject.SetActive(false);
+			return;
+		}
+
+		unlockedButtonsHolder.SetActive(true);
+	}
+
+	private void EnableSkipMoneyButton() => skipMoneyButton.gameObject.SetActive(true);
+
+	private void EnableSkipSkinButton() => skipSkinButton.gameObject.SetActive(true);
+
+	private float ReturnMultiplierZRotation()
+	{
+		if (barPivot.localEulerAngles.z >= 0 && barPivot.localEulerAngles.z<=90)
+		{
+			return barPivot.localEulerAngles.z;
+		}
+
+		return 360 - barPivot.localEulerAngles.z;
+	}
+
+	private int GetMultiplierResult()
+	{
+		var z = ReturnMultiplierZRotation();
+
+		if (z <= 90 && z >= 70)
+			return 3;
+		if (z >= 20 && z <= 69)
+			return 2;
+		return 5;
 	}
 
 	private void FindNewLoaderWeapon(int currentWeapon)
 	{
 		var changed = false;
-		
+
 		//find a weapon from current index to last
 		for (var i = currentWeapon + 1; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
@@ -117,129 +256,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		//if still didn't find anything make sure loader isn't called anymore
 		if (!changed)
 			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
-		
+
 		ResetLoader();
-	}
-	
-	public void Skip()
-	{
-		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
-		{
-			FindNewLoaderWeapon(GetLoaderWeapon());
-			ResetLoader();
-		}
-		getItButton.interactable = false;
-		skipButton.interactable = false;
-		claimButton.interactable = false;
-		FindObjectOfType<SidebarShopController>().OnGameEnd();
-		
-		DOVirtual.DelayedCall(3f, _mainCanvas.NextLevel);
-	}
-
-	public void GetIt() // Get it for WeaponLoader
-	{
-		if(!ApplovinManager.instance) return;
-		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
-		
-		StartWaiting(AdRewardType.NewWeapon);
-		AdsMediator.StartListeningForAds(this);
-	}
-	
-	public void Claim() // Claim for coin multiplier
-	{
-		if(!ApplovinManager.instance) return;
-		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
-
-		StartWaiting(AdRewardType.CoinMultiplier);
-		AdsMediator.StartListeningForAds(this);
-	}
-	
-	private void ResetLoader()
-	{
-		_currentSkinPercentageUnlocked = 0f;
-		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
-		
-		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-	}
-	
-	private void ShowPanel()
-	{
-		InputHandler.AssignTemporaryDisabledState();
-
-		blackBackground.gameObject.SetActive(true);
-		var color = blackBackground.color;
-		blackBackground.color = Color.clear;
-		blackBackground.DOColor(color, .75f);
-		
-		var seq = DOTween.Sequence();
-
-		seq.AppendInterval(LevelFlowController.only.isGiantLevel ? 2f : 1f);
-		seq.AppendCallback(() => loaderPanel.SetActive(true));
-		
-		// show multiplier
-		seq.AppendCallback(() =>
-			barPivot.DOLocalRotate(new Vector3(0, 0, -90f), 0.65f)
-			.SetEase(Ease.Flash)
-			.SetLoops(-1, LoopType.Yoyo)
-			.OnUpdate(() => claimMulTxt.text = GetMultiplierResult() * coinIncreaseCount + ""));
-
-		if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
-		{
-			//show loader
-			var oldValue = _currentSkinPercentageUnlocked;
-			_currentSkinPercentageUnlocked += 1 / (float) levelsPerUnlock;
-
-			PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
-
-			seq.Append(DOTween.To(() => blackWeaponImage.fillAmount, value => blackWeaponImage.fillAmount = value,
-				1 - _currentSkinPercentageUnlocked, tweenDuration).SetEase(Ease.OutBack));
-
-			seq.Insert(1f,
-				DOTween.To(() => oldValue, value => oldValue = value, _currentSkinPercentageUnlocked, tweenDuration)
-					.SetEase(Ease.OutBack).OnUpdate(() => percentageUnlockedText.text = (int) (oldValue * 100) + "%"));
-		}
-		else
-			percentageUI.SetActive(false);
-
-		seq.AppendCallback(() =>
-		{
-			//skipButton.interactable = true;
-			getItButton.interactable = true;
-		});
-
-		seq.AppendInterval(skipButtonWait);
-		seq.AppendCallback(EnableSkipButton);
-
-		if (_currentSkinPercentageUnlocked < 0.99f)
-		{
-			getItButton.gameObject.SetActive(false);
-			//getItButton.interactable = false;
-			//unlockedButtonsHolder.SetActive(false);
-			return;
-		}
-		unlockedButtonsHolder.SetActive(true);
-		//confetti particle fx for complete loader
-	}
-	
-	private float ReturnMultiplierZRotation()
-	{
-		if (barPivot.localEulerAngles.z >= 0 && barPivot.localEulerAngles.z<=90)
-		{
-			return barPivot.localEulerAngles.z;
-		}
-
-		return 360 - barPivot.localEulerAngles.z;
-	}
-
-	private int GetMultiplierResult()
-	{
-		var z = ReturnMultiplierZRotation();
-
-		if (z <= 90 && z >= 70)
-			return 3;
-		if (z >= 20 && z <= 69)
-			return 2;
-		return 5;
 	}
 
 	public bool ShouldShowNextLevel()
@@ -271,16 +289,16 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private void OnGameEnd()
 	{
-		DOVirtual.DelayedCall(panelOpenWait, ShowPanel);
+		DOVirtual.DelayedCall(panelOpenWait, ShowMoneyPanel);
 	}
 
 	private void ReceiveWeaponLoaderReward()
 	{
 		AdsMediator.StopListeningForAds(this);
 		
-		claimButton.interactable = false;
-		skipButton.interactable = false;
-		getItButton.interactable = false;
+		claimSkinButton.interactable = false;
+		skipSkinButton.interactable = false;
+		claimMoneyButton.interactable = false;
 		
 		GameEvents.Only.InvokeWeaponSelect(GetLoaderWeapon(), false);
 		
@@ -297,14 +315,21 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		
 		AdsMediator.StopListeningForAds(this);
 		
-		skipButton.interactable = false;
-		claimButton.interactable = false;
+		skipMoneyButton.interactable = false;
+		claimMoneyButton.interactable = false;
 		SidebarShopController.AlterCoinCount(GetMultiplierResult() * coinIncreaseCount);
 		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
 		
-		DOVirtual.DelayedCall(2f, _mainCanvas.NextLevel);
+		DOVirtual.DelayedCall(2f, () =>
+		{
+			moneyPanel.SetActive(false);
+			if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
+				ShowSkinPanel();
+			else
+				percentageUI.SetActive(false);
+		});
 	}
-
+	
 	private void StartWaiting(AdRewardType newType)
 	{
 		_currentAdRewardType = newType;
