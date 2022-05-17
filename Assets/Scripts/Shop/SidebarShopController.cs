@@ -375,7 +375,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
 		seq.Join(DOTween.To(() => dummyCoinCount, value => dummyCoinCount = value, dummyCoinCount + coinIncreaseCount,
 			.5f).OnUpdate(() => coinText.text = dummyCoinCount.ToString()));
-		seq.InsertCallback(.75f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder,false,false,false));
+		seq.InsertCallback(.75f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
 		seq.AppendCallback(() =>
 		{
@@ -388,7 +388,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 
 	public void CoinsGoingUpEffect()
 	{
-		coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder, false, false, false);
+		coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder);
 	}
 
 	private void StartWaiting(AdRewardTypes newType) => _currentRewardType = newType;

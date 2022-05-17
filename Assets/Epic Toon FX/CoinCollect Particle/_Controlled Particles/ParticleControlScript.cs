@@ -1,41 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ParticleControlScript : MonoBehaviour
 {
-
-    [Header(" Manager ")]
-    // public GameController gameController;
-    public Animator levelCompleteAnimator;
-
-    [Header(" Settings  ")]
-    public float particleSpeed = 3000;
-    public float speedIncrement;
+	[Header(" Settings  ")]
     public int coinsCount;
-    public AudioSource releaseCoinsSound;
-    public AudioSource coinSound;
-    bool fountainSoundPlayed;
-    float timer;
-    public float pTime;
-    bool isLvlComplete;
-    bool moreCoins;
+	public float pTime;
 
-    //UiManager ui;
-    int combineCoins;
+	private float _timer;
+	private int _combineCoins;
 
-
-    public bool gameover;
-    private void Start()
+	public void PlayControlledParticles(Vector3 pos, RectTransform targetUI)
     {
-        //ui = UiManager.instance;
-    }
-
-    public void PlayControlledParticles(Vector3 pos, RectTransform targetUI, bool isRewardVideo = false, bool lvlComplete = false, bool isMoreCoins = false)
-    {
-        isLvlComplete = lvlComplete;
-        moreCoins = isMoreCoins;
-		
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
         transform.position = pos;
@@ -44,58 +20,38 @@ public class ParticleControlScript : MonoBehaviour
 
     IEnumerator PlayCoinParticlesCoroutine(ParticleSystem ps, RectTransform targetUIElement)
     {
-        //speed = particleSpeed;
-        fountainSoundPlayed = false;
+        var distances = new Vector3[coinsCount];
 
-        Vector3[] distances = new Vector3[coinsCount];
+        var reached = new bool[coinsCount];
 
-        bool[] reached = new bool[coinsCount];
-
-        if (isLvlComplete || moreCoins)
-        {
-            reached = new bool[coinsCount];
-            distances = new Vector3[coinsCount];
-        }
-
-        ParticleSystem.EmissionModule em = ps.emission;
+		var em = ps.emission;
         em.SetBurst(0, new ParticleSystem.Burst(0, coinsCount));
+		ps.Play();
 
-
-        //yield return new WaitForSeconds(1);
-
-        if (releaseCoinsSound != null)
-            releaseCoinsSound.Play();
-
-        ps.Play();
-
-
-        yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(1f);
 
         // Store the particles positions
-        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps.particleCount];
+        var particles = new ParticleSystem.Particle[ps.particleCount];
         for (int i = 0; i < distances.Length; i++)
         {
             distances[i] = particles[i].position;
         }
-
-
+		
         while (ps.isPlaying)
         {
             particles = new ParticleSystem.Particle[ps.particleCount];
 
             ps.GetParticles(particles);
-            for (int i = 0; i < particles.Length; i++)
+            for (var i = 0; i < particles.Length; i++)
             {
-                Vector3 targetPos = Vector3.zero;
+                var targetPos = Vector3.zero;
 
                 targetPos.x = targetUIElement.position.x;
                 targetPos.y = targetUIElement.position.y;
                 targetPos.z = 0;
 
-
-                Vector2 dir = targetPos - particles[i].position;
-
-                float smooth = Vector2.Distance(targetPos, distances[i]) / pTime;
+				Vector2 dir = targetPos - particles[i].position;
+				float smooth = Vector2.Distance(targetPos, distances[i]) / pTime;
 
                 particles[i].position = Vector2.MoveTowards(particles[i].position, targetPos, smooth * Time.deltaTime);
 
@@ -105,66 +61,25 @@ public class ParticleControlScript : MonoBehaviour
 
                     if (!reached[i])
                     {
-                        if (!gameover)
-                        {
-                            //ui.totalCoins++;
-                            //ui.combineCoins.text = "" + ui.totalCoins;
-                        }
-                        else
-                        {
-                            //ui.totalCoins--;
-                            //ui.combineCoins.text = "" + ui.totalCoins;
-                        }
-
                         reached[i] = true;
-                        //Vibration.Vibrate(10);
-                    }
-
-
-                    if (coinSound != null && !fountainSoundPlayed)
-                    {
-                        if (coinSound != null)
-                            coinSound.Play();
-
-                        fountainSoundPlayed = true;
                     }
                 }
             }
 
             ps.SetParticles(particles, particles.Length);
 
-            timer += Time.deltaTime / 2f;
+            _timer += Time.deltaTime / 2f;
 
-            if (timer > 0.5f)
+            if (_timer > 0.5f)
             {
                 ps.Stop();
-                //  gameController.UpdateCoins();
-
-
-                if (isLvlComplete)
-                {
-                    // Hide the gift panel
-                    //levelCompleteAnimator.Play("HideGift");
-                }
-
                 yield return null;
             }
 
             yield return new WaitForSeconds(Time.deltaTime / 2);
         }
-
-
-        // gameController.UpdateCoins();
-
-
-        if (isLvlComplete)
-        {
-            // Hide the gift panel
-            //levelCompleteAnimator.Play("HideGift");
-        }
-
-        timer = 0;
-
+		
+        _timer = 0;
         yield return null;
     }
 }

@@ -16,7 +16,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	[SerializeField] private RectTransform barPivot;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage, blackBackground;
 	
-	[SerializeField] private Button skipButton,  getItButton, claimButton;
+	[SerializeField] private Button skipButton, getItButton, claimButton;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText, claimMulTxt;
 
 	[SerializeField] private GameObject loaderPanel, unlockedButtonsHolder, percentageUI; 
