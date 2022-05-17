@@ -31,7 +31,6 @@
 		
 		if(!_sentDown)
 		{
-			Print("move down");
 			_aimer.MoveTargetDown();
 			_sentDown = true;
 		}

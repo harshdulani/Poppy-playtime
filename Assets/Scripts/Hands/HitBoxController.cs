@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class HitBoxController : MonoBehaviour
@@ -65,7 +66,7 @@ public class HitBoxController : MonoBehaviour
 	
 	private void OnPunchHit()
 	{
-		Invoke(nameof(ResetInHitBox), 1f);
+		DOVirtual.DelayedCall(1f, ResetInHitBox);
 	}
 
 	private void OnPropDestroyed(Transform destroyed)

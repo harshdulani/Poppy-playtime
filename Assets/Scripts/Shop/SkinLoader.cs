@@ -132,7 +132,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		skipButton.interactable = false;
 		claimButton.interactable = false;
 		FindObjectOfType<SidebarShopController>().OnGameEnd();
-		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),3f);
+		
+		DOVirtual.DelayedCall(3f, _mainCanvas.NextLevel);
 	}
 
 	public void GetIt() // Get it for WeaponLoader
@@ -270,7 +271,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private void OnGameEnd()
 	{
-		Invoke(nameof(ShowPanel), panelOpenWait);
+		DOVirtual.DelayedCall(panelOpenWait, ShowPanel);
 	}
 
 	private void ReceiveWeaponLoaderReward()
@@ -282,7 +283,9 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		getItButton.interactable = false;
 		
 		GameEvents.Only.InvokeWeaponSelect(GetLoaderWeapon(), false);
-		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),0.25f);
+		
+		DOVirtual.DelayedCall(0.25f, _mainCanvas.NextLevel);
+		
 		FindNewLoaderWeapon(GetLoaderWeapon());
 		ResetLoader();
 		//_mainCanvas.NextLevel();
@@ -298,7 +301,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		claimButton.interactable = false;
 		SidebarShopController.AlterCoinCount(GetMultiplierResult() * coinIncreaseCount);
 		FindObjectOfType<SidebarShopController>().CoinsGoingUpEffect();
-		_mainCanvas.Invoke(nameof(MainCanvasController.NextLevel),2f);
+		
+		DOVirtual.DelayedCall(2f, _mainCanvas.NextLevel);
 	}
 
 	private void StartWaiting(AdRewardType newType)

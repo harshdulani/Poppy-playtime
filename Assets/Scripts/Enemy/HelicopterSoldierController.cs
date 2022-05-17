@@ -49,8 +49,8 @@ public class HelicopterSoldierController : MonoBehaviour
 			rb.tag = "Untagged";
 		}
 
-		Invoke(nameof(GoKinematic), 4f);
-		
+		DOVirtual.DelayedCall(4, GoKinematic);
+
 		_audioSource.Play();
 		Vibration.Vibrate(25);
 	}

@@ -174,7 +174,7 @@ public class ApplovinManager : MonoBehaviour
         retryAttemptRewarded++;
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttemptRewarded));
 
-        Invoke(nameof(LoadRewardedAd), (float)retryDelay);
+		DOVirtual.DelayedCall((float)retryDelay, LoadRewardedAd);
 	}
 
     private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }

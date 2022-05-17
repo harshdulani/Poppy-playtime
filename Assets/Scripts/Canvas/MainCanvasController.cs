@@ -1,7 +1,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -18,16 +17,18 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	[SerializeField] private Button nextLevelButton;
 
 	private LevelIndicator _indicator;
-	private bool _hasTapped, _hasLost;
+	private bool _hasLost;
 
 	private void OnEnable()
 	{
+		GameEvents.Only.TapToPlay += OnTapToPlay;
 		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
 		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
+		GameEvents.Only.TapToPlay -= OnTapToPlay;
 		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
@@ -58,15 +59,6 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		if(Input.GetKeyDown(KeyCode.N)) NextLevel();
 		
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		
-		if(_hasTapped) return;
-		
-		if (!InputExtensions.GetFingerDown()) return;
-		
-		if(!EventSystem.current) { print("no event system"); return; }
-		
-		if(!EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1))
-			TapToPlay();
 	}
 
 	private void EnableVictoryObjects()
@@ -104,16 +96,6 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	{
 		nextLevelButton.interactable = true;
 	}
-	
-	private void TapToPlay()
-	{
-		_hasTapped = true;
-		holdToAim.SetActive(false);
-		skipLevel.SetActive(false);
-		
-		if(GameEvents.Only)
-			GameEvents.Only.InvokeTapToPlay();
-	}
 
 	public void Retry()
 	{
@@ -124,7 +106,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
 	}
-	
+
 	public void NextLevel()
 	{
 		if(ApplovinManager.instance)
@@ -163,20 +145,26 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		InputHandler.Only.ShouldUseTapAndPunch(status);
 	}
 
+	private void OnTapToPlay()
+	{
+		holdToAim.SetActive(false);
+		skipLevel.SetActive(false);
+	}
+
 	private void OnEnemyReachPlayer()
 	{
 		if(GAScript.Instance)
 			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
 		
-		Invoke(nameof(EnableLossObjects), 1.5f);
+		DOVirtual.DelayedCall(1.5f, EnableLossObjects);
 	}
 
 	private void OnGameEnd()
 	{
 		if(GAScript.Instance)
 			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
-		
-		Invoke(nameof(EnableVictoryObjects), 1f);
+
+		DOVirtual.DelayedCall(1.5f, EnableVictoryObjects);
 	}
 
 	private void AdRewardRecieveBehaviour()

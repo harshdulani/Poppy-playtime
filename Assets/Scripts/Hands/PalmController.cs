@@ -123,7 +123,7 @@ public class PalmController : MonoBehaviour
 	{
 		HandController.TargetHeldToPunch = null;
 		SetCurrentTransform(null);
-		Invoke(nameof(ResetAdoptability), 0.5f);
+		DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 	}
 	
 	private void OnPunchHit()
@@ -171,7 +171,7 @@ public class PalmController : MonoBehaviour
 		HandController.TargetHeldToPunch = null;
 		SetCurrentTransform(null);
 		myHand.OnPropDestroyed();
-		Invoke(nameof(ResetAdoptability), 0.5f);
+		DOVirtual.DelayedCall(0.5f, ResetAdoptability);
 	}
 
 	private static bool HasTargetTransform() => _lastPickedTarget;

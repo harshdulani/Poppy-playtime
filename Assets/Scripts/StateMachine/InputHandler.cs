@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputHandler : MonoBehaviour
 {
@@ -30,7 +31,6 @@ public class InputHandler : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.Only.TapToPlay += OnTapToPlay;
 		GameEvents.Only.EnterHitBox += OnEnterHitBox;
 		GameEvents.Only.PunchHit += OnPunchHit;
 		GameEvents.Only.GameEnd += OnGameOver;
@@ -39,7 +39,6 @@ public class InputHandler : MonoBehaviour
 
 	private void OnDisable()
 	{
-		GameEvents.Only.TapToPlay -= OnTapToPlay;
 		GameEvents.Only.EnterHitBox -= OnEnterHitBox;
 		GameEvents.Only.PunchHit -= OnPunchHit;
 		GameEvents.Only.GameEnd -= OnGameOver;
@@ -85,11 +84,11 @@ public class InputHandler : MonoBehaviour
 
 	private void Update()
 	{
-		if(!_tappedToPlay) return;
+		if (!HandleTapToPlay()) return;
+
+		if (_inTapCooldown) { _leftHandState?.Execute(); return; }
 		
 		if(userIsWatchingAnAdForPickup) return;
-		
-		if (_inTapCooldown) return;
 
 		//print($"{_leftHandState}");
 		if (_leftHandState is IdleState)
@@ -134,10 +133,27 @@ public class InputHandler : MonoBehaviour
 		return _aimingState;
 	}
 
+	private bool HandleTapToPlay()
+	{
+		if (_tappedToPlay) return true;
+
+		if (!InputExtensions.GetFingerDown()) return false;
+
+		if (!EventSystem.current) { print("no event system"); return false; }
+
+		if (EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1)) return false;
+
+		_tappedToPlay = true;
+		GameEvents.Only.InvokeTapToPlay();
+		
+		//PutInTapCoolDown(0.25f);
+		return true;
+	}
+
 	public void PutInTapCoolDown(float customCooldownTime = -1f)
 	{
 		if(IsInPermanentDisabledState()) return;
-		
+
 		_inTapCooldown = true;
 		AssignTemporaryDisabledState();
 		DOVirtual.DelayedCall(customCooldownTime > 0f ? customCooldownTime : tapCooldownWaitTime, TapCoolDown);
@@ -197,12 +213,6 @@ public class InputHandler : MonoBehaviour
 	private static void AssignPermanentDisabledState() => AssignNewState(PermanentlyDisabledState);
 
 	public static void AssignReturnTransitState() => AssignNewState(new InTransitState(true, InputStateBase.EmptyHit));
-
-	private void OnTapToPlay()
-	{
-		_tappedToPlay = true;
-		PutInTapCoolDown(0.25f);
-	}
 
 	private void OnGameOver() => AssignPermanentDisabledState();
 

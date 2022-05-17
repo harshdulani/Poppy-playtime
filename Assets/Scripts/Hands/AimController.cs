@@ -101,6 +101,7 @@ public class AimController : MonoBehaviour
 
 	private void ChangeTargetTransformation()
 	{
+		if(!_myTarget) return;
 		var desiredPos = _transform.position + _transform.forward * _targetDistance;
 		desiredPos.y = Mathf.Lerp(_targetInitYPos, _targetDesiredYPos, CurrentYDistanceLerper);
 		
@@ -171,7 +172,8 @@ public class AimController : MonoBehaviour
 		if(!_canPlayLockOnSound) return;
 		_soundController.PlaySound(_soundController.findTarget, .6f);
 		_canPlayLockOnSound = false;
-		Invoke(nameof(ResetLockOnSound), 1f);
+
+		DOVirtual.DelayedCall(1f, ResetLockOnSound);
 	}
 
 	public void LoseTarget()

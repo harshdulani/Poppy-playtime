@@ -107,7 +107,7 @@ public class GiantController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 		}
 
-		Invoke(nameof(GoKinematic), 4f);
+		DOVirtual.DelayedCall(4f, GoKinematic);
 		
 		GameEvents.Only.InvokeEnemyKill();
 
