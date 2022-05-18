@@ -208,7 +208,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		_anim.SetTrigger(Close);
 		_anim.SetTrigger(ShowShopButton);
 		InputHandler.Only.AssignIdleState();
-		FindObjectOfType<SidebarShopController>().UpdateButtons();
+		SidebarShopController.only.UpdateButtons();
 	}
 
 	public void ClickArms()

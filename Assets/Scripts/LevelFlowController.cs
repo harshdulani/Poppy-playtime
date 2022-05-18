@@ -63,7 +63,7 @@ public class LevelFlowController : MonoBehaviour
 	private IEnumerator WaitBeforeMovingToNextArea()
 	{
 		//were waiting so that the Wrist/ WristController can return to arm
-
+		
 		const float timer = 1f;
 		var elapsed = 0f;
 		const float intervals = 0.2f;
@@ -76,7 +76,7 @@ public class LevelFlowController : MonoBehaviour
 
 		while (HandController.IsWaitingToGivePunch)
 			yield return GameExtensions.GetWaiter(intervals);
-		
+
 		if (currentArea == enemiesInArea.Count - 1)
 			GameEvents.Only.InvokeGameEnd();
 		else
@@ -90,6 +90,7 @@ public class LevelFlowController : MonoBehaviour
 	{
 		enemiesKilledInCurrentArea++;
 		_totalEnemiesRemaining--;
+		
 		if (enemiesKilledInCurrentArea >= enemiesInCurrentArea)
 			MoveToNextArea();
 	}
@@ -105,10 +106,7 @@ public class LevelFlowController : MonoBehaviour
 		enemiesKilledInCurrentArea = 0;
 	}
 
-	public bool IsThisLastEnemy()
-	{
-		return _totalEnemiesRemaining == 1;
-	}
+	public bool IsThisLastEnemy() => _totalEnemiesRemaining == 1;
 
 	public bool IsThisLastEnemyOfArea()
 	{

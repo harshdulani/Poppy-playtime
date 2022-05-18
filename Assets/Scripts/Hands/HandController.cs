@@ -291,7 +291,7 @@ public class HandController : MonoBehaviour
 							   : transform.root.forward;
 			
 			if(!throwAtTarget)
-				direction.y += 0.25f;
+				direction.y += 0.15f;
 			
 			punched.GetComponent<RagdollLimbController>().GetPunched(direction, punchForce);
 		}
@@ -305,7 +305,7 @@ public class HandController : MonoBehaviour
 								: transform.root.forward;
 			
 			if(!throwAtTarget)
-				direction.y += 0.25f;
+				direction.y += 0.15f;
 			
 			prop.GetPunched(direction.normalized, 
 				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);

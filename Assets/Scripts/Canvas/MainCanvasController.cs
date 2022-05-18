@@ -8,13 +8,11 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 {
 	[SerializeField] private int lastRegularLevel;
 	
-	[SerializeField] private GameObject holdToAim, victory, defeat, nextLevel, retry, constantRetryButton, skipLevel;
+	[SerializeField] private GameObject holdToAim, defeat, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;
 	[SerializeField] private Image red;
 	[SerializeField] private Toggle abToggle;
 	[SerializeField] private string tapInstruction, swipeInstruction;
-
-	[SerializeField] private Button nextLevelButton;
 
 	private LevelIndicator _indicator;
 	private bool _hasLost;
@@ -61,21 +59,8 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
-	private void EnableVictoryObjects()
-	{
-		if(defeat.activeSelf) return;
-		
-		victory.SetActive(true);
-		nextLevelButton.interactable = false;
-		constantRetryButton.SetActive(false);
-		
-		AudioManager.instance.Play("Win");
-	}
-
 	private void EnableLossObjects()
 	{
-		if(victory.activeSelf) return;
-
 		if (_hasLost) return;
 		
 		red.enabled = true;
@@ -90,11 +75,6 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		_hasLost = true;
 		
 		AudioManager.instance.Play("Lose");
-	}
-
-	public void EnableNextLevel()
-	{
-		nextLevelButton.interactable = true;
 	}
 
 	public void Retry()
@@ -164,7 +144,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		if(GAScript.Instance)
 			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
 
-		DOVirtual.DelayedCall(1.5f, EnableVictoryObjects);
+		_hasLost = false;
 	}
 
 	private void AdRewardRecieveBehaviour()

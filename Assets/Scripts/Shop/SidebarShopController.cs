@@ -30,7 +30,6 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 
 	[Header("Coin Particle Effect"), SerializeField] private RectTransform coinHolder;
 	[SerializeField] private ParticleControlScript coinParticles;
-	[SerializeField] private int coinIncreaseCount;
 
 	private Animation _anim;
 	private int _currentSpeedLevel, _currentPowerLevel;
@@ -73,7 +72,6 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 	//	GameEvents.only.gameEnd -= OnGameEnd;
 	}
-
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
@@ -356,12 +354,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		DOVirtual.DelayedCall(0.25f, UpdateButtons);
 	}
 	
-	private void OnTapToPlay()
-	{
-		_anim.Play();
-	}
-	
-	public void OnGameEnd()
+	private void OnTapToPlay() => _anim.Play();
+
+	public void IncreaseCoinsBy(int coinIncreaseCount)
 	{
 		var seq = DOTween.Sequence();
 		seq.AppendInterval(1.25f);
@@ -377,13 +372,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			.5f).OnUpdate(() => coinText.text = dummyCoinCount.ToString()));
 		seq.InsertCallback(.75f, () => coinParticles.PlayControlledParticles(coinParticles.transform.position, coinHolder));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize, .5f).SetEase(Ease.OutQuart));
-		seq.AppendCallback(() =>
-		{
-			AlterCoinCount(coinIncreaseCount);
-		});
-		seq.AppendInterval(1.5f);
-		seq.AppendCallback(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>()
-			.EnableNextLevel);
+		seq.AppendCallback(() => AlterCoinCount(coinIncreaseCount));
 	}
 
 	public void CoinsGoingUpEffect()
