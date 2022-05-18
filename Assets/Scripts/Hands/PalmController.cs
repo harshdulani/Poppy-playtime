@@ -8,6 +8,7 @@ public class PalmController : MonoBehaviour
 	[SerializeField] private float punchWaitTime = 1f;
 
 	private static Transform _lastPickedTarget;
+	private Vector3 _initLocalPos;
 	private static bool _canAdopt = true;
 	private static int _punchIndex;
 	
@@ -43,6 +44,20 @@ public class PalmController : MonoBehaviour
 	{
 		_lastPickedTarget = null;
 		_canAdopt = true;
+
+		_initLocalPos = transform.localPosition;
+	}
+
+	public Tween ReachPointInstantly(Vector3 point)
+	{
+		return transform.DOMove(point, 0.2f)
+			.OnUpdate(HandController.ForceUpdateRope);
+	}
+
+	public Tween ReachHomeInstantly()
+	{
+		return transform.DOLocalMove(_initLocalPos, 0.2f)
+			.OnUpdate(HandController.ForceUpdateRope);
 	}
 
 	private void EnablePunching() => myHand.StopPunching();

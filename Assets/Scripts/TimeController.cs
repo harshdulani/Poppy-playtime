@@ -12,6 +12,7 @@ public class TimeController : MonoBehaviour
 	private float _defaultTimeScale = 1;
 	private const float DefaultFixedDeltaTime = 0.02f;
 	private float _slowedDeltaTime;
+	private bool _isTimeSlowedDown;
 
 	private TweenerCore<float, float, FloatOptions> _timeDeltaTween, _fixedTimeDeltaTween;
 	
@@ -49,6 +50,9 @@ public class TimeController : MonoBehaviour
 
 	public void SlowDownTime(float multiplier = 1f)
 	{
+		if(_isTimeSlowedDown) return;
+		
+		_isTimeSlowedDown = true;
 		_timeDeltaTween.Kill();
 		_fixedTimeDeltaTween.Kill();
 		
@@ -58,6 +62,9 @@ public class TimeController : MonoBehaviour
 
 	public void RevertTime(bool lastEnemy = false)
 	{
+		if(!_isTimeSlowedDown) return;
+		
+		_isTimeSlowedDown = false;
 		_timeDeltaTween.Kill();
 		_fixedTimeDeltaTween.Kill();
 

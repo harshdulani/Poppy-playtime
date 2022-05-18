@@ -8,7 +8,7 @@ public class InTransitState : InputStateBase
 	
 	//Player cannot be in Transit forever
 	private Tween _timer;
-	private const float MaxTransitTime = 2f;
+	private const float MaxTransitTime = 1f;
 
 	public InTransitState(bool goHome, RaycastHit hitInfo, bool isCarryingBody = false)
 	{
@@ -31,20 +31,28 @@ public class InTransitState : InputStateBase
 			if (HandController.PropHeldToPunch && HandController.PropHeldToPunch.isCar)
 			{
 				var tut = Object.FindObjectOfType<TutorialCanvasController>();
-				if (tut) tut.knowsHowToPickUpCars = true;
+				if (tut) tut.PlayerKnowsHowToPickUpCars();
 			}
 
-		_timer = DOVirtual.DelayedCall(MaxTransitTime, () =>
+		_timer = DOVirtual.DelayedCall(MaxTransitTime , () =>
 		{
 			if(GoHome)
-				InputHandler.Only.GetLeftHand().HandReachHome();
+			{
+				HandController.ForceRopeToReturnHome();
+				//InputHandler.Only.GetLeftHand().HandReachHome();
+			}
 			else
 			{
-				InputHandler.Only.GetLeftHand().HandReachTarget(_hit.transform);
-				InputHandler.Only.GetLeftHand().PalmController.EnableAdoptability();
+				var tween = InputHandler.Only.GetLeftHand().PalmController.ReachPointInstantly(_hit.point);
+				tween.OnComplete(() =>
+				{
+					if (!_timer.IsActive()) return;
+					
+					InputHandler.Only.GetLeftHand().HandReachTarget(_hit.transform);
+					InputHandler.Only.GetLeftHand().PalmController.EnableAdoptability();
+				});
 			}
 		});
-		
 	}
 
 	public override void Execute()

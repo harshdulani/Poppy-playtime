@@ -91,17 +91,17 @@ public class AimController : MonoBehaviour
 	public void AimWithTargetHeld(Vector2 delta)
 	{
 		Aim(delta);
-
-		//sometimes target is not set
-		if (!_myTarget) return;
-		if(HandController.PropHeldToPunch) if(HandController.PropHeldToPunch.isCar) return;
 		
 		ChangeTargetTransformation();
 	}
 
 	private void ChangeTargetTransformation()
 	{
-		if(!_myTarget) return;
+		//sometimes target is not set
+		if (!_myTarget) return;
+		if(HandController.PropHeldToPunch)
+			if (HandController.PropHeldToPunch.isCar) return;
+		
 		var desiredPos = _transform.position + _transform.forward * _targetDistance;
 		desiredPos.y = Mathf.Lerp(_targetInitYPos, _targetDesiredYPos, CurrentYDistanceLerper);
 		

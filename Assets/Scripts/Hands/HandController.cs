@@ -335,9 +335,13 @@ public class HandController : MonoBehaviour
 
 		_myAnimator.SetBool(IsPunching, true);
 		IsWaitingToGivePunch = true;
-		_rope.ReturnHome();
+		PalmController.ReachHomeInstantly();
 		windLines.Play();
 	}
+
+	public static void ForceUpdateRope() => _rope.UpdateRope();
+
+	public static void ForceRopeToReturnHome() => _rope.ReturnHome();
 
 	public void HandReachHome()
 	{

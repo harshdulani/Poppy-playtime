@@ -155,6 +155,14 @@ public class TutorialCanvasController : MonoBehaviour
 		
 	}
 
+	public void PlayerKnowsHowToPickUpCars()
+	{
+		knowsHowToPickUpCars = true;
+		toDisable.SetActive(false);
+		_bossTutorialAnimationOn = false;
+		TimeController.only.RevertTime();
+	}
+
 	private void OnPunchHit()
 	{
 		switch (myType)
