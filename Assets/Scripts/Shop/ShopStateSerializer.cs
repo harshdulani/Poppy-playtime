@@ -7,10 +7,7 @@ public class ShopStateSerializer
 {
 	private readonly string _savePath;
 
-	public ShopStateSerializer(string savePath)
-	{
-		_savePath = savePath;
-	}
+	public ShopStateSerializer(string savePath) => _savePath = savePath;
 
 	private static ShopState InitialiseEmptyState()
 	{
@@ -24,13 +21,15 @@ public class ShopStateSerializer
 		for(var i = 1; i < MainShopController.GetArmsSkinCount(); i++) 
 			blankArms.Add((ArmsType) i, ShopItemState.Locked);
 
-		return new ShopState(blankWeapon, blankArms, 0, 1, 1);
+		return new ShopState(blankWeapon, blankArms, 0, 1, 1, 0, 0);
 	}
 
 	public void SaveCurrentState()
 	{
 		var currentShopState = ShopStateController.CurrentState.GetState();
-		var save = new ShopState(currentShopState.weaponStates, currentShopState.armStates, currentShopState.CoinCount, currentShopState.SidebarWeapon, currentShopState.LoaderWeapon);
+		var save = new ShopState(
+			currentShopState.weaponStates, currentShopState.armStates, currentShopState.CoinCount, 
+			currentShopState.SidebarWeapon,	currentShopState.LoaderWeapon, currentShopState.CurrentSpeedLevel, currentShopState.CurrentPowerLevel);
 
 		var binaryFormatter = new BinaryFormatter();
 		using (var fileStream = File.Create(_savePath))

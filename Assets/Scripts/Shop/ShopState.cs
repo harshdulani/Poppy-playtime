@@ -14,13 +14,15 @@ public class ShopState
 	public int CurrentSpeedLevel { get; set; }
 	public int CurrentPowerLevel { get; set; }
 
-	public ShopState(Dictionary<WeaponType, ShopItemState> newWeaponState, Dictionary<ArmsType, ShopItemState> newArmStates, int newCoinCount, int sidebarSkin, int loaderSkin)
+	public ShopState(Dictionary<WeaponType, ShopItemState> newWeaponState, Dictionary<ArmsType, ShopItemState> newArmStates, int newCoinCount, int sidebarSkin, int loaderSkin, int speedLevel, int powerLevel)
 	{
 		weaponStates = newWeaponState;
 		armStates = newArmStates;
 		CoinCount = newCoinCount;
 		SidebarWeapon = sidebarSkin;
 		LoaderWeapon = loaderSkin;
+		CurrentSpeedLevel = speedLevel;
+		CurrentPowerLevel = powerLevel;
 		AllWeaponsUnlocked = false;
 	}
 }
@@ -29,10 +31,7 @@ public class ShopStateHelpers
 {
 	private readonly ShopState _shopState;
 
-	public ShopStateHelpers(ShopState shopState)
-	{
-		_shopState = shopState;
-	}
+	public ShopStateHelpers(ShopState shopState) => _shopState = shopState;
 
 	public ShopState GetState() => _shopState;
 	

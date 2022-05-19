@@ -60,8 +60,6 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		GameEvents.Only.TapToPlay += OnTapToPlay;
 		
 		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
-		
-		//GameEvents.only.gameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
@@ -69,8 +67,6 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		GameEvents.Only.TapToPlay -= OnTapToPlay;
 		
 		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
-		
-	//	GameEvents.only.gameEnd -= OnGameEnd;
 	}
 
 	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
@@ -169,7 +165,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			powerCostText.text = powerLevelCosts[_currentPowerLevel + 1].ToString();
 			
 			powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
-			if (GetCoinCount() < powerLevelCosts[_currentSpeedLevel + 1])
+			if (GetCoinCount() < powerLevelCosts[_currentPowerLevel + 1])
 			{
 				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
 				{
@@ -306,6 +302,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		InputHandler.Only.GetLeftHand().UpdatePullingSpeed(_currentSpeedLevel);
 		ShopStateController.CurrentState.SetNewSpeedLevel(_currentSpeedLevel);
 		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		MainShopController.Main.ReadCurrentShopState();
+		
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
 	}
@@ -325,6 +324,9 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		//ABSOLUTELY NO change in power script
 		ShopStateController.CurrentState.SetNewPowerLevel(_currentPowerLevel);
+		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		MainShopController.Main.ReadCurrentShopState();
 
 		UpdateButtons();
 		AudioManager.instance.Play("Button");
