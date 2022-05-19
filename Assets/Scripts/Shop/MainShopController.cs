@@ -58,7 +58,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		return currentList[index];
 	}
 
-	private Sprite GetArmsSkinType(int index, bool wantsBlackSprite = false)
+	public Sprite GetArmsSkinSprite(int index, bool wantsBlackSprite = false)
 	{
 		var currentList = wantsBlackSprite ? blackArmSprites : coloredArmSprites;
 		
@@ -140,7 +140,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 			var itemState = currentShopState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(GetWeaponSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(true);
 			item.SetPriceAndAvailability(GetWeaponSkinPrice(i));
 		}
@@ -154,7 +154,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 			var itemState = currentShopState.armStates[(ArmsType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(GetArmsSkinType(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(false);
 			
 			item.SetPriceAndAvailability(GetArmsSkinPrice(i));
@@ -391,6 +391,6 @@ public enum ArmsType
 	Batman,
 	Hulk,
 	Spidey,
-	Circuits,
+	//Circuits,
 	Captain
 }

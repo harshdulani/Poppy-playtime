@@ -13,5 +13,6 @@ public class PunchAnimationController : MonoBehaviour
 	{
 		GameEvents.Only.InvokePunchHit();
 		punchFx.Play();
+		AudioManager.instance.Play("PunchHit");
 	}
 }

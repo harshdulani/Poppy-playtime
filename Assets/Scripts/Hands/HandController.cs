@@ -473,7 +473,7 @@ public class HandController : MonoBehaviour
 			ArmsType.Batman => batman,
 			ArmsType.Hulk => hulk,
 			ArmsType.Spidey => spidey,
-			ArmsType.Circuits => circuits,
+			//ArmsType.Circuits => circuits,
 			ArmsType.Captain => captain,
 			ArmsType.Skin => humanSkin,
 			_ => throw new ArgumentOutOfRangeException()
