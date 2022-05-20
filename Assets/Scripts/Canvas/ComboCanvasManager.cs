@@ -34,7 +34,7 @@ public class ComboCanvasManager : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.Only.PunchHit -= OnPunchHit;
-		GameEvents.Only.PunchHit -= OnEnemyKilled;
+		GameEvents.Only.EnemyKilled -= OnEnemyKilled;
 		GameEvents.Only.PropHitsEnemy -= OnPropHitsEnemy;
 
 	}

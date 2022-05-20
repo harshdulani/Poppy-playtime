@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DG.Tweening;
 //using TMPro;
 using UnityEngine;
@@ -71,6 +72,7 @@ public class HandController : MonoBehaviour
 	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingAPhone = Animator.StringToHash("isHoldingAPhone");
+	private static readonly WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
 
 #endregion
 		
@@ -245,9 +247,20 @@ public class HandController : MonoBehaviour
 				PunchForward(other);
 			else
 				PunchBackToWhereTheyCameFrom(other);
+
+			StartCoroutine(WaitForFramesAndAllowCollisions(other, 4));
 		}
 
 		Vibration.Vibrate(15);
+	}
+
+	private static IEnumerator WaitForFramesAndAllowCollisions(Transform target, int frames)
+	{
+		if (!target) yield break;
+		while (frames-- >= 0)
+			yield return WaitForEndOfFrame;
+
+		target.SetLayer(0);
 	}
 
 	private void PunchBackToWhereTheyCameFrom(Transform punched)
@@ -293,7 +306,7 @@ public class HandController : MonoBehaviour
 			if(!throwAtTarget)
 				direction.y += 0.15f;
 			
-			punched.GetComponent<RagdollLimbController>().GetPunched(direction, punchForce);
+			punched.GetComponent<RagdollLimbController>().GetPunched(direction.normalized, punchForce);
 		}
 		else
 		{
@@ -310,7 +323,7 @@ public class HandController : MonoBehaviour
 			prop.GetPunched(direction.normalized, 
 				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 		}
-
+		
 		TargetHeldToPunch = null; 
 		PropHeldToPunch = null;
 	}
@@ -321,7 +334,9 @@ public class HandController : MonoBehaviour
 		
 		InputHandler.Only.StopCarryingBody();
 
+
 		var root = other.root;
+		root.SetLayer(7);
 
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 		{

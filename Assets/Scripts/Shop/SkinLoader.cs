@@ -157,6 +157,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		skipMoneyButton.interactable = false;
 		claimMoneyButton.interactable = false;
+		Vibration.Vibrate(20);
 
 		DOVirtual.DelayedCall(2f, () =>
 		{
@@ -395,7 +396,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		claimMoneyButton.interactable = false;
 		
 		GameEvents.Only.InvokeWeaponSelect(GetLoaderIndex(), false);
-		
+		Vibration.Vibrate(20);
+
 		DOVirtual.DelayedCall(0.25f, _mainCanvas.NextLevel);
 		
 		if(unlockWeapons)

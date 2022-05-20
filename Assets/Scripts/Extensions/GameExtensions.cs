@@ -63,6 +63,18 @@ public static class GameExtensions
 		Print(results[0].gameObject);
 	}
 	
+	/// <summary>
+	/// Recursively set layer as layer for all children of specified transform.
+	/// </summary>
+	/// <param name="trans">Root transform for operation</param>
+	/// <param name="layer">Integer identifier for layer</param>
+	public static void SetLayer(this Transform trans, int layer) 
+	{
+		trans.gameObject.layer = layer;
+		foreach(Transform child in trans)
+			child.SetLayer( layer);
+	}
+	
 	private static void Print(object msg)
 	{
 		Debug.Log(msg);
