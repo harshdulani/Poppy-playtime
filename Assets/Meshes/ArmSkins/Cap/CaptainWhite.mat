@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5429462416895716281
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 4
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hulk
+  m_Name: CaptainWhite
   m_Shader: {fileID: 4800000, guid: 5abf659307ba5a849b7dc53ab126f322, type: 3}
-  m_ShaderKeywords: TCP2_MOBILE TCP2_REFLECTIONS TCP2_REFLECTIONS_FRESNEL TCP2_RIM_LIGHTING
-    TCP2_RIM_LIGHTING_LIGHTMASK TCP2_SPECULAR
+  m_ShaderKeywords: TCP2_MOBILE TCP2_REFLECTIONS_FRESNEL TCP2_RIM_LIGHTING TCP2_RIM_LIGHTING_LIGHTMASK
+    TCP2_SPECULAR TCP2_SPECULAR_STYLIZED
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 5e9ba92b048423e41883a4812cd2e267, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -57,15 +44,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _FoamTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Mask2:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -90,10 +69,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ramp:
-        m_Texture: {fileID: 2800000, guid: ccad9b0732473ee4e95de81e50e9050f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _RampOtherLights:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -105,15 +80,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SketchTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ThresholdTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -137,27 +104,18 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
-    - _Cutoff: 0.54
+    - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DirectIntensityOutline: 1
     - _DstBlend: 0
-    - _DstBlendOutline: 0
-    - _EmisPulseMin: 0
-    - _EmisPulseSpeed: 2
     - _EmissionChannel: 4
-    - _EnableConstSizeOutline: 0
-    - _EnableTexturedOutline: 0
-    - _EnableZSmooth: 0
     - _EnvironmentReflections: 1
-    - _FoamSmooth: 0.02
-    - _FoamSpread: 2
-    - _FoamStrength: 0.8
-    - _FresnelMax: 1.48
-    - _FresnelMin: 0.42
-    - _GlossMapScale: 0
+    - _FresnelMax: 1.5
+    - _FresnelMin: 0
+    - _GlossMapScale: 1
     - _Glossiness: 0
-    - _GlossyReflections: 0
+    - _GlossyReflections: 1
     - _IndirectIntensity: 1
     - _IndirectIntensityOutline: 0
     - _MatCapMaskChannel: 0
@@ -168,68 +126,41 @@ Material:
     - _NormalsUVType: 0
     - _OcclusionChannel: 0
     - _OcclusionStrength: 1
-    - _Offset1: 0
-    - _Offset2: 0
-    - _Outline: 1
     - _OutlineLightingType: 0
-    - _OutlineLightingTypeURP: 2
-    - _OutlineMinWidth: 3.71
-    - _OutlinePixelSizeType: 2
-    - _OutlineTextureLOD: 4.27
-    - _OutlineTextureType: 2
-    - _OutlineWidth: 3.66
-    - _Parallax: 0.005
+    - _OutlineLightingTypeURP: 0
+    - _OutlineMinWidth: 1
+    - _OutlinePixelSizeType: 0
+    - _OutlineTextureLOD: 5
+    - _OutlineTextureType: 0
+    - _OutlineWidth: 1
+    - _Parallax: 0.02
     - _QueueOffset: 0
-    - _RampBands: 3
-    - _RampBandsSmoothing: 0.148
+    - _RampBands: 4
+    - _RampBandsSmoothing: 0.1
     - _RampOffset: 0
     - _RampScale: 1
-    - _RampSmooth: 0.2
-    - _RampSmoothAdd: 0.75
-    - _RampSmoothOtherLights: 0.5
-    - _RampSmoothing: 0.63
-    - _RampThreshold: 0.495
-    - _RampThresholdOtherLights: 0.5
+    - _RampSmoothing: 1
+    - _RampThreshold: 0.648
     - _RampType: 0
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 1
     - _ReflectionMapType: 0
-    - _ReflectionSmoothness: 1
+    - _ReflectionSmoothness: 0.5
     - _RenderingMode: 0
-    - _RimMax: 1.01
-    - _RimMin: 0.928
-    - _RimStrength: 0.5
-    - _Shadow_HSV_H: 0
-    - _Shadow_HSV_S: 0
-    - _Shadow_HSV_V: 0
+    - _RimMax: 1.46
+    - _RimMin: 0.59
     - _SingleIndirectColor: 0
-    - _SketchHalftoneMax: 1
-    - _SketchHalftoneMin: 0.2
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SpecBlend: 1
-    - _SpecSmooth: 1
     - _SpecularHighlights: 1
     - _SpecularMapType: 0
-    - _SpecularRoughness: 0.716
-    - _SpecularToonSize: 0.106
+    - _SpecularRoughness: 0.555
+    - _SpecularToonSize: 0.208
     - _SpecularToonSmoothness: 1
-    - _SpecularType: 0
+    - _SpecularType: 1
     - _SrcBlend: 1
-    - _SrcBlendOutline: 0
-    - _StencilRef: 1
     - _Surface: 0
-    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
-    - _TCP2_RAMPTEXT: 0
-    - _TCP2_SPEC_TOON: 0
-    - _TCP2_STYLIZED_FRESNEL: 0
-    - _TexLod: 5.6
-    - _ThresholdScale: 4
-    - _ThresholdStrength: 1
     - _UVSec: 0
-    - _UVWaveAmplitude: 0.05
-    - _UVWaveFrequency: 1
-    - _UVWaveSpeed: 1
     - _UseAlphaTest: 0
     - _UseEmission: 0
     - _UseFresnelReflections: 1
@@ -239,32 +170,36 @@ Material:
     - _UseNormalMap: 0
     - _UseOcclusion: 0
     - _UseOutline: 0
-    - _UseReflections: 1
+    - _UseReflections: 0
     - _UseRim: 1
     - _UseRimLightMask: 1
     - _UseShadowTexture: 0
     - _UseSpecular: 1
-    - _WaveFrequency: 1
-    - _WaveHeight: 0.1
-    - _WaveSpeed: 2
     - _WorkflowMode: 1
-    - _ZSmooth: -0.69
     - _ZWrite: 1
-    - __dummy__: 0
-    - __outline_gui_dummy__: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
-    - _FoamSpeed: {r: 2, g: 2, b: 2, a: 2}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
-    - _SColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
-    - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.5}
+    - _SColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 0.49424744, g: 1, b: 0, a: 1}
+    - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &6943548206529373518
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5

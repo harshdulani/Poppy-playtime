@@ -140,8 +140,10 @@ public class MainShopController : MonoBehaviour, IWantsAds
 			var itemState = currentShopState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetWeaponSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(true);
+			
+			//if you are having an index out of bounds error over here, check if prices and colored & black sprites have equal no of items
 			item.SetPriceAndAvailability(GetWeaponSkinPrice(i));
 		}
 
@@ -157,6 +159,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 			item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
 			item.SetIsWeaponItem(false);
 			
+			//if you are having an index out of bounds error over here, check if prices and colored & black sprites have equal no of items
 			item.SetPriceAndAvailability(GetArmsSkinPrice(i));
 		}
 		
@@ -388,9 +391,10 @@ public enum ArmsType
 {
 	Skin,
 	Poppy,
-	Batman,
+	Thanos,
 	Hulk,
+	Batman,
 	Spidey,
-	//Circuits,
-	Captain
+	Captain,
+	IronMan
 }
