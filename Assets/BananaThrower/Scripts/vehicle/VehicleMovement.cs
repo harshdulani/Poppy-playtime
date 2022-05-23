@@ -52,7 +52,7 @@ public class VehicleMovement : MonoBehaviour
 					endPoint.transform.position.z, _initZPos, _root.position.z));
 		}).OnComplete(() =>
 		{
-			if(LevelFlowController.only.enemiesKilledInCurrentArea == LevelFlowController.only.enemiesInCurrentArea) 
+			if(BananaThrower.LevelFlowController.only.enemiesKilledInCurrentArea == BananaThrower.LevelFlowController.only.enemiesInCurrentArea) 
 				GameEvents.Only.InvokeGameEnd();
 			else
 				GameEvents.Only.InvokeEnemyKillPlayer();

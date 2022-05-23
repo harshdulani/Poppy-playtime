@@ -29,6 +29,7 @@ public class StickmanRagdollerController : MonoBehaviour
 	private ThrowAtPlayer _throwAtPlayer;
 	private HealthController _health;
 	private ShatterEnemyController _shatterEnemy;
+	private StickmanMovementController _stickmanMovementController;
 	
 	private bool _isAttacking;
 
@@ -68,7 +69,7 @@ public class StickmanRagdollerController : MonoBehaviour
 		TryGetComponent(out _throwAtPlayer);
 		TryGetComponent(out _health);
 		TryGetComponent(out _shatterEnemy);
-		
+		_stickmanMovementController = transform.GetComponent<StickmanMovementController>();
 		if(BananaThrower.LevelFlowController.only)
 			if (BananaThrower.LevelFlowController.only.isBeingChased)
 				MakeKinematic();
@@ -89,37 +90,7 @@ public class StickmanRagdollerController : MonoBehaviour
 	{
 		foreach (var rigidbody in rigidbodies) rigidbody.isKinematic = true;
 	}
-
-	public bool IsInPatrolArea()
-	{
-		return _patroller ? _patroller.IsInCurrentPatrolArea() : _shatterEnemy.IsInCurrentArea();
-	}
-
-	public bool TryHoldInAir()
-	{
-		if (_health)
-		{
-			_health.AddHit();
-			if (!_health.IsDead())
-			{
-				DropArmor();
-				GameEvents.Only.InvokeDropArmor();
-				return false;
-			}
-		}
-		
-		isWaitingForPunch = true;
-		_anim.SetBool(IsFlying, true);
-		_anim.applyRootMotion = false;
-		
-		if(_patroller)
-			_patroller.ToggleAI(false);
-		foreach (var rb in rigidbodies)
-			rb.isKinematic = true;
-		
-		return true;
-	}
-
+	
 	private void DropArmor()
 	{
 		_anim.SetTrigger(HitReaction);
@@ -159,8 +130,7 @@ public class StickmanRagdollerController : MonoBehaviour
 		_anim.enabled = false;
 		_anim.applyRootMotion = false;
 		isRagdoll = true;
-		if(_patroller)
-			_patroller.ToggleAI(false);
+		_stickmanMovementController.ToggleAI(false);
 		
 		foreach (var rb in rigidbodies)
 		{

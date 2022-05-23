@@ -65,7 +65,8 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 		if(defeat.activeSelf) return;
 		
 		victory.SetActive(true);
-		nextLevelButton.interactable = false;
+		//nextLevelButton.interactable = false;
+		nextLevelButton.gameObject.SetActive(true);
 		constantRetryButton.SetActive(false);
 		
 		AudioManager.instance.Play("Win");
@@ -84,7 +85,7 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 		defeat.SetActive(true);
 		retry.SetActive(true);
-		skipLevel.SetActive(true);
+		//skipLevel.SetActive(true);
 		constantRetryButton.SetActive(false);
 		_hasLost = true;
 		

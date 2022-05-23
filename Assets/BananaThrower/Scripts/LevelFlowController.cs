@@ -47,7 +47,8 @@ namespace BananaThrower
 
 			foreach (var area in enemiesInArea)
 				_totalEnemiesRemaining += area;
-
+			
+			print("kill all");
 			DOTween.KillAll();
 			Vibration.Init();
 		}
