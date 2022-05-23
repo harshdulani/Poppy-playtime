@@ -4,6 +4,7 @@ using DG.Tweening;
 public class StickmanMovementController : MonoBehaviour
 {
 	[SerializeField] private float fastMoveSpeedMultiplier = 1.2f, maxDistanceToPlayer,speed;
+	[SerializeField] private ParticleSystem _splashParticle;
 	
 	private Animator _anim;
 	
@@ -97,5 +98,11 @@ public class StickmanMovementController : MonoBehaviour
 			
 			});
 	
+	}
+
+	public void EnableParticles()
+	{
+		_splashParticle.gameObject.SetActive(true);
+		_splashParticle.Play();
 	}
 }

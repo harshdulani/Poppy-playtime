@@ -9,7 +9,7 @@ public class PropObjectCollider : MonoBehaviour
 		if (other.collider.CompareTag("Ground"))
 		{
 			transform.tag = "Untagged";
-			print("on ground");
+			
 		}
 
 		

@@ -25,14 +25,16 @@ namespace StateMachine
 
 			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
 
-			
-			print(hit.transform + " hit");
-
 			if(AudioManager.instance)
 				AudioManager.instance.Play("Button");
-			
-			if(hit.transform.CompareTag("Target"))
+
+			if (hit.transform.CompareTag("Target"))
+			{
 				PopScaleOfSelected(hit.transform.root);
+				
+			}
+
+			
 
 			Player.Thrower.NewShot(hit.transform, hit.point);
 			InputHandler.AssignNewState(InputState.Idle);
