@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543429655830036899}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.52, y: 0.7279, z: -1.35}
-  m_LocalScale: {x: 0.4657149, y: 5.604492, z: 0.41143095}
+  m_LocalPosition: {x: 4.52, y: -0.1756, z: -1.35}
+  m_LocalScale: {x: 0.63935935, y: 3.764033, z: 0.70841956}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5281130636702868503}
@@ -130,6 +130,7 @@ MonoBehaviour:
   shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 0
   rigidbodies:
   - {fileID: 1872433111588936907}
@@ -140,8 +141,10 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0.2
   explosionScale: 0.3
+  adButton: {fileID: 0}
 --- !u!1 &2111700924895921643
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,8 +174,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111700924895921643}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.51, y: 0.7279, z: 1.27}
-  m_LocalScale: {x: 0.4657149, y: 5.604492, z: 0.41143095}
+  m_LocalPosition: {x: -4.51, y: -0.1756, z: 1.27}
+  m_LocalScale: {x: 0.63935935, y: 3.764033, z: 0.70841956}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5281130636702868503}
@@ -272,6 +275,7 @@ MonoBehaviour:
   shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 0
   rigidbodies:
   - {fileID: 1872433111588936907}
@@ -282,8 +286,10 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0.2
   explosionScale: 0.3
+  adButton: {fileID: 0}
 --- !u!1 &5281130636692555952
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,8 +319,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5281130636692555952}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.52, y: 0.7279, z: 1.27}
-  m_LocalScale: {x: 0.4657149, y: 5.604492, z: 0.41143095}
+  m_LocalPosition: {x: 4.52, y: -0.1756, z: 1.27}
+  m_LocalScale: {x: 0.63935935, y: 3.764033, z: 0.70841956}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5281130636702868503}
@@ -414,6 +420,7 @@ MonoBehaviour:
   shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 0
   rigidbodies:
   - {fileID: 5281130636692555955}
@@ -424,8 +431,10 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0.2
   explosionScale: 0.3
+  adButton: {fileID: 0}
 --- !u!1 &5281130636702868500
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,14 +524,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5281130637202794180}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.7824, z: 0}
+  m_LocalRotation: {x: -0, y: 0.03650576, z: -0, w: 0.9993335}
+  m_LocalPosition: {x: 0.0029429982, y: 1.93, z: 0.0002503891}
   m_LocalScale: {x: 9.3621, y: 0.4710283, z: 3.006005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5281130636702868503}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 4.184, z: 0}
 --- !u!33 &5281130637202794176
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -617,6 +626,7 @@ MonoBehaviour:
   shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 0
   rigidbodies:
   - {fileID: 5281130637202794183}
@@ -627,8 +637,10 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0.2
   explosionScale: 0.3
+  adButton: {fileID: 0}
 --- !u!1 &6727080105692154909
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,8 +670,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6727080105692154909}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.5100026, y: 0.7279, z: -1.35}
-  m_LocalScale: {x: 0.4657149, y: 5.604492, z: 0.41143095}
+  m_LocalPosition: {x: -4.5100026, y: -0.1756, z: -1.35}
+  m_LocalScale: {x: 0.63935935, y: 3.764033, z: 0.70841956}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5281130636702868503}
@@ -759,6 +771,7 @@ MonoBehaviour:
   shouldShowAds: 0
   shouldExplode: 0
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 0
   rigidbodies:
   - {fileID: 7953604802421712722}
@@ -769,5 +782,7 @@ MonoBehaviour:
   trailParent: {fileID: 0}
   explosion: {fileID: 0}
   explosionFx: []
+  alwaysSpawnVfx: 0
   shrinkSpeedMultiplier: 0.2
   explosionScale: 0.3
+  adButton: {fileID: 0}

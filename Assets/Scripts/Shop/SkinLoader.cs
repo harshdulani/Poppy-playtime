@@ -10,7 +10,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		None,
 		CoinMultiplier,
-		NewWeapon
+		Loader
 	}
 
 	[SerializeField] private Image blackBackground;
@@ -27,6 +27,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	[SerializeField] private Transform skinRayBeams;
 	[SerializeField] private Button claimSkinButton, skipSkinButton;
 	[SerializeField] private TextMeshProUGUI percentageUnlockedText, skinSkipButtonText;
+	[SerializeField] private bool unlockWeapons;
 	[SerializeField] private Image coloredWeaponImage, blackWeaponImage;
 	
 	[Header("Bonus Level Panel"), SerializeField]
@@ -43,18 +44,24 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private AdRewardType _currentAdRewardType;
 
-	private static int GetLoaderWeapon() => ShopStateController.CurrentState.GetState().LoaderWeapon;
+	private static int GetLoaderIndex() => ShopStateController.CurrentState.GetState().LoaderIndex;
 
 	private void OnEnable()
 	{
-		GameEvents.Only.WeaponSelect += OnWeaponPurchase;
+		if (unlockWeapons)
+			GameEvents.Only.WeaponSelect += OnWeaponPurchase;
+		else
+			GameEvents.Only.SkinSelect += OnSkinSelect;
 
 		GameEvents.Only.GameEnd += OnGameEnd;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
+		if(unlockWeapons)
+			GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
+		else
+			GameEvents.Only.SkinSelect -= OnSkinSelect;
 
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
@@ -79,10 +86,20 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		_currentSkinPercentageUnlocked = PlayerPrefs.GetFloat("currentSkinPercentageUnlocked", 0f);
 
-		if (ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
+		if (unlockWeapons)
+		{
+			if (ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
+		
+			coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderIndex());
+			blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderIndex(), true);
+		}
+		else
+		{
+			if (ShopStateController.CurrentState.AreAllArmSkinsUnlocked()) return;
 
-		coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon());
-		blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderWeapon(), true);
+			coloredWeaponImage.sprite = MainShopController.Main.GetArmsSkinSprite(GetLoaderIndex());
+			blackWeaponImage.sprite = MainShopController.Main.GetArmsSkinSprite(GetLoaderIndex(), true);
+		}
 
 		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
 			percentageUnlockedText.text = 100 + "%";
@@ -140,11 +157,15 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		skipMoneyButton.interactable = false;
 		claimMoneyButton.interactable = false;
+		Vibration.Vibrate(20);
 
 		DOVirtual.DelayedCall(2f, () =>
 		{
 			moneyPanel.SetActive(false);
-			if (!ShopStateController.CurrentState.AreAllWeaponsUnlocked())
+			//if everything is not already unlocked, show skin panel or directly skip to bonus level if there exists one
+			if (!(unlockWeapons ?
+				ShopStateController.CurrentState.AreAllWeaponsUnlocked() :
+				ShopStateController.CurrentState.AreAllArmSkinsUnlocked()))
 				ShowSkinPanel();
 			else if (bonusLevelPanel)
 				ShowBonusLevelPanel();
@@ -189,7 +210,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		if (!ApplovinManager.instance) return;
 		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
 		
-		StartWaiting(AdRewardType.NewWeapon);
+		StartWaiting(AdRewardType.Loader);
 		AdsMediator.StartListeningForAds(this);
 	}
 
@@ -197,7 +218,11 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		if ((int) (_currentSkinPercentageUnlocked * 100) >= 100)
 		{
-			FindNewLoaderWeapon(GetLoaderWeapon());
+			if(unlockWeapons)
+				FindNewLoaderWeapon(GetLoaderIndex());
+			else
+				FindNewLoaderArmsSkin(GetLoaderIndex());
+			
 			ResetLoader();
 		}
 
@@ -256,17 +281,17 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		return 360 - barPivot.localEulerAngles.z;
 	}
 
-	private void FindNewLoaderWeapon(int currentWeapon)
+	private void FindNewLoaderWeapon(int currentIndex)
 	{
 		var changed = false;
 
 		//find a weapon from current index to last
-		for (var i = currentWeapon + 1; i < MainShopController.GetWeaponSkinCount(); i++)
+		for (var i = currentIndex + 1; i < MainShopController.GetWeaponSkinCount(); i++)
 		{
 			if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 				continue;
 
-			ShopStateController.CurrentState.SetNewLoaderWeapon(i);
+			ShopStateController.CurrentState.SetNewLoaderIndex(i);
 			changed = true;
 			break;
 		}
@@ -274,12 +299,12 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		//if all weapons after me are unlocked, try to find new before me
 		if (!changed)
 		{
-			for (var i = 1; i < currentWeapon; i++)
+			for (var i = 1; i < currentIndex; i++)
 			{
 				if (ShopStateController.CurrentState.GetState().weaponStates[(WeaponType) i] != ShopItemState.Locked)
 					continue;
 
-				ShopStateController.CurrentState.SetNewLoaderWeapon(i);
+				ShopStateController.CurrentState.SetNewLoaderIndex(i);
 				changed = true;
 				break;
 			}
@@ -291,13 +316,60 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 		ResetLoader();
 	}
-	
+
+	private void FindNewLoaderArmsSkin(int currentIndex)
+	{
+		var changed = false;
+
+		//find a weapon from current index to last
+		for (var i = currentIndex + 1; i < MainShopController.GetArmsSkinCount(); i++)
+		{
+			if (ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] != ShopItemState.Locked)
+				continue;
+
+			ShopStateController.CurrentState.SetNewLoaderIndex(i);
+			changed = true;
+			break;
+		}
+
+		//if all weapons after me are unlocked, try to find new before me
+		if (!changed)
+		{
+			for (var i = 1; i < currentIndex; i++)
+			{
+				if (ShopStateController.CurrentState.GetState().armStates[(ArmsType) i] != ShopItemState.Locked)
+					continue;
+
+				ShopStateController.CurrentState.SetNewLoaderIndex(i);
+				changed = true;
+				break;
+			}
+		}
+
+		//if still didn't find anything make sure loader isn't called anymore
+		if (!changed)
+			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
+
+		ResetLoader();
+	}
+
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
-		if (index != GetLoaderWeapon()) return;
+		if (index != GetLoaderIndex()) return;
 		
 		//find new skin to be unlocking
-		FindNewLoaderWeapon(GetLoaderWeapon());
+		FindNewLoaderWeapon(GetLoaderIndex());
+		
+		//Reset loader so that it doesn't look inconsistent with new weapon being loaded
+		ResetLoader();
+	}
+
+	private void OnSkinSelect(int index, bool shouldDeductCoins)
+	{
+		if (index != GetLoaderIndex()) return;
+		
+		//find new skin to be unlocking
+		FindNewLoaderArmsSkin(GetLoaderIndex());
 		
 		//Reset loader so that it doesn't look inconsistent with new weapon being loaded
 		ResetLoader();
@@ -315,7 +387,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		});
 	}
 
-	private void ReceiveWeaponLoaderReward()
+	private void ReceiveLoaderReward()
 	{
 		AdsMediator.StopListeningForAds(this);
 		
@@ -323,11 +395,15 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		skipSkinButton.interactable = false;
 		claimMoneyButton.interactable = false;
 		
-		GameEvents.Only.InvokeWeaponSelect(GetLoaderWeapon(), false);
-		
+		GameEvents.Only.InvokeWeaponSelect(GetLoaderIndex(), false);
+		Vibration.Vibrate(20);
+
 		DOVirtual.DelayedCall(0.25f, _mainCanvas.NextLevel);
 		
-		FindNewLoaderWeapon(GetLoaderWeapon());
+		if(unlockWeapons)
+			FindNewLoaderWeapon(GetLoaderIndex());
+		else
+			FindNewLoaderArmsSkin(GetLoaderIndex());
 		ResetLoader();
 	}
 
@@ -338,7 +414,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 		MoneyPanelButtonBehaviour();
 	}
-	
+
 	private void StartWaiting(AdRewardType newType) => _currentAdRewardType = newType;
 
 	private void StopWaiting() => _currentAdRewardType = AdRewardType.None;
@@ -352,8 +428,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 			case AdRewardType.CoinMultiplier:
 				ReceiveCoinMultiplierReward();
 				break;
-			case AdRewardType.NewWeapon:
-				ReceiveWeaponLoaderReward();
+			case AdRewardType.Loader:
+				ReceiveLoaderReward();
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();

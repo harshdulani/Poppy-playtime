@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 //using TMPro;
 using UnityEngine;
@@ -6,6 +8,14 @@ using UnityEngine;
 public enum CarriedObjectType
 {
 	Ragdoll, Prop, Car
+}
+
+[Serializable]
+public struct ArmSkinBundle
+{
+	public ArmsType type;
+	public Material armMaterial1, armMaterial2, palmMaterial;
+	public GameObject armMesh, palmMesh;
 }
 
 public class HandController : MonoBehaviour
@@ -32,9 +42,8 @@ public class HandController : MonoBehaviour
 
 	[Header("Arms Skins"), SerializeField] private MeshRenderer myArm;
 	[SerializeField] private Renderer leftPalm, rightPalm;
-	[SerializeField] private Material poppy, batman, hulk, spidey, circuits, captain, humanSkin;
-
-	private Material _initRightPalmMat, _initLeftPalmMat;
+	[SerializeField] private List<ArmSkinBundle> armSkinBundles;
+	[SerializeField] private Transform myArmMeshHolder, myPalmMeshHolder;
 
 	public static PlayerSoundController Sounds;
 
@@ -71,6 +80,7 @@ public class HandController : MonoBehaviour
 	private static readonly int OpenAndCloseFingers = Animator.StringToHash("openAndCloseFingers");
 	private static readonly int IsPunching = Animator.StringToHash("isPunching");
 	private static readonly int IsHoldingAPhone = Animator.StringToHash("isHoldingAPhone");
+	private static readonly WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
 
 #endregion
 		
@@ -122,12 +132,6 @@ public class HandController : MonoBehaviour
 		Sounds = _rootAnimator.GetComponent<PlayerSoundController>();
 
 		PalmController = palm.GetComponent<PalmController>();
-		
-		if(isLeftHand)
-		{
-			_initLeftPalmMat = leftPalm.material;
-			_initRightPalmMat = rightPalm.material;
-		}
 
 		_initPosSet = false;
 		_palmInitLocalPos = palm.localPosition;
@@ -245,9 +249,20 @@ public class HandController : MonoBehaviour
 				PunchForward(other);
 			else
 				PunchBackToWhereTheyCameFrom(other);
+
+			StartCoroutine(WaitForFramesAndAllowCollisions(other, 4));
 		}
 
 		Vibration.Vibrate(15);
+	}
+
+	private static IEnumerator WaitForFramesAndAllowCollisions(Transform target, int frames)
+	{
+		if (!target) yield break;
+		while (--frames >= 0)
+			yield return WaitForEndOfFrame;
+		
+		target.root.SetLayer(0);
 	}
 
 	private void PunchBackToWhereTheyCameFrom(Transform punched)
@@ -293,7 +308,7 @@ public class HandController : MonoBehaviour
 			if(!throwAtTarget)
 				direction.y += 0.15f;
 			
-			punched.GetComponent<RagdollLimbController>().GetPunched(direction, punchForce);
+			punched.GetComponent<RagdollLimbController>().GetPunched(direction.normalized, punchForce);
 		}
 		else
 		{
@@ -310,7 +325,7 @@ public class HandController : MonoBehaviour
 			prop.GetPunched(direction.normalized, 
 				CurrentObjectCarriedType == CarriedObjectType.Car ? carPunchForce : punchForce);
 		}
-
+		
 		TargetHeldToPunch = null; 
 		PropHeldToPunch = null;
 	}
@@ -321,7 +336,9 @@ public class HandController : MonoBehaviour
 		
 		InputHandler.Only.StopCarryingBody();
 
+
 		var root = other.root;
+		root.SetLayer(7);
 
 		if (CurrentObjectCarriedType == CarriedObjectType.Ragdoll)
 		{
@@ -384,8 +401,8 @@ public class HandController : MonoBehaviour
 	{
 		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
 		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
-		for (var i = 1; i < hammer.transform.parent.childCount; i++)
-			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
+		
+		hammer.transform.parent.SetAllChildrenInactive(1);
 
 		if(!initialising)
 		{
@@ -466,31 +483,25 @@ public class HandController : MonoBehaviour
 
 	private void UpdateEquippedArmsSkin()
 	{
-		var currentArmsSkin = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin(); 
-		myArm.material = currentArmsSkin switch
-		{
-			ArmsType.Poppy => poppy,
-			ArmsType.Batman => batman,
-			ArmsType.Hulk => hulk,
-			ArmsType.Spidey => spidey,
-			ArmsType.Circuits => circuits,
-			ArmsType.Captain => captain,
-			ArmsType.Skin => humanSkin,
-			_ => throw new ArgumentOutOfRangeException()
-		};
+		var currentArmsSkin = (ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin();
 
-		if(currentArmsSkin == ArmsType.Skin)
-			myArm.sharedMaterials = new[] {humanSkin, humanSkin};
+		var bundle = armSkinBundles.Find(value => value.type == currentArmsSkin);
 		
-		if (!isLeftHand) return;
-		
-		if ((ArmsType) ShopStateController.CurrentState.GetCurrentArmsSkin() == ArmsType.Skin)
-			rightPalm.material = leftPalm.material = humanSkin;
+		myArm.materials = new [] {bundle.armMaterial1, bundle.armMaterial2};
+
+		if (isLeftHand)
+			leftPalm.material = bundle.palmMaterial;
 		else
-		{
-			rightPalm.material = _initRightPalmMat;
-			leftPalm.material = _initLeftPalmMat;
-		}
+			rightPalm.material = bundle.palmMaterial;
+
+		myArmMeshHolder.SetAllChildrenInactive();
+		myPalmMeshHolder.SetAllChildrenInactive();
+		
+		if (bundle.armMesh)
+			bundle.armMesh.SetActive(true);
+
+		if (bundle.palmMesh)
+			bundle.palmMesh.SetActive(true);
 	}
 
 	public bool TryGivePunch()
@@ -531,8 +542,8 @@ public class HandController : MonoBehaviour
 	{
 		if(!isLeftHand) return;
 		
-		if(palm.childCount > 2)
-			palm.GetChild(2).parent = null;
+		if(palm.childCount > 3)
+			palm.GetChild(3).parent = null;
 		
 		palm.DOLocalMove(Vector3.zero, 0.2f).OnComplete(() => palm.localPosition = _palmInitLocalPos);
 		_isCarryingBody = false;
@@ -600,10 +611,5 @@ public class HandController : MonoBehaviour
 		
 		pastrySplash.Play();
 		_audio.PlayOneShot(splashAudioClip);
-	}
-
-	private void OnGameEnd()
-	{
-		OnPropDestroyed();
 	}
 }

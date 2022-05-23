@@ -29,13 +29,11 @@ public class ShopStateSerializer
 		var currentShopState = ShopStateController.CurrentState.GetState();
 		var save = new ShopState(
 			currentShopState.weaponStates, currentShopState.armStates, currentShopState.CoinCount, 
-			currentShopState.SidebarWeapon,	currentShopState.LoaderWeapon, currentShopState.CurrentSpeedLevel, currentShopState.CurrentPowerLevel);
+			currentShopState.SidebarWeapon,	currentShopState.LoaderIndex, currentShopState.CurrentSpeedLevel, currentShopState.CurrentPowerLevel);
 
 		var binaryFormatter = new BinaryFormatter();
-		using (var fileStream = File.Create(_savePath))
-		{
+		using (var fileStream = File.Create(_savePath)) 
 			binaryFormatter.Serialize(fileStream, save);
-		}
 
 		Debug.Log("Data Saved");
 	}
