@@ -554,7 +554,8 @@ public class HandController : MonoBehaviour
 		if (_lastRaghu != ragdollController) return;
 		ClearStateInfo();
 	}
-
+	
+	
 	public void ClearStateInfo()
 	{
 		ClearInitTargetPos();

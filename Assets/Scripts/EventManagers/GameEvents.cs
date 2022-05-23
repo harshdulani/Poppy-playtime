@@ -24,7 +24,7 @@ public class GameEvents : MonoBehaviour
 	public event Action<Transform> PropDestroyed, GiantLanding;
 	public event Action<Transform> GiantPickupProp;
 	
-	public event Action<Transform> RayfireShattered;
+	public event Action<Transform> RayfireShattered, EnemyDied;
 
 	public event Action TrapButtonPressed;
 	public event Action<Rigidbody> DropContainer;
@@ -58,6 +58,8 @@ public class GameEvents : MonoBehaviour
 	
 	public void InvokeDropArmor() => DropArmor?.Invoke();
 	public void InvokeEnemyKill() => EnemyKilled?.Invoke();
+	
+	public void InvokeEnemyDied(Transform enemy) => EnemyDied?.Invoke(enemy);
 	
 	public void InvokeEnemyHitPlayer(Transform hitter) => EnemyHitPlayer?.Invoke(hitter);
 	

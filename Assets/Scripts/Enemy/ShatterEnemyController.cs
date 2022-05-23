@@ -64,6 +64,8 @@ public class ShatterEnemyController : MonoBehaviour
 		if(!_hasCrossed)
 			if(_patroller)
 				_patroller.ToggleAI(false);
+
+		
 	}
 	
 	private void OnTapToPlay()
