@@ -9,11 +9,12 @@ public class EnemyPatroller : MonoBehaviour
 	public bool shouldPatrol;
 	public int myPatrolArea;
 	[SerializeField] private List<Transform> waypoints;
-	[SerializeField] private bool hasWeapon;
-	[SerializeField] private float waypointChangeDistance = 0.5f;
+	[SerializeField] private bool hasWeapon,chasePlayer;
+	[SerializeField] private float waypointChangeDistance = 0.5f, speed = 2f;
 
 	private NavMeshAgent _agent;
 	private Animator _anim;
+	private EnemyChaseController _chaseController;
 
 	private Vector3 _currentDest;
 	private int CurrentWayPoint
@@ -26,6 +27,7 @@ public class EnemyPatroller : MonoBehaviour
 
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
 	private static readonly int Attack = Animator.StringToHash("attack1");
+	private static readonly int Speed = Animator.StringToHash("speed");
 
 	private void OnEnable()
 	{
@@ -47,10 +49,12 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		_agent = GetComponent<NavMeshAgent>();
 		_anim = GetComponent<Animator>();
-
+		if(chasePlayer)
+			_anim.SetFloat(Speed,speed);
 		_anim.applyRootMotion = true;
 		if(waypoints.Count == 0)
 			waypoints.Add(GameObject.FindGameObjectWithTag("Player").transform);
+		
 	}
 
 	private void Update()
@@ -64,6 +68,7 @@ public class EnemyPatroller : MonoBehaviour
 		if (hasWeapon)
 		{
 			ToggleAI(false);
+			print("I called toggle");
 			_anim.SetTrigger(Attack);
 			shouldPatrol = false;
 			return;
@@ -72,7 +77,11 @@ public class EnemyPatroller : MonoBehaviour
 		if (waypoints.Count > 1)
 			SetNextWaypoint();
 		else
-			ToggleAI(false);
+		{
+			if(!chasePlayer)
+				ToggleAI(false);
+		}
+			
 	}
 
 	private void SetNextWaypoint()
@@ -83,25 +92,51 @@ public class EnemyPatroller : MonoBehaviour
 
 	public void ToggleAI(bool status)
 	{
-		shouldPatrol = status;
-		_agent.enabled = status;
-		_anim.SetBool(IsWalking, status);
+		if (!chasePlayer)
+		{
+			print("status: " + status);
+			shouldPatrol = status;
+			if(_agent)
+				_agent.enabled = status;
+			_anim.SetBool(IsWalking, status);
+		}
+		else
+		{
+			print("toggle AI: " + gameObject.name);
+			_anim.SetBool(IsWalking, status);
+		}
+
+		
 	}
 
 	private void OnTapToPlay()
 	{
-		if(!shouldPatrol) return;
-		if(myPatrolArea > 0) return;
-
-		_anim.applyRootMotion = false;
-		//this is perma true because uske bina soona soona lagta hai ghar
-		
-		DOVirtual.DelayedCall(Random.Range(0f, 0.5f), () =>
+		if (!chasePlayer)
 		{
-			ToggleAI(true);
-			_anim.SetBool(IsWalking, true);
-			SetNextWaypoint();
-		});
+			if(!shouldPatrol) return;
+			if(myPatrolArea > 0) return;
+			if(!chasePlayer)
+				_anim.applyRootMotion = false;
+			//this is perma true because uske bina soona soona lagta hai ghar
+		
+			DOVirtual.DelayedCall(Random.Range(0f, 0.5f), () =>
+			{
+				ToggleAI(true);
+				_anim.SetBool(IsWalking, true);
+				SetNextWaypoint();
+			});
+		}
+		else
+		{
+			DOVirtual.DelayedCall(Random.Range(0f, 0.5f), () =>
+			{
+				ToggleAI(true);
+				_anim.SetBool(IsWalking, true);
+			
+			});
+		}
+
+		
 	}
 
 	public bool IsInCurrentPatrolArea() => LevelFlowController.only.currentArea == myPatrolArea;

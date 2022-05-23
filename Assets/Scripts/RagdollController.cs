@@ -68,6 +68,10 @@ public class RagdollController : MonoBehaviour
 		TryGetComponent(out _health);
 		TryGetComponent(out _shatterEnemy);
 		
+		if(BananaThrower.LevelFlowController.only)
+			if (BananaThrower.LevelFlowController.only.isBeingChased)
+				MakeKinematic();
+		
 		if(shouldMirror)
 			_anim.SetBool(IsMirrored, Random.value > 0.5f);
 
@@ -78,6 +82,11 @@ public class RagdollController : MonoBehaviour
 		
 		if(isPoppy) return;
 		PlayRandomAnim();
+	}
+
+	private void MakeKinematic()
+	{
+		foreach (var rigidbody in rigidbodies) rigidbody.isKinematic = true;
 	}
 
 	public bool IsInPatrolArea()
@@ -158,8 +167,9 @@ public class RagdollController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 			rb.tag = "Untagged";
 		}
-		
-		GameEvents.Only.InvokeEnemyKill();
+		print("ragdoll me");
+		//GameEvents.Only.InvokeEnemyKill();
+		GameEvents.Only.InvokeEnemyDied(transform);
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);
 		if(_throwAtPlayer)
 			_throwAtPlayer.StopThrowing();
