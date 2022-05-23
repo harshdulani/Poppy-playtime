@@ -25,9 +25,6 @@ namespace StateMachine
 
 			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
 
-			
-			print(hit.transform + " hit");
-
 			if(AudioManager.instance)
 				AudioManager.instance.Play("Button");
 			

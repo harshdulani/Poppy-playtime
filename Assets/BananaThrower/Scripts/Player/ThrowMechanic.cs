@@ -44,7 +44,6 @@ namespace Player
 			{
 				//unreliable, take truck forward
 				var travelPerSecond = Vector3.forward * (VehicleMovement.MovementSpeed);
-				print(VehicleMovement.MovementSpeed);
 				var idealTrajectorytime = 
 					CalculateInitialVelocity(startPoint.position, idealDest, out _);
 

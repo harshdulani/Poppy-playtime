@@ -48,23 +48,16 @@ namespace BananaThrower
 			foreach (var area in enemiesInArea)
 				_totalEnemiesRemaining += area;
 			
-			print("kill all");
 			DOTween.KillAll();
 			Vibration.Init();
 		}
 
 		private void OnEnemyKilled()
 		{
-			print("inside enemy killed");
 			enemiesKilledInCurrentArea++;
 			_totalEnemiesRemaining--;
-			if (enemiesKilledInCurrentArea >= enemiesInCurrentArea)
-			{
+			if (enemiesKilledInCurrentArea >= enemiesInCurrentArea) 
 				GameEvents.Only.InvokeGameEnd();
-				print("game end");
-			}
-
-			
 		}
 		
 		private void OnEnemyDied(Transform thrower)
