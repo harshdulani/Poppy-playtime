@@ -390,11 +390,11 @@ public enum WeaponType
 public enum ArmsType
 {
 	Skin,
-	Poppy,
-	Thanos,
-	Hulk,
-	Batman,
 	Spidey,
+	Thanos,
 	Captain,
-	IronMan
+	IronMan,
+	Batman,
+	Hulk,
+	Poppy
 }

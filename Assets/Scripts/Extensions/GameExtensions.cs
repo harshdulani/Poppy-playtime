@@ -75,9 +75,9 @@ public static class GameExtensions
 			child.SetLayer( layer);
 	}
 	
-	public static void SetInactiveAllChildren(this Transform parent)
+	public static void SetAllChildrenInactive(this Transform parent, int endOffset = 0)
 	{
-		for (var i = 0; i < parent.childCount; i++) parent.GetChild(i).gameObject.SetActive(false);
+		for (var i = 0; i < parent.childCount - endOffset; i++) parent.GetChild(i).gameObject.SetActive(false);
 	}
 	
 	private static void Print(object msg)

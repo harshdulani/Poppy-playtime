@@ -401,8 +401,8 @@ public class HandController : MonoBehaviour
 	{
 		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
 		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
-		for (var i = 1; i < hammer.transform.parent.childCount; i++)
-			hammer.transform.parent.GetChild(i).gameObject.SetActive(false);
+		
+		hammer.transform.parent.SetAllChildrenInactive(1);
 
 		if(!initialising)
 		{
@@ -494,8 +494,8 @@ public class HandController : MonoBehaviour
 		else
 			rightPalm.material = bundle.palmMaterial;
 
-		myArmMeshHolder.SetInactiveAllChildren();
-		myPalmMeshHolder.SetInactiveAllChildren();
+		myArmMeshHolder.SetAllChildrenInactive();
+		myPalmMeshHolder.SetAllChildrenInactive();
 		
 		if (bundle.armMesh)
 			bundle.armMesh.SetActive(true);
