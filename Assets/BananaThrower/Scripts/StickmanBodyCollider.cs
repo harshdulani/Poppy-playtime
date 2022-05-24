@@ -24,6 +24,7 @@ public class StickmanBodyCollider : MonoBehaviour
 			raghu.GoRagdoll(Vector3.back);
 			stickmanMovement.GetHit();
 			stickmanMovement.EnableParticles();
+			other.transform.tag = "Untagged";
 		}
 
 		

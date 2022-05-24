@@ -1088,10 +1088,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3649882786719308809}
-  - component: {fileID: 492194340224903481}
-  - component: {fileID: 3558668903218453210}
-  - component: {fileID: 4895362082278356435}
-  - component: {fileID: 245887835026141623}
   m_Layer: 0
   m_Name: Flowers
   m_TagString: PropObject
@@ -1127,57 +1123,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.675, y: -9.394, z: 141.15}
---- !u!54 &492194340224903481
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649882786719308810}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &3558668903218453210
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649882786719308810}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.6351113, y: 1.7061497, z: 2.8018255}
-  m_Center: {x: 0.000008837122, y: 0.8174957, z: -0.16282478}
---- !u!65 &4895362082278356435
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649882786719308810}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.6351113, y: 1.9964843, z: 0.5255036}
-  m_Center: {x: 0.0000011462982, y: -1.0640591, z: -0.011243764}
---- !u!114 &245887835026141623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649882786719308810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 171b90e5d2ea0f84b9363fcd8cbfd58a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

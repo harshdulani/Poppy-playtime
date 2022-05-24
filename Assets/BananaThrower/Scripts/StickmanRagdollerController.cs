@@ -112,7 +112,7 @@ public class StickmanRagdollerController : MonoBehaviour
 	
 	private void OnEnemyReachPlayer()
 	{
-		if(_isAttacking) return;
-		_anim.SetBool(HasWon, true);
+		/*if(_isAttacking) return;
+		_anim.SetBool(HasWon, true);*/
 	}
 }

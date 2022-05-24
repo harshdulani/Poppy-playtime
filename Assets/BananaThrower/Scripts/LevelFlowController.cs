@@ -15,7 +15,9 @@ namespace BananaThrower
 		public float maxRayDistance = 50f;
 		public bool isBeingChased;
 		private int _totalEnemiesRemaining;
-
+		
+		public StickmanMovementController closest = null;
+		public float minDistance = 9999f;
 		private readonly List<Transform> _deadBodies = new List<Transform>();
 
 		private void OnEnable()
@@ -66,6 +68,14 @@ namespace BananaThrower
 		
 			OnEnemyKilled();
 			_deadBodies.Add(thrower.transform);
+		}
+		
+		public void TryAssignMinDistance(float distance, StickmanMovementController stickmanMovementController)
+		{
+			if(distance > minDistance) return;
+
+			minDistance = distance;
+			closest = stickmanMovementController;
 		}
 	}
 }

@@ -110,7 +110,7 @@ public class StickmanMovementController : MonoBehaviour
 
 	private void OnTapToPlay()
 	{
-		DOVirtual.DelayedCall(Random.Range(0f, 0.25f), () =>
+		DOVirtual.DelayedCall(Random.Range(0f, 0.5f), () =>
 		{
 			ToggleAI(true);
 			_hasGameStarted = true;
@@ -119,15 +119,39 @@ public class StickmanMovementController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
-		ToggleAI(false);
-			
-			DOVirtual.DelayedCall(Random.Range(0f, 0.25f), () =>
+
+		BananaThrower.LevelFlowController.only.TryAssignMinDistance(Vector3.Distance(_transform.position, _player.position), this);
+		DOVirtual.DelayedCall(0.1f, () =>
+		{
+			if (BananaThrower.LevelFlowController.only.closest == this)
 			{
-				ToggleAI(true);
-				_hasGameStarted = true;
-			
-			});
-	
+				var position = _transform.position;
+				var position1 = _player.position;
+				var vehiclePosZ = _player.root.position.z;
+				Vector3 dirToLookIn = position1 - position;
+				print(Vector3.Distance(position,position1));
+				Vector3 pos = transform.position;
+				transform.DOMove(
+					new Vector3(0,pos.y,vehiclePosZ - 6), 0.9f)
+					.OnStart(() =>
+					{
+						Quaternion rotation=Quaternion.LookRotation(dirToLookIn,Vector3.up);
+						transform.rotation = rotation;
+					})
+						.OnComplete(() =>
+					{
+						Quaternion rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
+						transform.rotation = rotation;
+						ToggleAI(false);
+						_anim.SetTrigger(Attack);
+					});
+			}
+			else
+			{
+				ToggleAI(false);
+			}
+
+		});
 	}
 
 	public void EnableParticles()
