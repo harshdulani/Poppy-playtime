@@ -10,8 +10,7 @@ namespace Player
 
 		public ThrowMechanic Thrower { get; private set; }
 		
-
-		public Transform rightHandTarget;
+		public Transform bombHolder;
 
 		private void Awake()
 		{

@@ -18,15 +18,16 @@ public class StickmanBodyCollider : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		if(other.transform.root == transform.root) return;
-
-		if (other.transform.CompareTag("PropObject"))
-		{
-			raghu.GoRagdoll(Vector3.back);
-			stickmanMovement.GetHit();
-			stickmanMovement.EnableParticles();
-			other.transform.tag = "Untagged";
-		}
-
+		if (!other.transform.CompareTag("PropObject") && !other.transform.CompareTag("TrapButton")) return;
 		
+		GetHit();
+		stickmanMovement.EnableParticles();
+		other.transform.tag = "Untagged";
+	}
+
+	public void GetHit()
+	{
+		raghu.GoRagdoll(Vector3.back);
+		stickmanMovement.GetHit();
 	}
 }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1871189857685838194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943485350433388659}
+  m_Layer: 0
+  m_Name: BombHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943485350433388659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871189857685838194}
+  m_LocalRotation: {x: 0.11207876, y: -0.008236303, z: 0.5439594, w: 0.831552}
+  m_LocalPosition: {x: -0.000151, y: 0.000836, z: 0.000239}
+  m_LocalScale: {x: 0.0011392849, y: 0.0011392845, z: 0.001139285}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 5543162411181157654}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 11.266, y: 6.336, z: 67.007}
 --- !u!1 &3552346074454852297
 GameObject:
   m_ObjectHideFlags: 0
@@ -33,6 +64,37 @@ Transform:
   m_Father: {fileID: 4024737724088350745}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4764566831821724102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8315927171932968572}
+  m_Layer: 0
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8315927171932968572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764566831821724102}
+  m_LocalRotation: {x: -0.064129524, y: 0.8156698, z: -0.29282025, w: -0.4947995}
+  m_LocalPosition: {x: -0.00034038638, y: 0.00085237704, z: 0.00034648858}
+  m_LocalScale: {x: 0.001999996, y: 0.0019999987, z: 0.0019999966}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5543162411181157654}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -36.921, y: -12.056, z: 50.213}
 --- !u!1 &5139801193182398601
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +140,7 @@ GameObject:
   - component: {fileID: 5139801193626657100}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd6ae7e45b36a743a4aa6fb7bd4e48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandTarget: {fileID: 0}
+  bombHolder: {fileID: 1943485350433388659}
 --- !u!114 &5139801194345642014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,9 +319,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad273d7fc167bf74cbfddeb9e0ba2fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bananaPrefab: {fileID: 3669986101226339543, guid: fab92ad19d216e24884523dc62e0f014, type: 3}
+  weaponPrefab: {fileID: 0}
+  bombPrefab: {fileID: 8571152103115776598, guid: e8494067c2901a94a94d1a51a7b4f2d1, type: 3}
+  weaponHolder: {fileID: 4764566831821724102}
+  bombHolder: {fileID: 1871189857685838194}
   startPoint: {fileID: 5139801193182398606}
-  trajectoryMaxHeight: 1
+  trajectoryMaxHeight: 0.25
   bananaTorque: 48
   showDebugPath: 0
 --- !u!82 &5139801194345642012
@@ -385,7 +450,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8315927171932968572}
+  - {fileID: 1943485350433388659}
   m_Father: {fileID: 4872898918757499856}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

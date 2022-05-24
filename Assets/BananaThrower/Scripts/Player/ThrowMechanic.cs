@@ -6,7 +6,7 @@ namespace Player
 {
 	public class ThrowMechanic : MonoBehaviour
 	{
-		[SerializeField] private GameObject bananaPrefab;
+		[SerializeField] private GameObject weaponPrefab, bombPrefab, weaponHolder, bombHolder;
 		[SerializeField] private Transform startPoint;
 		[SerializeField] private float trajectoryMaxHeight = 1f, bananaTorque;
 	
@@ -14,7 +14,8 @@ namespace Player
 		private readonly List<Transform> _drawTrajectory = new List<Transform>();
 
 		private PlayerRefBank _my;
-	
+
+		private GameObject _initPrefab, _currentPrefab;
 		private Transform _hitTransform;
 		private Vector3 _lastHitOffset;
 		private const float Gravity = -9.81f;
@@ -24,6 +25,8 @@ namespace Player
 		private void Start()
 		{
 			_my = GetComponent<PlayerRefBank>();
+
+			_currentPrefab = _initPrefab = weaponPrefab;
 		}
 
 		public void NewShot(Transform hitTransform, Vector3 hitPoint)
@@ -42,10 +45,8 @@ namespace Player
 				LaunchBanana(idealDest);
 			else
 			{
-				//unreliable, take truck forward
 				var travelPerSecond = Vector3.forward * (VehicleMovement.MovementSpeed);
-				var idealTrajectorytime = 
-					CalculateInitialVelocity(startPoint.position, idealDest, out _);
+				var idealTrajectorytime = CalculateInitialVelocity(startPoint.position, idealDest, out _);
 
 				var physicalPosition = idealDest + travelPerSecond * idealTrajectorytime;
 				LaunchBanana(physicalPosition);
@@ -59,8 +60,15 @@ namespace Player
 
 		private void LaunchBanana(Vector3 hitPoint)
 		{
-			var kela = Instantiate(bananaPrefab, startPoint.position, startPoint.rotation);
+			var kela = Instantiate(_currentPrefab, startPoint.position, startPoint.rotation);
 
+			if(_currentPrefab == bombPrefab)
+			{
+				_currentPrefab = _initPrefab;
+				bombHolder.SetActive(false);
+				weaponHolder.SetActive(true);
+			}
+			
 			var rb = kela.GetComponent<Rigidbody>();
 			if(showDebugPath)
 				DrawPath(startPoint.position, hitPoint);
@@ -105,6 +113,14 @@ namespace Player
 				Debug.DrawLine(previousDrawPoint, drawPoint, Color.Lerp(Color.red, Color.yellow, i / (float) resolution), 2f);
 				previousDrawPoint = drawPoint;
 			}
+		}
+
+		public void ThrowBombNextTime()
+		{
+			_currentPrefab = bombPrefab;
+			
+			bombHolder.SetActive(true);
+			weaponHolder.SetActive(false);
 		}
 	}
 }

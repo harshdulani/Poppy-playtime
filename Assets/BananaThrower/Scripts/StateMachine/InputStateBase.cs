@@ -20,10 +20,7 @@ namespace StateMachine
 			maxRayDistance = BananaThrower.LevelFlowController.only.maxRayDistance;
 		}
 
-		public virtual void OnEnter()
-		{
-			
-		}
+		public virtual void OnEnter() { }
 
 		public virtual void Execute() { }
 

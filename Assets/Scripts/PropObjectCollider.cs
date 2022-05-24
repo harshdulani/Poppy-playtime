@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 public class PropObjectCollider : MonoBehaviour
@@ -10,6 +7,5 @@ public class PropObjectCollider : MonoBehaviour
 		if (!other.collider.CompareTag("Ground")) return;
 		
 		transform.tag = "Untagged";
-			
 	}
 }

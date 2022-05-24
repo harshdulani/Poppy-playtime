@@ -14,8 +14,7 @@ namespace BananaThrower
 		public int currentArea;
 		public float maxRayDistance = 50f;
 		public bool isBeingChased;
-		private int _totalEnemiesRemaining;
-		
+
 		public StickmanMovementController closest = null;
 		public float minDistance = 9999f;
 		private readonly List<Transform> _deadBodies = new List<Transform>();
@@ -47,9 +46,6 @@ namespace BananaThrower
 			enemiesInCurrentArea = enemiesInArea[currentArea];
 			enemiesKilledInCurrentArea = 0;
 
-			foreach (var area in enemiesInArea)
-				_totalEnemiesRemaining += area;
-			
 			DOTween.KillAll();
 			Vibration.Init();
 		}
@@ -57,7 +53,6 @@ namespace BananaThrower
 		private void OnEnemyKilled()
 		{
 			enemiesKilledInCurrentArea++;
-			_totalEnemiesRemaining--;
 			if (enemiesKilledInCurrentArea >= enemiesInCurrentArea) 
 				GameEvents.Only.InvokeGameEnd();
 		}

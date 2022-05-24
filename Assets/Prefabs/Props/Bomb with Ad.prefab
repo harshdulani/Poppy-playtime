@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 1234062017878029461}
   - component: {fileID: 1234062017878029463}
   - component: {fileID: 1234062017878029458}
+  - component: {fileID: 5841394918495767056}
   m_Layer: 0
   m_Name: Bomb with Ad
   m_TagString: Target
@@ -431,6 +432,7 @@ MonoBehaviour:
   shouldShowAds: 1
   shouldExplode: 1
   hasBeenInteractedWith: 0
+  isCar: 0
   explosionForce: 50
   rigidbodies:
   - {fileID: 1234062017878029460}
@@ -448,6 +450,19 @@ MonoBehaviour:
   shrinkSpeedMultiplier: 2
   explosionScale: 1
   adButton: {fileID: 1234062016455913581}
+--- !u!65 &5841394918495767056
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153051626553008221}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1828275, y: 4.523308, z: 2.0984077}
+  m_Center: {x: 0, y: 2.1984103, z: 2.1360874}
 --- !u!1 &8247106829343549948
 GameObject:
   m_ObjectHideFlags: 0
