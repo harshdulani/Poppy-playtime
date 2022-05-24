@@ -118,6 +118,9 @@ namespace Player
 		public void ThrowBombNextTime()
 		{
 			_currentPrefab = bombPrefab;
+			
+			bombHolder.SetActive(true);
+			weaponHolder.SetActive(false);
 		}
 	}
 }

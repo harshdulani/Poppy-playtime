@@ -29,7 +29,7 @@ public class BombControl : MonoBehaviour
 		_transform.localScale = Vector3.one * 0.2f;
 
 		if(onDisplay)
-			_hoverTween = _transform.DOLocalMoveY(_transform.position.y + bombHoverDelta, bombHoverDuration).SetLoops(-1, LoopType.Yoyo);
+			_hoverTween = _transform.parent.DOLocalMoveY(_transform.position.y + bombHoverDelta, bombHoverDuration).SetLoops(-1, LoopType.Yoyo);
 		else
 			_transform.DOScale(Vector3.one * 0.5f, 0.5f);
 	}

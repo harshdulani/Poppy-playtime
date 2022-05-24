@@ -8,6 +8,9 @@ public class VehicleMovement : MonoBehaviour
 	[SerializeField] private Transform endPoint;
 	[SerializeField] private float travelTime;
 
+	[Header("Bomb"), SerializeField] private Transform bombInLevel;
+	[SerializeField] private float bombAppearsAtTravelPercent;
+
 	private Tween _shakeYTween, _shakeXTween, _moveTween;
 	private Transform _root;
 	private float _initZPos;
@@ -59,6 +62,8 @@ public class VehicleMovement : MonoBehaviour
 		});
 
 		MovementSpeed = (endPoint.transform.position.z - _initZPos) / travelTime;
+		
+		DOVirtual.DelayedCall(travelTime * bombAppearsAtTravelPercent, () => bombInLevel.DOLocalMoveX(0f, 1f));
 	}
 	
 	private void OnTapToPlay()
