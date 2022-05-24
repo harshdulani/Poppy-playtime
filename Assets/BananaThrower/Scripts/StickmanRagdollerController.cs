@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -107,8 +105,6 @@ public class StickmanRagdollerController : MonoBehaviour
 				_anim.SetBool(Idle3, true);
 		});
 	}
-	
-	public void PopScale() => transform.DOPunchScale(Vector3.one * 0.125f, 0.25f);
 	
 	private void OnEnemyReachPlayer()
 	{

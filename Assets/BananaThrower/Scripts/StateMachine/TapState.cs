@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace StateMachine
 {
@@ -22,9 +21,29 @@ namespace StateMachine
 			}
 			
 			var ray = Player.Camera.ScreenPointToRay(GetInputPosition());
-
+			
 			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
 
+			if (hit.transform.CompareTag("TrapButton"))
+			{
+				//reusing this tag for bomb
+				if(!hit.transform.TryGetComponent(out BombControl bomb) && !bomb.isHeld)
+				{
+					InputHandler.AssignNewState(InputState.Idle);
+					return;
+				}
+				
+				bomb.HoldBomb(Player.bombHolder);
+				Player.Thrower.ThrowBombNextTime();
+				return;
+			}
+			
+			if (hit.transform.CompareTag("BlockRaycast"))
+			{
+				InputHandler.AssignNewState(InputState.Idle);
+				return;
+			}
+			
 			if(AudioManager.instance)
 				AudioManager.instance.Play("Button");
 			

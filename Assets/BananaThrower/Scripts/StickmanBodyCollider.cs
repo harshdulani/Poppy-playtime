@@ -19,13 +19,15 @@ public class StickmanBodyCollider : MonoBehaviour
 	{
 		if(other.transform.root == transform.root) return;
 
-		if (other.transform.CompareTag("PropObject"))
+		if (other.transform.CompareTag("PropObject") || other.transform.CompareTag("TrapButton"))
 		{
-			raghu.GoRagdoll(Vector3.back);
-			stickmanMovement.GetHit();
-			
+			GetHit();
 		}
+	}
 
-		
+	public void GetHit()
+	{
+		raghu.GoRagdoll(Vector3.back);
+		stickmanMovement.GetHit();
 	}
 }
