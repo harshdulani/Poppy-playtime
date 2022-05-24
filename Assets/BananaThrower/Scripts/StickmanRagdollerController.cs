@@ -19,20 +19,6 @@ public class StickmanRagdollerController : MonoBehaviour
 	private bool _isAttacking;
 
 	private static readonly int IsMirrored = Animator.StringToHash("isMirrored");
-	private static readonly int HasWon = Animator.StringToHash("hasWon");
-	private static readonly int Idle1 = Animator.StringToHash("idle1");
-	private static readonly int Idle2 = Animator.StringToHash("idle2");
-	private static readonly int Idle3 = Animator.StringToHash("idle3");
-
-	private void OnEnable()
-	{
-		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
-	}
-
-	private void OnDisable()
-	{
-		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
-	}
 	
 	private void Start()
 	{
@@ -50,8 +36,6 @@ public class StickmanRagdollerController : MonoBehaviour
 
 		if (shouldTurnToGrey)
 			_material = skin.materials[toChangeMatIndex];
-
-		PlayRandomAnim();
 	}
 
 	private void MakeKinematic()
@@ -61,6 +45,7 @@ public class StickmanRagdollerController : MonoBehaviour
 	
 	public void GoRagdoll(Vector3 direction)
 	{
+		if(_stickmanMovementController.hasWon) return;
 		if(isRagdoll) return;
 		
 		_anim.enabled = false;
@@ -88,27 +73,9 @@ public class StickmanRagdollerController : MonoBehaviour
 		Vibration.Vibrate(25);
 	}
 
-	private void PlayRandomAnim()
+	public void HitOnAnimation()
 	{
-		_anim.SetBool(Idle1, false);
-		_anim.SetBool(Idle2, false);
-		_anim.SetBool(Idle3, false);
-
-		DOVirtual.DelayedCall(0.02f, () =>
-		{
-			var random = Random.Range(0f, 1f);
-			if (random < 0.33f)
-				_anim.SetBool(Idle1, true);
-			else if (random < 0.66f)
-				_anim.SetBool(Idle2, true);
-			else
-				_anim.SetBool(Idle3, true);
-		});
-	}
-	
-	private void OnEnemyReachPlayer()
-	{
-		/*if(_isAttacking) return;
-		_anim.SetBool(HasWon, true);*/
+		Vibration.Vibrate(35);
+		CameraController.only.ScreenShake(2f);
 	}
 }

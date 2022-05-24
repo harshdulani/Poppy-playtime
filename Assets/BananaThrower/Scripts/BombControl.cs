@@ -48,6 +48,7 @@ public class BombControl : MonoBehaviour
 		
 		particleFx.SetActive(true);
 		sparks.SetActive(false);
+		particleFx.transform.parent = null;
 
 		var size = Physics.OverlapSphereNonAlloc(_transform.position, explosionRadius, _overlaps);
 
@@ -70,6 +71,9 @@ public class BombControl : MonoBehaviour
 
 	public void HoldBomb(Transform hand)
 	{
+		if(!onDisplay) return;
+
+		onDisplay = false;
 		_transform.parent = hand;
 		DOTween.Kill(_transform);
 		_hoverTween.Kill();

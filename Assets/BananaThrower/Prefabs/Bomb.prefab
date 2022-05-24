@@ -236,11 +236,7 @@ MonoBehaviour:
   particleFx: {fileID: 8805576021818822513}
   sparks: {fileID: 8805576021449181557}
   text: {fileID: 8805576022001028744}
-  bananas: []
-  explosionOrigin: {fileID: 9059282852595546348}
-  explosionForce: 5
   explosionRadius: 5
-  upwardsModifier: 1
   bombHoverDuration: 3
   bombHoverDelta: 0.1
 --- !u!54 &7546471346465872710
@@ -486,6 +482,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19877392, guid: 0b4ea991852d6984aab98759fa8d4ebb, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19877392, guid: 0b4ea991852d6984aab98759fa8d4ebb, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 19914164, guid: 0b4ea991852d6984aab98759fa8d4ebb, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -532,6 +536,18 @@ PrefabInstance:
     - target: {fileID: 407600, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 407600, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 407600, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 407600, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 407600, guid: e6ea0c2b13012484ba2f5dc1054e6d75, type: 3}
       propertyPath: m_LocalPosition.x

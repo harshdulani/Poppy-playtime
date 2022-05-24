@@ -5,7 +5,8 @@ using DG.Tweening;
 public class StickmanMovementController : MonoBehaviour
 {
 	[SerializeField] private ParticleSystem _splashParticle;
-	[SerializeField] private float fastMoveSpeedMultiplier = 1.2f, maxDistanceToPlayer;
+	[SerializeField] private float fastMoveSpeedMultiplier = 1.2f, maxDistanceToPlayer, attackDistance = 7f;
+	public bool isDead, hasWon;
 	
 	private readonly List<Transform> _colliders = new List<Transform>();
 
@@ -14,24 +15,20 @@ public class StickmanMovementController : MonoBehaviour
 	
 	private float _currentSpeedMultiplier = 1f, _myMaxDistance;
 	private bool _hasReached,_hasGameStarted, _slowedDownTemporarily;
-	private bool _hasWon, _isDead;
-	
+
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
 	private static readonly int Attack = Animator.StringToHash("attack1");
-	
+	private static readonly int Victory = Animator.StringToHash("Victory");
+
 	private void OnEnable()
 	{
 		GameEvents.Only.TapToPlay += OnTapToPlay;
-		GameEvents.Only.EnemyKillPlayer += OnGameLose;
-		GameEvents.Only.PunchHit += GetHit;
 		GameEvents.Only.EnemyKillPlayer += OnEnemyReachPlayer;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Only.TapToPlay -= OnTapToPlay;
-		GameEvents.Only.EnemyKillPlayer -= OnGameLose;
-		GameEvents.Only.PunchHit -= GetHit;
 		GameEvents.Only.EnemyKillPlayer -= OnEnemyReachPlayer;
 	}
 
@@ -49,8 +46,8 @@ public class StickmanMovementController : MonoBehaviour
 
 	private void Update()
 	{
-		if (_isDead) return;
-		if (_hasWon) return;
+		if (isDead) return;
+		if (hasWon) return;
 		if (!_hasGameStarted) return;
 		
 		_transform.position += Vector3.forward * (VehicleMovement.MovementSpeed * _currentSpeedMultiplier * Time.deltaTime);
@@ -62,22 +59,14 @@ public class StickmanMovementController : MonoBehaviour
 		_currentSpeedMultiplier = 1f;
 	}
 
-	public void GetHit()
+	public void EnableParticles()
 	{
-		if(_isDead) return;
-
-		_isDead = true;
-		//GameEvents.Only.InvokeEnemyDied(_transform);
-	}
-
-	private void OnGameLose()
-	{
-		if(_isDead) return;
-
-		_hasWon = true;
+		_splashParticle.gameObject.SetActive(true);
+		_splashParticle.Play();
 	}
 
 	public void ToggleAI(bool status) => _anim.SetBool(IsWalking, status);
+
 	private bool IsSomeoneInFront() => _colliders.Count > 0;
 
 	private void OnTriggerEnter(Collider other)
@@ -119,7 +108,6 @@ public class StickmanMovementController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
-
 		BananaThrower.LevelFlowController.only.TryAssignMinDistance(Vector3.Distance(_transform.position, _player.position), this);
 		DOVirtual.DelayedCall(0.1f, () =>
 		{
@@ -128,20 +116,12 @@ public class StickmanMovementController : MonoBehaviour
 				var position = _transform.position;
 				var position1 = _player.position;
 				var vehiclePosZ = _player.root.position.z;
-				Vector3 dirToLookIn = position1 - position;
-				print(Vector3.Distance(position,position1));
-				Vector3 pos = transform.position;
-				transform.DOMove(
-					new Vector3(0,pos.y,vehiclePosZ - 6), 0.9f)
-					.OnStart(() =>
+				var dirToLookIn = position1 - position;
+				transform.DOMove(new Vector3(0, position.y, vehiclePosZ - attackDistance), 0.9f)
+					.OnStart(() => transform.rotation = Quaternion.LookRotation(dirToLookIn,Vector3.up))
+					.OnComplete(() =>
 					{
-						Quaternion rotation=Quaternion.LookRotation(dirToLookIn,Vector3.up);
-						transform.rotation = rotation;
-					})
-						.OnComplete(() =>
-					{
-						Quaternion rotation=Quaternion.LookRotation(Vector3.forward,Vector3.up);
-						transform.rotation = rotation;
+						transform.rotation = Quaternion.LookRotation(Vector3.forward,Vector3.up);
 						ToggleAI(false);
 						_anim.SetTrigger(Attack);
 					});
@@ -149,14 +129,8 @@ public class StickmanMovementController : MonoBehaviour
 			else
 			{
 				ToggleAI(false);
+				_anim.SetTrigger(Victory);
 			}
-
 		});
-	}
-
-	public void EnableParticles()
-	{
-		_splashParticle.gameObject.SetActive(true);
-		_splashParticle.Play();
 	}
 }

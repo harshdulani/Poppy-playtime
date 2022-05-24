@@ -72,7 +72,7 @@ namespace Player
 			var rb = kela.GetComponent<Rigidbody>();
 			if(showDebugPath)
 				DrawPath(startPoint.position, hitPoint);
-
+			
 			CalculateInitialVelocity(startPoint.position, hitPoint, out var initialVelocity);
 			rb.AddForce(initialVelocity, ForceMode.VelocityChange);
 			rb.AddTorque(Vector3.right * bananaTorque, ForceMode.VelocityChange);

@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StickmanBodyCollider : MonoBehaviour
 {
 	//private RagdollController raghu;
-	private StickmanRagdollerController raghu;
-	private StickmanMovementController stickmanMovement;
+	private StickmanRagdollerController _raghu;
+	private StickmanMovementController _stickmanMovement;
 
 	private void Start()
 	{
-		raghu = transform.root.GetComponent<StickmanRagdollerController>();
-		stickmanMovement = transform.root.GetComponent<StickmanMovementController>();
+		_raghu = transform.root.GetComponent<StickmanRagdollerController>();
+		_stickmanMovement = transform.root.GetComponent<StickmanMovementController>();
 	}
-	
 
 	private void OnCollisionEnter(Collision other)
 	{
@@ -21,13 +18,13 @@ public class StickmanBodyCollider : MonoBehaviour
 		if (!other.transform.CompareTag("PropObject") && !other.transform.CompareTag("TrapButton")) return;
 		
 		GetHit();
-		stickmanMovement.EnableParticles();
+		_stickmanMovement.EnableParticles();
 		other.transform.tag = "Untagged";
 	}
 
 	public void GetHit()
 	{
-		raghu.GoRagdoll(Vector3.back);
-		stickmanMovement.GetHit();
+		_raghu.GoRagdoll(Vector3.back);
+		_stickmanMovement.isDead = true;
 	}
 }
