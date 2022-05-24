@@ -63,7 +63,8 @@ public class VehicleMovement : MonoBehaviour
 
 		MovementSpeed = (endPoint.transform.position.z - _initZPos) / travelTime;
 		
-		DOVirtual.DelayedCall(travelTime * bombAppearsAtTravelPercent, () => bombInLevel.DOLocalMoveX(0f, 1f));
+		if(bombInLevel)
+			DOVirtual.DelayedCall(travelTime * bombAppearsAtTravelPercent, () => bombInLevel.DOLocalMoveX(0f, 1f));
 	}
 	
 	private void OnTapToPlay()
