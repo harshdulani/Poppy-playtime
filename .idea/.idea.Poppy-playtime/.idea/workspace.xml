@@ -20,6 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - Chase Heels Level.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - Chase Heels Level.unity.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/BananaThrower/Animations/VenomChasing.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BananaThrower/Animations/VenomChasing.controller" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/BananaThrower/Prefabs/Bomb.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BananaThrower/Prefabs/Bomb.prefab" afterDir="false" />
@@ -83,6 +85,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/TapState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - boss 1.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterSoldierController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - Chase Heels Level.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SoundHapticManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://E:/Extracted_Harsh/Push Em All/Shader/Shader #64.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 1.unity" root0="FORCE_HIGHLIGHTING" />
@@ -152,6 +155,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Shatterable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - boss.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PoppyMaster/EarthGod/Scripts 1/SupercrackTrigger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 6 - Poppy Chase Level.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/StateMachine/DragToSmashState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/HealthController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/CoinCollect Particle/_UI Particles/UIParticleSystem.cs" root0="FORCE_HIGHLIGHTING" />
@@ -161,6 +165,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Epic Toon FX/CoinCollect Particle/_Controlled Particles/ParticleControlScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - boss.meta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 6 - Venom Chase IceCream Level.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/LevelItems/HeartCanvas.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CardboardBox.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Dreamteck/Splines/Editor/Components/SplineMeshEditor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -261,11 +266,11 @@
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/LevelFlowController.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/TapState.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/vehicle/VehicleMovement.cs" />
-        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanRagdollerController.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/Player/ThrowMechanic.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/BombControl.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PropObjectCollider.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanBodyCollider.cs" />
+        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanRagdollerController.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanMovementController.cs" />
       </list>
     </option>
@@ -329,7 +334,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="minor fix" />
     <MESSAGE value="adding transparency to barrels" />
     <MESSAGE value="fixed more props to go transparent" />
     <MESSAGE value="changed color postfx settings, made sure ad buttons are not shown if ads are disabled from applovinmanager, both in SidebarShop and MainShop, punch animation is snappier" />
@@ -354,7 +358,8 @@
     <MESSAGE value="Fixed enemy collision bug introduced by earlier commit, revamped arms skins and added better skins" />
     <MESSAGE value="enemies wait till the enemy in front of them is dead to move up and hence now don't coincide" />
     <MESSAGE value="added bomb functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="added bomb functionality" />
+    <MESSAGE value="fixed bugs and changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs and changes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1029" y="172" width="524" height="824" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1653297648265">
@@ -389,10 +394,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1652876549544" />
-    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2" timestamp="1653395916235">
+    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2" timestamp="1653401903523">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1653395916235" />
+    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1653401903523" />
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1651659916398">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
