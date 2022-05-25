@@ -89,7 +89,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		if (unlockWeapons)
 		{
 			if (ShopStateController.CurrentState.AreAllWeaponsUnlocked()) return;
-		
+			
 			coloredWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderIndex());
 			blackWeaponImage.sprite = MainShopController.Main.GetWeaponSprite(GetLoaderIndex(), true);
 		}
@@ -108,7 +108,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 	}
-	
+
 	private void ShowMoneyPanel()
 	{
 		InputHandler.AssignTemporaryDisabledState();
@@ -163,12 +163,14 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		{
 			moneyPanel.SetActive(false);
 			//if everything is not already unlocked, show skin panel or directly skip to bonus level if there exists one
-			if (!(unlockWeapons ?
+			if (unlockWeapons ?
 				ShopStateController.CurrentState.AreAllWeaponsUnlocked() :
-				ShopStateController.CurrentState.AreAllArmSkinsUnlocked()))
-				ShowSkinPanel();
-			else if (bonusLevelPanel)
+				ShopStateController.CurrentState.AreAllArmSkinsUnlocked()
+				
+				&& bonusLevelPanel)
 				ShowBonusLevelPanel();
+			else
+				ShowSkinPanel();
 		});
 	}
 	
@@ -230,7 +232,11 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		skipMoneyButton.interactable = false;
 		claimMoneyButton.interactable = false;
 
-		if(bonusLevelPanel) return;
+		if(bonusLevelPanel)
+		{
+			ShowBonusLevelPanel();
+			return;
+		}
 		DOVirtual.DelayedCall(0.1f, _mainCanvas.NextLevel);
 	}
 
@@ -258,6 +264,8 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		blackWeaponImage.fillAmount = 1 - _currentSkinPercentageUnlocked;
 
 		PlayerPrefs.SetFloat("currentSkinPercentageUnlocked", _currentSkinPercentageUnlocked);
+		
+		Initialise();
 	}
 
 	private int GetMultiplierResult()
@@ -313,8 +321,6 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		//if still didn't find anything make sure loader isn't called anymore
 		if (!changed)
 			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
-
-		ResetLoader();
 	}
 
 	private void FindNewLoaderArmsSkin(int currentIndex)
@@ -349,8 +355,6 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		//if still didn't find anything make sure loader isn't called anymore
 		if (!changed)
 			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
-
-		ResetLoader();
 	}
 
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
@@ -370,7 +374,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		
 		//find new skin to be unlocking
 		FindNewLoaderArmsSkin(GetLoaderIndex());
-		
+
 		//Reset loader so that it doesn't look inconsistent with new weapon being loaded
 		ResetLoader();
 	}
@@ -395,7 +399,11 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		skipSkinButton.interactable = false;
 		claimMoneyButton.interactable = false;
 		
-		GameEvents.Only.InvokeWeaponSelect(GetLoaderIndex(), false);
+		if(unlockWeapons)
+			GameEvents.Only.InvokeWeaponSelect(GetLoaderIndex(), false);
+		else
+			GameEvents.Only.InvokeSkinSelect(GetLoaderIndex(), false);
+		
 		Vibration.Vibrate(20);
 
 		DOVirtual.DelayedCall(0.25f, _mainCanvas.NextLevel);

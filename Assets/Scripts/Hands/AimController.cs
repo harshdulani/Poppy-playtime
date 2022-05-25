@@ -149,8 +149,8 @@ public class AimController : MonoBehaviour
 
 	public void BringTargetBackUp()
 	{
-		if(_yPosTween.IsActive()) return;
-		
+		if(_yPosTween.IsActive()) _yPosTween.Kill();
+
 		_yPosTween = DOTween.To(() => CurrentYDistanceLerper, value => CurrentYDistanceLerper = value, 0f, .25f)
 			.OnUpdate(ChangeTargetTransformation).OnComplete(() => _myTarget = null);
 	}

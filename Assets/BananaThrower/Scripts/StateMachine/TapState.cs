@@ -21,9 +21,9 @@ namespace StateMachine
 			}
 			
 			var ray = Player.Camera.ScreenPointToRay(GetInputPosition());
-			
-			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
 
+			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
+			
 			if (hit.transform.CompareTag("TrapButton"))
 			{
 				//reusing this tag for bomb
@@ -47,13 +47,7 @@ namespace StateMachine
 			if(AudioManager.instance)
 				AudioManager.instance.Play("Button");
 
-			if (hit.transform.CompareTag("Target"))
-			{
-				PopScaleOfSelected(hit.transform.root);
-				
-			}
-
-			
+			if (hit.transform.CompareTag("Target")) PopScaleOfSelected(hit.transform.root);
 
 			Player.Thrower.NewShot(hit.transform, hit.point);
 			InputHandler.AssignNewState(InputState.Idle);

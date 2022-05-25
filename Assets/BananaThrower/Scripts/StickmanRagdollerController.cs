@@ -70,6 +70,7 @@ public class StickmanRagdollerController : MonoBehaviour
 			_material.DOColor(deadColor, 1f);
 		
 		_audioSource.Play();
+		CameraController.only.ScreenShake(2f);
 		Vibration.Vibrate(25);
 	}
 

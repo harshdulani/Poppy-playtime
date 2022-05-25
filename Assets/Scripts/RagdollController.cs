@@ -167,7 +167,6 @@ public class RagdollController : MonoBehaviour
 			rb.AddForce(direction * 10f, ForceMode.Impulse);
 			rb.tag = "Untagged";
 		}
-		print("ragdoll me");
 		//GameEvents.Only.InvokeEnemyKill();
 		GameEvents.Only.InvokeEnemyDied(transform);
 		InputHandler.Only.GetLeftHand().InformAboutRagdollDeath(this);

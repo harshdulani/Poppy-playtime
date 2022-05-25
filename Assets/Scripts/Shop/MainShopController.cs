@@ -175,7 +175,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		ReadCurrentShopState();
 	}
 
-	private void ChangeSelectedWeapon(int index = -1)
+	private static void ChangeSelectedWeapon(int index = -1)
 	{
 		for (var i = 0; i < GetWeaponSkinCount(); i++)
 		{
@@ -186,7 +186,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		}
 	}
 
-	private void ChangeSelectedArmsSkin(int index = -1)
+	private static void ChangeSelectedArmsSkin(int index = -1)
 	{
 		for (var i = 0; i < GetArmsSkinCount(); i++)
 		{

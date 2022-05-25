@@ -3,9 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public class ChaseLevelMainCanvasController : MonoBehaviour
 {
-    [SerializeField] private int lastRegularLevel;
+    public int lastRegularLevel;
 	
 	[SerializeField] private GameObject holdToAim, victory, defeat, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;
@@ -92,11 +93,6 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 		AudioManager.instance.Play("Lose");
 	}
 
-	public void EnableNextLevel()
-	{
-		nextLevelButton.interactable = true;
-	}
-
 	public void Retry()
 	{
 		if(ApplovinManager.instance)
@@ -132,8 +128,6 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
 	}
-
-	
 
 	private void OnTapToPlay()
 	{
@@ -178,7 +172,5 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
-
-	
 	}
 }

@@ -94,19 +94,13 @@ public class EnemyPatroller : MonoBehaviour
 	{
 		if (!chasePlayer)
 		{
-			print("status: " + status);
 			shouldPatrol = status;
 			if(_agent)
 				_agent.enabled = status;
 			_anim.SetBool(IsWalking, status);
 		}
 		else
-		{
-			print("toggle AI: " + gameObject.name);
 			_anim.SetBool(IsWalking, status);
-		}
-
-		
 	}
 
 	private void OnTapToPlay()

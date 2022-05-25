@@ -123,9 +123,7 @@ using UnityEngine;
 		}
 		private void OnEnemyDied(Transform t)
 		{
-			print("on enemy died: " + t.gameObject.name);
 			if(_deadBodies.Contains(t.transform)) return;
-			print("on enemy died");
 			OnEnemyKilled();
 			_deadBodies.Add(t.transform);
 		}

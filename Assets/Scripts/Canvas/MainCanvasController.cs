@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MainCanvasController : MonoBehaviour, IWantsAds
 {
-	[SerializeField] private int lastRegularLevel;
+	public int lastRegularLevel;
 	
 	[SerializeField] private GameObject holdToAim, defeat, retry, constantRetryButton, skipLevel;
 	[SerializeField] private TextMeshProUGUI levelText, instructionText;

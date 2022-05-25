@@ -18,7 +18,7 @@ public class StickmanMovementController : MonoBehaviour
 
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
 	private static readonly int Attack = Animator.StringToHash("attack1");
-	private static readonly int Victory = Animator.StringToHash("Victory");
+	private static readonly int Victory = Animator.StringToHash("hasWon");
 
 	private void OnEnable()
 	{
@@ -45,16 +45,15 @@ public class StickmanMovementController : MonoBehaviour
 	}
 
 	private void Update()
-	{
+	{	
 		if (isDead) return;
 		if (hasWon) return;
 		if (!_hasGameStarted) return;
-		
-		_transform.position += Vector3.forward * (VehicleMovement.MovementSpeed * _currentSpeedMultiplier * Time.deltaTime);
-		
 		if(_hasReached) return;
+
+		_transform.position += Vector3.forward * (VehicleMovement.MovementSpeed * _currentSpeedMultiplier * Time.deltaTime);
+
 		if(_slowedDownTemporarily) return;
-		
 		if(Vector3.Distance(_transform.position, _player.position) > _myMaxDistance) return;
 		_currentSpeedMultiplier = 1f;
 	}
@@ -108,6 +107,7 @@ public class StickmanMovementController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
+		hasWon = true;
 		BananaThrower.LevelFlowController.only.TryAssignMinDistance(Vector3.Distance(_transform.position, _player.position), this);
 		DOVirtual.DelayedCall(0.1f, () =>
 		{
@@ -118,10 +118,10 @@ public class StickmanMovementController : MonoBehaviour
 				var vehiclePosZ = _player.root.position.z;
 				var dirToLookIn = position1 - position;
 				transform.DOMove(new Vector3(0, position.y, vehiclePosZ - attackDistance), 0.9f)
-					.OnStart(() => transform.rotation = Quaternion.LookRotation(dirToLookIn,Vector3.up))
+					.OnStart(() => transform.DORotateQuaternion(Quaternion.LookRotation(dirToLookIn,Vector3.up), 0.2f))
 					.OnComplete(() =>
 					{
-						transform.rotation = Quaternion.LookRotation(Vector3.forward,Vector3.up);
+						transform.DORotateQuaternion(Quaternion.LookRotation(Vector3.forward,Vector3.up), 0.2f);
 						ToggleAI(false);
 						_anim.SetTrigger(Attack);
 					});
@@ -129,6 +129,7 @@ public class StickmanMovementController : MonoBehaviour
 			else
 			{
 				ToggleAI(false);
+				if(isDead) return;
 				_anim.SetTrigger(Victory);
 			}
 		});

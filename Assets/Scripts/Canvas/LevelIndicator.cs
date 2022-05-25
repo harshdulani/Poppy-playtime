@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -12,7 +11,9 @@ public struct ThemeInfo
 
 public class LevelIndicator : MonoBehaviour
 {
-	[SerializeField] private GameObject indicator, plainText;
+	[SerializeField] private int levelsPerTheme = 7;
+	[SerializeField] private GameObject indicator;
+	[SerializeField] private TextMeshProUGUI plainText;
 	[SerializeField] private RectTransform progressBarFillRect;
 	[SerializeField] private Image progressBarFill;
 	[SerializeField] private Transform circlesRoot;
@@ -22,7 +23,10 @@ public class LevelIndicator : MonoBehaviour
 	private List<Image> _backgroundCircles, _foregroundCircles;
 	private List<TextMeshProUGUI> _levelNums;
 	private List<Transform> _textRects;
-	private const int LevelsPerTheme = 7;
+
+	private MainCanvasController _mainCanvas;
+	private ChaseLevelMainCanvasController _chaseMainCanvas;
+	private bool _isChaseLevel;
 
 	private void OnEnable()
 	{
@@ -40,8 +44,13 @@ public class LevelIndicator : MonoBehaviour
 		_foregroundCircles = new List<Image>();
 		_levelNums = new List<TextMeshProUGUI>();
 		_textRects = new List<Transform>();
+		if (!TryGetComponent(out _mainCanvas))
+		{
+			TryGetComponent(out _chaseMainCanvas);
+			_isChaseLevel = true;
+		}
 
-		for (var i = 0; i < LevelsPerTheme; i++)
+		for (var i = 0; i < levelsPerTheme; i++)
 		{
 			var currentChild = circlesRoot.GetChild(i);
 			_backgroundCircles.Add(currentChild.GetComponent<Image>());
@@ -57,28 +66,31 @@ public class LevelIndicator : MonoBehaviour
 		}
 		
 		if(MakeCurrentLevel()) return;
-
+		
 		indicator.SetActive(false);
-		plainText.SetActive(true);
+		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
+		plainText.text = "Level " + levelNo;
+		plainText.gameObject.SetActive(true);
 	}
 
 	private bool MakeCurrentLevel()
 	{
 		var currentLevel = PlayerPrefs.GetInt("levelNo") - 1;
-
-		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
-		if (SceneManager.sceneCountInBuildSettings < currentLevel) return false;
-
-		var currentThemedLevel = currentLevel % LevelsPerTheme;
-		var currentTheme = Mathf.FloorToInt(currentLevel / (float) LevelsPerTheme);
+		var lastRegLevel = _isChaseLevel ? _chaseMainCanvas.lastRegularLevel : _mainCanvas.lastRegularLevel;
 		
-		for (var i = 0; i < LevelsPerTheme; i++)
+		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
+		if (currentLevel > lastRegLevel) return false;
+
+		var currentThemedLevel = currentLevel % levelsPerTheme;
+		var currentTheme = Mathf.FloorToInt(currentLevel / (float) levelsPerTheme);
+		
+		for (var i = 0; i < levelsPerTheme; i++)
 		{
 			_backgroundCircles[i].color = theme.backgroundCircleColor;
 			_foregroundCircles[i].color = i < currentThemedLevel ? theme.foregroundCircleColor : Color.clear;
 			
 			if(_levelNums[i])
-				_levelNums[i].text = ((currentTheme * LevelsPerTheme) + i).ToString();
+				_levelNums[i].text = ((currentTheme * levelsPerTheme) + i).ToString();
 
 			if (i != currentThemedLevel)
 			{
@@ -91,7 +103,7 @@ public class LevelIndicator : MonoBehaviour
 		}
 		
 		progressBarFill.color = theme.progressBarColor;
-		progressBarFillRect.anchorMax = new Vector2(currentThemedLevel / (float)LevelsPerTheme, progressBarFillRect.anchorMax.y);
+		progressBarFillRect.anchorMax = new Vector2(currentThemedLevel / (float)levelsPerTheme, progressBarFillRect.anchorMax.y);
 		return true;
 	}
 
@@ -102,6 +114,6 @@ public class LevelIndicator : MonoBehaviour
 		if(!LevelFlowController.only.IsInGiantFight()) return;
 		
 		indicator.SetActive(false);
-		plainText.SetActive(false);
+		plainText.gameObject.SetActive(false);
 	}
 }
