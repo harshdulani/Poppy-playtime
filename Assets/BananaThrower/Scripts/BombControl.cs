@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Player;
 using UnityEngine;
 
 public class BombControl : MonoBehaviour
@@ -21,10 +22,12 @@ public class BombControl : MonoBehaviour
 	private readonly List<Transform> _affected = new List<Transform>();
 
 	private Transform _transform;
-	
+	private PlayerRefBank _player;
+
 	private void Start()
 	{
 		_transform = transform;
+		_player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerRefBank>();
 		
 		_transform.localScale = Vector3.one * 0.2f;
 
@@ -69,6 +72,22 @@ public class BombControl : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
+	public void HoldBomb()
+	{
+		if(!onDisplay) return;
+
+		onDisplay = false;
+		_player.Thrower.ThrowBombNextTime();
+		_transform.parent = _player.bombHolder;
+		DOTween.Kill(_transform);
+		_hoverTween.Kill();
+		_transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.InBack);
+		_transform.DOLocalRotate(Vector3.zero, 0.5f).SetEase(Ease.InBack);
+		_transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InBack);
+		text.SetActive(false);
+		isHeld = true;
+	}
+	
 	public void HoldBomb(Transform hand)
 	{
 		if(!onDisplay) return;

@@ -53,7 +53,6 @@ namespace StateMachine
 		{
 			if (!HandleTapToPlay()) return;
 			
-			//print($"{_currentInputState}");
 			if (_currentInputState is IdleState)
 			{
 				var oldState = _currentInputState;
@@ -63,6 +62,7 @@ namespace StateMachine
 					_currentInputState?.OnEnter();
 			}
 
+			//print($"{_currentInputState}");
 			_currentInputState?.Execute();
 		}
 
@@ -75,11 +75,7 @@ namespace StateMachine
 		{
 			if (_tappedToPlay) return true;
 
-			if (!InputExtensions.GetFingerDown()) return false;
-
-			if (!EventSystem.current) { print("no event system"); return false; }
-
-			if (EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1)) return false;
+			if (!HasTappedOverUi()) return false;
 
 			_tappedToPlay = true;
 			GameEvents.Only.InvokeTapToPlay();
@@ -88,8 +84,21 @@ namespace StateMachine
 			return true;
 		}
 
+		private static bool HasTappedOverUi()
+		{
+			if (!InputExtensions.GetFingerDown()) return false;
+
+			if (!EventSystem.current) { print("no event system"); return false; }
+
+			if (EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1)) return false;
+
+			return true;
+		}
+
 		private InputStateBase HandleInput()
 		{
+			//if (GameExtensions.GetObjectUnderPointer()) return _currentInputState;
+			
 			if (InputExtensions.GetFingerUp()) return TapState;
 			
 			return _currentInputState;

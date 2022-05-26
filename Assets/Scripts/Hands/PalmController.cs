@@ -172,7 +172,7 @@ public class PalmController : MonoBehaviour
 	
 			DOVirtual.DelayedCall(punchWaitTime, EnablePunching);
 			DOVirtual.DelayedCall(0.5f, ResetAdoptability);
-			HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
+			//HandController.Sounds.PlaySound(HandController.Sounds.punch[_punchIndex++ % HandController.Sounds.punch.Length], 1f);
 	
 			//this is for climber level
 			ShatterableParent.TryAddToPossibleShatterers(trans.root);

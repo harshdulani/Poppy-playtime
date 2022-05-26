@@ -50,17 +50,17 @@ public static class GameExtensions
 	/// <summary>
 	/// Use whenever you can't find out why a canvas element is not being pressed
 	/// </summary>
-	public static void GetObjectUnderPointer()
+	public static GameObject GetObjectUnderPointer()
 	{
 		//if you have InputExtensions.cs, replace these first 2 lines with appropriate simplified calls.
-		if (!Input.GetMouseButtonDown(0)) return;
+		if (!Input.GetMouseButtonDown(0)) return null;
 		
 		var pointerData = new PointerEventData(EventSystem.current) {pointerId = -1, position = Input.mousePosition};
 
 		var results = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(pointerData, results);
 			
-		Print(results[0].gameObject);
+		return results[0].gameObject;
 	}
 	
 	/// <summary>

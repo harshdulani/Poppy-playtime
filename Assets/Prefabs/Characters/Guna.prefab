@@ -170,7 +170,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -290,12 +290,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09a7d1df444cda4e87497add58480d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasWeapon: 0
-  enterPatrolAreaRunning: 0
+  shouldPatrol: 1
   myPatrolArea: 0
   waypoints: []
+  hasWeapon: 0
+  chasePlayer: 0
   waypointChangeDistance: 3.25
-  shouldPatrol: 1
+  speed: 2
 --- !u!114 &1495773453561718391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,13 +326,17 @@ MonoBehaviour:
   - {fileID: 2555744750210636467}
   isRagdoll: 0
   isWaitingForPunch: 0
-  shouldTurnToGrey: 1
+  isAttackerSoCantRagdoll: 0
+  giantStompForce: 500
   skin: {fileID: 5561122229426260921}
+  shouldTurnToGrey: 1
+  shouldMirror: 1
   toChangeMatIndex: 1
   deadColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+  touchToKill: 0
+  armor: []
   punch1: {fileID: 8300000, guid: 717bbbc0d4f18cc4696041fa6c4b1bcd, type: 3}
   punch2: {fileID: 8300000, guid: 61b40c6e692ffdf4a89aba7ad5b71aca, type: 3}
-  giantStompForce: 500
 --- !u!195 &1495773453561718390
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -524,7 +529,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -602,7 +607,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1026,7 +1031,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1150,7 +1155,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1274,7 +1279,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1398,7 +1403,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1523,7 +1528,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1711,7 +1716,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1835,7 +1840,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1958,7 +1963,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

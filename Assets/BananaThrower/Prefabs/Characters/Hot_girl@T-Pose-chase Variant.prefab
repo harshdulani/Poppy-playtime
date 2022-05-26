@@ -483,11 +483,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7957856693096366059}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.77068055, y: 1.6164812, z: 0.6531809}
-  m_Center: {x: 0.014510816, y: 0.85495394, z: 0.6065907}
+  m_Size: {x: 0.77068055, y: 1.6164814, z: 0.83075565}
+  m_Center: {x: 0.0145108225, y: 0.85495394, z: 0.9026825}
 --- !u!114 &1165083385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,3 +532,6 @@ MonoBehaviour:
   _splashParticle: {fileID: 4407806765270432760}
   fastMoveSpeedMultiplier: 1.2
   maxDistanceToPlayer: 13
+  attackDistance: 7
+  isDead: 0
+  hasWon: 0

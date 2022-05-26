@@ -36,7 +36,7 @@ public class TapState : InputStateBase
 			return;
 		}
 		
-		//Print(hit.transform.root.gameObject);
+		//Print(hit.transform.gameObject);
 		if (!hit.collider.CompareTag("Target") && !hit.collider.CompareTag("TrapButton") && !hit.collider.CompareTag("ChainLink"))
 		{
 			InputHandler.AssignNewState(InputHandler.IdleState, false);

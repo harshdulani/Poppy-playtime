@@ -123,8 +123,6 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
-		ShopStateController.ShopStateSerializer.SaveCurrentState();
-		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
 	}

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class BonusLevelButton : MonoBehaviour
 {
-	[SerializeField] private int firstBonusLevel, myBuildIndexOffset; 
+	[SerializeField] private int myBuildIndexOffset; 
 	
 	[SerializeField] private Transform star;
 	[SerializeField] private float maxScale = 1.25f, maxStarRotation, starRotationLoopDuration;
@@ -23,6 +23,6 @@ public class BonusLevelButton : MonoBehaviour
 
 	public void GoToBonusLevelOnButtonPress()
 	{
-		SceneManager.LoadScene(firstBonusLevel + myBuildIndexOffset);
+		SceneManager.LoadScene(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().lastRegularLevel + 1 + myBuildIndexOffset);
 	}
 }

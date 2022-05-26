@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-//using TMPro;
 using UnityEngine;
 
 public enum CarriedObjectType
@@ -61,9 +60,6 @@ public class HandController : MonoBehaviour
 
 	private static Vector3 _targetInitPos;
 	private static bool _initPosSet;
-
-	//private TextMeshProUGUI _text;
-	//private string _testString;
 	
 	#region Animator Hashes
 	private static readonly int Attack = Animator.StringToHash("attack");
@@ -153,8 +149,6 @@ public class HandController : MonoBehaviour
 		_audio = GetComponent<AudioSource>();
 		
 		UpdateEquippedWeaponsSkin();
-
-		//_text = GameObject.FindGameObjectWithTag("AimCanvas").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
 	}
 
 	public void MoveRopeEndTowards(RaycastHit hit, bool goHome = false)
@@ -399,10 +393,10 @@ public class HandController : MonoBehaviour
 
 	public void UpdateEquippedWeaponsSkin(bool initialising = true, int newWeapon = -1)
 	{
-		//_text.text = "" + SkinLoader.GetSkinName() + $", number {PlayerPrefs.GetInt("currentWeaponSkinInUse", 0)} out of {SkinLoader.only.GetSkinCount()}"; 
 		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
 		
 		hammer.transform.parent.SetAllChildrenInactive(1);
+		hammer.transform.parent.GetChild(0).gameObject.SetActive(true);
 
 		if(!initialising)
 		{

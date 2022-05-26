@@ -89,8 +89,7 @@ public class InputHandler : MonoBehaviour
 		if (_inTapCooldown) { _leftHandState?.Execute(); return; }
 		
 		if(userIsWatchingAnAdForPickup) return;
-
-		//print($"{_leftHandState}");
+		
 		if (_leftHandState is IdleState)
 		{
 			var oldState = _leftHandState;
@@ -108,7 +107,8 @@ public class InputHandler : MonoBehaviour
 				_leftHandState.OnExit();
 			//here lies "cancel hand going to a enemy". go dig the git grave if you want it back
 		}
-
+		
+		//print($"{_leftHandState}");
 		_leftHandState?.Execute();
 	}
 
@@ -124,7 +124,7 @@ public class InputHandler : MonoBehaviour
 		if (isUsingTapAndPunch)
 		{
 			if (!InputExtensions.GetFingerDown()) return _leftHandState;
-			
+
 			return _tapState;
 		}
 
@@ -137,16 +137,23 @@ public class InputHandler : MonoBehaviour
 	{
 		if (_tappedToPlay) return true;
 
+		if (!HasTappedOverUi()) return false;
+
+		_tappedToPlay = true;
+		GameEvents.Only.InvokeTapToPlay();
+		
+		//PutInTapCoolDown(0.25f);
+		return true;
+	}
+
+	public static bool HasTappedOverUi()
+	{
 		if (!InputExtensions.GetFingerDown()) return false;
 
 		if (!EventSystem.current) { print("no event system"); return false; }
 
 		if (EventSystem.current.IsPointerOverGameObject(InputExtensions.IsUsingTouch ? Input.GetTouch(0).fingerId : -1)) return false;
 
-		_tappedToPlay = true;
-		GameEvents.Only.InvokeTapToPlay();
-		
-		//PutInTapCoolDown(0.25f);
 		return true;
 	}
 
