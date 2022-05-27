@@ -67,10 +67,9 @@ using UnityEngine;
 		private IEnumerator WaitBeforeMovingToNextArea()
 		{
 			//were waiting so that the Wrist/ WristController can return to arm
-
 			const float timer = 1f;
 			var elapsed = 0f;
-			const float intervals = 0.2f;
+			const float intervals = 0.1f;
 			while (!InputHandler.IsInIdleState())
 			{
 				elapsed += intervals;
@@ -85,8 +84,8 @@ using UnityEngine;
 				GameEvents.Only.InvokeGameEnd();
 			else
 			{
-				GameEvents.Only.InvokeMoveToNextArea();
 				InputHandler.AssignTemporaryDisabledState();
+				GameEvents.Only.InvokeMoveToNextArea();
 			}
 		}
 

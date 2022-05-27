@@ -70,7 +70,7 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 		defeat.SetActive(true);
 		retry.SetActive(true);
-		skipLevel.SetActive(true);
+		//skipLevel.SetActive(true);Pl
 		constantRetryButton.SetActive(false);
 		_hasLost = true;
 		

@@ -22,7 +22,7 @@
 
 		if(InputExtensions.GetFingerUp())
 		{
-			InputHandler.Only.GetLeftHand().TryGivePunch();
+			InputHandler.Only.GetRightHand().TryGivePunch();
 			_aimer.BringTargetBackUp();
 			return;
 		}

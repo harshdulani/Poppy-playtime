@@ -218,7 +218,7 @@ public class RagdollController : MonoBehaviour
 
 	public void WalkOnAnimation()
 	{
-		CameraController.only.ScreenShake(1f);
+		CameraController.only.ScreenShake(0.5f);
 	}
 
 	public void HitOnAnimation()

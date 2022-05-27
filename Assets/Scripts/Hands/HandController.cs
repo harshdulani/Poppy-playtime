@@ -394,7 +394,6 @@ public class HandController : MonoBehaviour
 	public void UpdateEquippedWeaponsSkin(bool initialising = true, int newWeapon = -1)
 	{
 		currentWeaponsSkin = (WeaponType) (newWeapon == -1 ? ShopStateController.CurrentState.GetCurrentWeapon() : newWeapon);
-		
 		hammer.transform.parent.SetAllChildrenInactive(1);
 		hammer.transform.parent.GetChild(0).gameObject.SetActive(true);
 
@@ -600,9 +599,8 @@ public class HandController : MonoBehaviour
 			PropHeldToPunch.PlayerLetsGo();
 			PropHeldToPunch = null;
 		}
-		
-		if (currentWeaponsSkin != WeaponType.Pastry || currentWeaponsSkin != WeaponType.IceCream) return;
-		
+
+		if (currentWeaponsSkin != WeaponType.Pastry && currentWeaponsSkin != WeaponType.IceCream) return;
 		pastrySplash.Play();
 		_audio.PlayOneShot(splashAudioClip);
 	}
