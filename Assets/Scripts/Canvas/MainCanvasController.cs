@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainCanvasController : MonoBehaviour, IWantsAds
+public class MainCanvasController : MonoBehaviour//, IWantsAds
 {
 	public int lastRegularLevel;
 	
@@ -48,8 +48,11 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 		PlayerPrefs.SetInt("lastRegularLevel", lastRegularLevel);
 		
-		if(GAScript.Instance)
-			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
+		//if(GAScript.Instance)
+		//GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
+
+		if(YcHelper.InstanceExists)
+			YcHelper.LevelStart(PlayerPrefs.GetInt("levelNo", 0));
 	}
 
 	private void Update()
@@ -79,20 +82,45 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	public void Retry()
 	{
+		/*
 		if(ApplovinManager.instance)
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
-		
+		*/
+		if (YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(RetryBehaviour);
+			return;
+		}
+
+		RetryBehaviour();
+	}
+
+	private void RetryBehaviour()
+	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
 	}
 
 	public void NextLevel()
 	{
+		/*
 		if(ApplovinManager.instance)
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
+		*/
+
+		if (YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(NextLevelBehaviour);
+			return;
+		}
 		
+		NextLevelBehaviour();
+	}
+
+	private void NextLevelBehaviour()
+	{
 		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
@@ -115,14 +143,21 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	public void SkipLevel()
 	{
-		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
-
-		AdsMediator.StartListeningForAds(this);
+		/*if(!ApplovinManager.instance.TryShowRewardedAds()) return;
+		AdsMediator.StartListeningForAds(this);*/
+		
+		if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+			YcHelper.ShowRewardedAds(AdRewardRecieveBehaviour);
 	}
 
 	public void ABToggle(bool status)
 	{
 		InputHandler.Only.ShouldUseTapAndPunch(status);
+	}
+	
+	public void ShowGDPRButton()
+	{
+		YcHelper.ShowGDPR();
 	}
 
 	private void OnTapToPlay()
@@ -133,17 +168,23 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 
 	private void OnEnemyReachPlayer()
 	{
-		if(GAScript.Instance)
-			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
-		
+		//if(GAScript.Instance)
+		//	GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
+
+		if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(false);
+
 		DOVirtual.DelayedCall(1.5f, EnableLossObjects);
 	}
 
 	private void OnGameEnd()
 	{
-		if(GAScript.Instance)
-			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
+		//if(GAScript.Instance)
+		//GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
 
+		if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(true);
+		
 		_hasLost = false;
 	}
 
@@ -169,9 +210,10 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
 
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 	}
 
+	/*
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
 		AdRewardRecieveBehaviour();
@@ -195,5 +237,5 @@ public class MainCanvasController : MonoBehaviour, IWantsAds
 	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
 	{
 		AdsMediator.StopListeningForAds(this);
-	}
+	}*/
 }

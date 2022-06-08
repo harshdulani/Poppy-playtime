@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 
 public interface IWantsAds
@@ -71,4 +71,4 @@ public static class AdsMediator
 		MaxSdkCallbacks.Rewarded.OnAdHiddenEvent -= subscriber.OnAdHidden;
 		MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent -= subscriber.OnAdFailed;
 	}
-}
+}*/

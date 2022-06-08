@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 
 
-public class SidebarShopController : MonoBehaviour, IWantsAds
+public class SidebarShopController : MonoBehaviour//, IWantsAds
 {
 	private enum AdRewardTypes
 	{
@@ -69,7 +69,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		GameEvents.Only.WeaponSelect -= OnWeaponPurchase;
 	}
 
-	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Start()
 	{
@@ -134,7 +134,8 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			speedButton.interactable = GetCoinCount() >= speedLevelCosts[_currentSpeedLevel + 1];
 			if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 			{
-				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				//if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
 				{
 					speedButton.image.sprite = VideoBtn;
 					speedCostText.gameObject.SetActive(false);
@@ -167,7 +168,8 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			powerButton.interactable = GetCoinCount() >= powerLevelCosts[_currentPowerLevel + 1];
 			if (GetCoinCount() < powerLevelCosts[_currentPowerLevel + 1])
 			{
-				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				//if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
 				{
 					powerButton.image.sprite = VideoBtn;
 					powerCostText.gameObject.SetActive(false);
@@ -207,7 +209,8 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 			skinButton.interactable = GetCoinCount() >= MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()];
 			if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 			{
-				if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				//if(ApplovinManager.instance && ApplovinManager.instance.enableAds)
+				if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
 				{
 					skinButton.image.sprite = VideoBtn;
 					skinCostText.gameObject.SetActive(false);
@@ -236,15 +239,25 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		if (GetCoinCount() < speedLevelCosts[_currentSpeedLevel + 1])
 		{
+			/*
 			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Speed);
 			AdsMediator.StartListeningForAds(this);
+			*/
+			
+			if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+			{
+				StartWaiting(AdRewardTypes.Speed);
+				YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
+			}
 		}
 		else
 			BuySpeed();
 
-		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		//if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+			
 		_allowedToPressButton = speedButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = speedButton.interactable = true);
 	}
@@ -255,15 +268,25 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		if (GetCoinCount() < powerLevelCosts[_currentPowerLevel + 1])
 		{
+			/*
 			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Power);
 			AdsMediator.StartListeningForAds(this);
+			*/
+			
+			if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+			{
+				StartWaiting(AdRewardTypes.Power);
+				YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
+			}
 		}
 		else
 			BuyPower();
 		
-		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		//if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
 		_allowedToPressButton = powerButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = powerButton.interactable = true);
 	}
@@ -274,15 +297,24 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		
 		if (GetCoinCount() < MainShopController.Main.weaponSkinCosts[GetSidebarWeapon()])
 		{
+			/*
 			if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds || !ApplovinManager.instance.TryShowRewardedAds()) return;
 
 			StartWaiting(AdRewardTypes.Weapon);
 			AdsMediator.StartListeningForAds(this);
+			*/
+			if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+			{
+				StartWaiting(AdRewardTypes.Weapon);
+				YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
+			}
 		}
 		else
 			BuyWeapon();
 		
-		if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		//if(!ApplovinManager.instance || !ApplovinManager.instance.enableAds) return;
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
 		_allowedToPressButton = skinButton.interactable = false;
 		DOVirtual.DelayedCall(CooldownTimerDuration, () => _allowedToPressButton = skinButton.interactable = true);
 	}
@@ -293,7 +325,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		if (usingAds)
 		{
 			StopWaiting();
-			AdsMediator.StopListeningForAds(this);
+			//AdsMediator.StopListeningForAds(this);
 			_currentSpeedLevel++;
 		}
 		else
@@ -316,7 +348,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		if (usingAds)
 		{
 			StopWaiting();
-			AdsMediator.StopListeningForAds(this);
+			//AdsMediator.StopListeningForAds(this);
 			_currentPowerLevel++;
 		}
 		else
@@ -338,7 +370,7 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		if (usingAds)
 		{
 			StopWaiting();
-			AdsMediator.StopListeningForAds(this);
+			//AdsMediator.StopListeningForAds(this);
 		}
 		
 		skinButtonPressAnimation.Play();
@@ -405,9 +437,10 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 		}
 
 		StopWaiting();
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 	}
-
+	
+	/*
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
 		AdRewardReceiveBehaviour();
@@ -434,5 +467,5 @@ public class SidebarShopController : MonoBehaviour, IWantsAds
 	{
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
-	}
+	}*/
 }

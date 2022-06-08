@@ -8,7 +8,7 @@ public class InGamePanel : MonoBehaviour
     public GameObject levelNum;
     public TextMeshProUGUI levelNumTxt;
     GameEssentials gameEssentials => GameEssentials.instance;
-	GAScript ga { get { return GAScript.Instance; } }
+	//GAScript ga { get { return GAScript.Instance; } }
 
     private void Awake()
     {
@@ -19,8 +19,11 @@ public class InGamePanel : MonoBehaviour
 
     void Start()
     {
-        if(ga)
-            ga.LevelStart(PlayerPrefs.GetInt("levelNo", 1) +" bonus");
+        //if(ga)
+//            ga.LevelStart(PlayerPrefs.GetInt("levelNo", 1) +" bonus");
+
+		if(YcHelper.InstanceExists)
+			YcHelper.LevelStart(PlayerPrefs.GetInt("levelNo", 1) + 1000);
     }
 
     public void TurnOnDefaultIcons()

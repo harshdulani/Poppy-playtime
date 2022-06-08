@@ -15,18 +15,31 @@ public class LevelComplete : MonoBehaviour
     void Start()
     {
 		_lastRegularLevel = PlayerPrefs.GetInt("lastRegularLevel");
-        if(GAScript.Instance)
-            GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo") + " bonus");
+        //if(GAScript.Instance)
+//            GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo") + " bonus");
+
+		if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(true);
+
         //levelNumber++;
      //   gameEssentials.sd.SetLevelNumber(levelNumber);
     }
 
     void SaveLevels()
     {
-		if (ApplovinManager.instance)
+		/*
+		 if (ApplovinManager.instance)
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
+		*/
 		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		YcHelper.ShowInterstitial(SaveLevelsBehaviour);
+	}
+
+	private void SaveLevelsBehaviour()
+	{
 		if (PlayerPrefs.GetInt("levelNo", 1) < _lastRegularLevel)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;

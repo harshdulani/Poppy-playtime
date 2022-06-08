@@ -50,8 +50,11 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 		PlayerPrefs.SetInt("lastRegularLevel", lastRegularLevel);
 		
-		if(GAScript.Instance)
-			GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
+		//if(GAScript.Instance)
+		//GAScript.Instance.LevelStart(PlayerPrefs.GetInt("levelNo", 0).ToString());
+
+		if(YcHelper.InstanceExists)
+			YcHelper.LevelStart(PlayerPrefs.GetInt("levelNo", 0));
 	}
 
 	private void Update()
@@ -95,20 +98,45 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 	public void Retry()
 	{
+		/*
 		if(ApplovinManager.instance)
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
-		
+		*/
+		if (YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(RetryBehaviour);
+			return;
+		}
+
+		RetryBehaviour();
+	}
+
+	private void RetryBehaviour()
+	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
 	}
 
 	public void NextLevel()
 	{
+		/*
 		if(ApplovinManager.instance)
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
+		*/
+
+		if (YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(NextLevelBehaviour);
+			return;
+		}
 		
+		NextLevelBehaviour();
+	}
+
+	private void NextLevelBehaviour()
+	{
 		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
 		{
 			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
@@ -123,6 +151,8 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 		}
 		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
 	}
@@ -135,18 +165,24 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 	private void OnEnemyReachPlayer()
 	{
-		if(GAScript.Instance)
-			GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
-		
+		//if(GAScript.Instance)
+		//	GAScript.Instance.LevelFail(PlayerPrefs.GetInt("levelNo").ToString());
+
+		if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(false);
+
 		DOVirtual.DelayedCall(1.5f, EnableLossObjects);
 	}
 
 	private void OnGameEnd()
 	{
-		if(GAScript.Instance)
-			GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
+		//if(GAScript.Instance)
+		//GAScript.Instance.LevelCompleted(PlayerPrefs.GetInt("levelNo").ToString());
 
-		DOVirtual.DelayedCall(1.5f, EnableVictoryObjects);
+		if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(true);
+		
+		_hasLost = false;
 	}
 
 	private void AdRewardRecieveBehaviour()
@@ -170,5 +206,10 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 		AudioManager.instance.Play("Button");
 		Vibration.Vibrate(15);
+	}
+
+	public void ShowGDPRButton()
+	{
+		YcHelper.ShowGDPR();
 	}
 }

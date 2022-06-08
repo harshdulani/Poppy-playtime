@@ -1,4 +1,4 @@
-using DG.Tweening;
+/*using DG.Tweening;
 using UnityEngine;
 
 public class ApplovinManager : MonoBehaviour
@@ -221,4 +221,4 @@ public class ApplovinManager : MonoBehaviour
 		MaxSdk.ShowRewardedAd(rewardedAdUnitId);
 		return true;
 	}
-}
+}*/

@@ -388,14 +388,32 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Set custom data to be set in the ILRD postbacks via the {CUSTOM_DATA}  macro.
+    /// Set a local extra parameter for the banner ad.
     /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the banner to set the custom postback data for.</param>
-    /// <param name="value">The value for the custom postback data.</param>
-    public static void SetBannerCustomPostbackData(string adUnitIdentifier, string value)
+    /// <param name="adUnitIdentifier">Ad unit identifier of the banner to set the local extra parameter for.</param>
+    /// <param name="key">The key for the local extra parameter.</param>
+    /// <param name="value">The value for the extra parameter. Needs to be of type <see cref="AndroidJavaObject"/> or <c>null</c></param>
+    public static void SetBannerLocalExtraParameter(string adUnitIdentifier, string key, object value)
     {
-        ValidateAdUnitIdentifier(adUnitIdentifier, "set banner custom postback data");
-        MaxUnityPluginClass.CallStatic("setBannerCustomPostbackData", adUnitIdentifier, value);
+        if (value != null && value.GetType() != typeof(AndroidJavaObject))
+        {
+            MaxSdkLogger.E("Failed to set local extra parameter. Android local extra parameters need to be of type AndroidJavaObject");
+            return;
+        }
+
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set banner local extra parameter");
+        MaxUnityPluginClass.CallStatic("setBannerLocalExtraParameter", adUnitIdentifier, key, (AndroidJavaObject) value);
+    }
+
+    /// <summary>
+    /// The custom data to tie the showing banner ad to, for ILRD and rewarded postbacks via the <c>{CUSTOM_DATA}</c> macro. Maximum size is 8KB.
+    /// </summary>
+    /// <param name="adUnitIdentifier">Banner ad unit identifier of the banner to set the custom data for.</param>
+    /// <param name="customData">The custom data to be set.</param>
+    public static void SetBannerCustomData(string adUnitIdentifier, string customData)
+    {
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set banner custom data");
+        MaxUnityPluginClass.CallStatic("setBannerCustomData", adUnitIdentifier, customData);
     }
 
     /// <summary>
@@ -541,14 +559,32 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Set custom data to be set in the ILRD postbacks via the {CUSTOM_DATA}  macro.
+    /// Set a local extra parameter for the MREC ad.
     /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the MREC to set the custom postback data for.</param>
-    /// <param name="value">The value for the custom postback data.</param>
-    public static void SetMRecCustomPostbackData(string adUnitIdentifier, string value)
+    /// <param name="adUnitIdentifier">Ad unit identifier of the MREC to set the local extra parameter for.</param>
+    /// <param name="key">The key for the local extra parameter.</param>
+    /// <param name="value">The value for the extra parameter. Needs to be of type <see cref="AndroidJavaObject"/> or <c>null</c></param>
+    public static void SetMRecLocalExtraParameter(string adUnitIdentifier, string key, object value)
     {
-        ValidateAdUnitIdentifier(adUnitIdentifier, "set MREC custom postback data");
-        MaxUnityPluginClass.CallStatic("setMRecCustomPostbackData", adUnitIdentifier, value);
+        if (value != null && value.GetType() != typeof(AndroidJavaObject))
+        {
+            MaxSdkLogger.E("Failed to set local extra parameter. Android local extra parameters need to be of type AndroidJavaObject");
+            return;
+        }
+
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set MREC local extra parameter");
+        MaxUnityPluginClass.CallStatic("setMRecLocalExtraParameter", adUnitIdentifier, key, (AndroidJavaObject) value);
+    }
+
+    /// <summary>
+    /// The custom data to tie the showing MREC ad to, for ILRD and rewarded postbacks via the <c>{CUSTOM_DATA}</c> macro. Maximum size is 8KB.
+    /// </summary>
+    /// <param name="adUnitIdentifier">MREC Ad unit identifier of the banner to set the custom data for.</param>
+    /// <param name="customData">The custom data to be set.</param>
+    public static void SetMRecCustomData(string adUnitIdentifier, string customData)
+    {
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set MREC custom data");
+        MaxUnityPluginClass.CallStatic("setMRecCustomData", adUnitIdentifier, customData);
     }
 
     /// <summary>
@@ -684,26 +720,18 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Present loaded interstitial. Note: if the interstitial is not ready to be displayed nothing will happen.
-    /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the interstitial to load</param>
-    public static void ShowInterstitial(string adUnitIdentifier)
-    {
-        ShowInterstitial(adUnitIdentifier, null);
-    }
-
-    /// <summary>
     /// Present loaded interstitial for a given placement to tie ad events to. Note: if the interstitial is not ready to be displayed nothing will happen.
     /// </summary>
     /// <param name="adUnitIdentifier">Ad unit identifier of the interstitial to load</param>
     /// <param name="placement">The placement to tie the showing ad's events to</param>
-    public static void ShowInterstitial(string adUnitIdentifier, string placement)
+    /// <param name="customData">The custom data to tie the showing ad's events to. Maximum size is 8KB.</param>
+    public static void ShowInterstitial(string adUnitIdentifier, string placement = null, string customData = null)
     {
         ValidateAdUnitIdentifier(adUnitIdentifier, "show interstitial");
 
         if (IsInterstitialReady(adUnitIdentifier))
         {
-            MaxUnityPluginClass.CallStatic("showInterstitial", adUnitIdentifier, placement);
+            MaxUnityPluginClass.CallStatic("showInterstitial", adUnitIdentifier, placement, customData);
         }
         else
         {
@@ -724,14 +752,21 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Set custom data to be set in the ILRD postbacks via the {CUSTOM_DATA}  macro.
+    /// Set a local extra parameter for the ad.
     /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the interstitial to set the custom postback data for.</param>
-    /// <param name="value">The value for the custom postback data.</param>
-    public static void SetInterstitialCustomPostbackData(string adUnitIdentifier, string value)
+    /// <param name="adUnitIdentifier">Ad unit identifier of the interstitial to set the local extra parameter for.</param>
+    /// <param name="key">The key for the local extra parameter.</param>
+    /// <param name="value">The value for the extra parameter. Needs to be of type <see cref="AndroidJavaObject"/> or <c>null</c></param>
+    public static void SetInterstitialLocalExtraParameter(string adUnitIdentifier, string key, object value)
     {
-        ValidateAdUnitIdentifier(adUnitIdentifier, "set interstitial custom postback data");
-        MaxUnityPluginClass.CallStatic("setInterstitialCustomPostbackData", adUnitIdentifier, value);
+        if (value != null && value.GetType() != typeof(AndroidJavaObject))
+        {
+            MaxSdkLogger.E("Failed to set local extra parameter. Android local extra parameters need to be of type AndroidJavaObject");
+            return;
+        }
+
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set interstitial local extra parameter");
+        MaxUnityPluginClass.CallStatic("setInterstitialLocalExtraParameter", adUnitIdentifier, key, (AndroidJavaObject) value);
     }
 
     #endregion
@@ -759,27 +794,19 @@ public class MaxSdkAndroid : MaxSdkBase
         return MaxUnityPluginClass.CallStatic<bool>("isRewardedAdReady", adUnitIdentifier);
     }
 
-    /// <summary>
-    /// Present loaded rewarded ad. Note: if the rewarded ad is not ready to be displayed nothing will happen.
-    /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded ad to show</param>
-    public static void ShowRewardedAd(string adUnitIdentifier)
-    {
-        ShowRewardedAd(adUnitIdentifier, null);
-    }
-
     /// <summary> ready to be
     /// Present loaded rewarded ad for a given placement to tie ad events to. Note: if the rewarded ad is not ready to be displayed nothing will happen.
     /// </summary>
     /// <param name="adUnitIdentifier">Ad unit identifier of the interstitial to load</param>
     /// <param name="placement">The placement to tie the showing ad's events to</param>
-    public static void ShowRewardedAd(string adUnitIdentifier, string placement)
+    /// <param name="customData">The custom data to tie the showing ad's events to. Maximum size is 8KB.</param>
+    public static void ShowRewardedAd(string adUnitIdentifier, string placement = null, string customData = null)
     {
         ValidateAdUnitIdentifier(adUnitIdentifier, "show rewarded ad");
 
         if (IsRewardedAdReady(adUnitIdentifier))
         {
-            MaxUnityPluginClass.CallStatic("showRewardedAd", adUnitIdentifier, placement);
+            MaxUnityPluginClass.CallStatic("showRewardedAd", adUnitIdentifier, placement, customData);
         }
         else
         {
@@ -800,14 +827,21 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Set custom data to be set in the ILRD postbacks via the {CUSTOM_DATA}  macro.
+    /// Set a local extra parameter for the ad.
     /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded ad to set the custom postback data for.</param>
-    /// <param name="value">The value for the custom postback data.</param>
-    public static void SetRewardedAdCustomPostbackData(string adUnitIdentifier, string value)
+    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded to set the local extra parameter for.</param>
+    /// <param name="key">The key for the local extra parameter.</param>
+    /// <param name="value">The value for the extra parameter. Needs to be of type <see cref="AndroidJavaObject"/> or <c>null</c></param>
+    public static void SetRewardedAdLocalExtraParameter(string adUnitIdentifier, string key, object value)
     {
-        ValidateAdUnitIdentifier(adUnitIdentifier, "set rewarded ad custom postback data");
-        MaxUnityPluginClass.CallStatic("setRewardedAdCustomPostbackData", adUnitIdentifier, value);
+        if (value != null && value.GetType() != typeof(AndroidJavaObject))
+        {
+            MaxSdkLogger.E("Failed to set local extra parameter. Android local extra parameters need to be of type AndroidJavaObject");
+            return;
+        }
+
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set rewarded ad local extra parameter");
+        MaxUnityPluginClass.CallStatic("setRewardedAdLocalExtraParameter", adUnitIdentifier, key, (AndroidJavaObject) value);
     }
 
     #endregion
@@ -836,26 +870,18 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Present loaded rewarded interstitial ad. Note: if the rewarded interstitial ad is not ready to be displayed nothing will happen.
-    /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded interstitial ad to show</param>
-    public static void ShowRewardedInterstitialAd(string adUnitIdentifier)
-    {
-        ShowRewardedInterstitialAd(adUnitIdentifier, null);
-    }
-
-    /// <summary>
     /// Present loaded rewarded interstitial ad for a given placement to tie ad events to. Note: if the rewarded interstitial ad is not ready to be displayed nothing will happen.
     /// </summary>
     /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded interstitial to show</param>
     /// <param name="placement">The placement to tie the showing ad's events to</param>
-    public static void ShowRewardedInterstitialAd(string adUnitIdentifier, string placement)
+    /// <param name="customData">The custom data to tie the showing ad's events to. Maximum size is 8KB.</param>
+    public static void ShowRewardedInterstitialAd(string adUnitIdentifier, string placement = null, string customData = null)
     {
         ValidateAdUnitIdentifier(adUnitIdentifier, "show rewarded interstitial ad");
 
         if (IsRewardedInterstitialAdReady(adUnitIdentifier))
         {
-            MaxUnityPluginClass.CallStatic("showRewardedInterstitialAd", adUnitIdentifier, placement);
+            MaxUnityPluginClass.CallStatic("showRewardedInterstitialAd", adUnitIdentifier, placement, customData);
         }
         else
         {
@@ -876,14 +902,21 @@ public class MaxSdkAndroid : MaxSdkBase
     }
 
     /// <summary>
-    /// Set custom data to be set in the ILRD postbacks via the {CUSTOM_DATA}  macro.
+    /// Set a local extra parameter for the ad.
     /// </summary>
-    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded interstitial ad to set the custom postback data for.</param>
-    /// <param name="value">The value for the custom postback data.</param>
-    public static void SetRewardedInterstitialAdCustomPostbackData(string adUnitIdentifier, string value)
+    /// <param name="adUnitIdentifier">Ad unit identifier of the rewarded interstitial to set the local extra parameter for.</param>
+    /// <param name="key">The key for the local extra parameter.</param>
+    /// <param name="value">The value for the extra parameter. Needs to be of type <see cref="AndroidJavaObject"/> or <c>null</c></param>
+    public static void SetRewardedInterstitialAdLocalExtraParameter(string adUnitIdentifier, string key, object value)
     {
-        ValidateAdUnitIdentifier(adUnitIdentifier, "set rewarded interstitial ad custom postback data");
-        MaxUnityPluginClass.CallStatic("setRewardedInterstitialAdCustomPostbackData", adUnitIdentifier, value);
+        if (value != null && value.GetType() != typeof(AndroidJavaObject))
+        {
+            MaxSdkLogger.E("Failed to set local extra parameter. Android local extra parameters need to be of type AndroidJavaObject");
+            return;
+        }
+
+        ValidateAdUnitIdentifier(adUnitIdentifier, "set rewarded interstitial ad local extra parameter");
+        MaxUnityPluginClass.CallStatic("setRewardedInterstitialAdLocalExtraParameter", adUnitIdentifier, key, (AndroidJavaObject) value);
     }
 
     #endregion

@@ -1,4 +1,5 @@
 ﻿
+/*
 using System.Collections;
 using UnityEngine;
 using GameAnalyticsSDK;
@@ -59,4 +60,4 @@ public class GAScript : MonoBehaviour
 		// FaceBookScript.instance.LevelCompleted(levelname);
 
 	}
-}
+}*/

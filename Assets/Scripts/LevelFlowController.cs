@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using GameAnalyticsSDK.Setup;
+//using GameAnalyticsSDK.Setup;
 using UnityEngine;
 
 

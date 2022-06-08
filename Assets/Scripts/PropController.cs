@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class PropController : MonoBehaviour, IWantsAds
+public class PropController : MonoBehaviour//, IWantsAds
 {
 	public bool shouldShowAds, shouldExplode, hasBeenInteractedWith, isCar;
 	[SerializeField] private float explosionForce;
@@ -45,6 +45,8 @@ public class PropController : MonoBehaviour, IWantsAds
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+	
 	private void Start()
 	{
 		_rb = GetComponent<Rigidbody>();
@@ -181,12 +183,20 @@ public class PropController : MonoBehaviour, IWantsAds
 	public void TryShowAds()
 	{
 		if (!shouldShowAds) return;
+		/*
 		if(!ApplovinManager.instance) return;
 		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting();
 		TimeController.only.SlowDownTime(0f);
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		StartWaiting();
+		TimeController.only.SlowDownTime(0f);
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 
 	private void CreateVFX(Vector3 position, Quaternion rotation)
@@ -273,7 +283,7 @@ public class PropController : MonoBehaviour, IWantsAds
 
 		Explode();
 	}
-	
+
 	private void StartWaiting()
 	{
 		InputHandler.Only.userIsWatchingAnAdForPickup = true;
@@ -284,19 +294,17 @@ public class PropController : MonoBehaviour, IWantsAds
 		InputHandler.Only.userIsWatchingAnAdForPickup = false;
 	}
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void AdRewardReceiveBehaviour()
 	{
 		TimeController.only.RevertTime();
 		StopWaiting();
-		AdsMediator.StopListeningForAds(this);
+		
+		//AdsMediator.StopListeningForAds(this);
 	}
 
-	public void OnShowDummyAd()
-	{
-		TimeController.only.RevertTime();
-		StopWaiting();
-		AdsMediator.StopListeningForAds(this);
-	}
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo) => AdRewardReceiveBehaviour();
+	/*
+	public void OnShowDummyAd() => AdRewardReceiveBehaviour();
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
 	{
@@ -324,4 +332,5 @@ public class PropController : MonoBehaviour, IWantsAds
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
 	}
+	*/
 }

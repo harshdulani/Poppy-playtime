@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using UnityEngine;
 using Facebook.Unity;
 
@@ -78,4 +78,4 @@ public class FaceBookScript : MonoBehaviour
             parameters: tutParams
         );
     }
-}
+}*/

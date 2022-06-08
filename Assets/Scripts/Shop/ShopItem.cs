@@ -9,7 +9,7 @@ public enum ShopItemState
 	Locked, Unlocked, Selected
 }
 
-public class ShopItem : MonoBehaviour, IWantsAds
+public class ShopItem : MonoBehaviour//, IWantsAds
 {
 	[SerializeField] private ShopItemState myState;
 	[SerializeField] private Image unlocked, selected, icon, unavailable;
@@ -27,7 +27,7 @@ public class ShopItem : MonoBehaviour, IWantsAds
 	private bool _isWeaponItem, _isAvailable;
 	private int _mySkinIndex;
 
-	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	public void SetIconSprite(Sprite image)
 	{
@@ -90,7 +90,7 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		costText.text = price.ToString();
 		_isAvailable = CheckAvailability(price);
 
-		stickyAds.SetActive(!_isAvailable && (ApplovinManager.instance && ApplovinManager.instance.enableAds));
+		stickyAds.SetActive(!_isAvailable && (YcHelper.InstanceExists && YcHelper.IsAdAvailable()));
 
 		costText.color = _isAvailable ? Color.white : cantBuyColor;
 		unavailable.gameObject.SetActive(!_isAvailable);
@@ -119,12 +119,18 @@ public class ShopItem : MonoBehaviour, IWantsAds
 			return;
 		}
 
+		/*
 		if (!ApplovinManager.instance) return;
 		if (!ApplovinManager.instance.enableAds) return;
 		
 		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 
 	public void ClickOnUnlocked()
@@ -142,29 +148,25 @@ public class ShopItem : MonoBehaviour, IWantsAds
 		AudioManager.instance.Play("Button");
 	}
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
+	private void AdRewardReceiveBehaviour()
 	{
 		if (_isWeaponItem)
 			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
 		else
 			GameEvents.Only.InvokeSkinSelect(_mySkinIndex, false);
 
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 	}
 
-	public void OnShowDummyAd()
-	{
-		if (_isWeaponItem)
-			GameEvents.Only.InvokeWeaponSelect(_mySkinIndex, false);
-		else
-			GameEvents.Only.InvokeSkinSelect(_mySkinIndex, false);
+	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo) => AdRewardReceiveBehaviour();
 
-		AdsMediator.StopListeningForAds(this);
-	}
+	/*
+	public void OnShowDummyAd() => AdRewardReceiveBehaviour();
 
 	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo) => AdsMediator.StopListeningForAds(this);
 
 	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo) => AdsMediator.StopListeningForAds(this);
 
 	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo) => AdsMediator.StopListeningForAds(this);
+	*/
 }

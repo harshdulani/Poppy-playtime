@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinLoader : MonoBehaviour, IWantsAds
+public class SkinLoader : MonoBehaviour//, IWantsAds
 {
 	private enum AdRewardType
 	{
@@ -66,7 +66,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
-	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Start()
 	{
@@ -136,14 +136,20 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	{
 		claimMoneyButton.interactable = false;
 		
+		/*
 		if (!ApplovinManager.instance) return;
 		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
-	
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+
 		skipMoneyButton.interactable = false;
 		StartWaiting(AdRewardType.CoinMultiplier);
 		DOTween.Kill(barPivot);
+		
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 
-		AdsMediator.StartListeningForAds(this);
+		//AdsMediator.StartListeningForAds(this);
 	}
 
 	public void SkipMoneyOnButton()
@@ -209,11 +215,18 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	public void ClaimSkinOnButton() // Get it for WeaponLoader
 	{
+		/*
 		if (!ApplovinManager.instance) return;
 		if (!ApplovinManager.instance.TryShowRewardedAds()) return;
 		
 		StartWaiting(AdRewardType.Loader);
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		StartWaiting(AdRewardType.Loader);
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 
 	public void SkipSkinOnButton()
@@ -393,7 +406,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 
 	private void ReceiveLoaderReward()
 	{
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 		
 		claimSkinButton.interactable = false;
 		skipSkinButton.interactable = false;
@@ -418,7 +431,7 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 	private void ReceiveCoinMultiplierReward()
 	{
 		SidebarShopController.only.IncreaseCoinsBy(GetMultiplierResult() * coinIncreaseCount);
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 
 		MoneyPanelButtonBehaviour();
 	}
@@ -444,9 +457,10 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		}
 
 		StopWaiting();
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 	}
 
+	/*
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo) => AdRewardReceiveBehaviour();
 
 	public void OnShowDummyAd() => AdRewardReceiveBehaviour();
@@ -468,4 +482,5 @@ public class SkinLoader : MonoBehaviour, IWantsAds
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
 	}
+	*/
 }

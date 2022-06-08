@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class WeaponPickup : MonoBehaviour, IWantsAds
+public class WeaponPickup : MonoBehaviour//, IWantsAds
 {
 	[ContextMenuItem("Reflect Changes To GameObject", nameof(Validate)), SerializeField] private WeaponType myWeaponType;
 
@@ -24,6 +24,8 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 	{
 		GameEvents.Only.TapToPlay -= OnTapToPlay;
 	}
+	
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Start()
 	{
@@ -71,21 +73,25 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		_isKilled = true;
 		_collider.enabled = false;
 		
-		if(!ApplovinManager.instance)
-		{
-			DestroyPickup();
-			return;
-		}
-
-		if(!ApplovinManager.instance.TryShowRewardedAds())
+		/*
+		if(!ApplovinManager.instance || !ApplovinManager.instance.TryShowRewardedAds())
 		{
 			DestroyPickup();
 			return;
 		}
 		
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable())
+		{
+			DestroyPickup();
+			return;
+		}
+		
 		StartWaiting();
 		TimeController.only.SlowDownTime(0f);
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 
 	private void OnCollisionEnter(Collision other)
@@ -102,11 +108,6 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 			weaponParent.GetChild(i).gameObject.SetActive(i == _myWeaponIndex);
 	}
 
-	private void StartWaiting()
-	{
-		InputHandler.Only.userIsWatchingAnAdForPickup = true;
-	}
-
 	private void EndAds()
 	{
 		DestroyPickup();
@@ -115,10 +116,9 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		TimeController.only.RevertTime();	
 	}
 
-	private static void StopWaiting()
-	{
-		InputHandler.Only.userIsWatchingAnAdForPickup = false;
-	}
+	private static void StartWaiting() => InputHandler.Only.userIsWatchingAnAdForPickup = true;
+
+	private static void StopWaiting() => InputHandler.Only.userIsWatchingAnAdForPickup = false;
 
 	private void AdRewardReceiveBehaviour()
 	{
@@ -126,38 +126,33 @@ public class WeaponPickup : MonoBehaviour, IWantsAds
 		InputHandler.Only.GetRightHand().UpdateEquippedWeaponsSkin(false, _myWeaponIndex);
 
 		EndAds();
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 		
 		AudioManager.instance.Play("PreWeaponPickup");
 		AudioManager.instance.Play("PreWeaponPickupSwoosh");
 		DOVirtual.DelayedCall(0.35f, () => AudioManager.instance.Play("WeaponPickup"));
 	}
 
-	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
-	{
-		AdRewardReceiveBehaviour();
-	}
+	/*
+public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo) => AdRewardReceiveBehaviour();
+public void OnShowDummyAd() => AdRewardReceiveBehaviour();
 
-	public void OnShowDummyAd()
-	{
-		AdRewardReceiveBehaviour();
-	}
+public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
+{
+	EndAds();
+	AdsMediator.StopListeningForAds(this);
+}
 
-	public void OnAdFailed(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
-	{
-		EndAds();
-		AdsMediator.StopListeningForAds(this);
-	}
+public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
+{
+	EndAds();
+	AdsMediator.StopListeningForAds(this);
+}
 
-	public void OnAdFailedToLoad(string adUnitId, MaxSdkBase.ErrorInfo errorInfo)
-	{
-		EndAds();
-		AdsMediator.StopListeningForAds(this);
-	}
-
-	public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
-	{
-		EndAds();
-		AdsMediator.StopListeningForAds(this);
-	}
+public void OnAdHidden(string adUnitId, MaxSdkBase.AdInfo adInfo)
+{
+	EndAds();
+	AdsMediator.StopListeningForAds(this);
+}
+*/
 }

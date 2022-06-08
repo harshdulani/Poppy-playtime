@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainShopController : MonoBehaviour, IWantsAds
+public class MainShopController : MonoBehaviour//, IWantsAds
 {
 	private enum AdRewardType
 	{
@@ -90,7 +90,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
-	private void OnDestroy() => AdsMediator.StopListeningForAds(this);
+	//private void OnDestroy() => AdsMediator.StopListeningForAds(this);
 
 	private void Awake()
 	{
@@ -216,10 +216,22 @@ public class MainShopController : MonoBehaviour, IWantsAds
 
 	public void ClickArms()
 	{
+		/*
 		if (ApplovinManager.instance) 
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
-		
+		*/
+		if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(OpenArmSkinShopBehaviour);
+			return;
+		}
+
+		OpenArmSkinShopBehaviour();
+	}
+
+	private void OpenArmSkinShopBehaviour()
+	{
 		armsButton.interactable = false;
 		armsText.color = grey;
 		
@@ -233,10 +245,22 @@ public class MainShopController : MonoBehaviour, IWantsAds
 
 	public void ClickWeapons()
 	{
+		/*
 		if (ApplovinManager.instance) 
 			if(ApplovinManager.instance.enableAds)
 				ApplovinManager.instance.ShowInterstitialAds();
-		
+		*/
+		if(YcHelper.InstanceExists && YcHelper.IsAdAvailable())
+		{
+			YcHelper.ShowInterstitial(OpenWeaponShopBehaviour);
+			return;
+		}
+
+		OpenWeaponShopBehaviour();
+	}
+
+	private void OpenWeaponShopBehaviour()
+	{
 		weaponsButton.interactable = false;
 		weaponsText.color = grey;
 
@@ -247,7 +271,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		weaponsHolder.transform.parent.parent.gameObject.SetActive(true);
 		armsHolder.transform.parent.parent.gameObject.SetActive(false);
 	}
-	
+
 	private void OnWeaponPurchase(int index, bool shouldDeductCoins)
 	{
 		if(shouldDeductCoins)
@@ -288,19 +312,33 @@ public class MainShopController : MonoBehaviour, IWantsAds
 	
 	public void ClickExtraCoins_150()
 	{
+		/*
 		if(!ApplovinManager.instance) return;
 		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting(AdRewardType.OneFifty);
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		StartWaiting(AdRewardType.OneFifty);
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 	public void ClickExtraCoins_300()
 	{
+		/*
 		if(!ApplovinManager.instance) return;
 		if(!ApplovinManager.instance.TryShowRewardedAds()) return;
 
 		StartWaiting(AdRewardType.ThreeHundred);
 		AdsMediator.StartListeningForAds(this);
+		*/
+		
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		
+		StartWaiting(AdRewardType.ThreeHundred);
+		YcHelper.ShowRewardedAds(AdRewardReceiveBehaviour);
 	}
 	
 	private void OnTapToPlay()
@@ -338,9 +376,10 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		}
 
 		StopWaiting();
-		AdsMediator.StopListeningForAds(this);
+		//AdsMediator.StopListeningForAds(this);
 	}
 
+	/*
 	public void OnAdRewardReceived(string adUnitId, MaxSdkBase.Reward reward, MaxSdkBase.AdInfo adInfo)
 	{
 		AdRewardReceiveBehaviour();
@@ -368,6 +407,7 @@ public class MainShopController : MonoBehaviour, IWantsAds
 		StopWaiting();
 		AdsMediator.StopListeningForAds(this);
 	}
+	*/
 }
 
 public enum WeaponType

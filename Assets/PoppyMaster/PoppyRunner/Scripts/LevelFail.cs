@@ -5,8 +5,11 @@ public class LevelFail : MonoBehaviour
     GameEssentials gameEssentials { get { return GameEssentials.instance; } }
     void Start()
     {
-        if(GAScript.Instance)
-            GAScript.Instance.LevelFail(gameEssentials.sd.GetLevelNumber().ToString());
+        //if(GAScript.Instance)
+//            GAScript.Instance.LevelFail(gameEssentials.sd.GetLevelNumber().ToString());
+
+if (YcHelper.InstanceExists) 
+			YcHelper.LevelEnd(false);
     }
 
    
