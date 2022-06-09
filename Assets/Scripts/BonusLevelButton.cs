@@ -23,6 +23,6 @@ public class BonusLevelButton : MonoBehaviour
 
 	public void GoToBonusLevelOnButtonPress()
 	{
-		SceneManager.LoadScene(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().lastRegularLevel + 1 + myBuildIndexOffset);
+		SceneManager.LoadScene(GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<MainCanvasController>().lastRegularLevel + myBuildIndexOffset);
 	}
 }
