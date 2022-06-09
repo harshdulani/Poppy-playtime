@@ -16,7 +16,7 @@ public class VehicleDistanceUiCanvasController : MonoBehaviour
 
 	private void OnDisable()
 	{
-		GameEvents.Only.GameEnd += OnGameEnd;
+		GameEvents.Only.GameEnd -= OnGameEnd;
 	}
 
 	private void Awake()

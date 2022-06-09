@@ -52,4 +52,10 @@ public class UIManager : MonoBehaviour
         lc.DeactiveGO(false);
         lf.DeactiveGO(true);
     }
+    
+    public void PressGDPRButton()
+    {
+		if(YcHelper.InstanceExists)
+    		YcHelper.ShowGDPR();
+    }
 }

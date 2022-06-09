@@ -23,7 +23,7 @@ namespace StateMachine
 			var ray = Player.Camera.ScreenPointToRay(GetInputPosition());
 			
 			if (!Physics.Raycast(ray, out var hit, maxRayDistance)) return;
-			Debug.Log(hit.transform);
+			//Debug.Log(hit.transform);
 			//Debug.DrawRay(ray.origin, ray.direction, Color.red, 2f);
 			if (hit.transform.CompareTag("TrapButton"))
 			{

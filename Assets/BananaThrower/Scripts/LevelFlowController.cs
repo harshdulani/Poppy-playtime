@@ -26,7 +26,7 @@ namespace BananaThrower
 
 		private void OnDisable()
 		{
-			GameEvents.Only.EnemyDied += OnEnemyDied;
+			GameEvents.Only.EnemyDied -= OnEnemyDied;
 		}
 
 		private void Awake()
@@ -53,6 +53,7 @@ namespace BananaThrower
 		private void OnEnemyKilled()
 		{
 			enemiesKilledInCurrentArea++;
+			
 			if (enemiesKilledInCurrentArea >= enemiesInCurrentArea) 
 				GameEvents.Only.InvokeGameEnd();
 		}

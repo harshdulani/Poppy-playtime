@@ -157,7 +157,8 @@ public class MainCanvasController : MonoBehaviour//, IWantsAds
 	
 	public void ShowGDPRButton()
 	{
-		YcHelper.ShowGDPR();
+		if(YcHelper.InstanceExists)
+			YcHelper.ShowGDPR();
 	}
 
 	private void OnTapToPlay()

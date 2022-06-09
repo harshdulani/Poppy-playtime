@@ -183,6 +183,8 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 			YcHelper.LevelEnd(true);
 		
 		_hasLost = false;
+
+		DOVirtual.DelayedCall(1.5f, EnableVictoryObjects);
 	}
 
 	private void AdRewardRecieveBehaviour()
@@ -210,6 +212,7 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 	public void ShowGDPRButton()
 	{
-		YcHelper.ShowGDPR();
+		if(YcHelper.InstanceExists)
+			YcHelper.ShowGDPR();
 	}
 }

@@ -98,10 +98,7 @@ using UnityEngine;
 				MoveToNextArea();
 		}
 
-		private void MoveToNextArea()
-		{
-			StartCoroutine(WaitBeforeMovingToNextArea());
-		}
+		private void MoveToNextArea() => StartCoroutine(WaitBeforeMovingToNextArea());
 
 		private void OnReachNextArea()
 		{
@@ -111,15 +108,10 @@ using UnityEngine;
 
 		public bool IsThisLastEnemy() => _totalEnemiesRemaining == 1;
 
-		public bool IsThisLastEnemyOfArea()
-		{
-			return enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 1;
-		}
+		public bool IsThisLastEnemyOfArea() => enemiesInArea[currentArea] - enemiesKilledInCurrentArea == 1;
 
-		public bool DidKillLastEnemyOfArea()
-		{
-			return enemiesInArea[currentArea] == enemiesKilledInCurrentArea;
-		}
+		public bool DidKillLastEnemyOfArea() => enemiesInArea[currentArea] == enemiesKilledInCurrentArea;
+
 		private void OnEnemyDied(Transform t)
 		{
 			if(_deadBodies.Contains(t.transform)) return;
@@ -127,10 +119,7 @@ using UnityEngine;
 			_deadBodies.Add(t.transform);
 		}
 
-		public bool IsInGiantFight()
-		{
-			return IsThisLastEnemy() && isGiantLevel;
-		}
+		public bool IsInGiantFight() => IsThisLastEnemy() && isGiantLevel;
 
 		public bool TryGetCurrentThrowTarget(out Transform target)
 		{
