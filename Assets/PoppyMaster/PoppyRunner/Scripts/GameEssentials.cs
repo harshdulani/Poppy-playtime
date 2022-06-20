@@ -5,11 +5,11 @@ public class GameEssentials : MonoBehaviour
     public static GameEssentials instance;
 
     public static string remoteConfigVal = "0";
-    public SavedData sd { get { return GetComponentInChildren<SavedData>(); } }
-    public SceneLoader sl { get { return GetComponentInChildren<SceneLoader>(); } }
-    public SoundHapticManager shm { get { return GetComponentInChildren<SoundHapticManager>(); } }
+    public SavedData sd => GetComponentInChildren<SavedData>();
+	public SceneLoader sl => GetComponentInChildren<SceneLoader>();
+	public SoundHapticManager shm => GetComponentInChildren<SoundHapticManager>();
 
-    private void Awake()
+	private void Awake()
     {
         if (!instance)
         {
@@ -17,18 +17,14 @@ public class GameEssentials : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
         else
-        {
-            DestroyImmediate(this.gameObject);
-        }
-        
-    }
+			DestroyImmediate(this.gameObject);
+	}
 
     void Start()
     {
         Vibration.Init();
 
-       
-        //GameObject.Find("EventSystem").SetActive(false);
+		GameObject.Find("EventSystem").SetActive(false);
     }
 
     public void PrintOut(string val)

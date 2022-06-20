@@ -400,7 +400,7 @@ public class SidebarShopController : MonoBehaviour//, IWantsAds
 
 		var dummyCoinCount = GetCoinCount();
 
-		AudioManager.instance.Play("CoinCollect");
+		seq.AppendCallback(() => AudioManager.instance.Play("CoinCollect"));
 		seq.Append(DOTween.To(() => coinText.fontSize, value => coinText.fontSize = value, initSize * 1.2f, .5f).SetEase(Ease.OutQuart));
 		seq.Join(DOTween.To(() => dummyCoinCount, value => dummyCoinCount = value, dummyCoinCount + coinIncreaseCount,
 			.5f).OnUpdate(() => coinText.text = dummyCoinCount.ToString()));

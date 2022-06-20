@@ -23,7 +23,7 @@ public class InGamePanel : MonoBehaviour
 //            ga.LevelStart(PlayerPrefs.GetInt("levelNo", 1) +" bonus");
 
 		if(YcHelper.InstanceExists)
-			YcHelper.LevelStart(PlayerPrefs.GetInt("levelNo", 1) + 1000);
+			YcHelper.LevelStart(PlayerPrefs.GetInt("levelNo", 1));
     }
 
     public void TurnOnDefaultIcons()

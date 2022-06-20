@@ -1,28 +1,30 @@
 using System;
-using UnityEngine;
+using YsoCorp.GameUtils;
 
-public class YcHelper : MonoBehaviour
+public static class YcHelper
 {
-	public static bool InstanceExists => YsoCorp.GameUtils.YCManager.instance;
-	public static bool IsAdAvailable() => YsoCorp.GameUtils.YCManager.instance.adsManager.IsRewardBasedVideo();
-	
+	public static bool InstanceExists => YCManager.instance;
+	public static bool IsAdAvailable() => YCManager.instance.adsManager.IsRewardBasedVideo();
 
-	public static void LevelStart(int levelNum) => YsoCorp.GameUtils.YCManager.instance.OnGameStarted(levelNum);
+	public static void LevelStart(int levelNum) => YCManager.instance.OnGameStarted(levelNum);
 
-	public static void LevelEnd(bool hasWonLevel) => YsoCorp.GameUtils.YCManager.instance.OnGameFinished(hasWonLevel);
+	public static void LevelEnd(bool hasWonLevel) => YCManager.instance.OnGameFinished(hasWonLevel);
 	
-	public static void ShowGDPR() => YsoCorp.GameUtils.YCManager.instance.settingManager.Show(); 
+	public static void ShowGDPR() => YCManager.instance.settingManager.Show();
+
+	public static bool GetIsComboTextTestingOn() => YCManager.instance.abTestingManager.IsPlayerSample("comboText");
+	public static bool GetIsObjectUnlockTestingOn() => YCManager.instance.abTestingManager.IsPlayerSample("objectUnlock");
 
 	public static void ShowInterstitial(Action functionCall)
 	{
 		// TODO call the action (eg: play, restart, back, next level, ...)
-		YsoCorp.GameUtils.YCManager.instance.adsManager.ShowInterstitial(functionCall);
+		YCManager.instance.adsManager.ShowInterstitial(functionCall);
 	}
 
 	public static void ShowRewardedAds(Action functionCall)
 	{
 		//if everything went ok while trying to show ad, then show it otherwise don't
-		YsoCorp.GameUtils.YCManager.instance.adsManager.ShowRewarded((bool ok) =>
+		YCManager.instance.adsManager.ShowRewarded((bool ok) =>
 		{
 			if (ok)
 				// TODO give the reward to the user

@@ -19,7 +19,6 @@ namespace StateMachine
 
 		private bool _hasTappedToPlay;
 		private Transform _ikTarget;
-		private bool _tappedToPlay;
 
 		private void OnEnable()
 		{
@@ -73,11 +72,11 @@ namespace StateMachine
 		
 		private bool HandleTapToPlay()
 		{
-			if (_tappedToPlay) return true;
+			if (_hasTappedToPlay) return true;
 
 			if (!HasTappedOverUi()) return false;
 
-			_tappedToPlay = true;
+			_hasTappedToPlay = true;
 			GameEvents.Only.InvokeTapToPlay();
 		
 			//PutInTapCoolDown(0.25f);
@@ -95,17 +94,12 @@ namespace StateMachine
 			return true;
 		}
 
-		private InputStateBase HandleInput()
+		private static InputStateBase HandleInput()
 		{
-			//if (GameExtensions.GetObjectUnderPointer()) return _currentInputState;
-			
 			if (InputExtensions.GetFingerUp()) return TapState;
 			
 			return _currentInputState;
 		}
-	
-		public static InputStateBase GetCurrentState() => _currentInputState;
-		public void SetIkTarget(Transform rightHandTarget) => _ikTarget = rightHandTarget;
 
 		public static void AssignNewState(InputState state)
 		{

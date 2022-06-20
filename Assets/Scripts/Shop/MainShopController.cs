@@ -140,7 +140,8 @@ public class MainShopController : MonoBehaviour//, IWantsAds
 			var itemState = currentShopState.weaponStates[(WeaponType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(GetWeaponSprite(i, itemState == ShopItemState.Locked));
+			//item.SetIconSprite(GetWeaponSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetWeaponSprite(i, false));
 			item.SetIsWeaponItem(true);
 			
 			//if you are having an index out of bounds error over here, check if prices and colored & black sprites have equal no of items
@@ -156,7 +157,8 @@ public class MainShopController : MonoBehaviour//, IWantsAds
 			var itemState = currentShopState.armStates[(ArmsType) i];
 			item.SetSkinIndex(i);
 			item.SetState(itemState);
-			item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
+			//item.SetIconSprite(GetArmsSkinSprite(i, itemState == ShopItemState.Locked));
+			item.SetIconSprite(GetArmsSkinSprite(i, false));
 			item.SetIsWeaponItem(false);
 			
 			//if you are having an index out of bounds error over here, check if prices and colored & black sprites have equal no of items

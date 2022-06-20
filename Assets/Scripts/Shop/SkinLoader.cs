@@ -268,6 +268,13 @@ public class SkinLoader : MonoBehaviour//, IWantsAds
 
 	public void SkipBonusOnButton()
 	{
+		//if player skips bonus button, actual scene wise stats will get skewed.
+		//so when player goes to bonus scene it is showed normally in serial order
+		//so this is to make up for the one level the player is skipping
+		
+		//we are keeping track of encountered bonus levels, so we can keep track of these now offset level indices
+		PlayerPrefs.SetInt("encounteredBonusLevels", PlayerPrefs.GetInt("encounteredBonusLevels", 0) + 1);
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
 		DOVirtual.DelayedCall(0.1f, _mainCanvas.NextLevel);
 	}
 	

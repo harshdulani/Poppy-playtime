@@ -40,20 +40,24 @@ public class LevelComplete : MonoBehaviour
 
 	private void SaveLevelsBehaviour()
 	{
-		if (PlayerPrefs.GetInt("levelNo", 1) < _lastRegularLevel)
+		if (PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0) < _lastRegularLevel + 1)
 		{
-			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
+			var x = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1;
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
 		else
 		{
-			var x = Random.Range(5, _lastRegularLevel);
+			var x = Random.Range(5, _lastRegularLevel + 1);
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
-
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1);
+		
+		ShopStateController.ShopStateSerializer.SaveCurrentState();
+		
+		AudioManager.instance.Play("Button");
+		Vibration.Vibrate(15);
 	}
 	
     public void Next()

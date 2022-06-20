@@ -8,8 +8,8 @@ public class LevelFail : MonoBehaviour
         //if(GAScript.Instance)
 //            GAScript.Instance.LevelFail(gameEssentials.sd.GetLevelNumber().ToString());
 
-if (YcHelper.InstanceExists) 
-			YcHelper.LevelEnd(false);
+		if (YcHelper.InstanceExists) 
+					YcHelper.LevelEnd(false);
     }
 
    

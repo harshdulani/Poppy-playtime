@@ -18,15 +18,11 @@ public class SavedData : MonoBehaviour
         instance = this;
     }
 
+	// Get Value // Get//
 
-    // Get Value // Get//
+    public int GetLevelNumber() => PlayerPrefs.GetInt(levelNumber, 1);
 
-    public int GetLevelNumber()
-    {
-        return PlayerPrefs.GetInt(levelNumber, 1);
-    }
-
-    public string GetSavedScene()
+	public string GetSavedScene()
     {
         return PlayerPrefs.GetString(savedScene, "1");
     }

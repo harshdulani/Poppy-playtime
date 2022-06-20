@@ -37,7 +37,7 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 	{
 		_indicator = GetComponent<LevelIndicator>();
 
-		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
+		var levelNo = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0);
 		levelText.text = "Level " + levelNo;
 		abToggle.isOn = PlayerPrefs.GetInt("isUsingTapAndPunch", 0) == 0;
 		instructionText.text = abToggle.isOn ? tapInstruction : swipeInstruction;
@@ -137,9 +137,9 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 
 	private void NextLevelBehaviour()
 	{
-		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
+		if (PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0) < lastRegularLevel + 1)
 		{
-			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
+			var x = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1;
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
@@ -149,7 +149,7 @@ public class ChaseLevelMainCanvasController : MonoBehaviour
 			PlayerPrefs.SetInt("lastBuildIndex", x);
 			SceneManager.LoadScene(x);
 		}
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
+		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1);
 		
 		ShopStateController.ShopStateSerializer.SaveCurrentState();
 		
