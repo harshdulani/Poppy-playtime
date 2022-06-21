@@ -9,13 +9,14 @@ public class TimeController : MonoBehaviour
 
 	[SerializeField] private float slowedTimeScale, timeRampDownDuration = 0.5f, timeRampUpDuration = 0.5f;
 	[SerializeField] private AnimationCurve easing;
-	private float _defaultTimeScale = 1;
 	private const float DefaultFixedDeltaTime = 0.02f;
 	private float _slowedDeltaTime;
 	private bool _isTimeSlowedDown;
 
-	private TweenerCore<float, float, FloatOptions> _timeDeltaTween, _fixedTimeDeltaTween;
+	private Tween _timeDeltaTween, _fixedTimeDeltaTween;
 	
+	private static float _defaultTimeScale = -1f;
+
 	private void OnEnable()
 	{
 		GameEvents.Only.EnterHitBox += OnEnterHitBox;
@@ -36,7 +37,8 @@ public class TimeController : MonoBehaviour
 
 	private void Start()
 	{
-		_defaultTimeScale = Time.timeScale;
+		if(_defaultTimeScale < 0)
+			_defaultTimeScale = Time.timeScale;
 		
 		slowedTimeScale *= _defaultTimeScale;
 		

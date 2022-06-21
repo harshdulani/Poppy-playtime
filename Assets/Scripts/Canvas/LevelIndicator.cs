@@ -68,21 +68,22 @@ public class LevelIndicator : MonoBehaviour
 		if(MakeCurrentLevel()) return;
 		
 		indicator.SetActive(false);
-		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
+		var levelNo = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0);
 		plainText.text = "Level " + levelNo;
 		plainText.gameObject.SetActive(true);
 	}
 
 	private bool MakeCurrentLevel()
 	{
-		var currentLevel = PlayerPrefs.GetInt("levelNo") - 1;
+		var currentLevel = PlayerPrefs.GetInt("levelNo") - PlayerPrefs.GetInt("encounteredBonusLevels", 0);
 		var lastRegLevel = _isChaseLevel ? _chaseMainCanvas.lastRegularLevel : _mainCanvas.lastRegularLevel;
 		
+		print($"total {PlayerPrefs.GetInt("levelNo")} bonus {PlayerPrefs.GetInt("encounteredBonusLevels", 0)}");
 		// if you don't have theme info for any more levels, do not show indicator - show plain old text instead.
 		if (currentLevel > lastRegLevel) return false;
 
-		var currentThemedLevel = currentLevel % levelsPerTheme;
-		var currentTheme = Mathf.FloorToInt(currentLevel / (float) levelsPerTheme);
+		var currentThemedLevel = (currentLevel - 1) % levelsPerTheme;
+		var currentTheme = Mathf.FloorToInt((currentLevel - 1) / (float) levelsPerTheme);
 		
 		for (var i = 0; i < levelsPerTheme; i++)
 		{
@@ -90,7 +91,7 @@ public class LevelIndicator : MonoBehaviour
 			_foregroundCircles[i].color = i < currentThemedLevel ? theme.foregroundCircleColor : Color.clear;
 			
 			if(_levelNums[i])
-				_levelNums[i].text = ((currentTheme * levelsPerTheme) + i).ToString();
+				_levelNums[i].text = ((currentTheme * levelsPerTheme) + i + 1).ToString();
 
 			if (i != currentThemedLevel)
 			{

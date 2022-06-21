@@ -20,45 +20,75 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a039662-286b-494a-ae6e-2265b2454106" name="Default Changelist" comment="added icon and fixed a bug ( maybe)">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/SceneChangeManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/SceneChangeManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Poppy-playtime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Barrel Hit PopUp.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Barrel Hit PopUp.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo PopUp.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo PopUp.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo Text FadeIn.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo Text FadeIn.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo Text FadeOut.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/Combo Text FadeOut.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/ExclamationPopup.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Clips/ExclamationPopup.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Combo PopUp.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Combo PopUp.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Ragdoll.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Ragdoll.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Venom.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Venom.controller.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/BananaThrower/Scripts/ChaseLevelMainCanvasController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BananaThrower/Scripts/ChaseLevelMainCanvasController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/InputHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Environment/Weather/Wind &amp; Leaves/WindlinesSpeedy.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Epic Toon FX/Prefabs/Environment/Weather/Wind &amp; Leaves/WindlinesSpeedy.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF Combo.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF Combo.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF Exclamation.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Fonts/Staatliches-Regular SDF Exclamation.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/GameEssentials.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/GameEssentials.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/InGamePanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/InGamePanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin purple.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin purple.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin red.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin red.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin yellow.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Guna stickman/skin yellow.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomBase.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomBase.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomBlack.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomBlack.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomRed.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/Skins/venomRed.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr 1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr 1.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Meshes/Characters/Venom_Models/VenomTxts/venomClr3.png.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelComplete.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelComplete.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelFail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelFail.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SavedData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SavedData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/ComboCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/ComboCanvas.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainShopCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LevelItems/MainShopCanvas.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/YCConfigData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/YCConfigData.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelScripts/PoppyEnemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelScripts/PoppyEnemy.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SoundHapticManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SoundHapticManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/Guna.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/ManEnemy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/ManEnemy.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/Poppy TPose.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/Poppy TPose.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Characters/Venom T-Pose.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/Venom T-Pose.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Hands.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/SpecialLevelButton.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/SpecialLevelButton.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes Old/Level 19 - tower venom.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes Old/Level 19 - tower venom.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - Spl - patrol.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - Spl - patrol.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - boss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_Blue Level - boss.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/1_BlueLevels PostFX.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/1_BlueLevels PostFX.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_City PostFX.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_City PostFX.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - Spl - bridge.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/2_Guards City - Spl - bridge.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/3_Desert PostFX.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/3_Desert PostFX.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - boss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - boss.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 6 - Poppy Chase Level.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - 6 - Poppy Chase Level.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - boss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/4_Poppy Island - boss.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City - 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City - 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City - boss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City - boss.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City PostFX.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/5_Zombie City PostFX.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BonusLevelButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BonusLevelButton.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/LevelIndicator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/LevelIndicator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/YcHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/YcHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PropController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PropController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/SimplePoly City - Low Poly Assets/Materials/Building_Stadium.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/SimplePoly City - Low Poly Assets/Materials/Building_Stadium.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2021.dwlt" afterDir="false" />
     </list>
@@ -112,6 +142,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://E:/Extracted_Harsh/Push Em All/Shader/Shader #9738.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PluginsScripts/YcHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/SceneChangeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://E:/Extracted_Harsh/Push Em All/Shader/Shader #9736.shader" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelFail.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/GameEssentials.cs" root0="FORCE_HIGHLIGHTING" />
@@ -188,6 +219,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/1_Blue Level - boss.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelComplete.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/BananaThrower/Prefabs/Weapons/Burger Thrower Variant.prefab" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/GameUtils/Scripts/I18n/I18nManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - Chase Heels Level.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Canvas/TutorialCanvasController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -214,6 +246,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/1_Blue Level - 3.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/3_Marvel Desert - 6 - Venom Chase IceCream Level.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/SplineTriggerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/GameUtils/Scripts/SettingManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Hands/WristController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scenes/2_Guards City - boss 1.unity.meta" root0="FORCE_HIGHLIGHTING" />
@@ -264,13 +297,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/vehicle/VehicleMovement.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PropObjectCollider.cs" />
-        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanBodyCollider.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyPatroller.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/MovementController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Hands/AimController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/LevelIndicator.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StickmanMovementController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlaySound.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Extensions/GameExtensions.cs" />
@@ -283,7 +309,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/PalmController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Hands/HandController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/StateMachine/DragToSmashState.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/ApplovinManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FaceBookScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/FlurryStart.cs" />
@@ -291,7 +316,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/YCScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/AdsMediator.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/ShopItem.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/WeaponPickup.cs" />
         <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/UIManager.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/TapState.cs" />
@@ -302,19 +326,28 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SidebarShopController.cs" />
         <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/InGamePanel.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PluginsScripts/YcHelper.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/BonusLevelButton.cs" />
         <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SavedData.cs" />
         <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelFail.cs" />
         <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/StateMachine/InputHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelComplete.cs" />
-        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/ChaseLevelMainCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Shop/MainShopController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MainMenuScript.cs" />
         <option value="$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
         <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/GameEssentials.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PropController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Enemy/HelicopterController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/RagdollController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/ComboCanvasManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/TimeController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/LevelIndicator.cs" />
+        <option value="$PROJECT_DIR$/Assets/BananaThrower/Scripts/ChaseLevelMainCanvasController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/MainCanvasController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/CommonFunctions.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/BonusLevelButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelComplete.cs" />
+        <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/SoundHapticManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/PoppyMaster/PoppyRunner/Scripts/LevelScripts/PoppyEnemy.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Canvas/SceneChangeManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Shop/SkinLoader.cs" />
       </list>
     </option>
   </component>
@@ -349,6 +382,11 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SearchEverywhereConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="FileSearchEverywhereContributor" />
+    </file-type-list>
+  </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="Vcs.Log.History.Properties">
@@ -377,7 +415,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="made sure state machine doesnt get stuck in intransit state, fixed punching bug, made barrel explosion-player collisions much better and walls break more consistently" />
     <MESSAGE value="Trying to fix the guard boss car level, fixed the drag state problem" />
     <MESSAGE value="fixed guard boss level slow motion bug" />
     <MESSAGE value="removed weapon pickups, added drag to smash tutorial" />
@@ -402,7 +439,8 @@
     <MESSAGE value="Removed all ads and sdks, created ychelpers for YsoCorp" />
     <MESSAGE value="aab released after changes according to banner and gdpr" />
     <MESSAGE value="Built working aab, fixed out of screen errors and bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Built working aab, fixed out of screen errors and bugs" />
+    <MESSAGE value="Added ab testing 1 - combo text scaled up, had to refactor combo. testing new level numbering system" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ab testing 1 - combo text scaled up, had to refactor combo. testing new level numbering system" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1029" y="172" width="524" height="824" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1653297648265">
@@ -417,10 +455,6 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="837" y="417" width="833" height="611" key="MultipleFileMergeDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1647264138934" />
-    <state x="1020" y="401" key="RiderGenerateDialog" timestamp="1647090410745">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state x="1020" y="401" key="RiderGenerateDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1647090410745" />
     <state x="1080" y="208" width="583" height="558" key="RollbackChangesDialog" timestamp="1653052208119">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -429,37 +463,41 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1102" y="233" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1653381207695" />
+    <state width="254" height="198" key="ShowFilterAction_Filter_Popup" timestamp="1655801026801">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="254" height="198" key="ShowFilterAction_Filter_Popup/0.0.2560.1400@0.0.2560.1400" timestamp="1655801026801" />
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog" timestamp="1655276371049">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="VCS.FileHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1655276371049" />
-    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2" timestamp="1654789799061">
+    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2" timestamp="1655727745384">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1654789799061" />
+    <state x="872" y="419" width="1330" height="535" key="Vcs.Push.Dialog.v2/0.0.2560.1400@0.0.2560.1400" timestamp="1655727745384" />
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1651659916398">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1651659916398" />
-    <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1655724260433">
+    <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1655728398517">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1655724260433" />
+    <state x="1293" y="211" width="1047" height="795" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1655728398517" />
     <state x="1089" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1647264102946">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1089" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400@0.0.2560.1400" timestamp="1647264102946" />
-    <state x="1032" y="131" width="1117" height="1138" key="find.popup" timestamp="1655722242737">
+    <state x="770" y="131" width="1379" height="1138" key="find.popup" timestamp="1655817684826">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1032" y="131" width="1117" height="1138" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1655722242737" />
+    <state x="770" y="131" width="1379" height="1138" key="find.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1655817684826" />
     <state x="988" y="488" key="git4idea.merge.GitPullDialog" timestamp="1653401975166">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="988" y="488" key="git4idea.merge.GitPullDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1653401975166" />
-    <state x="942" y="384" width="672" height="799" key="search.everywhere.popup" timestamp="1655723787045">
+    <state x="942" y="384" width="672" height="799" key="search.everywhere.popup" timestamp="1655823241629">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="942" y="384" width="672" height="799" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1655723787045" />
+    <state x="942" y="384" width="672" height="799" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1655823241629" />
   </component>
 </project>

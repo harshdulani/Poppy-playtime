@@ -1133,8 +1133,9 @@ MonoBehaviour:
   myPatrolArea: 0
   waypoints: []
   hasWeapon: 0
-  enterPatrolAreaRunning: 0
+  chasePlayer: 0
   waypointChangeDistance: 0.5
+  speed: 2
 --- !u!114 &4305068375098714970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,7 +1148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba95234ecc9c1a244956c48914054444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPoppy: 0
+  shouldPlayRandomAnims: 1
+  doesTeaseWhenIdle: 1
   isGiant: 0
   chest: {fileID: 3579901888565116672}
   rigidbodies:

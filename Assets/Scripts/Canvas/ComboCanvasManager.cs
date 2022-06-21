@@ -39,6 +39,9 @@ public class ComboCanvasManager : MonoBehaviour
     {
 		_timeLeft = countDownTime;
 
+		if (!Application.isEditor)
+			isTestingEnlargedComboText = false;
+		
 		//ab testing
 		if ((!YcHelper.InstanceExists || !YcHelper.GetIsComboTextTestingOn()) && (!Application.isEditor || !isTestingEnlargedComboText)) return;
 		
@@ -50,7 +53,6 @@ public class ComboCanvasManager : MonoBehaviour
 	private void Update()
 	{
 		if (_startTimer) ComboTimer();
-
 		if (_startChainReactionTimer) ChainReactionTimer();
 	}
 

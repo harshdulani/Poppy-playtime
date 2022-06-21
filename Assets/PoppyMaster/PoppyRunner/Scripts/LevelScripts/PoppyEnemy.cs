@@ -64,8 +64,7 @@ public class PoppyEnemy : MonoBehaviour
         {
             if (myState == PoppyEnemyState.ClimbToRoof || myState == PoppyEnemyState.CarryJump)
                 return;
-
-            print("Ragdoll");
+			
             ActivateRB(other.transform);
             FaceChange(1);
             if (GameEssentials.instance)

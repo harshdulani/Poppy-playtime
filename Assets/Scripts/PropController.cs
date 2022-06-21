@@ -5,17 +5,22 @@ using UnityEngine;
 public class PropController : MonoBehaviour//, IWantsAds
 {
 	public bool shouldShowAds, shouldExplode, hasBeenInteractedWith, isCar;
-	[SerializeField] private float explosionForce;
+
+	[Header("AB testing"), SerializeField] private bool showInAbTesting;
+	[SerializeField] private bool isAbTestingInEditor;
+	
+	[Header("Collisions"), SerializeField] private float explosionForce;
 	[SerializeField] private List<Rigidbody> rigidbodies;
 	[SerializeField] private List<Collider> colliders;
-	[SerializeField] private float magnitude;
+	[SerializeField] private GameObject explosion;
+	[SerializeField] private AudioClip[] explosionFx;
+	[SerializeField, Range(0.1f, 2f)] private float shrinkSpeedMultiplier, explosionScale;
+	[SerializeField] private bool alwaysSpawnVfx;
+
+	[Header("Hovering"), SerializeField] private float magnitude;
 	[SerializeField] private float rotationMagnitude;
 
 	[SerializeField] private Transform trailParent;
-	[SerializeField] private GameObject explosion;
-	[SerializeField] private AudioClip[] explosionFx;
-	[SerializeField] private bool alwaysSpawnVfx;
-	[SerializeField, Range(0.1f, 2f)] private float shrinkSpeedMultiplier, explosionScale;
 	[SerializeField] private Transform adButton;
 
 	private Tweener _adScaleTween;
@@ -49,6 +54,16 @@ public class PropController : MonoBehaviour//, IWantsAds
 	
 	private void Start()
 	{
+		if(showInAbTesting)
+		{
+			//ab testing
+			if ((!Application.isEditor || !isAbTestingInEditor) && (!YcHelper.InstanceExists || !YcHelper.GetIsObjectUnlockTestingOn()))
+			{
+				gameObject.SetActive(false);
+				return;
+			}
+		}
+
 		_rb = GetComponent<Rigidbody>();
 		_collider = GetComponent<Collider>();
 		_source = GetComponent<AudioSource>();
@@ -56,7 +71,7 @@ public class PropController : MonoBehaviour//, IWantsAds
 			transform.parent.TryGetComponent(out _parent);
 
 		if(!adButton) return;
-		
+	
 		var initScale = adButton.localScale;
 		_adScaleTween = adButton.DOScale(initScale * 1.25f, 0.5f).SetLoops(-1, LoopType.Yoyo);
 	}

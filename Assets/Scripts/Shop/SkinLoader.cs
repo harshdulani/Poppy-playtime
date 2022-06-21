@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SkinLoader : MonoBehaviour//, IWantsAds
@@ -74,7 +75,7 @@ public class SkinLoader : MonoBehaviour//, IWantsAds
 
 		Initialise();
 		
-		var levelNo = PlayerPrefs.GetInt("levelNo", 1);
+		var levelNo = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels");
 		headingText.text = "Level " + levelNo + " Completed!";
 		
 		skipMoneyButton.gameObject.SetActive(false);
@@ -273,8 +274,9 @@ public class SkinLoader : MonoBehaviour//, IWantsAds
 		//so this is to make up for the one level the player is skipping
 		
 		//we are keeping track of encountered bonus levels, so we can keep track of these now offset level indices
-		PlayerPrefs.SetInt("encounteredBonusLevels", PlayerPrefs.GetInt("encounteredBonusLevels", 0) + 1);
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
+		SceneChangeManager.JustIncreaseCurrentLevelNo();
+		SceneChangeManager.JustIncreaseBonusLevelEncounters();
+		
 		DOVirtual.DelayedCall(0.1f, _mainCanvas.NextLevel);
 	}
 	
@@ -309,7 +311,7 @@ public class SkinLoader : MonoBehaviour//, IWantsAds
 		return 360 - barPivot.localEulerAngles.z;
 	}
 
-	private void FindNewLoaderWeapon(int currentIndex)
+	private static void FindNewLoaderWeapon(int currentIndex)
 	{
 		var changed = false;
 
@@ -343,7 +345,7 @@ public class SkinLoader : MonoBehaviour//, IWantsAds
 			ShopStateController.CurrentState.AllWeaponsHaveBeenUnlocked();
 	}
 
-	private void FindNewLoaderArmsSkin(int currentIndex)
+	private static void FindNewLoaderArmsSkin(int currentIndex)
 	{
 		var changed = false;
 

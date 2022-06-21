@@ -33,34 +33,18 @@ public class LevelComplete : MonoBehaviour
 				ApplovinManager.instance.ShowInterstitialAds();
 		*/
 		
-		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable()) return;
+		if (!YcHelper.InstanceExists || !YcHelper.IsAdAvailable())
+		{
+			SaveLevelsBehaviour();
+			return;
+		}
 		
 		YcHelper.ShowInterstitial(SaveLevelsBehaviour);
 	}
 
-	private void SaveLevelsBehaviour()
-	{
-		if (PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0) < _lastRegularLevel + 1)
-		{
-			var x = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1;
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-		else
-		{
-			var x = Random.Range(5, _lastRegularLevel + 1);
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1);
-		
-		ShopStateController.ShopStateSerializer.SaveCurrentState();
-		
-		AudioManager.instance.Play("Button");
-		Vibration.Vibrate(15);
-	}
-	
-    public void Next()
+	private static void SaveLevelsBehaviour() => SceneChangeManager.LoadNextScene(true);
+
+	public void Next()
     {
         // gameEssentials.sl.LoadSceneByInt(gameEssentials.sd.GetLevelNumber());
         SaveLevels();

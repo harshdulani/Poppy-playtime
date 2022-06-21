@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
-	public bool isPoppy, isGiant;
+	[SerializeField] private bool shouldPlayRandomAnims, doesTeaseWhenIdle, isGiant;
 	public Rigidbody chest;
 	[SerializeField] private Rigidbody[] rigidbodies;
 	[HideInInspector] public bool isRagdoll, isWaitingForPunch, isAttackerSoCantRagdoll;
@@ -39,6 +39,9 @@ public class RagdollController : MonoBehaviour
 	private static readonly int Idle1 = Animator.StringToHash("idle1");
 	private static readonly int Idle2 = Animator.StringToHash("idle2");
 	private static readonly int Idle3 = Animator.StringToHash("idle3");
+	private static readonly int Idle4 = Animator.StringToHash("idle4");
+	private static readonly int Idle5 = Animator.StringToHash("idle5");
+	private static readonly int Idle6 = Animator.StringToHash("idle6");
 	private static readonly int HitReaction = Animator.StringToHash("hitReaction");
 
 	private void OnEnable()
@@ -80,7 +83,7 @@ public class RagdollController : MonoBehaviour
 
 		if (isGiant) return;
 		
-		if(isPoppy) return;
+		if(!shouldPlayRandomAnims) return;
 		PlayRandomAnim();
 	}
 
@@ -189,16 +192,39 @@ public class RagdollController : MonoBehaviour
 		_anim.SetBool(Idle1, false);
 		_anim.SetBool(Idle2, false);
 		_anim.SetBool(Idle3, false);
+		_anim.SetBool(Idle4, false);
+		_anim.SetBool(Idle5, false);
+		_anim.SetBool(Idle6, false);
 
 		DOVirtual.DelayedCall(0.02f, () =>
 		{
 			var random = Random.Range(0f, 1f);
-			if (random < 0.33f)
-				_anim.SetBool(Idle1, true);
-			else if (random < 0.66f)
-				_anim.SetBool(Idle2, true);
-			else
-				_anim.SetBool(Idle3, true);
+			var anims = doesTeaseWhenIdle ? 6 : 3;
+			var step = 1f / anims;
+
+			var value = (int)(random / step);
+			
+			switch (value)
+			{
+				case 0:
+					_anim.SetBool(Idle1, true);
+					break;
+				case 1:
+					_anim.SetBool(Idle2, true);
+					break;
+				case 2:
+					_anim.SetBool(Idle3, true);
+					break;
+				case 3:
+					_anim.SetBool(Idle4, true);
+					break;
+				case 4:
+					_anim.SetBool(Idle5, true);
+					break;
+				case 5:
+					_anim.SetBool(Idle6, true);
+					break;
+			}
 		});
 	}
 	
@@ -242,8 +268,7 @@ public class RagdollController : MonoBehaviour
 				});
 			}
 
-		if(isPoppy) return;
-		
+		if(!shouldPlayRandomAnims) return;
 		PlayRandomAnim();
 	}
 

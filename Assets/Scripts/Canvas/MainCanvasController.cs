@@ -96,7 +96,7 @@ public class MainCanvasController : MonoBehaviour//, IWantsAds
 		RetryBehaviour();
 	}
 
-	private void RetryBehaviour()
+	private static void RetryBehaviour()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		AudioManager.instance.Play("Button");
@@ -112,33 +112,11 @@ public class MainCanvasController : MonoBehaviour//, IWantsAds
 
 		if (YcHelper.InstanceExists && YcHelper.IsAdAvailable())
 		{
-			YcHelper.ShowInterstitial(NextLevelBehaviour);
+			YcHelper.ShowInterstitial(() => SceneChangeManager.LoadNextScene());
 			return;
 		}
 		
-		NextLevelBehaviour();
-	}
-
-	private void NextLevelBehaviour()
-	{
-		if (PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels", 0) < lastRegularLevel + 1)
-		{
-			var x = PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1;
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-		else
-		{
-			var x = Random.Range(5, lastRegularLevel + 1);
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) - PlayerPrefs.GetInt("encounteredBonusLevels") + 1);
-		
-		ShopStateController.ShopStateSerializer.SaveCurrentState();
-		
-		AudioManager.instance.Play("Button");
-		Vibration.Vibrate(15);
+		SceneChangeManager.LoadNextScene();
 	}
 
 	public void SkipLevel()
@@ -191,26 +169,7 @@ public class MainCanvasController : MonoBehaviour//, IWantsAds
 
 	private void AdRewardRecieveBehaviour()
 	{
-		if (PlayerPrefs.GetInt("levelNo", 1) < lastRegularLevel + 1)
-		{
-			var x = PlayerPrefs.GetInt("levelNo", 1) + 1;
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-		else
-		{
-			var x = Random.Range(5, lastRegularLevel + 1);
-			PlayerPrefs.SetInt("lastBuildIndex", x);
-			SceneManager.LoadScene(x);
-		}
-
-		PlayerPrefs.SetInt("levelNo", PlayerPrefs.GetInt("levelNo", 1) + 1);
-
-		ShopStateController.ShopStateSerializer.SaveCurrentState();
-
-		AudioManager.instance.Play("Button");
-		Vibration.Vibrate(15);
-
+		SceneChangeManager.LoadNextScene();
 		//AdsMediator.StopListeningForAds(this);
 	}
 
